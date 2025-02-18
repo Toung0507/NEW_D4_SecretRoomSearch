@@ -1,0 +1,11 @@
+.main {
+  margin-top: 72px;
+
+  @include media-breakpoint-up(lg) {
+    margin-top: 102px;
+  }
+}
+
+.index-title {
+  font-size: 100px;
+}
