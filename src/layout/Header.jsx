@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 function Header() {
   return (
     <>
@@ -14,22 +15,22 @@ function Header() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <a className="navbar-brand m-0 d-inline" href="#">
+          <Link className="navbar-brand m-0 d-inline" to="/">
             <img
               src="src/images/logo/Logo-Type-sm.svg"
               alt="logo"
               className=""
             />
-          </a>
+          </Link>
         </div>
         <div className="container px-0 px-lg-3">
           <div
             className="collapse navbar-collapse d-lg-flex justify-content-between"
             id="navbarSupportedContent"
           >
-            <a className="m-0 d-none d-lg-inline" href="index.html">
+            <Link className="m-0 d-none d-lg-inline" to="/">
               <img src="src/images/logo/Logo-Type.svg" alt="logo-lg" />
-            </a>
+            </Link>
             <ul className="navbar-nav text-center gap-lg-10 bg-primary-99 align-items-center">
               <li className="nav-item">
                 <a
