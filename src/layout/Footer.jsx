@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 function Footer() {
   return (
     <>
@@ -5,13 +6,13 @@ function Footer() {
         <div className="container">
           <div className="d-flex flex-lg-row flex-column-reverse justify-content-between py-8">
             <div className="d-flex flex-column align-items-center align-items-lg-start px-0">
-              <a href="index.html">
+              <Link to="/">
                 <img
                   src="src/images/logo/Logo-Type.svg"
                   alt="logo"
                   className="mb-10 mb-lg-3"
                 />
-              </a>
+              </Link>
               <p className="text-white fs-Caption m-0">
                 Cpyright@ 2024 密室搜搜 -All Right Reserved
               </p>

@@ -1,15 +1,16 @@
-// import { useState } from "react";
-// import axios from "axios";
-import Footer from "./layout/Footer";
-import Header from "./layout/Header";
+import { Routes, Route } from "react-router-dom";
+import Index from "./page/Index";
+import Game_comment from "./page/Game_comment";
 
 function App() {
-  //const [count, setCount] = useState(0);
-
   return (
     <>
-      <Header></Header>
-      <Footer></Footer>
+      <div className="APP">
+        <Routes>
+          <Route path="/" element={<Index />}></Route>
+          <Route path="/Game_comment" element={<Game_comment />}></Route>
+        </Routes>
+      </div>
     </>
   );
 }
