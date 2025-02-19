@@ -22,7 +22,7 @@ function Header() {
             />
           </a>
         </div>
-        <div className="container-lg px-0 px-lg-3">
+        <div className="container px-0 px-lg-3">
           <div
             className="collapse navbar-collapse d-lg-flex justify-content-between"
             id="navbarSupportedContent"
@@ -47,7 +47,7 @@ function Header() {
                   揪團去
                 </a>
               </li>
-              <li className="auth-button">
+              <li className="auth-button nav-item">
                 <button
                   id="auth-btn"
                   type="button"
@@ -58,7 +58,7 @@ function Header() {
                   登入
                 </button>
               </li>
-              <li className="auth-button">
+              <li className="auth-button nav-item">
                 <button
                   id="auth-btn"
                   type="button"

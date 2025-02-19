@@ -24,6 +24,13 @@
   z-index: 20;
 }
 
+.nav-item {
+  width: 100%;
+  @include media-breakpoint-up(lg) {
+    width: auto;
+  }
+}
+
 .nav-link {
   color: $black;
 }
