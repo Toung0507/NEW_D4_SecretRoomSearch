@@ -1,5 +1,6 @@
 // import { useState } from "react";
 // import axios from "axios";
+import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
   return (
     <>
       <Header></Header>
+      <Footer></Footer>
     </>
   );
 }
