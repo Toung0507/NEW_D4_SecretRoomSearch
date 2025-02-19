@@ -1,3 +1,7 @@
+body {
+	background-color: $primary-99;
+}
+
 a {
 	display: block;
 	text-decoration: none;
@@ -22,4 +26,10 @@ main {
 
 p {
 	margin-bottom: 0;
+}
+
+img{
+	max-width: 100%;
+	height: auto;
+	vertical-align: middle;
 }
