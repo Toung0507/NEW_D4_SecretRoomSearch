@@ -1,6 +1,20 @@
 import Header from "../layout/Header";
+import Footer from "../layout/Footer";
+import { useState } from "react";
+import axios from "axios";
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function Game_comment() {
+  const [comments, setComment] = useState([]);
+
+  const getComments = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/commentsData`);
+      console.log();
+    } catch (error) {}
+  };
+
   return (
     <>
       <Header></Header>
@@ -387,6 +401,7 @@ function Game_comment() {
           </div>
         </div>
       </main>
+      <Footer></Footer>
     </>
   );
 }
