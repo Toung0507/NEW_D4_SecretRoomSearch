@@ -1,19 +1,49 @@
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function Game_comment() {
   const [comments, setComment] = useState([]);
+  const [gamesData, setGamesData] = useState([]);
 
   const getComments = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/commentsData`);
-      console.log();
-    } catch (error) {}
+      console.log(res.data);
+      setComment(res.data);
+
+      if (res.data.length > 0) {
+        const gameIdFromComments = res.data[0].game_id;
+        const gameRes = await axios.get(
+          `${BASE_URL}/gamesData/${gameIdFromComments}`
+        );
+        console.log(gameRes.data);
+        setGamesData(gameRes.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  // const getGamesData = async () => {
+  //   try {
+  //     await axios.get(`${BASE_URL}/gamesData/${}`);
+  //     console.log();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  useEffect(() => {
+    getComments();
+  }, []);
+
+  // useEffect(() => {
+  //   getGamesData();
+  // }, []);
 
   return (
     <>
@@ -26,7 +56,7 @@ function Game_comment() {
                 <picture>
                   <source
                     media="(min-width: 992px)"
-                    srcset="../assets/images/julia-kadel.png"
+                    src={`${gamesData.game_img}`}
                   />
                   <img
                     src="../assets/images/julia-kadel-sm.png"
@@ -37,7 +67,7 @@ function Game_comment() {
                 <div>
                   <div className="py-10">
                     <h1 className="fs-lg-Display2 fs-h5 fw-bold">
-                      遊戲名稱：等一個人・盜墓
+                      遊戲名稱：{`${gamesData.game_name}`}
                     </h1>
                   </div>
                   <div className="mb-6">
