@@ -1,7 +1,28 @@
+import { useEffect, useState } from "react";
 import Footer from "../layout/Footer";
 import Header from "../layout/Header";
+import axios from "axios";
+const baseApi = import.meta.env.VITE_BASE_URL;
 
 function About_us() {
+    const [austore, setAustore] = useState([]);
+    const [isHaveStore, setIsHaveStore] = useState(false);
+
+    const getAuthorizedStore = async () => {
+        try {
+            const res = await axios.get(`${baseApi}/authorizedStore`);
+            if (res.data.length > 0) {
+                setAustore(res.data);
+                setIsHaveStore(true);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    useEffect(() => {
+        getAuthorizedStore();
+    }, []);
+
     return (
         <>
             <Header />
@@ -12,17 +33,16 @@ function About_us() {
                             <h5 className="card-header">關於密室搜搜</h5>
                             <div className="card-body">
                                 <p className="card-text">
-                                    我們是來自六角學院專題班的學生，因為熱愛密室逃脫遊戲，決定創立這個網站，匯集台灣各地的密室逃脫資訊。我們希望透過這個平台，讓大家能更方便地搜尋與了解不同類型的遊戲場地。
+                                    我們是來自六角學院專題班的學生，因為熱愛密室逃脫遊戲，決定創立這個網站，匯集台灣各地的密室逃脫資訊。
+                                    <br />
+                                    我們希望透過這個平台，讓大家能更方便地搜尋與了解不同類型的遊戲場地。
                                     <br />
                                     本網站內容與圖片均已獲得以下工作室的授權，僅供學術與作品集展示，無任何商業用途。
                                 </p>
                                 <ul className="list-group list-group-numbered">
-                                    <li className="list-group-item border-0">笨蛋工作室</li>
-                                    <li className="list-group-item border-0">FunLock工作室</li>
-                                    <li className="list-group-item border-0">不想工作室</li>
-                                    <li className="list-group-item border-0">濤濤來工作室</li>
-                                    <li className="list-group-item border-0">頂級豬排遊戲工作室</li>
-
+                                    {isHaveStore ? austore.map((store) => (
+                                        <li key={store.austore_id} className="list-group-item border-0">{store.austore_name}</li>
+                                    )) : '尚無工作室授權'}
                                 </ul>
                             </div>
                         </div>
