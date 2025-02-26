@@ -1,4 +1,5 @@
-import Header from "../layout/Header";
+//import Header from "../layout/Header";
+import HeaderLogin from "../layout/HeaderLogin";
 import Footer from "../layout/Footer";
 import { useState } from "react";
 import axios from "axios";
@@ -17,7 +18,7 @@ function Game_comment() {
 
   return (
     <>
-      <Header></Header>
+      <HeaderLogin></HeaderLogin>
       <main>
         <div className="container-fluid container-lg">
           <div className="rol d-flex justify-content-center">
