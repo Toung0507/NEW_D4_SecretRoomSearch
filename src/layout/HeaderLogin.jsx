@@ -17,19 +17,21 @@ const userBtn = [
 ];
 
 function HeaderLogin() {
-  const [users, setUsers] = useState({});
+  const [user, setUser] = useState(null);
+  const userId = 11;
 
-  const getUsers = async () => {
+  const getUser = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/usersData`);
-      setUsers(res.data);
+      const res = await axios.get(`${BASE_URL}/usersData/${userId}`);
+      setUser(res.data);
+      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getUsers();
+    getUser();
   }, []);
 
   return (
@@ -63,7 +65,7 @@ function HeaderLogin() {
               {routes.map((routes) => (
                 <li className="nav-item" key={routes.path}>
                   <NavLink
-                    className="nav-link nav-link-bg px-0 py-4 fs-h6 fw-bold"
+                    className="nav-link nav-link-bg px-0 py-4 fs-h6 fw-bold d-none d-lg-block"
                     aria-current="page"
                     to={routes.path}
                   >
@@ -71,7 +73,7 @@ function HeaderLogin() {
                   </NavLink>
                 </li>
               ))}
-              <li className="nav-item">
+              <li className="nav-item bg-Secondary-99">
                 <NavLink
                   className="dropdown-toggle nav-link nav-link-bg px-0 py-4 fs-h6 fw-bold"
                   id="dropdownMenuLink"
@@ -79,7 +81,7 @@ function HeaderLogin() {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {users.user_name}
+                  {user?.user_name}
                 </NavLink>
                 <ul
                   className="dropdown-menu dropdown-menu-end bg-primary-99 text-center align-items-center"
