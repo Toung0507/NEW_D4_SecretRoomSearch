@@ -1,0 +1,53 @@
+.navbar {
+  height: 72px;
+  z-index: 100;
+
+  @include media-breakpoint-up(lg) {
+    height: 100px;
+  }
+
+  .container-lg {
+    @include media-breakpoint-up(xl) {
+      max-width: 1076px;
+    }
+  }
+
+  .w-100,
+  .vw-100 {
+    @include media-breakpoint-up(lg) {
+      width: auto;
+    }
+  }
+}
+
+.navbar-collapse {
+  z-index: 20;
+}
+
+.nav-item {
+  width: 100%;
+  @include media-breakpoint-up(lg) {
+    width: auto;
+  }
+}
+
+.nav-link {
+  color: $black;
+}
+
+.nav-link-bg {
+  &:hover {
+    background: $nature-95;
+    border: 1px solid $nature-80;
+
+    @include media-breakpoint-up(lg) {
+      background: $primary-99 !important;
+      border: 0 !important;
+      color: $secondary-40;
+    }
+  }
+}
+
+.navbar-toggler {
+  border: none;
+}
