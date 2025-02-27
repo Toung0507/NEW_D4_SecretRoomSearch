@@ -3,7 +3,6 @@ import Index from "./page/Index";
 import Game_comment from "./page/Game_comment";
 import Game_search from "./page/Game_search";
 import About_us from "./page/About_us";
-import Login from "./page/Login";
 
 function App() {
   return (
@@ -14,7 +13,6 @@ function App() {
           <Route path="/Game_comment" element={<Game_comment />}></Route>
           <Route path="/Game_search" element={<Game_search />}></Route>
           <Route path="/About_us" element={<About_us />}></Route>
-          <Route path="/Login" element={<Login />}></Route>
         </Routes>
       </div>
     </>

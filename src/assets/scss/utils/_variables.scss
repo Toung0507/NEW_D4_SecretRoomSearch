@@ -1455,7 +1455,8 @@ $dropdown-link-hover-color: $dropdown-link-color !default;
 //$dropdown-link-hover-bg: var(--#{$prefix}tertiary-bg) !default;
 $dropdown-link-hover-bg: $nature-95;
 $dropdown-link-active-color: $component-active-color !default;
-$dropdown-link-active-bg: $component-active-bg !default;
+// $dropdown-link-active-bg: $component-active-bg !default;
+$dropdown-link-active-bg: $nature-95;
 
 $dropdown-link-disabled-color: var(--#{$prefix}tertiary-color) !default;
 
