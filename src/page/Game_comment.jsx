@@ -16,6 +16,9 @@ function Game_comment() {
   const getGamesData = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/gamesData/${game_id}`);
+      const data = res.data;
+      // 只取第一張圖片
+      data.game_img = data.game_img[0];
       setGamesData(res.data);
       console.log(res.data);
     } catch (error) {
@@ -123,7 +126,7 @@ function Game_comment() {
                     src={`${gamesData.game_img}`}
                   />
                   <img
-                    src="../assets/images/julia-kadel-sm.png"
+                    src={`${gamesData.game_img}`}
                     alt="banner"
                     className="w-100"
                   />
@@ -200,7 +203,7 @@ function Game_comment() {
                             type="radio"
                             name="inlineRadioOptions"
                             id="inlineRadioSuccess"
-                            value=""
+                            value="true"
                             {...register("comment_isPass")}
                           />
                           <label
@@ -216,7 +219,7 @@ function Game_comment() {
                             type="radio"
                             name="inlineRadioOptions"
                             id="inlineRadioFail"
-                            value="option2"
+                            value="false"
                             {...register("comment_isPass")}
                           />
                           <label
@@ -237,7 +240,7 @@ function Game_comment() {
                             type="radio"
                             name="inlineRadioOptions"
                             id="inlineRadioSuccess"
-                            value="option1"
+                            value="true"
                             {...register("comment_isSpoilered")}
                           />
                           <label
@@ -253,7 +256,7 @@ function Game_comment() {
                             type="radio"
                             name="inlineRadioOptions"
                             id="inlineRadioFail"
-                            value="option2"
+                            value="false"
                             {...register("comment_isSpoilered")}
                           />
                           <label
