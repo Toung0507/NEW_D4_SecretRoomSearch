@@ -1,11 +1,11 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 import Index from "./page/Index";
 import Game_comment from "./page/Game_comment";
 import Game_search from "./page/Game_search";
 import About_us from "./page/About_us";
 
-// 利用 createBrowserRouter 定義路由配置
-const App = createBrowserRouter([
+// 利用 createHashRouter 定義路由配置
+const App = createHashRouter([
   {
     path: "/",
     element: <Index />,
