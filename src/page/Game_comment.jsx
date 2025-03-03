@@ -8,7 +8,6 @@ import { Form } from "react-router-dom";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function Game_comment() {
-  // const [comments, setComment] = useState([]);
   const [gamesData, setGamesData] = useState([]);
 
   const game_id = 1;
@@ -30,29 +29,6 @@ function Game_comment() {
     getGamesData();
   }, []);
 
-  // const getComments = async () => {
-  //   try {
-  //     const res = await axios.get(`${BASE_URL}/commentsData`);
-  //     console.log(res.data);
-  //     setComment(res.data);
-
-  //     if (res.data.length > 0) {
-  //       const gameIdFromComments = res.data[0].game_id;
-  //       const gameRes = await axios.get(
-  //         `${BASE_URL}/gamesData/${gameIdFromComments}`
-  //       );
-  //       console.log(gameRes.data);
-  //       setGamesData(gameRes.data);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getComments();
-  // }, []);
-
   const {
     register,
     handleSubmit,
@@ -61,12 +37,37 @@ function Game_comment() {
     reset,
   } = useForm({
     defaultValues: {
-      rating: 0, // 預設評分值
+      coment_star: 0, // 預設評分值
+      game_id,
     },
   });
 
   const onSubmit = handleSubmit((data) => {
     console.log(data);
+    const {
+      coment_content,
+      comment_isPass,
+      comment_isSpoilered,
+      commet_played_time,
+      game_id,
+      coment_star,
+    } = data;
+    const commentsData = {
+      coment_content,
+      comment_isPass,
+      comment_isSpoilered,
+      commet_played_time,
+      game_id,
+      coment_star,
+    };
+    // coment_content,
+    //   comment_isPass,
+    //   comment_isSpoilered,
+    //   commet_played_time,
+    //   game_id,
+    //   rating
+
+    // checkout(commentsData);
   });
 
   // const onSubmit = handleSubmit((data) => {
@@ -81,12 +82,13 @@ function Game_comment() {
   //   checkout(userInfo);
   // });
 
-  // const checkout = async () => {
+  // const checkout = async (data) => {
   //   try {
-  //     await axios.post(`${BASE_URL}/commentsData`);
+  //     await axios.post(`${BASE_URL}/commentsData`, data);
   //     reset();
   //   } catch (error) {
   //     alert(error);
+  //     console.log(error);
   //   }
   // };
 
@@ -143,7 +145,7 @@ function Game_comment() {
                       依據您遊玩的經驗，整體而言您會給這個遊戲幾分?
                     </p>
                     <Controller
-                      name="rating"
+                      name="coment_star"
                       control={control}
                       render={({ field }) => (
                         <StarRating
@@ -204,7 +206,9 @@ function Game_comment() {
                             name="inlineRadioOptions"
                             id="inlineRadioSuccess"
                             value="true"
-                            {...register("comment_isPass")}
+                            {...register("comment_isPass", {
+                              required: { value: Boolean },
+                            })}
                           />
                           <label
                             className="form-check-label"
@@ -220,7 +224,9 @@ function Game_comment() {
                             name="inlineRadioOptions"
                             id="inlineRadioFail"
                             value="false"
-                            {...register("comment_isPass")}
+                            {...register("comment_isPass", {
+                              required: { value: Boolean },
+                            })}
                           />
                           <label
                             className="form-check-label"
@@ -241,7 +247,9 @@ function Game_comment() {
                             name="inlineRadioOptions"
                             id="inlineRadioSuccess"
                             value="true"
-                            {...register("comment_isSpoilered")}
+                            {...register("comment_isSpoilered", {
+                              required: { value: Boolean },
+                            })}
                           />
                           <label
                             className="form-check-label"
@@ -257,7 +265,9 @@ function Game_comment() {
                             name="inlineRadioOptions"
                             id="inlineRadioFail"
                             value="false"
-                            {...register("comment_isSpoilered")}
+                            {...register("comment_isSpoilered", {
+                              required: { value: Boolean },
+                            })}
                           />
                           <label
                             className="form-check-label"
