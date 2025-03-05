@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CommendedGamesCard from "../layout/CommendedGamesCard";
+import GroupCard from "../layout/GroupCard";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -24,7 +25,7 @@ const area = [
 ];
 
 const formData = {
-  //order: "order_price",
+  order: "order_price",
   game_name: "",
   area: [],
   game_people: "",
@@ -39,6 +40,8 @@ function TeamBuy() {
   const [propertys, setPropertys] = useState([]);
   const [maxPeople, setMaxPeople] = useState(0);
   const [search, setSearch] = useState(formData);
+  const [group, setGroup] = useState([]);
+  const [user, setUser] = useState([]);
   // 是否要顯示全部資料
   const [isAllRecommendDisplay, setIsAllRecommendDisplay] = useState(false);
   const [isAllRecentlyDisplay, setIsAllRecentlyDisplay] = useState(false);
@@ -64,6 +67,26 @@ function TeamBuy() {
       );
       setNewedGames(newGames);
       setMaxPeople(Math.max(...res.data.map((p) => p.game_maxNum_Players)));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //取得user資料
+  const getUsers = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/usersData`);
+      setUser(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //取得揪團資料
+  const getGroups = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/groupsData`);
+      setGroup(res.data);
     } catch (error) {
       console.error(error);
     }
@@ -186,6 +209,8 @@ function TeamBuy() {
     getGames();
     getPropertys();
     getDifficultys();
+    getGroups();
+    getUsers();
   }, []);
 
   return (
@@ -231,7 +256,7 @@ function TeamBuy() {
             {/* <!-- 表單部分 --> */}
             <div className="col-md-3 pe-lg-6 pe-md-3 ">
               <form className="p-4 bg-white" onSubmit={(e) => handleSerach(e)}>
-                {/* <div className="order">
+                <div className="order">
                   <p className="h5 pb-3  fw-bold">排序條件</p>
                   <div className="mb-6">
                     <div className="form-check form-check-inline ">
@@ -265,7 +290,7 @@ function TeamBuy() {
                       </label>
                     </div>
                   </div>
-                </div> */}
+                </div>
                 <div className="search">
                   <p className="h5 pb-3  fw-bold">遊戲名稱</p>
                   <div className="search-all-group mb-6">
@@ -578,7 +603,35 @@ function TeamBuy() {
                         </h3>
                       </div>
                       <div className="row m-0">
-                        {isAllRecommendDisplay
+                        {recommendedGames.map((game, group, user) => (
+                          <GroupCard
+                            game={game}
+                            group={group}
+                            user={user}
+                            key={group.group_id}
+                          />
+                        ))}
+                        {/* {isAllRecommendDisplay
+                          ? recommendedGames.map((game, group, user) => (
+                              <GroupCard
+                                game={game}
+                                group={group}
+                                user={user}
+                                key={group.group_id}
+                              />
+                            ))
+                          : recommendedGames
+                              .slice(0, 8)
+                              .map((game, group, user) => (
+                                <GroupCard
+                                  game={game}
+                                  group={group}
+                                  user={user}
+                                  key={group.group_id}
+                                />
+                              ))} */}
+
+                        {/* {isAllRecommendDisplay
                           ? recommendedGames.map((game) => (
                               <CommendedGamesCard
                                 game={game}
@@ -592,7 +645,7 @@ function TeamBuy() {
                                   game={game}
                                   key={game.game_id}
                                 />
-                              ))}
+                              ))} */}
                         <button
                           className={`btn btn-primary ${
                             isAllRecommendDisplay ? "d-none" : ""
