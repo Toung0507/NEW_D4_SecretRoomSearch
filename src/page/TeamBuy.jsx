@@ -41,7 +41,7 @@ function TeamBuy() {
   const [maxPeople, setMaxPeople] = useState(0);
   const [search, setSearch] = useState(formData);
   const [group, setGroup] = useState([]);
-  const [user, setUser] = useState([]);
+
   // 是否要顯示全部資料
   const [isAllRecommendDisplay, setIsAllRecommendDisplay] = useState(false);
   const [isAllRecentlyDisplay, setIsAllRecentlyDisplay] = useState(false);
@@ -67,26 +67,6 @@ function TeamBuy() {
       );
       setNewedGames(newGames);
       setMaxPeople(Math.max(...res.data.map((p) => p.game_maxNum_Players)));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  //取得user資料
-  const getUsers = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/usersData`);
-      setUser(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  //取得揪團資料
-  const getGroups = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/groupsData`);
-      setGroup(res.data);
     } catch (error) {
       console.error(error);
     }
@@ -205,12 +185,49 @@ function TeamBuy() {
     );
   };
 
+  //根據共同的 ID關聯
+  const fetchGroupGames = async () => {
+    try {
+      // 同時發送三個 axios 請求
+      const [groupRes, userRes, gameRes] = await Promise.all([
+        axios.get(`${BASE_URL}/groupsData`),
+        axios.get(`${BASE_URL}/usersData`),
+        axios.get(`${BASE_URL}/gamesData`),
+      ]);
+      // axios 的回應資料在 res.data 中
+      const groupData = groupRes.data;
+      const userData = userRes.data;
+      const gameData = gameRes.data;
+
+      // 建立 game 與 user 的映射表，以便依據 ID 快速查找
+      const gameMap = gameData.reduce((acc, game) => {
+        acc[game.game_id] = game;
+        return acc;
+      }, {});
+
+      const userMap = userData.reduce((acc, user) => {
+        acc[user.user_id] = user;
+        return acc;
+      }, {});
+
+      // 將三個 API 的資料依據 game 中的 group_id 與 user_id 合併成一個物件
+      const groupGames = groupData.map((group) => ({
+        group,
+        game: gameMap[group.game_id], // 利用 group.game_id 取得對應的群組資料
+        user: userMap[group.user_id], // 利用 group.user_id 取得對應的使用者資料
+      }));
+      setGroup(groupGames);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     getGames();
     getPropertys();
     getDifficultys();
-    getGroups();
-    getUsers();
+    fetchGroupGames();
   }, []);
 
   return (
@@ -603,33 +620,14 @@ function TeamBuy() {
                         </h3>
                       </div>
                       <div className="row m-0">
-                        {recommendedGames.map((game, group, user) => (
+                        {/* {recommendedGames.map(({ game, group, user }) => (
                           <GroupCard
                             game={game}
                             group={group}
                             user={user}
                             key={group.group_id}
                           />
-                        ))}
-                        {/* {isAllRecommendDisplay
-                          ? recommendedGames.map((game, group, user) => (
-                              <GroupCard
-                                game={game}
-                                group={group}
-                                user={user}
-                                key={group.group_id}
-                              />
-                            ))
-                          : recommendedGames
-                              .slice(0, 8)
-                              .map((game, group, user) => (
-                                <GroupCard
-                                  game={game}
-                                  group={group}
-                                  user={user}
-                                  key={group.group_id}
-                                />
-                              ))} */}
+                        ))} */}
 
                         {/* {isAllRecommendDisplay
                           ? recommendedGames.map((game) => (
