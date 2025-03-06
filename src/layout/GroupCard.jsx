@@ -34,9 +34,21 @@ function GroupCard({ game, group, user }) {
             {/* <!-- 手機板文字內容在右邊 --> */}
             <div className="col ms-3 ms-md-0">
               <div className="card-body p-0">
-                <h6 className="card-title mb-1 mb-md-2 text-primary-black fw-bold lh-base">
-                  {user.user_id}
-                </h6>
+                <div className="row">
+                  <img
+                    src={user.user_img}
+                    alt={user.user_name}
+                    className="col-6 rounded-circle"
+                    style={{
+                      width: "30%",
+                      height: "30%",
+                      objectFit: "cover",
+                    }}
+                  />
+                  <h6 className="card-title col-6 mb-1 mb-md-2 text-primary-black fw-bold lh-base">
+                    {user.user_name}
+                  </h6>
+                </div>
                 <h6 className="card-title mb-1 mb-md-2 text-primary-black fw-bold lh-base">
                   {game.game_name}
                 </h6>

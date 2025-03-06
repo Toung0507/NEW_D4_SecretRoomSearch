@@ -620,14 +620,14 @@ function TeamBuy() {
                         </h3>
                       </div>
                       <div className="row m-0">
-                        {/* {recommendedGames.map(({ game, group, user }) => (
+                        {group.map(({ game, group, user }) => (
                           <GroupCard
                             game={game}
                             group={group}
                             user={user}
                             key={group.group_id}
                           />
-                        ))} */}
+                        ))}
 
                         {/* {isAllRecommendDisplay
                           ? recommendedGames.map((game) => (
