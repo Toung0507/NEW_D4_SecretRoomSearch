@@ -236,10 +236,10 @@ function TeamBuy() {
         <picture>
           <source
             media="(min-width: 992px)"
-            srcSet="src/images/illustration/CTA-lg.png"
+            srcSet="./illustration/CTA-lg.png"
           />
           <img
-            src="src/images/illustration/CTA.png"
+            src="./illustration/CTA.png"
             alt="banner"
             className="rounded mx-auto d-block"
           />
@@ -604,9 +604,17 @@ function TeamBuy() {
                   </div>
                   <div className="row m-0">
                     <div className="row m-0">
-                      {searchGames.map((game) => (
-                        <CommendedGamesCard game={game} />
+                      {searchGames.map(({ game, group, user }) => (
+                        <GroupCard
+                          game={game}
+                          group={group}
+                          user={user}
+                          key={group.game_id}
+                        />
                       ))}
+                      {/* {searchGames.map((game) => (
+                        <CommendedGamesCard game={game} />
+                      ))} */}
                     </div>
                   </div>
                 </div>
