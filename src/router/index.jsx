@@ -5,6 +5,7 @@ import Game_search from "../page/Game_search";
 import About_us from "../page/About_us";
 import Game_content from "../page/Game_content";
 import Index from "../page/Index";
+import TeamBuy from "../page/Teambuy";
 
 // 利用 createHashRouter 定義路由配置
 const Router = createHashRouter([
@@ -27,6 +28,10 @@ const Router = createHashRouter([
       {
         path: "/About_us",
         element: <About_us />,
+      },
+      {
+        path: "/TeamBuy",
+        element: <TeamBuy />,
       },
       {
         path: "/Game_content/:gameID",
