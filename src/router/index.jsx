@@ -6,39 +6,41 @@ import About_us from "../page/About_us";
 import Game_content from "../page/Game_content";
 import Index from "../page/Index";
 import TeamBuy from "../page/Teambuy";
+import Login from "../page/Login";
 
-// 利用 createHashRouter 定義路由配置
-const Router = createHashRouter([
-  {
-    path: "/",
-    element: <Base />,
-    children: [
-      {
-        path: "/",
-        element: <Index />,
-      },
-      {
-        path: "/Game_comment",
-        element: <Game_comment />,
-      },
-      {
-        path: "/Game_search",
-        element: <Game_search />,
-      },
-      {
-        path: "/About_us",
-        element: <About_us />,
-      },
-      {
-        path: "/TeamBuy",
-        element: <TeamBuy />,
-      },
-      {
-        path: "/Game_content/:gameID",
-        element: <Game_content />,
-      },
-    ],
-  },
-]);
+const Router = createHashRouter(
+    [
+        {
+            path: "/",
+            element: <Base />,
+            children: [
+                {
+                    path: "/",
+                    element: <Index />
+                },
+                {
+                    path: "/Login",
+                    element: < Login />
+                },
+                {
+                    path: "/Game_comment",
+                    element: <Game_comment />,
+                },
+                {
+                    path: "/Game_search",
+                    element: <Game_search />,
+                },
+                {
+                    path: "/TeamBuy",
+                    element: <TeamBuy />,
+                },
+                {
+                    path: "/About_us",
+                    element: <About_us />,
+                }
+            ]
+        },
+    ]
+);
 
 export default Router;
