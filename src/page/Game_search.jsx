@@ -199,8 +199,8 @@ function Game_search() {
                     <h1 className="">找密室</h1>
                 </div>
                 <picture>
-                    <source media="(min-width: 992px)" srcSet="src/images/illustration/Banner.png" />
-                    <img src="src/images/illustration/Banner-2.svg" alt="banner" className="w-100" />
+                    <source media="(min-width: 992px)" srcSet="./illustration/Banner.png" />
+                    <img src="./illustration/Banner-2.svg" alt="banner" className="w-100" />
                 </picture >
             </div>
             <div className="my-md-10 my-sm-0">
