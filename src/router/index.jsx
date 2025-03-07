@@ -3,6 +3,7 @@ import Base from "../page/Base";
 import Game_comment from "../page/Game_comment";
 import Game_search from "../page/Game_search";
 import About_us from "../page/About_us";
+import Game_content from "../page/Game_content";
 import Index from "../page/Index";
 import TeamBuy from "../page/Teambuy";
 
@@ -31,6 +32,10 @@ const Router = createHashRouter([
       {
         path: "/TeamBuy",
         element: <TeamBuy />,
+      },
+      {
+        path: "/Game_content/:gameID",
+        element: <Game_content />,
       },
     ],
   },
