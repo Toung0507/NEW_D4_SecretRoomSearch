@@ -43,7 +43,7 @@ function CommendedGamesCard({ game }) {
                                 </p>
                                 <p className="d-flex align-items-center mb-2">
                                     <span className="rating dotted pe-3 fs-Body-2">
-                                        <img src="src/images/icon/star.png" alt="star"
+                                        <img src="./icon/star.png" alt="star"
                                             className="pe-1" />{game.game_score}
                                     </span>
                                     <span className="ps-2 fs-Body-2">{game.game_score_num}人評論</span>
@@ -51,12 +51,12 @@ function CommendedGamesCard({ game }) {
                                 <p
                                     className="d-flex align-items-start flex-md-row flex-column ">
                                     <span className="dotted pe-md-3 fs-Body-2 pb-2 pb-md-0">
-                                        <img src="src/images/icon/person.png"
+                                        <img src="./icon/person.png"
                                             alt="star" className="pe-1 fs-Body-2" />
                                         {game.game_minNum_Players}-{game.game_maxNum_Players} 人
                                     </span>
                                     <span className="ps-md-2  fs-Body-2">
-                                        <img src="src/images/icon/price.png"
+                                        <img src="./icon/price.png"
                                             alt="star" className="pe-1" />
                                         每人 {game.game_min_price}元起
                                     </span>

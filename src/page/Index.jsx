@@ -54,7 +54,7 @@ function Index() {
                 style={{
                     width: '100%',
                     height: '800px',
-                    backgroundImage: `url(${'src/images/illustration/Banner_web_up_1.png'}), url(${'src/images/illustration/Banner-web-down-1.png'})`,
+                    backgroundImage: `url(${'./illustration/Banner_web_up_1.png'}), url(${'./illustration/Banner-web-down-1.png'})`,
                     backgroundRepeat: 'no-repeat, no-repeat',
                     backgroundPosition: 'top center, bottom center',
                     backgroundSize: 'contain, contain'
@@ -119,7 +119,7 @@ function Index() {
                         <h2 className="text-white text-align-center d-flex justify-content-center mb-20">從驚悚到奇幻，12 種冒險領域讓你選擇！</h2>
                         <div className="row justify-content-center flex-column-reverse flex-lg-row align-items-center">
                             <div className="col-lg-3 col-sm-12">
-                                <img src="/assets/images/illustration/Friends-celebrating-the-New-Year-1.png" alt="" />
+                                <img src="./assets/images/illustration/Friends-celebrating-the-New-Year-1.png" alt="" />
                             </div>
                             <div className="row">
                                 <div className="col-lg-4 col-6">
