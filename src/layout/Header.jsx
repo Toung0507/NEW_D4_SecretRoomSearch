@@ -59,7 +59,7 @@ function Header() {
               <span className="navbar-toggler-icon"></span>
             </button>
             <Link className="navbar-brand m-0 d-inline" to="/">
-              <img src="src/images/logo/Logo-Type-sm.svg" alt="logo" />
+              <img src="./logo/Logo-Type-sm.svg" alt="logo" />
             </Link>
           </div>
           <div className="container px-0 px-lg-3">
@@ -68,7 +68,7 @@ function Header() {
               id="navbarSupportedContent"
             >
               <Link className="m-0 d-none d-lg-inline" to="/">
-                <img src="src/images/logo/Logo-Type.svg" alt="logo-lg" />
+                <img src="./logo/Logo-Type.svg" alt="logo-lg" />
               </Link>
               <ul className="navbar-nav text-center gap-lg-10 bg-primary-99 align-items-center">
                 {navbar.map((routes) => (
@@ -134,7 +134,7 @@ function Header() {
               <span className="navbar-toggler-icon"></span>
             </button>
             <Link className="navbar-brand m-0 d-inline" to="/">
-              <img src="src/images/logo/Logo-Type-sm.svg" alt="logo" />
+              <img src="./logo/Logo-Type-sm.svg" alt="logo" />
             </Link>
           </div>
           <div className="container px-0 px-lg-3">
@@ -143,7 +143,7 @@ function Header() {
               id="navbarSupportedContent"
             >
               <Link className="m-0 d-none d-lg-inline" to="/">
-                <img src="src/images/logo/Logo-Type.svg" alt="logo-lg" />
+                <img src="./logo/Logo-Type.svg" alt="logo-lg" />
               </Link>
               <ul className="navbar-nav text-center gap-lg-10 bg-primary-99 align-items-center">
                 {navbar.map((routes) => (

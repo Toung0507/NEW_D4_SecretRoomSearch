@@ -9,7 +9,7 @@ function Footer() {
                         <div className="d-flex flex-column align-items-center align-items-lg-start px-0">
                             <NavLink to="/">
                                 <img
-                                    src="src/images/logo/Logo-Type.svg"
+                                    src="./logo/Logo-Type.svg"
                                     alt="logo"
                                     className="mb-10 mb-lg-3"
                                 />
@@ -62,21 +62,21 @@ function Footer() {
                                     <a href="https://www.facebook.com/">
                                         <img
                                             className="social_icon"
-                                            src="src/images/icon/fb.svg"
+                                            src="./icon/fb.svg"
                                             alt="fb"
                                         />
                                     </a>
                                     <a href="https://www.instagram.com/">
                                         <img
                                             className="social_icon"
-                                            src="src/images/icon/ig.png"
+                                            src="./icon/ig.png"
                                             alt="ig"
                                         />
                                     </a>
                                     <a href="https://workspace.google.com/intl/zh-TW/products/gmail/">
                                         <img
                                             className="social_icon"
-                                            src="src/images/icon/email.png"
+                                            src="./icon/email.png"
                                             alt="mail"
                                         />
                                     </a>
