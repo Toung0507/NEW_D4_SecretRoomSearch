@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const navbar = [
     { path: "Game_search", name: "找遊戲" }, //path先亂填，後續再補
-    { path: "/1", name: "揪團去" },
+    { path: "TeamBuy", name: "揪團去" },
 ];
 
 const userBtn = [
@@ -158,13 +158,13 @@ function Header() {
                                     </li>
                                 ))}
                                 <li className="nav-item">
-                                    <Link
+                                    <a
                                         className="nav-link nav-link-bg px-0 py-4 fs-h6 fw-bold"
-                                        to='/Login'
+                                        href="#"
                                         onClick={handleLogin}
                                     >
                                         登入
-                                    </ Link>
+                                    </a>
                                 </li>
                                 <li className="nav-item">
                                     <a
