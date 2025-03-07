@@ -616,34 +616,29 @@ function TeamBuy() {
                     <div className="recommend ">
                       <div className="title-container w-100 d-flex justify-content-center align-items-center">
                         <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
-                          本月推薦
+                          揪團專區
                         </h3>
                       </div>
                       <div className="row m-0">
-                        {group.map(({ game, group, user }) => (
-                          <GroupCard
-                            game={game}
-                            group={group}
-                            user={user}
-                            key={group.group_id}
-                          />
-                        ))}
-
-                        {/* {isAllRecommendDisplay
-                          ? recommendedGames.map((game) => (
-                              <CommendedGamesCard
+                        {isAllRecommendDisplay
+                          ? group.map(({ game, group, user }) => (
+                              <GroupCard
                                 game={game}
-                                key={game.game_id}
+                                group={group}
+                                user={user}
+                                key={group.group_id}
                               />
                             ))
-                          : recommendedGames
+                          : group
                               .slice(0, 8)
-                              .map((game) => (
-                                <CommendedGamesCard
+                              .map(({ game, group, user }) => (
+                                <GroupCard
                                   game={game}
-                                  key={game.game_id}
+                                  group={group}
+                                  user={user}
+                                  key={group.group_id}
                                 />
-                              ))} */}
+                              ))}
                         <button
                           className={`btn btn-primary ${
                             isAllRecommendDisplay ? "d-none" : ""

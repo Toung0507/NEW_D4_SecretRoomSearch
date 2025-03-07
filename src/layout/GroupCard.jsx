@@ -35,16 +35,18 @@ function GroupCard({ game, group, user }) {
             <div className="col ms-3 ms-md-0">
               <div className="card-body p-0">
                 <div className="row">
-                  <img
-                    src={user.user_img}
-                    alt={user.user_name}
-                    className="col-6 rounded-circle"
-                    style={{
-                      width: "30%",
-                      height: "30%",
-                      objectFit: "cover",
-                    }}
-                  />
+                  <div className="col-6">
+                    <img
+                      src={user.user_img}
+                      alt={user.user_name}
+                      className="rounded-circle"
+                      style={{
+                        width: "50%",
+                        objectFit: "cover",
+                        aspectRatio: "1/1",
+                      }}
+                    />
+                  </div>
                   <h6 className="card-title col-6 mb-1 mb-md-2 text-primary-black fw-bold lh-base">
                     {user.user_name}
                   </h6>
@@ -58,37 +60,6 @@ function GroupCard({ game, group, user }) {
                 <p className="card-text text-nature-40 mb-3 fw-bold fs-Body-2">
                   {group.group_active_date}
                 </p>
-                {/* <p className="d-flex align-items-center mb-2">
-                  <span className="rating dotted pe-3 fs-Body-2">
-                    <img
-                      src="src/images/icon/star.png"
-                      alt="star"
-                      className="pe-1"
-                    />
-                    {game.game_score}
-                  </span>
-                  <span className="ps-2 fs-Body-2">
-                    {game.game_score_num}人評論
-                  </span>
-                </p>
-                <p className="d-flex align-items-start flex-md-row flex-column ">
-                  <span className="dotted pe-md-3 fs-Body-2 pb-2 pb-md-0">
-                    <img
-                      src="src/images/icon/person.png"
-                      alt="star"
-                      className="pe-1 fs-Body-2"
-                    />
-                    {game.game_minNum_Players}-{game.game_maxNum_Players} 人
-                  </span>
-                  <span className="ps-md-2  fs-Body-2">
-                    <img
-                      src="src/images/icon/price.png"
-                      alt="star"
-                      className="pe-1"
-                    />
-                    每人 {game.game_min_price}元起
-                  </span>
-                </p> */}
               </div>
             </div>
           </div>
