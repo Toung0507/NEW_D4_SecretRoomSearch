@@ -158,13 +158,13 @@ function Header() {
                                     </li>
                                 ))}
                                 <li className="nav-item">
-                                    <a
+                                    <Link
                                         className="nav-link nav-link-bg px-0 py-4 fs-h6 fw-bold"
-                                        href="#"
+                                        to='/Login'
                                         onClick={handleLogin}
                                     >
                                         登入
-                                    </a>
+                                    </ Link>
                                 </li>
                                 <li className="nav-item">
                                     <a

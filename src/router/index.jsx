@@ -4,6 +4,7 @@ import Game_comment from "../page/Game_comment";
 import Game_search from "../page/Game_search";
 import About_us from "../page/About_us";
 import Index from "../page/Index";
+import Login from "../page/Login";
 
 // 利用 createHashRouter 定義路由配置
 const Router = createHashRouter(
@@ -15,6 +16,10 @@ const Router = createHashRouter(
                 {
                     path: "/",
                     element: <Index />
+                },
+                {
+                    path: "/Login",
+                    element: < Login />
                 },
                 {
                     path: "/Game_comment",
