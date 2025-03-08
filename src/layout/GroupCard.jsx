@@ -1,6 +1,6 @@
 function GroupCard({ game, group, user }) {
   return (
-    <div className="col-lg-3 col-md-4 col-sm-6 col2 ">
+    <div className="col-lg-3 col-md-4 col-sm-6 mb-6">
       <a href="#">
         <div className="card p-3 rounded-6 ">
           <div className="row g-0 align-items-start h-100">
