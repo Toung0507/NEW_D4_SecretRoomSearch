@@ -65,13 +65,13 @@ function GroupCard({ game, group, user }) {
           </div>
           {/* <!-- 手機版標籤在底部 --> */}
           <div className="tags d-flex flex-wrap fs-Body-2 gap-2 mt-3 ">
-            <span className=" bg-nature-95 px-2 py-1 rounded-3  text-nowrap">
+            <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
               {game.game_dif_tagname}
             </span>
-            <span className=" bg-nature-95 px-2 py-1 rounded-3 text-nowrap">
+            <span className=" bg-nature-95 px-1 py-1 rounded-3 text-nowrap">
               {game.game_main_tag1name}
             </span>
-            <span className=" bg-nature-95 px-2 py-1 rounded-3  text-nowrap">
+            <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
               {game.game_main_tag2name}
             </span>
           </div>

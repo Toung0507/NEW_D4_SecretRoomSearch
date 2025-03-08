@@ -123,26 +123,25 @@ function TeamBuy() {
     console.log("Before handleSerach setIsSearch:", isSearch);
     setIsSearch(true);
     console.log("After handleSerach setIsSearch:", isSearch);
-    // 篩選資料
-    const filteredGames = games.filter((game) => {
+
+    const filteredGames = group.filter(({ group, game }) => {
       // 遊戲名稱
       const matchesGameName =
         search.game_name === ""
           ? true
-          : game.game_name.includes(search.game_name);
+          : group.game_name.includes(search.game_name);
 
       // 地區篩選（使用OR條件）
       const matchesArea =
         search.area.length === 0
           ? true
-          : search.area.some((area) => game.game_address.startsWith(area));
+          : search.area.some((area) => group.game_address.startsWith(area));
 
       // 遊玩人數篩選
       const matchesGamePeople =
         search.game_people === ""
           ? true
-          : game.game_minNum_Players <= parseInt(search.game_people, 10) &&
-            game.game_maxNum_Players >= parseInt(search.game_people, 10);
+          : group.group_member.includes(search.game_people);
 
       // 難度篩選（使用OR條件）
       const matchesDifficulty =
@@ -612,9 +611,6 @@ function TeamBuy() {
                           key={group.game_id}
                         />
                       ))}
-                      {/* {searchGames.map((game) => (
-                        <CommendedGamesCard game={game} />
-                      ))} */}
                     </div>
                   </div>
                 </div>
