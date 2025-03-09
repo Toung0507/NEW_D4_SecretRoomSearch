@@ -43,6 +43,7 @@ function Game_search() {
     const [isAllRecommendDisplay, setIsAllRecommendDisplay] = useState(false);
     const [isAllRecentlyDisplay, setIsAllRecentlyDisplay] = useState(false);
     const [isSearch, setIsSearch] = useState(false);
+    const [isHaveResultGames, setIsHaveResultGames] = useState(false);
     // 排序過後的資料
     const [recommendedGames, setRecommendedGames] = useState([]);
     const [newedGames, setNewedGames] = useState([]);
@@ -114,17 +115,15 @@ function Game_search() {
 
     const handleReset = () => {
         setSearch(formData);
-        console.log("Before setIsSearch:", isSearch);
         setIsSearch(false);
-        console.log("After setIsSearch:", isSearch);
     };
-
-
 
     // 監聽表單輸入況狀
     const handlEInputChange = (e) => {
         const { value, name } = e.target;
         if (name == 'area' || name == 'difficulty' || name == "property") {
+            console.log(value, name);
+
             setSearch(prev => ({
                 ...prev,
                 [name]: prev[name].includes(value)
@@ -143,9 +142,7 @@ function Game_search() {
     // 處理篩選後的結果呈現
     const handleSerach = async (e) => {
         e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
-        console.log("Before handleSerach setIsSearch:", isSearch);
         setIsSearch(true);
-        console.log("After handleSerach setIsSearch:", isSearch);
         // 篩選資料
         const filteredGames = games.filter(game => {
             // 遊戲名稱
@@ -170,6 +167,13 @@ function Game_search() {
 
         })
 
+        console.log();
+        if (filteredGames.length === 0) {
+            setIsHaveResultGames(false);
+        }
+        else if (filteredGames.length > 0) {
+            setIsHaveResultGames(true);
+        }
         // 排序資料
         setSearchGames(
             filteredGames.sort((a, b) => {
@@ -180,7 +184,6 @@ function Game_search() {
                 else if (search.order === 'order_popularity') {
                     return b.game_score_num - a.game_score_num;
                 }
-
                 return 0; // 如果沒有匹配的排序條件，返回原順序
             })
         )
@@ -215,11 +218,24 @@ function Game_search() {
                                     </p>
                                     <div className="mb-6">
                                         <div className="form-check form-check-inline ">
-                                            <input onChange={handlEInputChange} className="form-check-input" defaultChecked={true} type="radio" name="order" id="order_price" value="order_price" />
+                                            <input
+                                                onChange={handlEInputChange}
+                                                className="form-check-input"
+                                                defaultChecked={true}
+                                                type="radio"
+                                                name="order"
+                                                id="order_price"
+                                                value="order_price" />
                                             <label className="form-check-label" htmlFor="order_price">價格(由高到低)</label>
                                         </div>
                                         <div className="form-check form-check-inline">
-                                            <input onChange={handlEInputChange} className="form-check-input" type="radio" name="order" id="order_popularity" value="order_popularity" />
+                                            <input
+                                                onChange={handlEInputChange}
+                                                className="form-check-input"
+                                                type="radio"
+                                                name="order"
+                                                id="order_popularity"
+                                                value="order_popularity" />
                                             <label className="form-check-label" htmlFor="order_popularity">人氣</label>
                                         </div>
                                     </div>
@@ -231,8 +247,14 @@ function Game_search() {
                                     <div className="search-all-group mb-6">
                                         <label htmlFor="" className="pb-1">搜尋</label>
                                         <div className=" input-group search-group border  rounded-1  border-primary-black">
-                                            <input onChange={handlEInputChange} type="text" className="form-control border-0 search-input"
-                                                placeholder="搜尋關鍵字" aria-label="Search" name="game_name" />
+                                            <input
+                                                onChange={handlEInputChange}
+                                                type="text"
+                                                className="form-control border-0 search-input"
+                                                placeholder="搜尋關鍵字"
+                                                aria-label="Search"
+                                                name="game_name"
+                                                value={search.game_name} />
                                             <span className="input-group-text search-input border-0">
                                                 <a href=""><i className="bi bi-search"></i></a>
                                             </span>
@@ -252,7 +274,10 @@ function Game_search() {
                                                     onChange={handlEInputChange}
                                                     className="form-select d-md-none mb-md-6 mb-3 border  rounded-1  border-primary-black"
                                                     aria-label="Default select example"
-                                                    name="area">
+                                                    name="area"
+                                                    value={search.area.length > 0 ? search.area[0] : ""}
+
+                                                >
                                                     <option defaultValue>請選擇遊玩地區</option>
                                                     {area.map((item, index) => (
                                                         <option key={index} value={item.area_name}>{item.area_name}</option>
@@ -263,8 +288,15 @@ function Game_search() {
                                                     <div className="col-md-6 mx-0 p-0 w-auto">
                                                         {area.slice(0, area.length / 2).map((item, index) => (
                                                             <div key={index} className="form-check mb-4 me-6">
-                                                                <input onChange={handlEInputChange} className="form-check-input" type="checkbox"
-                                                                    value={item.area_name} id={item.area_value} name="area" />
+                                                                <input
+                                                                    onChange={handlEInputChange}
+                                                                    className="form-check-input"
+                                                                    type="checkbox"
+                                                                    value={item.area_name}
+                                                                    id={item.area_value}
+                                                                    name="area"
+                                                                    checked={search.area.includes(item.area_name)}
+                                                                />
                                                                 <label className="form-check-label text-nowrap" htmlFor={item.area_value}>
                                                                     {item.area_name}
                                                                 </label>
@@ -274,8 +306,14 @@ function Game_search() {
                                                     <div className="col-md-6 m-0 p-0">
                                                         {area.slice(area.length / 2).map((item, index) => (
                                                             <div className="form-check mb-4 " key={index}>
-                                                                <input onChange={handlEInputChange} className="form-check-input" type="checkbox"
-                                                                    value={item.area_name} id={item.area_value} name="area" />
+                                                                <input
+                                                                    onChange={handlEInputChange}
+                                                                    className="form-check-input"
+                                                                    type="checkbox"
+                                                                    value={item.area_name}
+                                                                    id={item.area_value}
+                                                                    name="area"
+                                                                    checked={search.area.includes(item.area_name)} />
                                                                 <label className="form-check-label text-nowrap" htmlFor={item.area_value}>
                                                                     {item.area_name}
                                                                 </label>
@@ -293,7 +331,9 @@ function Game_search() {
                                                 <select
                                                     onChange={handlEInputChange}
                                                     className="form-select mb-md-6 mb-3 border  rounded-1  border-primary-black"
-                                                    aria-label="Default select example" name="game_people">
+                                                    aria-label="Default select example"
+                                                    name="game_people"
+                                                    value={search.game_people}>
                                                     <option defaultValue>請選擇遊玩人數</option>
                                                     {Array.from({ length: Number(maxPeople) }).map((_, index) => (
                                                         <option key={index} value={index + 1}>
@@ -317,7 +357,9 @@ function Game_search() {
                                                 <select
                                                     onChange={handlEInputChange}
                                                     className="form-select d-md-none mb-md-6 mb-3 border  rounded-1  border-primary-black"
-                                                    aria-label="Default select example" name="difficulty">
+                                                    aria-label="Default select example"
+                                                    name="difficulty"
+                                                    value={search.difficulty.length > 0 ? search.difficulty[0] : ""}>
                                                     <option defaultValue>請選擇難度</option>
                                                     {difficultys.map((difficulty) => (
                                                         <option key={difficulty.difficulty_id} value={difficulty.difficulty_id}>{difficulty.difficulty_name}</option>
@@ -330,8 +372,14 @@ function Game_search() {
                                                     <div className="col-md-6 mx-0 p-0 w-auto">
                                                         {difficultys.slice(0, Math.round(difficultys.length / 2)).map((difficulty) => (
                                                             <div className="form-check mb-4 me-6" key={difficulty.difficulty_id}>
-                                                                <input onChange={handlEInputChange} className="form-check-input" type="checkbox"
-                                                                    value={difficulty.difficulty_id} id={difficulty.difficulty_id} name="difficulty" />
+                                                                <input
+                                                                    onChange={handlEInputChange}
+                                                                    className="form-check-input"
+                                                                    type="checkbox"
+                                                                    value={difficulty.difficulty_id}
+                                                                    id={difficulty.difficulty_id}
+                                                                    name="difficulty"
+                                                                    checked={search.difficulty.includes(String(difficulty.difficulty_id))} />
                                                                 <label className="form-check-label text-nowrap"
                                                                     htmlFor={difficulty.difficulty_id}>
                                                                     {difficulty.difficulty_name}
@@ -343,8 +391,14 @@ function Game_search() {
                                                     <div className="col-md-6 m-0 p-0">
                                                         {difficultys.slice(Math.round(difficultys.length / 2)).map((difficulty) => (
                                                             <div className="form-check mb-4 " key={difficulty.difficulty_id}>
-                                                                <input onChange={handlEInputChange} className="form-check-input" type="checkbox"
-                                                                    value={difficulty.difficulty_id} id={difficulty.difficulty_id} name="difficulty" />
+                                                                <input
+                                                                    onChange={handlEInputChange}
+                                                                    className="form-check-input"
+                                                                    type="checkbox"
+                                                                    value={difficulty.difficulty_id}
+                                                                    id={difficulty.difficulty_id}
+                                                                    name="difficulty"
+                                                                    checked={search.difficulty.includes(String(difficulty.difficulty_id))} />
                                                                 <label className="form-check-label text-nowrap"
                                                                     htmlFor={difficulty.difficulty_id}>
                                                                     {difficulty.difficulty_name}
@@ -364,7 +418,9 @@ function Game_search() {
                                                 <select
                                                     onChange={handlEInputChange}
                                                     className="form-select d-md-none mb-md-6 mb-3 border  rounded-1  border-primary-black"
-                                                    aria-label="Default select example" name="property">
+                                                    aria-label="Default select example"
+                                                    name="property"
+                                                    value={search.property.length > 0 ? search.property[0] : ""}>
                                                     <option defaultValue>請選擇主題類別</option>
                                                     {propertys.map((property) => (
                                                         <option key={property.property_id} value={property.property_id}>{property.property_name}</option>
@@ -377,8 +433,14 @@ function Game_search() {
                                                     <div className="col-md-6 mx-0 p-0 w-auto">
                                                         {propertys.slice(0, propertys.length / 2).map((property) => (
                                                             <div className="form-check mb-4 me-6" key={property.property_id}>
-                                                                <input onChange={handlEInputChange} className="form-check-input" type="checkbox"
-                                                                    value={property.property_id} id={property.property_name} name="property" />
+                                                                <input
+                                                                    onChange={handlEInputChange}
+                                                                    className="form-check-input"
+                                                                    type="checkbox"
+                                                                    value={property.property_id}
+                                                                    id={property.property_name}
+                                                                    name="property"
+                                                                    checked={search.property.includes(String(property.property_id))} />
                                                                 <label className="form-check-label text-nowrap"
                                                                     htmlFor={property.property_name}>
                                                                     {property.property_name}
@@ -390,8 +452,14 @@ function Game_search() {
                                                     <div className="col-md-6 m-0 p-0">
                                                         {propertys.slice(propertys.length / 2).map((property) => (
                                                             <div className="form-check mb-4 " key={property.property_id}>
-                                                                <input onChange={handlEInputChange} className="form-check-input" type="checkbox"
-                                                                    value={property.property_id} id={property.property_name} name="property" />
+                                                                <input
+                                                                    onChange={handlEInputChange}
+                                                                    className="form-check-input"
+                                                                    type="checkbox"
+                                                                    value={property.property_id}
+                                                                    id={property.property_name}
+                                                                    name="property"
+                                                                    checked={search.property.includes(String(property.property_id))} />
                                                                 <label className="form-check-label text-nowrap"
                                                                     htmlFor={property.property_name}>
                                                                     {property.property_name}
@@ -426,12 +494,22 @@ function Game_search() {
                                                 依據您的搜尋/排序結果如下
                                             </h3>
                                         </div>
+
                                         <div className="row m-0">
                                             <div className="row m-0">
-                                                {searchGames.map((game) => (<CommendedGamesCard game={game} />))
-                                                }
+                                                {isHaveResultGames ? searchGames.map((game) => (<CommendedGamesCard game={game} />))
+                                                    : (
+                                                        <div className="text-center">
+                                                            <p className="h4">您輸入的條件未查詢到相符合結果
+                                                                <br />
+                                                                請放寬條件重新查詢
+                                                            </p>
+                                                        </div>
+                                                    )}
                                             </div>
                                         </div>
+
+
                                     </div>
 
                                 )
