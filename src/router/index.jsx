@@ -8,39 +8,41 @@ import Index from "../page/Index";
 import TeamBuy from "../page/Teambuy";
 import Login from "../page/Login";
 
-const Router = createHashRouter(
-    [
-        {
-            path: "/",
-            element: <Base />,
-            children: [
-                {
-                    path: "/",
-                    element: <Index />
-                },
-                {
-                    path: "/Login",
-                    element: < Login />
-                },
-                {
-                    path: "/Game_comment",
-                    element: <Game_comment />,
-                },
-                {
-                    path: "/Game_search",
-                    element: <Game_search />,
-                },
-                {
-                    path: "/TeamBuy",
-                    element: <TeamBuy />,
-                },
-                {
-                    path: "/About_us",
-                    element: <About_us />,
-                }
-            ]
-        },
-    ]
-);
+const Router = createHashRouter([
+  {
+    path: "/",
+    element: <Base />,
+    children: [
+      {
+        path: "/",
+        element: <Index />,
+      },
+      {
+        path: "/Login",
+        element: <Login />,
+      },
+      {
+        path: "/Game_comment",
+        element: <Game_comment />,
+      },
+      {
+        path: "/Game_search",
+        element: <Game_search />,
+      },
+      {
+        path: "/TeamBuy",
+        element: <TeamBuy />,
+      },
+      {
+        path: "/About_us",
+        element: <About_us />,
+      },
+      {
+        path: "/Game_content/:gameID",
+        element: <Game_content />,
+      },
+    ],
+  },
+]);
 
 export default Router;

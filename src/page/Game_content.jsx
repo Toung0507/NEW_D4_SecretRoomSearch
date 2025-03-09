@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 function Game_content() {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -8,9 +14,14 @@ function Game_content() {
   const [game, setGame] = useState(null);
   const [price, setPrice] = useState(null);
 
+  // 推薦遊戲 (目前先以 ID 前後的遊戲代替)
+  // TODO 實作推薦遊戲
+  const [preGame, setPreGame] = useState(null);
+  const [nextGame, setNextGame] = useState(null);
+
   useEffect(() => {
+    window.scrollTo(0, 0); // 回到頁面頂部
     const getGameData = async () => {
-      // TODO 透過 ID 取得遊戲資料
       try {
         const res = await axios.get(`${BASE_URL}/gamesData/${gameID}`);
         setGame(res.data);
@@ -30,6 +41,29 @@ function Game_content() {
     };
     getGameData();
     getPriceData();
+
+    const getPreGameData = async () => {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/gamesData/${Number(gameID) - 1}`
+        );
+        setPreGame(res.data);
+      } catch (error) {
+        console.error("無法獲取前一個遊戲資料", error);
+      }
+    };
+    const getNextGameData = async () => {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/gamesData/${Number(gameID) + 1}`
+        );
+        setNextGame(res.data);
+      } catch (error) {
+        console.error("無法獲取下一個遊戲資料", error);
+      }
+    };
+    getPreGameData();
+    getNextGameData();
   }, [gameID]);
 
   if (!game) return <div>載入中...</div>; // TODO 換成 loading 畫面
@@ -38,7 +72,7 @@ function Game_content() {
     <main className="game_content position-relative">
       <div className="info container py-6 py-lg-10">
         <picture>
-          {/* TODO 圖片替代方案 */}
+          {/* TODO 圖片 RWD 替代方案 */}
           <source
             media="(min-width: 992px)"
             // srcset="/assets/images/julia-kadel.png"
@@ -48,6 +82,7 @@ function Game_content() {
             src={game.game_img[0]}
             alt="banner"
             style={{ maxHeight: "432px", objectFit: "cover" }}
+            // TODO 圖片裁切與對齊問題
           />
         </picture>
         <div className="my-6 my-lg-10">
@@ -157,10 +192,12 @@ function Game_content() {
             {/* 平板以下文字 */}
           </p>
           <p className="d-none d-lg-block fs-h6 text-white text-start mb-20">
+            {/* TODO 文字無換行問題 (從資料庫中就沒有換行) */}
             {game.game_info}
           </p>
           <div className="comment container px-0">
             <ul className="row row-cols-1 row-cols-md-2 row-cols-lg-3 d-flex justify-content-center">
+              {/* TODO 新增留言假資料 */}
               <li className="comment-item mb-6">
                 <div className="user px-4 mb-2 d-flex align-items-center">
                   <img
@@ -393,46 +430,45 @@ function Game_content() {
       </div>
 
       <div className="others py-10">
+        {/* TODO 推薦遊戲 */}
         <div className="title position-relative d-flex flex-column align-items-center">
           <h2 className="text fs-h6 fs-lg-h3 fw-bold mb-7 mb-lg-12">
             您可能喜歡的遊戲
           </h2>
           <div className="rectangle bg-primary-80 rounded position-absolute"></div>
         </div>
-        <div className="swiper mySwiper container">
-          <div className="swiper-wrapper">
-            <div className="swiper-slide">
-              <a href="#">
-                <img
-                  className="image w-100 rounded-3 rounded-lg-8"
-                  src="/assets/images/muhammad-haikal.png"
-                  alt=""
-                />
-              </a>
-            </div>
-            <div className="swiper-slide">
-              <a href="#">
-                <img
-                  className="image w-100 rounded-3 rounded-lg-8"
-                  src="/assets/images/jerome.png"
-                  alt=""
-                />
-              </a>
-            </div>
-            <div className="swiper-slide">
-              <a href="#">
-                <img
-                  className="image w-100 rounded-3 rounded-lg-8"
-                  src="/assets/images/joanna-kosinska.png"
-                  alt=""
-                />
-              </a>
-            </div>
-          </div>
-          <div className="swiper-pagination"></div>
-
-          <div className="swiper-button-next"></div>
-          <div className="swiper-button-prev"></div>
+        <div className="container">
+          {preGame && nextGame && (
+            <Swiper
+              slidesPerView={1}
+              spaceBetween={30}
+              pagination={{
+                clickable: true,
+              }}
+              navigation={true}
+              modules={[Pagination, Navigation]}
+              className="mySwiper"
+            >
+              <SwiperSlide>
+                <Link to={`/Game_content/${preGame.game_id}`}>
+                  <img
+                    className="image w-100 rounded-3 rounded-lg-8"
+                    src={preGame.game_img[0]}
+                    alt={preGame.game_name}
+                  />
+                </Link>
+              </SwiperSlide>
+              <SwiperSlide>
+                <Link to={`/Game_content/${nextGame.game_id}`}>
+                  <img
+                    className="image w-100 rounded-3 rounded-lg-8"
+                    src={nextGame.game_img[0]}
+                    alt={nextGame.game_name}
+                  />
+                </Link>
+              </SwiperSlide>
+            </Swiper>
+          )}
         </div>
       </div>
 
