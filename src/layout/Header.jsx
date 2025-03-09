@@ -1,50 +1,68 @@
-import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import axios from "axios";
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { logOut } from "../redux/slices/userInfoSlice";
 
 const navbar = [
-    { path: "Game_search", name: "找遊戲" }, //path先亂填，後續再補
-    { path: "/1", name: "揪團去" },
+    { path: "Game_search", name: "找遊戲" },
+    { path: "TeamBuy", name: "揪團去" },
 ];
 
-const userBtn = [
-    { path: "/", name: "會員管理" }, //path先亂填，後續再補
+//這是管理者的頁面，請Leo補上path
+const adminBtn = [
+    { path: "/1}", name: "會員管理" },
     { path: "/2", name: "密室管理" },
     { path: "/3", name: "揪團資料" },
 ];
 
+//這是一般會員的下拉式選單，請Toung補上path
+const userBtn = [
+    { path: "/User_profile/${user_id}", name: "個人資料" }, //path先亂填，後續再補
+    { path: "/2", name: "我的評論" },
+    { path: "/3", name: "我的揪團" },
+];
+
+//這是店家會員的下拉式選單，請Toung補上path
+const storeBtn = [
+    { path: "/User_profile/${user_id}", name: "個人資料" }, //path先亂填，後續再補
+    { path: "/3", name: "我的密室" },
+];
+
 function Header() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    const handleLogin = () => {
-        setIsLoggedIn(true);
-    };
-
-    const handleLogout = () => {
-        setIsLoggedIn(false);
-    };
-
-    const [user, setUser] = useState(null);
-    const userId = 11;
-
-    const getUser = async () => {
-        try {
-            const res = await axios.get(`${BASE_URL}/usersData/${userId}`);
-            setUser(res.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { user, user_token } = useSelector((state) => state.userInfo);
+    const [finalBtn, setFinalBtn] = useState(null);
 
     useEffect(() => {
-        getUser();
-    }, []);
+        if (user_token) {
+
+            const role = user.user_role;
+            if (role === '會員') {
+                setFinalBtn(userBtn);
+            }
+            else if (role === '店家') {
+                setFinalBtn(storeBtn);
+            }
+            else if (role === '管理者') {
+                setFinalBtn(adminBtn);
+            }
+            else {
+                setFinalBtn(null);
+            }
+        }
+    }, [user_token]);
+
+
+    const handleLogOut = () => {
+        dispatch(logOut());
+        navigate("/");
+    };
 
     return (
         <>
-            {isLoggedIn ? (
+            {user_token ? (
                 <nav className="navbar navbar-expand-lg w-100 bg-primary-99 position-fixed top-0 start-0 d-lg-flex justify-content-between">
                     <div className="nav-box container d-lg-none d-flex flex-row justify-content-between align-items-center">
                         <button
@@ -59,7 +77,7 @@ function Header() {
                             <span className="navbar-toggler-icon"></span>
                         </button>
                         <Link className="navbar-brand m-0 d-inline" to="/">
-                            <img src="src/images/logo/Logo-Type-sm.svg" alt="logo" />
+                            <img src="./logo/Logo-Type-sm.svg" alt="logo" />
                         </Link>
                     </div>
                     <div className="container px-0 px-lg-3">
@@ -68,7 +86,7 @@ function Header() {
                             id="navbarSupportedContent"
                         >
                             <Link className="m-0 d-none d-lg-inline" to="/">
-                                <img src="src/images/logo/Logo-Type.svg" alt="logo-lg" />
+                                <img src="./logo/Logo-Type.svg" alt="logo-lg" />
                             </Link>
                             <ul className="navbar-nav text-center gap-lg-10 bg-primary-99 align-items-center">
                                 {navbar.map((routes) => (
@@ -96,7 +114,7 @@ function Header() {
                                         className="dropdown-menu dropdown-menu-end bg-primary-99 text-center align-items-center"
                                         aria-labelledby="dropdownMenuLink"
                                     >
-                                        {userBtn.map((routes) => (
+                                        {finalBtn && finalBtn.map((routes) => (
                                             <li key={routes.path}>
                                                 <NavLink
                                                     className="dropdown-item nav-link px-0 py-4 fs-h6 fw-bold"
@@ -108,8 +126,8 @@ function Header() {
                                             </li>
                                         ))}
                                         <button
-                                            onClick={handleLogout}
                                             className="dropdown-item nav-link px-0 py-4 fs-h6 fw-bold"
+                                            onClick={handleLogOut}
                                         >
                                             登出
                                         </button>
@@ -134,7 +152,7 @@ function Header() {
                             <span className="navbar-toggler-icon"></span>
                         </button>
                         <Link className="navbar-brand m-0 d-inline" to="/">
-                            <img src="src/images/logo/Logo-Type-sm.svg" alt="logo" />
+                            <img src="./logo/Logo-Type-sm.svg" alt="logo" />
                         </Link>
                     </div>
                     <div className="container px-0 px-lg-3">
@@ -143,7 +161,7 @@ function Header() {
                             id="navbarSupportedContent"
                         >
                             <Link className="m-0 d-none d-lg-inline" to="/">
-                                <img src="src/images/logo/Logo-Type.svg" alt="logo-lg" />
+                                <img src="./logo/Logo-Type.svg" alt="logo-lg" />
                             </Link>
                             <ul className="navbar-nav text-center gap-lg-10 bg-primary-99 align-items-center">
                                 {navbar.map((routes) => (
@@ -158,13 +176,12 @@ function Header() {
                                     </li>
                                 ))}
                                 <li className="nav-item">
-                                    <a
+                                    <Link
                                         className="nav-link nav-link-bg px-0 py-4 fs-h6 fw-bold"
-                                        href="#"
-                                        onClick={handleLogin}
+                                        to='/Login'
                                     >
                                         登入
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="nav-item">
                                     <a

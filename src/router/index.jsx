@@ -3,9 +3,12 @@ import Base from "../page/Base";
 import Game_comment from "../page/Game_comment";
 import Game_search from "../page/Game_search";
 import About_us from "../page/About_us";
+import Game_content from "../page/Game_content";
 import Index from "../page/Index";
+import TeamBuy from "../page/Teambuy";
+import Login from "../page/Login";
+import UserProfile from "../page/UserProfile";
 
-// 利用 createHashRouter 定義路由配置
 const Router = createHashRouter(
     [
         {
@@ -17,6 +20,10 @@ const Router = createHashRouter(
                     element: <Index />
                 },
                 {
+                    path: "/Login",
+                    element: < Login />
+                },
+                {
                     path: "/Game_comment",
                     element: <Game_comment />,
                 },
@@ -25,8 +32,20 @@ const Router = createHashRouter(
                     element: <Game_search />,
                 },
                 {
+                    path: "/Game_content/:gameID",
+                    element: <Game_content />,
+                },
+                {
+                    path: "/TeamBuy",
+                    element: <TeamBuy />,
+                },
+                {
                     path: "/About_us",
                     element: <About_us />,
+                },
+                {
+                    path: "/User_profile/:user_id",
+                    element: <UserProfile />
                 }
             ]
         },

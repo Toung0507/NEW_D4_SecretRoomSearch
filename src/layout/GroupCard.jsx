@@ -1,9 +1,7 @@
-import { Link } from "react-router-dom";
-
-function CommendedGamesCard({ game }) {
+function GroupCard({ game, group, user }) {
   return (
-    <div className="col-lg-3 col-md-4 col-sm-6 col2 ">
-      <Link to={`/Game_content/${game.game_id}`}>
+    <div className="col-lg-3 col-md-4 col-sm-6 mb-6">
+      <a href="#">
         <div className="card p-3 rounded-6 ">
           <div className="row g-0 align-items-start h-100">
             <div className=" col-auto col-sm-12 ratio ratio-16x9">
@@ -36,54 +34,50 @@ function CommendedGamesCard({ game }) {
             {/* <!-- 手機板文字內容在右邊 --> */}
             <div className="col ms-3 ms-md-0">
               <div className="card-body p-0">
+                <div className="row">
+                  <div className="col-6">
+                    <img
+                      src={user.user_img}
+                      alt={user.user_name}
+                      className="rounded-circle"
+                      style={{
+                        width: "50%",
+                        objectFit: "cover",
+                        aspectRatio: "1/1",
+                      }}
+                    />
+                  </div>
+                  <h6 className="card-title col-6 mb-1 mb-md-2 text-primary-black fw-bold lh-base">
+                    {user.user_name}
+                  </h6>
+                </div>
                 <h6 className="card-title mb-1 mb-md-2 text-primary-black fw-bold lh-base">
                   {game.game_name}
                 </h6>
                 <p className="card-text text-nature-40 mb-3 fw-bold fs-Body-2">
                   {game.game_address.slice(0, 3)}
                 </p>
-                <p className="d-flex align-items-center mb-2">
-                  <span className="rating dotted pe-3 fs-Body-2">
-                    <img src="./icon/star.png" alt="star" className="pe-1" />
-                    {game.game_score}
-                  </span>
-                  <span className="ps-2 fs-Body-2">
-                    {game.game_score_num}人評論
-                  </span>
-                </p>
-                <p className="d-flex align-items-start flex-md-row flex-column ">
-                  <span className="dotted pe-md-3 fs-Body-2 pb-2 pb-md-0">
-                    <img
-                      src="./icon/person.png"
-                      alt="star"
-                      className="pe-1 fs-Body-2"
-                    />
-                    {game.game_minNum_Players}-{game.game_maxNum_Players} 人
-                  </span>
-                  <span className="ps-md-2  fs-Body-2">
-                    <img src="./icon/price.png" alt="star" className="pe-1" />
-                    每人 {game.game_min_price}元起
-                  </span>
+                <p className="card-text text-nature-40 mb-3 fw-bold fs-Body-2">
+                  {group.group_active_date}
                 </p>
               </div>
             </div>
           </div>
           {/* <!-- 手機版標籤在底部 --> */}
           <div className="tags d-flex flex-wrap fs-Body-2 gap-2 mt-3 ">
-            <span className=" bg-nature-95 px-2 py-1 rounded-3  text-nowrap">
+            <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
               {game.game_dif_tagname}
             </span>
-            <span className=" bg-nature-95 px-2 py-1 rounded-3 text-nowrap">
+            <span className=" bg-nature-95 px-1 py-1 rounded-3 text-nowrap">
               {game.game_main_tag1name}
             </span>
-            <span className=" bg-nature-95 px-2 py-1 rounded-3  text-nowrap">
+            <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
               {game.game_main_tag2name}
             </span>
           </div>
         </div>
-      </Link>
+      </a>
     </div>
   );
 }
-
-export default CommendedGamesCard;
+export default GroupCard;

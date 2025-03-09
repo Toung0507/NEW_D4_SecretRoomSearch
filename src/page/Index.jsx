@@ -19,7 +19,7 @@ function Index() {
             try {
                 const res = await axios.get(`${BASE_URL}gamesData`);
                 setProduct(res.data);
-                console.log(res.data);
+                // console.log(res.data);
             } catch (error) {
                 alert('獲取產品失敗');
                 console.log(`${BASE_URL}gamesData`, error.message);
@@ -54,7 +54,7 @@ function Index() {
                 style={{
                     width: '100%',
                     height: '800px',
-                    backgroundImage: `url(${'src/images/illustration/Banner_web_up_1.png'}), url(${'src/images/illustration/Banner-web-down-1.png'})`,
+                    backgroundImage: `url(${'./illustration/Banner_web_up_1.png'}), url(${'./illustration/Banner-web-down-1.png'})`,
                     backgroundRepeat: 'no-repeat, no-repeat',
                     backgroundPosition: 'top center, bottom center',
                     backgroundSize: 'contain, contain'
@@ -119,7 +119,7 @@ function Index() {
                         <h2 className="text-white text-align-center d-flex justify-content-center mb-20">從驚悚到奇幻，12 種冒險領域讓你選擇！</h2>
                         <div className="row justify-content-center flex-column-reverse flex-lg-row align-items-center">
                             <div className="col-lg-3 col-sm-12">
-                                <img src="/assets/images/illustration/Friends-celebrating-the-New-Year-1.png" alt="" />
+                                <img src="./assets/images/illustration/Friends-celebrating-the-New-Year-1.png" alt="" />
                             </div>
                             <div className="row">
                                 <div className="col-lg-4 col-6">
@@ -141,7 +141,7 @@ function Index() {
                                     </div>
                                 </div>
                                 {gameProperty.slice(0, 9).map((property) => (
-                                    <div className="col-lg-4 col-6">
+                                    <div className="col-lg-4 col-6" key={property.property_id}>
                                         <div className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
                                             <span className="material-symbols-outlined">editor_choice</span>
                                             <p className="fs-lg-h6">{property.property_name}</p>
