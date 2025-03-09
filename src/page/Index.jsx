@@ -19,7 +19,7 @@ function Index() {
             try {
                 const res = await axios.get(`${BASE_URL}gamesData`);
                 setProduct(res.data);
-                console.log(res.data);
+                // console.log(res.data);
             } catch (error) {
                 alert('獲取產品失敗');
                 console.log(`${BASE_URL}gamesData`, error.message);
@@ -141,7 +141,7 @@ function Index() {
                                     </div>
                                 </div>
                                 {gameProperty.slice(0, 9).map((property) => (
-                                    <div className="col-lg-4 col-6">
+                                    <div className="col-lg-4 col-6" key={property.property_id}>
                                         <div className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
                                             <span className="material-symbols-outlined">editor_choice</span>
                                             <p className="fs-lg-h6">{property.property_name}</p>
