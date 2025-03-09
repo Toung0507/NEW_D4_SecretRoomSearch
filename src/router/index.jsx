@@ -8,6 +8,7 @@ import Index from "../page/Index";
 import TeamBuy from "../page/Teambuy";
 import Login from "../page/Login";
 import UserProfile from "../page/UserProfile";
+import Register from "../page/Register";
 
 const Router = createHashRouter(
     [
@@ -18,6 +19,10 @@ const Router = createHashRouter(
                 {
                     path: "/",
                     element: <Index />
+                },
+                {
+                    path: "/Register",
+                    element: <Register />
                 },
                 {
                     path: "/Login",

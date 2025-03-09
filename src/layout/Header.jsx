@@ -184,12 +184,12 @@ function Header() {
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <a
+                                    <Link
                                         className="nav-link nav-link-bg px-0 py-4 fs-h6 fw-bold"
-                                        href="#"
+                                        to='/Register'
                                     >
                                         註冊
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </div>
