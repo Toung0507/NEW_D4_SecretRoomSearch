@@ -8,48 +8,51 @@ import Index from "../page/Index";
 import TeamBuy from "../page/Teambuy";
 import Login from "../page/Login";
 import UserProfile from "../page/UserProfile";
+import TeamBuyComment from "../page/TeamBuyComment";
 
-const Router = createHashRouter(
-    [
-        {
-            path: "/",
-            element: <Base />,
-            children: [
-                {
-                    path: "/",
-                    element: <Index />
-                },
-                {
-                    path: "/Login",
-                    element: < Login />
-                },
-                {
-                    path: "/Game_comment",
-                    element: <Game_comment />,
-                },
-                {
-                    path: "/Game_search",
-                    element: <Game_search />,
-                },
-                {
-                    path: "/Game_content/:gameID",
-                    element: <Game_content />,
-                },
-                {
-                    path: "/TeamBuy",
-                    element: <TeamBuy />,
-                },
-                {
-                    path: "/About_us",
-                    element: <About_us />,
-                },
-                {
-                    path: "/User_profile/:user_id",
-                    element: <UserProfile />
-                }
-            ]
-        },
-    ]
-);
+const Router = createHashRouter([
+  {
+    path: "/",
+    element: <Base />,
+    children: [
+      {
+        path: "/",
+        element: <Index />,
+      },
+      {
+        path: "/Login",
+        element: <Login />,
+      },
+      {
+        path: "/Game_comment/:gameID",
+        element: <Game_comment />,
+      },
+      {
+        path: "/Game_search",
+        element: <Game_search />,
+      },
+      {
+        path: "/Game_content/:gameID",
+        element: <Game_content />,
+      },
+      {
+        path: "/TeamBuy",
+        element: <TeamBuy />,
+      },
+      {
+        path: "/About_us",
+        element: <About_us />,
+      },
+      {
+        path: "/User_profile/:user_id",
+        element: <UserProfile />,
+      },
+      {
+        path: "/TeamBuyComment",
+        element: <TeamBuyComment />,
+      },
+    ],
+  },
+]);
 
 export default Router;
