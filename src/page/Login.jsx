@@ -1,15 +1,17 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-
-const baseApi = import.meta.env.VITE_BASE_URL;
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfoAsyncThunk } from "../redux/slices/userInfoSlice";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-    const [isAuth, setIsAuth] = useState(false);
     const [account, setAccount] = useState({
         "user_email": "user@exapmle.com",
         "user_password": "example"
     });
-    const [resErrMessage, setResErrMessage] = useState("");
+
+    const { isLoading, resErrMessage } = useSelector((state) => state.userInfo);
+    const navigate = useNavigate();
+    const disptach = useDispatch();
 
     // 處理登入的input
     const handleSignInInputChange = (e) => {
@@ -22,31 +24,23 @@ function Login() {
 
     // 監聽登入按鈕
     const handleSingIn = async (e) => {
-        e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
+        e.preventDefault();
+        const res = await disptach(getUserInfoAsyncThunk(account));
 
-        try {
-            const res = await axios.post(`${baseApi}/login`, account);
-            console.log(res);
-            console.log(res.data.accessToken);
-
-            //const { token, expired } = res.data;
-            //document.cookie = `signInHexoToken = ${token}; expires = ${new Date(expired)}`;
-            //axios.defaults.headers.common['Authorization'] = token;
-            //setIsAuth(true);
+        if (res.meta.requestStatus === 'fulfilled'); {
+            const user_id = res.payload.user.user_id;
+            navigate(`/User_profile/${user_id}`);
         }
-        catch (error) {
-            setResErrMessage(error.response?.data);
-            console.log(error);
 
-        }
     };
 
     return (
         <>
             <div className="container">
-                <div className="login py-3 d-flex justify-content-center ">
-                    <div className="p-10 bg-primary-80 rounded-2">
-                        <form onSubmit={handleSingIn} className="m-50">
+                <div className="login py-3 d-flex justify-content-center bg-secondary-99">
+                    <div className="p-8 bg-primary-80 rounded-2 ">
+                        <h3 className="text-center mb-3">密室搜搜 - 登入</h3>
+                        <form onSubmit={handleSingIn} className="m-50 d-flex flex-column">
                             <div className="form-group m-5 ">
                                 <label htmlFor="exampleInputEmail2">電子郵件</label>
                                 <input
@@ -75,8 +69,8 @@ function Login() {
                                 {resErrMessage && (<p className="text-danger" >{resErrMessage}</p>)}
 
                             </div>
-                            <button className="btn btn-success m-5 bg-secondary-60" >
-                                登入
+                            <button className="btn btn-success  bg-secondary-60" >
+                                {isLoading ? "登入中" : "登入"}
                             </button>
                         </form>
                     </div>

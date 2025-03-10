@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CommendedGamesCard from "../layout/CommendedGamesCard";
 import GroupCard from "../layout/GroupCard";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -92,6 +91,16 @@ function TeamBuy() {
     }
   };
 
+  // 查看更多推薦
+  const handleSeeRecommendMore = () => {
+    if (isAllRecommendDisplay) {
+      setIsAllRecommendDisplay(false);
+    } else {
+      setIsAllRecommendDisplay(true);
+    }
+    window.scrollTo(0, 0); // 滾動到頁面頂部
+  };
+
   const handleReset = () => {
     setSearch(formData);
     console.log("Before setIsSearch:", isSearch);
@@ -123,26 +132,25 @@ function TeamBuy() {
     console.log("Before handleSerach setIsSearch:", isSearch);
     setIsSearch(true);
     console.log("After handleSerach setIsSearch:", isSearch);
-    // 篩選資料
-    const filteredGames = games.filter((game) => {
+
+    const filteredGames = group.filter(({ group, game }) => {
       // 遊戲名稱
       const matchesGameName =
         search.game_name === ""
           ? true
-          : game.game_name.includes(search.game_name);
+          : group.game_name.includes(search.game_name);
 
       // 地區篩選（使用OR條件）
       const matchesArea =
         search.area.length === 0
           ? true
-          : search.area.some((area) => game.game_address.startsWith(area));
+          : search.area.some((area) => group.game_address.startsWith(area));
 
       // 遊玩人數篩選
       const matchesGamePeople =
         search.game_people === ""
           ? true
-          : game.game_minNum_Players <= parseInt(search.game_people, 10) &&
-            game.game_maxNum_Players >= parseInt(search.game_people, 10);
+          : group.group_member.includes(search.game_people);
 
       // 難度篩選（使用OR條件）
       const matchesDifficulty =
@@ -612,16 +620,37 @@ function TeamBuy() {
                           key={group.game_id}
                         />
                       ))}
-                      {/* {searchGames.map((game) => (
-                        <CommendedGamesCard game={game} />
-                      ))} */}
+                    </div>
+                    <div className="row m-0 mt-3">
+                      <div className="title-container w-100  d-flex justify-content-center align-items-center">
+                        <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
+                          相關推薦
+                        </h3>
+                      </div>
+                      {/* 若 searchGames 中找不到相同 game_id 的項目，就保留該推薦 */}
+                      {group
+                        .filter(({ game }) => {
+                          return !searchGames.some(
+                            (searchItem) =>
+                              searchItem.game.game_id === game.game_id
+                          );
+                        })
+                        .slice(0, 4)
+                        .map(({ game, group, user }) => (
+                          <GroupCard
+                            game={game}
+                            group={group}
+                            user={user}
+                            key={group.game_id}
+                          />
+                        ))}
                     </div>
                   </div>
                 </div>
               ) : (
                 <>
                   {!isAllRecentlyDisplay && (
-                    <div className="recommend ">
+                    <div className="recommend my-5 my-md-10">
                       <div className="title-container w-100 d-flex justify-content-center align-items-center">
                         <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
                           揪團專區
@@ -653,7 +682,7 @@ function TeamBuy() {
                           }`}
                           onClick={() => handleSeeRecommendMore()}
                         >
-                          查看更多推薦
+                          查看更多揪團
                         </button>
                         <button
                           className={`btn btn-primary ${
@@ -661,52 +690,8 @@ function TeamBuy() {
                           }`}
                           onClick={() => handleSeeRecommendMore()}
                         >
-                          顯示較少，返回查看新作
+                          顯示較少揪團
                         </button>
-                      </div>
-                    </div>
-                  )}
-                  {!isAllRecommendDisplay && (
-                    <div className="recently my-5 my-md-10 ">
-                      <div className="title-container w-100  d-flex justify-content-center align-items-center">
-                        <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
-                          近期新作
-                        </h3>
-                      </div>
-                      <div className="row m-0">
-                        <div className="row m-0">
-                          {isAllRecentlyDisplay
-                            ? newedGames.map((game) => (
-                                <CommendedGamesCard
-                                  game={game}
-                                  key={game.game_id}
-                                />
-                              ))
-                            : newedGames
-                                .slice(0, 8)
-                                .map((game) => (
-                                  <CommendedGamesCard
-                                    game={game}
-                                    key={game.game_id}
-                                  />
-                                ))}
-                          <button
-                            className={`btn btn-primary  ${
-                              isAllRecentlyDisplay ? "d-none" : ""
-                            }`}
-                            onClick={() => handleSeeRecentlyMore()}
-                          >
-                            查看更多新作
-                          </button>
-                          <button
-                            className={`btn btn-primary  ${
-                              isAllRecentlyDisplay ? "" : "d-none"
-                            }`}
-                            onClick={() => handleSeeRecentlyMore()}
-                          >
-                            顯示較少，返回查看推薦
-                          </button>
-                        </div>
                       </div>
                     </div>
                   )}
