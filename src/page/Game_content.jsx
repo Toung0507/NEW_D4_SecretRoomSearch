@@ -473,15 +473,14 @@ function Game_content() {
       </div>
 
       <div className="add-comment position-fixed z-1">
-        <button
-          href="#"
-          title="新增評論"
+        <Link
+          to={`/Game_comment/${game.game_id}`}
           className="border border-none bg-primary-95 p-3 p-lg-4 rounded-circle"
         >
           <span className="material-symbols-outlined d-block text-primary-60">
             add_comment
           </span>
-        </button>
+        </Link>
       </div>
     </main>
   );
