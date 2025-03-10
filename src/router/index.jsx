@@ -24,7 +24,7 @@ const Router = createHashRouter([
         element: <Login />,
       },
       {
-        path: "/Game_comment",
+        path: "/Game_comment/:gameID",
         element: <Game_comment />,
       },
       {
