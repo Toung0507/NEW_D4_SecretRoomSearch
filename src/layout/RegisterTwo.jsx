@@ -2,10 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { registerInfo } from "../page/Register";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { RiCheckboxCircleLine } from "react-icons/ri";
+import { useForm } from "react-hook-form";
 
 function RegisterTwo() {
     const { handleUserChange, userRegister, isEmailAuth, setIsEmailAuth, isSend, setIsSend, verification_code, setVerification_code } = useContext(registerInfo);
     const [orig_user_email] = useState(userRegister.user_email);
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();  // 從react-hook-form解構出所需的值
 
     const checkEmailAuth = () => {
         if (orig_user_email !== userRegister.user_email) {
@@ -61,12 +63,19 @@ function RegisterTwo() {
                                             id="user_email"
                                             name="user_email"
                                             value={userRegister.user_email}
-                                            onChange={(e) => handleUserChange(e)} />
+                                            onChange={(e) => handleUserChange(e)}
+                                            {...register('user_email', {
+                                                required: "Email欄位必填",
+                                                pattern: {
+                                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                                    message: "Email格式錯誤"
+                                                }
+                                            })} />
                                     </div>
                                     <button
                                         className="btn btn-primary col-sm-3"
                                         onClick={sendEmail}
-                                        disabled={isSend}>
+                                        disabled={isSend || userRegister.user_email === ''}>
                                         {isSend ? '已寄送驗證信' : '發送驗證信件'}
                                     </button>
                                 </div>

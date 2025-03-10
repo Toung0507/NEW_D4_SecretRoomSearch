@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
-import { Form } from "react-router-dom";
+import { Form, useParams } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function Game_comment() {
     const [gamesData, setGamesData] = useState([]);
+    const { gameID } = useParams();
 
-    const game_id = 1;
+    //const game_id = 1;
 
     const getGamesData = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/gamesData/${game_id}`);
+            const res = await axios.get(`${BASE_URL}/gamesData/${gameID}`);
             const data = res.data;
             // 只取第一張圖片
             data.game_img = data.game_img[0];
@@ -25,7 +26,7 @@ function Game_comment() {
 
     useEffect(() => {
         getGamesData();
-    }, []);
+    }, [gameID]);
 
     const {
         register,
@@ -36,7 +37,7 @@ function Game_comment() {
     } = useForm({
         defaultValues: {
             coment_star: 0, // 預設評分值
-            game_id,
+            gameID,
         },
     });
 
@@ -118,7 +119,7 @@ function Game_comment() {
                 <div className="rol d-flex justify-content-center">
                     <div className="col-xl-10">
                         <div className="pb-10">
-                            <picture>
+                            <picture className="ratio ratio-16x9">
                                 <source
                                     media="(min-width: 992px)"
                                     src={`${gamesData.game_img}`}
@@ -126,7 +127,10 @@ function Game_comment() {
                                 <img
                                     src={`${gamesData.game_img}`}
                                     alt="banner"
-                                    className="w-100"
+                                    className="w-100 img-fluid rounded-3"
+                                    style={{
+                                        objectFit: "cover",
+                                    }}
                                 />
                             </picture>
                             <Form onSubmit={handleSubmit(onSubmit)}>
@@ -171,9 +175,7 @@ function Game_comment() {
                                             </div>
                                         </div>
                                         <div className="row mb-6">
-                                            <h3 className="fs-lg-h3 fs-h6 fw-bold pb-2">
-                                                遊玩日期
-                                            </h3>
+                                            <h3 className="fs-lg-h3 fs-h6 fw-bold pb-2">遊玩日期</h3>
                                             <div className="col-12">
                                                 <input
                                                     type="date"
@@ -273,9 +275,7 @@ function Game_comment() {
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <h3 className="fs-lg-h3 fs-h6 fw-bold pb-2">
-                                                體驗心得
-                                            </h3>
+                                            <h3 className="fs-lg-h3 fs-h6 fw-bold pb-2">體驗心得</h3>
                                             <div className="col-12">
                                                 <textarea
                                                     className={`form-control ${errors.message && "is-invalid"

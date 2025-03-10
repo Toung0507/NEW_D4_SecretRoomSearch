@@ -27,7 +27,7 @@ function RegisterOne() {
                                 <div className="card" >
                                     <div className="card-body">
                                         <h3 className="card-title " style={{ position: "relative" }}>
-                                            一般會員
+                                            會員
                                             {role === '會員' && <FaUserCheck size={30} className="text-primary" style={{ top: 5, right: 10, position: "absolute" }} />}
                                         </h3>
                                         <hr />

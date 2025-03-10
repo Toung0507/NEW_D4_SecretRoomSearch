@@ -508,8 +508,6 @@ function Game_search() {
                                                     )}
                                             </div>
                                         </div>
-
-
                                     </div>
 
                                 )

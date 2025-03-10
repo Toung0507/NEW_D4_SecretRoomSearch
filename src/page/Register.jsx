@@ -55,9 +55,9 @@ function Register() {
     const [currentStep, setCurrentStep] = useState(1); //目前第幾步
     const [userRegister, setUserRegister] = useState(userRegisterinit); //存user資料表
     const [storeRegister, setStoreRegister] = useState(storeRegisterinit); //存store資料表
-    const [verification_code, setVerification_code] = useState("");
-    const [isEmailAuth, setIsEmailAuth] = useState(false);
-    const [isSend, setIsSend] = useState(false);
+    const [verification_code, setVerification_code] = useState(""); // 保留驗證碼使用
+    const [isEmailAuth, setIsEmailAuth] = useState(false);  //確認信箱是否驗證過ㄋ
+    const [isSend, setIsSend] = useState(false); //是否已寄信
 
     // 監聽user相關的欄位變動
     const handleUserChange = (e) => {
