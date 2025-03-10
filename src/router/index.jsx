@@ -8,6 +8,7 @@ import Index from "../page/Index";
 import TeamBuy from "../page/Teambuy";
 import Login from "../page/Login";
 import UserProfile from "../page/UserProfile";
+import TeamBuyComment from "../page/TeamBuyComment";
 
 const Router = createHashRouter([
   {
@@ -23,7 +24,7 @@ const Router = createHashRouter([
         element: <Login />,
       },
       {
-        path: "/Game_comment",
+        path: "/Game_comment/:gameID",
         element: <Game_comment />,
       },
       {
@@ -45,6 +46,10 @@ const Router = createHashRouter([
       {
         path: "/User_profile/:user_id",
         element: <UserProfile />,
+      },
+      {
+        path: "/TeamBuyComment",
+        element: <TeamBuyComment />,
       },
     ],
   },
