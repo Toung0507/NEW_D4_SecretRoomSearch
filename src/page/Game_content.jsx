@@ -90,7 +90,7 @@ function Game_content() {
             {game.game_name}
           </h1>
           <div className="mb-4 d-flex align-items-center">
-            <img className="me-1" src="/icon/star.png" alt="star" />
+            <img className="me-1" src="./icon/star.png" alt="star" />
             <p className="fs-Body-2 d-inline border-end border-nature-80 mb-0 me-2 pe-3">
               {game.game_score}
             </p>
@@ -122,7 +122,7 @@ function Game_content() {
               <ul>
                 <li className="mb-2 d-flex align-items-center">
                   <img
-                    src="/icon/person.png"
+                    src="./icon/person.png"
                     alt="person"
                     className="me-3"
                     style={{ width: "16px" }}
@@ -132,25 +132,29 @@ function Game_content() {
                   </p>
                 </li>
                 <li className="mb-2 d-flex align-items-center">
-                  <img src="/icon/time.png" alt="time" className="me-3" />
+                  <img src="./icon/time.png" alt="time" className="me-3" />
                   <p className="fs-Body-2 mb-0 text-break">
                     {game.game_time} 分鐘
                   </p>
                 </li>
                 <li className="mb-2 d-flex align-items-center">
-                  <img src="/icon/address.png" alt="address" className="me-3" />
+                  <img
+                    src="./icon/address.png"
+                    alt="address"
+                    className="me-3"
+                  />
                   <p className="fs-Body-2 mb-0 text-break">
                     {game.game_address}
                   </p>
                 </li>
                 <li className="mb-2 d-flex align-items-center">
-                  <img src="/icon/link.png" alt="link" className="me-3" />
+                  <img src="./icon/link.png" alt="link" className="me-3" />
                   <a href="#" className="fs-Body-2 mb-0 text-break">
                     {game.game_website}
                   </a>
                 </li>
                 <li className="mb-2 d-flex align-items-center">
-                  <img src="/icon/phone.png" alt="phone" className="me-3" />
+                  <img src="./icon/phone.png" alt="phone" className="me-3" />
                   <a
                     className="fs-Body-2 mb-0 text-break"
                     href={`tel:+886${game.game_tel}`}
@@ -214,19 +218,19 @@ function Game_content() {
                       <p className="date">2024/03/17</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/half-star.png" alt="" />
+                          <img src="./icon/half-star.png" alt="" />
                         </li>
                       </ul>
                     </div>
@@ -255,19 +259,19 @@ function Game_content() {
                       <p className="date">2024/03/17</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/half-star.png" alt="" />
+                          <img src="./icon/half-star.png" alt="" />
                         </li>
                       </ul>
                     </div>
@@ -300,19 +304,19 @@ function Game_content() {
                       <p className="date">2023/08/28</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/half-star.png" alt="" />
+                          <img src="./icon/half-star.png" alt="" />
                         </li>
                       </ul>
                     </div>
@@ -341,19 +345,19 @@ function Game_content() {
                       <p className="date">2023/12/16</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                       </ul>
                     </div>
@@ -393,19 +397,19 @@ function Game_content() {
                       <p className="date">2022/04/05</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src="./icon/star.png" alt="" />
                         </li>
                       </ul>
                     </div>
