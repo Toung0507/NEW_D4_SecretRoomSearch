@@ -47,6 +47,8 @@ function Index() {
         "彰化", "雲林", "嘉義", "台南", "高雄", "屏東"
     ];
     const memberNum = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const [areaSelect, setAreaSelect] = useState(area[0]);
+    const [numSelect, setNumSelect] = useState(1);
 
     return (
         <>
@@ -67,10 +69,10 @@ function Index() {
                             <div className="w-50">
                                 <label htmlFor="" className="form-label">地點</label>
                                 <div className="input-group bg-white">
-                                    <button className="btn btn-outline-secondary dropdown-toggle w-100 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">{area[0]}</button>
+                                    <button className="btn btn-outline-secondary dropdown-toggle w-100 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">{areaSelect}</button>
                                     <ul className="dropdown-menu">
                                         {area.map((area) => (
-                                            <li key={area}><span className="dropdown-item" href="#">{area}</span></li>
+                                            <li key={area}><span className="dropdown-item" href="#" onClick={() => setAreaSelect(area)}>{area}</span></li>
                                         ))}
                                     </ul>
                                 </div>
@@ -79,10 +81,10 @@ function Index() {
                             <div className="w-50">
                                 <label htmlFor="" className="form-label">人數</label>
                                 <div className="input-group bg-white">
-                                    <button className="btn btn-outline-secondary dropdown-toggle w-100 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">{memberNum[0]}</button>
+                                    <button className="btn btn-outline-secondary dropdown-toggle w-100 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">{numSelect}</button>
                                     <ul className="dropdown-menu">
                                         {memberNum.map((num) => (
-                                            <li key={num}><span className="dropdown-item" href="#">{num}</span></li>
+                                            <li key={num}><span className="dropdown-item" href="#" onClick={() => setNumSelect(num)}>{num}</span></li>
                                         ))}
                                     </ul>
                                 </div>
