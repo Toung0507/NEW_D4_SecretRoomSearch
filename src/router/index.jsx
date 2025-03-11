@@ -9,6 +9,7 @@ import TeamBuy from "../page/Teambuy";
 import Login from "../page/Login";
 import UserProfile from "../page/UserProfile";
 import TeamBuyComment from "../page/TeamBuyComment";
+import AdminIndex from "../page/admin/AdminIndex";
 
 const Router = createHashRouter([
   {
@@ -50,6 +51,16 @@ const Router = createHashRouter([
       {
         path: "/TeamBuyComment",
         element: <TeamBuyComment />,
+      },
+      {
+        path: "/Admin",
+        element: < />,
+        children: [
+            {
+                index: true,
+                element: <AdminIndex />
+            }
+        ]
       },
     ],
   },

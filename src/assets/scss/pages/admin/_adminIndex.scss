@@ -1,0 +1,14 @@
+*,
+*::after,
+*::before {
+  outline: 1px solid black;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.form-control::placeholder {
+  color: #c6c6ca;
+}
