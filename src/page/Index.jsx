@@ -22,8 +22,8 @@ function Index() {
 				setProduct(res.data);
 				console.log(res.data)
 			} catch (error) {
-					alert('獲取產品失敗');
-					console.log(`${BASE_URL}gamesData`, error.message);
+				  alert('獲取產品失敗');
+				  console.log(`${BASE_URL}gamesData`, error.message);
 			}
 		}
 		getProduct();
