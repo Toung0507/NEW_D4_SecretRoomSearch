@@ -188,13 +188,16 @@ function Game_content() {
                         {/* TODO 解決長方形裝置無法解釋 */}
                         <div className="rectangle bg-nature-30 rounded position-absolute"></div>
                     </div>
-                    <p className="d-lg-none text-white text-center mb-11">
-                        {/* 平板以下文字 */}
-                    </p>
-                    <p className="d-none d-lg-block fs-h6 text-white text-start mb-20">
-                        {/* TODO 文字無換行問題 (從資料庫中就沒有換行) */}
-                        {game.game_info}
-                    </p>
+                    <pre>
+                        <p className="d-lg-none text-white text-center mb-11">
+                            {/* 平板以下文字 */}
+                            {game.game_info}
+                        </p>
+                        <p className="d-none d-lg-block fs-h6 text-white text-start mb-20">
+                            {/* TODO 文字無換行問題 (從資料庫中就沒有換行) */}
+                            {game.game_info}
+                        </p>
+                    </pre>
                     <div className="comment container px-0">
                         <ul className="row row-cols-1 row-cols-md-2 row-cols-lg-3 d-flex justify-content-center">
                             {/* TODO 新增留言假資料 */}
