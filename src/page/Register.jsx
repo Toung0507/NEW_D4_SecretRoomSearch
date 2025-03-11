@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import RegisterOne from "../layout/RegisterOne";
 import RegisterTwo from "../layout/RegisterTwo";
 import RegisterThree from "../layout/RegisterThree";
@@ -56,27 +56,29 @@ function Register() {
     const [userRegister, setUserRegister] = useState(userRegisterinit); //存user資料表
     const [storeRegister, setStoreRegister] = useState(storeRegisterinit); //存store資料表
     const [verification_code, setVerification_code] = useState(""); // 保留驗證碼使用
-    const [isEmailAuth, setIsEmailAuth] = useState(false);  //確認信箱是否驗證過ㄋ
+    const [isEmailAuth, setIsEmailAuth] = useState(false);  //確認信箱是否驗證過
     const [isSend, setIsSend] = useState(false); //是否已寄信
+    const [isResgitor, setIsResgitor] = useState(false);
+
+    const userFormRef = useRef();
+    const storeFormRef = useRef();
 
     // 監聽user相關的欄位變動
     const handleUserChange = (e) => {
         const { name, value } = e.target;
-        // console.log(name, value);
-        setUserRegister({
-            ...userRegister,
+        setUserRegister((prevState) => ({
+            ...prevState,
             [name]: value
-        })
+        }));
     };
 
     // 監聽store相關的欄位變動
     const handleStoreChange = (e) => {
         const { name, value } = e.target;
-        // console.log(name, value);
-        setStoreRegister({
-            ...storeRegister,
+        setUserRegister((prevState) => ({
+            ...prevState,
             [name]: value
-        })
+        }));
     };
 
     // 下一步
@@ -94,13 +96,40 @@ function Register() {
 
     // 最後註冊，有兩層post，先註冊register到user，再依據身分註冊post到store
     const registeFinal = () => {
-        console.log(userRegister);
-        console.log(storeRegister);
+        console.log("最終 userRegister 資料：", userRegister);
+        // 此處做 axios post 或其他資料處理邏輯
     };
 
+    // 當收到子元件成功送出的訊號時，設定旗標
+    const handleSubmitSuccess = () => {
+        setIsResgitor(true);
+    };
+
+    // 當 isResgitor 變為 true 時，代表表單成功送出並更新了資料
+    // 要確保兩個一起，再去呼叫registeFinal()不可以在handleSubmitSuccess就呼叫registeFinal()他還是會為舊的資料
     useEffect(() => {
-        // registeFinal();
-    }, [userRegister]);
+        if (isResgitor) {
+            registeFinal();
+            // 送出完成後可考慮重置 isResgitor 為 false
+            setIsResgitor(false);
+        }
+    }, [isResgitor, userRegister]);
+
+
+
+    // 送出按鈕點擊時只負責觸發子元件的 submit，不直接設置旗標
+    const handleFinalClick = () => {
+        if (userRegister.user_role === '會員') {
+            setTimeout(() => {
+                if (userFormRef.current) {
+                    const hiddenSubmitBtn = userFormRef.current.querySelector('#userSumbit');
+                    if (hiddenSubmitBtn) {
+                        hiddenSubmitBtn.click();  // 觸發子元件 form 的 onSubmit
+                    }
+                }
+            }, 0);
+        }
+    };
 
     return (
         <div className="container text-center pt-10">
@@ -124,7 +153,7 @@ function Register() {
             <registerInfo.Provider value={{ handleUserChange, handleStoreChange, userRegister, isEmailAuth, setIsEmailAuth, isSend, setIsSend, verification_code, setVerification_code }}>
                 {currentStep === 1 && <RegisterOne />}
                 {currentStep === 2 && <RegisterTwo />}
-                {currentStep === 3 && <RegisterThree />}
+                {currentStep === 3 && <RegisterThree userFormRef={userFormRef} storeFormRef={storeFormRef} onSubmitSuccess={handleSubmitSuccess} />}
             </registerInfo.Provider>
 
             <div className="step my-3">
@@ -142,7 +171,20 @@ function Register() {
                 {currentStep === 3 ? (
                     <button
                         className="btn btn-primary mx-2"
-                        onClick={registeFinal}
+                        onClick={handleFinalClick}
+                    // onClick={() => {
+                    //     if (userRegister.user_role === '會員') {
+                    //         setTimeout(() => {
+                    //             if (userFormRef.current) {
+                    //                 const hiddenSubmitBtn = userFormRef.current.querySelector('#userSumbit');
+                    //                 if (hiddenSubmitBtn) {
+                    //                     hiddenSubmitBtn.click();  // 觸發隱藏按鈕的點擊，進而觸發 onSubmit                                            
+
+                    //                 }
+                    //             }
+                    //         }, 0);
+                    //     }
+                    // }}
                     >
                         送出註冊
                     </button>
