@@ -53,62 +53,45 @@ function Game_comment() {
   } = useForm({
     defaultValues: {
       coment_star: 0,
-      gameID: Number(gameID),
-      user: user.user_id,
+      game_id: Number(gameID),
+      user_id: user.user_id,
       comment_isPass: null,
       comment_isSpoilered: null,
     },
   });
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
     const {
-      coment_content,
-      comment_isPass,
-      comment_isSpoilered,
-      commet_played_time,
+      user_id,
       game_id,
+      comment_isSpoilered,
+      coment_content,
       coment_star,
+      commet_played_time,
+      comment_isPass,
     } = data;
     const commentsData = {
-      coment_content,
-      comment_isPass,
-      comment_isSpoilered,
-      commet_played_time,
+      user_id,
       game_id,
+      comment_isSpoilered,
+      coment_content,
       coment_star,
+      commet_played_time,
+      comment_isPass,
     };
-    // coment_content,
-    //   comment_isPass,
-    //   comment_isSpoilered,
-    //   commet_played_time,
-    //   game_id,
-    //   rating
 
-    // checkout(commentsData);
+    checkout(commentsData);
   });
 
-  // const onSubmit = handleSubmit((data) => {
-  //   const { message, ...user } = data;
-
-  //   const userInfo = {
-  //     data: {
-  //       user,
-  //       message,
-  //     },
-  //   };
-  //   checkout(userInfo);
-  // });
-
-  // const checkout = async (data) => {
-  //   try {
-  //     await axios.post(`${BASE_URL}/commentsData`, data);
-  //     reset();
-  //   } catch (error) {
-  //     alert(error);
-  //     console.log(error);
-  //   }
-  // };
+  const checkout = async (data) => {
+    try {
+      await axios.post(`${BASE_URL}/commentsData`, data);
+      reset();
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
+  };
 
   const StarRating = ({ value, onChange }) => {
     return (
