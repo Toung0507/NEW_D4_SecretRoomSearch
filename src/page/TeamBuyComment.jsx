@@ -1,11 +1,38 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 function TeamBuyComment() {
+  const [group, setGroup] = useState([]);
+
+  const { group_id } = useParams();
+
+  const getGroup = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/groupsData/${group_id}`);
+      setGroup(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getGroup();
+  }, [group_id]);
+
   return (
     <>
       <div className="container-fluid container-lg">
         <div className="row d-flex justify-content-center">
           <div className="col-xl-10">
             <div className="mt-9 mb-6">
-              <h2 className="fs-h2 fw-bold">日期地點遊戲</h2>
+              <h2 className="fs-h2 fw-bold">
+                {`${group.group_active_date}`}
+                {`${group.game_address.slice(0, 3)}`}
+                {`${group.game_name}`}
+              </h2>
             </div>
             <div className="border border-nature-90 rounded-xl">
               <img src="" alt="遊戲圖" className="img-fluid" />
@@ -78,10 +105,10 @@ function TeamBuyComment() {
                       <td colSpan="3">報名者</td>
                     </tr>
                     <tr>
-                      <td>標籤</td>
+                      <td colSpan="3">標籤</td>
                     </tr>
                     <tr>
-                      <td className="my-5">
+                      <td className="my-5" colSpan="3">
                         <button className="btn btn-secondary-60 text-white px-17 py-2">
                           我要參加
                         </button>
