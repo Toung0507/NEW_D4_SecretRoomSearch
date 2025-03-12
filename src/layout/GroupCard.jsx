@@ -38,7 +38,7 @@ function GroupCard({ game, group, user }) {
                 <div className="row">
                   <div className="col-6">
                     <img
-                      src={user.user_img}
+                      src="./icon/woman.png"
                       alt={user.user_name}
                       className="rounded-circle"
                       style={{

@@ -92,20 +92,22 @@ function TeamBuyComment() {
                 />
               </picture>
               <div className="px-6 py-5">
-                <div className="d-flex">
-                  <img
-                    src={userInfo?.user_img}
-                    alt={userInfo?.user_name}
-                    className="rounded-circle"
-                    style={{
-                      width: "10%",
-                      objectFit: "cover",
-                      aspectRatio: "1/1",
-                    }}
-                  />
-                  <p className="text-center text-primary-black fs-Body-1 fw-bold">
+                <div className="row">
+                  <div className="col-6">
+                    <img
+                      src="./icon/woman.png"
+                      alt={userInfo?.user_name}
+                      className="rounded-circle"
+                      style={{
+                        width: "10%",
+                        objectFit: "cover",
+                        aspectRatio: "1/1",
+                      }}
+                    />
+                  </div>
+                  <h6 className="col-6 mb-1 mb-md-2 text-primary-black fs-Body-1 fw-bold lh-base">
                     {userInfo?.user_name}
-                  </p>
+                  </h6>
                 </div>
                 <table className="table table-borderless">
                   <tbody>
@@ -163,8 +165,9 @@ function TeamBuyComment() {
                                         {weekdayPrice.price_mix}
                                       </span>
                                     )}
+                                    <br />
                                     {weekendPrice && (
-                                      <span style={{ marginLeft: "1rem" }}>
+                                      <span>
                                         假日 {weekendPrice.price_people}：$
                                         {weekendPrice.price_mix}
                                       </span>
