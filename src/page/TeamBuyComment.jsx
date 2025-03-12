@@ -8,9 +8,7 @@ function TeamBuyComment() {
   const [group, setGroup] = useState([]);
   const [games, setGames] = useState([]);
   const [users, setUsers] = useState([]);
-
-  const [difficultys, setDifficultys] = useState([]);
-  const [propertys, setPropertys] = useState([]);
+  const [price, setPrice] = useState(null);
 
   const { group_id } = useParams();
 
@@ -41,18 +39,30 @@ function TeamBuyComment() {
     }
   };
 
+  const getPriceData = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/pricesData`);
+      setPrice(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getGroup();
     getGames();
     getUsers();
+    getPriceData();
   }, [group_id]);
 
   // 資料尚未載入時，顯示 Loading
   if (!group) return <div>Loading...</div>;
   if (!games.length) return <div>Loading games data...</div>;
+  if (!price) return <div>Loading...</div>;
 
   const gameInfo = games.find((game) => game.game_id === group.game_id);
   const userInfo = users.find((user) => user.user_id === group.user_id);
+  const priceInfo = price.filter((price) => price.game_id === group.game_id);
 
   return (
     <>
@@ -125,7 +135,7 @@ function TeamBuyComment() {
                     </tr>
                     <tr>
                       <th scope="col" className="text-primary-50">
-                        人數
+                        需求人數
                       </th>
                       <th scope="col" colSpan="2" className="text-primary-50">
                         價格
@@ -133,7 +143,46 @@ function TeamBuyComment() {
                     </tr>
                     <tr>
                       <td>{group.group_member}人</td>
-                      <td colSpan="2">價格</td>
+                      <td colSpan="2">
+                        <ul className="d-flex flex-column gap-2">
+                          {priceInfo.length === 2 ? (
+                            // 當有兩筆價格資料，顯示平日與假日
+                            <li className="fs-Body-2">
+                              {(() => {
+                                const weekdayPrice = priceInfo.find(
+                                  (item) => item.price_day_type === "weekday"
+                                );
+                                const weekendPrice = priceInfo.find(
+                                  (item) => item.price_day_type === "weekend"
+                                );
+                                return (
+                                  <>
+                                    {weekdayPrice && (
+                                      <span>
+                                        平日 {weekdayPrice.price_people}：$
+                                        {weekdayPrice.price_mix}
+                                      </span>
+                                    )}
+                                    {weekendPrice && (
+                                      <span style={{ marginLeft: "1rem" }}>
+                                        假日 {weekendPrice.price_people}：$
+                                        {weekendPrice.price_mix}
+                                      </span>
+                                    )}
+                                  </>
+                                );
+                              })()}
+                            </li>
+                          ) : (
+                            // 當只有一筆資料時，直接顯示價格，不顯示 price_day_type 文字
+                            priceInfo.map((item) => (
+                              <li key={item.price_id} className="fs-Body-2">
+                                {item.price_people}：${item.price_mix}
+                              </li>
+                            ))
+                          )}
+                        </ul>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="col" className="text-primary-50">
@@ -167,13 +216,13 @@ function TeamBuyComment() {
                       <td colSpan="3">
                         <div className="tags d-flex flex-wrap fs-Body-2 gap-2 mt-3 ">
                           <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
-                            {gameInfo.game_dif_tagname}
+                            {gameInfo?.game_dif_tagname}
                           </span>
                           <span className=" bg-nature-95 px-1 py-1 rounded-3 text-nowrap">
-                            {gameInfo.game_main_tag1name}
+                            {gameInfo?.game_main_tag1name}
                           </span>
                           <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
-                            {gameInfo.game_main_tag2name}
+                            {gameInfo?.game_main_tag2name}
                           </span>
                         </div>
                       </td>
