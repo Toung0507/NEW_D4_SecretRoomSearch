@@ -218,19 +218,19 @@ function Game_content() {
                       <p className="date">2024/03/17</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/half-star.png" alt="" />
+                          <img src="/icon/half-star.png" alt="" />
                         </li>
                       </ul>
                     </div>
@@ -259,19 +259,19 @@ function Game_content() {
                       <p className="date">2024/03/17</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/half-star.png" alt="" />
+                          <img src="/icon/half-star.png" alt="" />
                         </li>
                       </ul>
                     </div>
@@ -304,19 +304,19 @@ function Game_content() {
                       <p className="date">2023/08/28</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/half-star.png" alt="" />
+                          <img src="/icon/half-star.png" alt="" />
                         </li>
                       </ul>
                     </div>
@@ -345,19 +345,19 @@ function Game_content() {
                       <p className="date">2023/12/16</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                       </ul>
                     </div>
@@ -397,19 +397,19 @@ function Game_content() {
                       <p className="date">2022/04/05</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                         <li>
-                          <img src="./icon/star.png" alt="" />
+                          <img src="/icon/star.png" alt="" />
                         </li>
                       </ul>
                     </div>

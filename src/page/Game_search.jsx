@@ -43,6 +43,7 @@ function Game_search() {
   const [isAllRecommendDisplay, setIsAllRecommendDisplay] = useState(false);
   const [isAllRecentlyDisplay, setIsAllRecentlyDisplay] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
+  const [isHaveResultGames, setIsHaveResultGames] = useState(false);
   // 排序過後的資料
   const [recommendedGames, setRecommendedGames] = useState([]);
   const [newedGames, setNewedGames] = useState([]);

@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom";
 function GroupCard({ game, group, user }) {
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 mb-6">
-      <a href="#">
+      <Link to={`/TeamBuyComment/${group.group_id}`}>
         <div className="card p-3 rounded-6 ">
           <div className="row g-0 align-items-start h-100">
             <div className=" col-auto col-sm-12 ratio ratio-16x9">
@@ -76,7 +77,7 @@ function GroupCard({ game, group, user }) {
             </span>
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 }

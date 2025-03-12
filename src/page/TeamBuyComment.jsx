@@ -1,16 +1,102 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 function TeamBuyComment() {
+  const [group, setGroup] = useState([]);
+  const [games, setGames] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  const [difficultys, setDifficultys] = useState([]);
+  const [propertys, setPropertys] = useState([]);
+
+  const { group_id } = useParams();
+
+  const getGroup = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/groupsData/${group_id}`);
+      setGroup(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getGames = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/gamesData`);
+      setGames(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getUsers = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/usersData`);
+      setUsers(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getGroup();
+    getGames();
+    getUsers();
+  }, [group_id]);
+
+  // 資料尚未載入時，顯示 Loading
+  if (!group) return <div>Loading...</div>;
+  if (!games.length) return <div>Loading games data...</div>;
+
+  const gameInfo = games.find((game) => game.game_id === group.game_id);
+  const userInfo = users.find((user) => user.user_id === group.user_id);
+
   return (
     <>
       <div className="container-fluid container-lg">
         <div className="row d-flex justify-content-center">
           <div className="col-xl-10">
             <div className="mt-9 mb-6">
-              <h2 className="fs-h2 fw-bold">日期地點遊戲</h2>
+              <h2 className="fs-h2 fw-bold">
+                {`${group.group_active_date}`}
+                {group.game_address?.slice(0, 3)}
+                {`${group.game_name}`}
+              </h2>
             </div>
             <div className="border border-nature-90 rounded-xl">
-              <img src="" alt="遊戲圖" className="img-fluid" />
+              <picture className="ratio ratio-16x9">
+                <source
+                  media="(min-width: 992px)"
+                  src={gameInfo?.game_img[0]}
+                />
+                <img
+                  src={gameInfo?.game_img[0]}
+                  alt="banner"
+                  className="w-100 img-fluid rounded-3"
+                  style={{
+                    objectFit: "cover",
+                  }}
+                />
+              </picture>
               <div className="px-6 py-5">
-                <div></div>
+                <div className="d-flex">
+                  <img
+                    src={userInfo?.user_img}
+                    alt={userInfo?.user_name}
+                    className="rounded-circle"
+                    style={{
+                      width: "10%",
+                      objectFit: "cover",
+                      aspectRatio: "1/1",
+                    }}
+                  />
+                  <p className="text-center text-primary-black fs-Body-1 fw-bold">
+                    {userInfo?.user_name}
+                  </p>
+                </div>
                 <table className="table table-borderless">
                   <tbody>
                     <tr>
@@ -25,9 +111,9 @@ function TeamBuyComment() {
                       </th>
                     </tr>
                     <tr>
-                      <td>遊戲名</td>
-                      <td>日期</td>
-                      <td>日期</td>
+                      <td>{group.game_name}</td>
+                      <td>{group.group_end_at}</td>
+                      <td>{group.group_active_date}</td>
                     </tr>
                     <tr>
                       <th scope="col" colSpan="3" className="text-primary-50">
@@ -35,7 +121,7 @@ function TeamBuyComment() {
                       </th>
                     </tr>
                     <tr>
-                      <td colSpan="3">地址</td>
+                      <td colSpan="3">{group.game_address}</td>
                     </tr>
                     <tr>
                       <th scope="col" className="text-primary-50">
@@ -46,7 +132,7 @@ function TeamBuyComment() {
                       </th>
                     </tr>
                     <tr>
-                      <td>人數</td>
+                      <td>{group.group_member}人</td>
                       <td colSpan="2">價格</td>
                     </tr>
                     <tr>
@@ -58,8 +144,8 @@ function TeamBuyComment() {
                       </th>
                     </tr>
                     <tr>
-                      <td>資訊</td>
-                      <td colSpan="2">資訊</td>
+                      <td>{group.group_noob ? "是" : "否"}</td>
+                      <td colSpan="2">{group.group_channel}</td>
                     </tr>
                     <tr>
                       <th scope="col" colSpan="3" className="text-primary-50">
@@ -67,7 +153,7 @@ function TeamBuyComment() {
                       </th>
                     </tr>
                     <tr>
-                      <td colSpan="3">理念</td>
+                      <td colSpan="3">{group.group_philosophy}</td>
                     </tr>
                     <tr>
                       <th scope="col" colSpan="3" className="text-primary-50">
@@ -75,13 +161,25 @@ function TeamBuyComment() {
                       </th>
                     </tr>
                     <tr>
-                      <td colSpan="3">報名者</td>
+                      <td colSpan="3">{group.group_participants}</td>
                     </tr>
                     <tr>
-                      <td>標籤</td>
+                      <td colSpan="3">
+                        <div className="tags d-flex flex-wrap fs-Body-2 gap-2 mt-3 ">
+                          <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
+                            {gameInfo.game_dif_tagname}
+                          </span>
+                          <span className=" bg-nature-95 px-1 py-1 rounded-3 text-nowrap">
+                            {gameInfo.game_main_tag1name}
+                          </span>
+                          <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
+                            {gameInfo.game_main_tag2name}
+                          </span>
+                        </div>
+                      </td>
                     </tr>
                     <tr>
-                      <td className="my-5">
+                      <td className="my-5" colSpan="3">
                         <button className="btn btn-secondary-60 text-white px-17 py-2">
                           我要參加
                         </button>

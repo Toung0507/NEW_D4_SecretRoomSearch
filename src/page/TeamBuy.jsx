@@ -45,6 +45,7 @@ function TeamBuy() {
   const [isAllRecommendDisplay, setIsAllRecommendDisplay] = useState(false);
   const [isAllRecentlyDisplay, setIsAllRecentlyDisplay] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
+  const [isHaveResultGames, setIsHaveResultGames] = useState(false);
   // 排序過後的資料
   const [recommendedGames, setRecommendedGames] = useState([]);
   const [newedGames, setNewedGames] = useState([]);
@@ -103,9 +104,7 @@ function TeamBuy() {
 
   const handleReset = () => {
     setSearch(formData);
-    console.log("Before setIsSearch:", isSearch);
     setIsSearch(false);
-    console.log("After setIsSearch:", isSearch);
   };
 
   // 監聽表單輸入況狀
@@ -129,10 +128,7 @@ function TeamBuy() {
   // 處理篩選後的結果呈現
   const handleSerach = async (e) => {
     e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
-    console.log("Before handleSerach setIsSearch:", isSearch);
     setIsSearch(true);
-    console.log("After handleSerach setIsSearch:", isSearch);
-
     const filteredGames = group.filter(({ group, game }) => {
       // 遊戲名稱
       const matchesGameName =
@@ -177,6 +173,12 @@ function TeamBuy() {
         matchesProperty
       );
     });
+
+    if (filteredGames.length === 0) {
+      setIsHaveResultGames(false);
+    } else if (filteredGames.length > 0) {
+      setIsHaveResultGames(true);
+    }
 
     // 排序資料
     setSearchGames(
@@ -612,14 +614,24 @@ function TeamBuy() {
                   </div>
                   <div className="row m-0">
                     <div className="row m-0">
-                      {searchGames.map(({ game, group, user }) => (
-                        <GroupCard
-                          game={game}
-                          group={group}
-                          user={user}
-                          key={group.game_id}
-                        />
-                      ))}
+                      {isHaveResultGames ? (
+                        searchGames.map(({ game, group, user }) => (
+                          <GroupCard
+                            game={game}
+                            group={group}
+                            user={user}
+                            key={group.game_id}
+                          />
+                        ))
+                      ) : (
+                        <div className="text-center">
+                          <p className="h4">
+                            您輸入的條件未查詢到相符合結果
+                            <br />
+                            請放寬條件重新查詢
+                          </p>
+                        </div>
+                      )}
                     </div>
                     <div className="row m-0 mt-3">
                       <div className="title-container w-100  d-flex justify-content-center align-items-center">
