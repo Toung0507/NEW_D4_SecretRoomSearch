@@ -1,12 +1,16 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { registerInfo } from "../page/Register";
 import { useForm } from "react-hook-form";
+import AddressForm from "./AddressForm";
 
 function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmitStoreSuccess }) {
     const { userRegister, handleUserChange, handleStoreChange } = useContext(registerInfo);
     const role = userRegister.user_role;
     const { register: user, handleSubmit: handleSubmitUser, formState: { errors: userErrors } } = useForm();  // 處理user
-    const { register: store, handleSubmit: handleSubmitStore, formState: { errors: storeErrors }, watch } = useForm();  // 處理store
+    // const { register: store, handleSubmit: handleSubmitStore, formState: { errors: storeErrors }, watch } = useForm();  // 處理store
+    const { register: store, handleSubmit: handleSubmitStore, formState: { errors: storeErrors }, setValue, watch } = useForm();
+
+    const [showPassword, setShowPassword] = useState(false);
 
     // 監聽 store_method 的值
     const watchMethod = watch("store_method");
@@ -48,7 +52,8 @@ function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmi
                                                 type="text"
                                                 className={`form-control ${userErrors.user_name && 'is-invalid'}`}
                                                 id="user_name"
-                                                name="user_name" />
+                                                name="user_name"
+                                                placeholder="請輸入姓名或暱稱" />
                                             <div className="error-message text-danger mt-1">
                                                 {userErrors.user_name ? userErrors.user_name.message : "　"}
                                             </div>
@@ -85,7 +90,8 @@ function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmi
                                                 type="password"
                                                 className={`form-control ${userErrors.user_password && 'is-invalid'}`}
                                                 id="user_password"
-                                                name="user_password" />
+                                                name="user_password"
+                                                placeholder="請輸入密碼，最少4字元" />
                                             <div className="error-message text-danger mt-1">
                                                 {userErrors.user_password ? userErrors.user_password.message : "　"}
                                             </div>
@@ -104,7 +110,8 @@ function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmi
                                                 type="password"
                                                 className={`form-control ${userErrors.confirmPassword && 'is-invalid'}`}
                                                 id="confirmPassword"
-                                                name="confirmPassword" />
+                                                name="confirmPassword"
+                                                placeholder="請輸入相同密碼" />
                                             <div className="error-message text-danger mt-1">
                                                 {userErrors.confirmPassword ? userErrors.confirmPassword.message : "　"}
                                             </div>
@@ -139,14 +146,15 @@ function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmi
                                             <input
                                                 {...user('user_tel', {
                                                     pattern: {
-                                                        value: /^(0[2-8]\d{7}|09\d{8})$/,
-                                                        message: "電話格式錯誤"
+                                                        value: /^(0[2-8]-\d{7,8}|09\d{8})$/,
+                                                        message: "市話格式為02-12345678手機格式為0912456789"
                                                     }
                                                 })}
                                                 type="tel"
                                                 className={`form-control ${userErrors.user_tel && 'is-invalid'}`}
                                                 id="user_tel"
-                                                name="user_tel" />
+                                                name="user_tel"
+                                                placeholder="請輸入電話，選填" />
                                             <div className="error-message text-danger mt-1">
                                                 {userErrors.user_tel ? userErrors.user_tel.message : "　"}
                                             </div>
@@ -196,7 +204,6 @@ function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmi
                                                 </div>
                                             </div>
                                         </div>
-
                                         {/* 密碼 */}
                                         <div className="row mb-3">
                                             <label htmlFor="user_password" className="col-sm-2 col-form-label formrequired">密碼</label>
@@ -244,15 +251,15 @@ function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmi
                                                     {...user('user_tel', {
                                                         required: "電話欄位必填",
                                                         pattern: {
-                                                            value: /^(0[2-8]\d{7}|09\d{8})$/,
-                                                            message: "電話格式錯誤"
+                                                            value: /^(0[2-8]-\d{7,8}|09\d{8})$/,
+                                                            message: "市話格式為02-12345678手機格式為0912456789"
                                                         }
                                                     })}
-                                                    type="tel"
+                                                    type="text"
                                                     className={`form-control ${userErrors.user_tel && 'is-invalid'}`}
                                                     id="user_tel"
                                                     name="user_tel"
-                                                    placeholder="請輸入聯絡人電話" />
+                                                    placeholder="請輸入聯絡人市話或手機電話" />
                                                 <div className="error-message text-danger mt-1">
                                                     {userErrors.user_tel ? userErrors.user_tel.message : "　"}
                                                 </div>
@@ -261,6 +268,26 @@ function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmi
                                         <button type="submit" id="storeUserSumbit" style={{ display: "none" }}>隱藏送出</button>
                                     </form>
                                     <form className="text-start" onSubmit={onSubmitStore} id="storeForm" ref={storeFormRef}>
+                                        <div className="row mb-3">
+                                            <label htmlFor="store_contact" className="col-sm-2 col-form-label formrequired">聯絡人</label>
+                                            <div className="col-sm-10">
+                                                < AddressForm onChange={(fullAddress) => setValue("store_self_address", fullAddress)} />
+                                                <input
+                                                    {...store("store_self_address", {
+                                                        required: "請填寫完整地址"
+                                                    })}
+                                                    type="text"
+                                                    className={`form-control mt-2 ${storeErrors.store_self_address ? 'is-invalid' : ''}`}
+                                                    id="store_self_address"
+                                                    name="store_self_address"
+                                                    placeholder="完整地址將自動填入"
+                                                    readOnly // 這樣使用者無法手動修改
+                                                />
+                                                <div className="error-message text-danger mt-1">
+                                                    {storeErrors.store_self_address ? storeErrors.store_self_address.message : "　"}
+                                                </div>
+                                            </div>
+                                        </div>
                                         {/* 聯絡人 */}
                                         <div className="row mb-3">
                                             <label htmlFor="store_contact" className="col-sm-2 col-form-label formrequired">聯絡人</label>

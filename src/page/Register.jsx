@@ -33,10 +33,10 @@ const userRegisterinit = {
     user_email: "",
     user_img: "",
     user_tel: "",
+    user_sex: "",
     user_password: "",
     user_create_at: "",
-    user_update_at: "",
-    user_sex: ""
+    user_update_at: ""
 };
 
 const storeRegisterinit = {
@@ -44,6 +44,7 @@ const storeRegisterinit = {
     store_contact: "",
     store_method: "",
     store_tax_id: "",
+    store_isAuth: "processing",
     store_documentation: "",
     store_self_address: "",
     store_website: "",
@@ -119,8 +120,9 @@ function Register() {
                 user_role = res.data.user.user_role;
                 user_id = res.data.user.user_id;
                 if (user_role === '會員') {
+                    const message = "註冊成功，\n\n歡迎加入密室搜搜，開啟你的冒險旅程！\n 探索各式各樣的主題，挑戰你的腦力極限。\n\n請重新登入，頁面自動跳轉中，請稍後"
                     dispatch(pushMessage({
-                        text: "註冊成功，請重新登入，頁面自動跳轉中，請稍後",
+                        text: message,
                         status: 'success'
                     }));
                     setTimeout(() => {
@@ -147,8 +149,9 @@ function Register() {
             const { confirmPassword, ...finalStoreData } = finalStore;
             try {
                 await axios.post(`https://new-json.onrender.com/storesData`, finalStoreData);
+                const message = '註冊成功，歡迎成為密室搜搜的合作夥伴！\n盡情提供獨特的密室，吸引更多玩家，增加您的收益吧！\n\n請重新登入，頁面自動跳轉中，請稍後';
                 dispatch(pushMessage({
-                    text: "註冊成功，請重新登入，頁面自動跳轉中，請稍後",
+                    text: message,
                     status: 'success'
                 }));
                 setTimeout(() => {
