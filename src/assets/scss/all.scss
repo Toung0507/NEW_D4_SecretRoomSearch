@@ -18,6 +18,9 @@
 //header, footer style
 @import "./layout/header.scss";
 @import "./layout/footer.scss";
+
+// components style
+@import "./layout/sidebar.scss";
 @import "./layout/ProgressBar";
 @import "./layout/RegisterThree";
 
@@ -27,4 +30,3 @@
 @import "./pages/search";
 @import "./pages/about";
 @import "./pages/game_comment";
-@import "./pages/TeamBuyComment";
