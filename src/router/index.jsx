@@ -10,7 +10,7 @@ import Login from "../page/Login";
 import UserProfile from "../page/UserProfile";
 import TeamBuyComment from "../page/TeamBuyComment";
 import Register from "../page/Register";
-import AddressForm from "../layout/AddressForm";
+
 const Router = createHashRouter([
     {
         path: "/",
@@ -55,11 +55,8 @@ const Router = createHashRouter([
             {
                 path: "/TeamBuyComment/:group_id",
                 element: <TeamBuyComment />,
-            },
-            {
-                path: "/test",
-                element: <AddressForm />
             }
+
         ],
     },
 ]);
