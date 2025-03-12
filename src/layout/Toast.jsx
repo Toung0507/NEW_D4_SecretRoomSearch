@@ -41,7 +41,11 @@ function Toast() {
                                 onClick={() => handleDismiss(message.id)}
                             ></button>
                         </div>
-                        <div className="toast-body bg-white">{message.text}</div>
+                        <div className="toast-body bg-white">
+                            <pre >
+                                {message.text}
+                            </pre>
+                        </div>
                     </div>
                 ))
             }

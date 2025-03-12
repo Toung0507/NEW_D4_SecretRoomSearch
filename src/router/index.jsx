@@ -14,62 +14,62 @@ import AdminLayout from "../page/admin/AdminLayout";
 import AdminIndex from "../page/admin/AdminIndex";
 
 const Router = createHashRouter([
-  {
-    path: "/",
-    element: <Base />,
-    children: [
-      {
+    {
         path: "/",
-        element: <Index />,
-      },
-      {
-        path: "/Register",
-        element: <Register />,
-      },
-      {
-        path: "/Login",
-        element: <Login />,
-      },
-      {
-        path: "/Game_comment/:gameID",
-        element: <Game_comment />,
-      },
-      {
-        path: "/Game_search",
-        element: <Game_search />,
-      },
-      {
-        path: "/Game_content/:gameID",
-        element: <Game_content />,
-      },
-      {
-        path: "/TeamBuy",
-        element: <TeamBuy />,
-      },
-      {
-        path: "/About_us",
-        element: <About_us />,
-      },
-      {
-        path: "/User_profile/:user_id",
-        element: <UserProfile />,
-      },
-      {
-        path: "/TeamBuyComment/:group_id",
-        element: <TeamBuyComment />,
-      },
-      {
-        path: "/Admin",
-        element: <AdminLayout />,
+        element: <Base />,
         children: [
-          {
-            index: true,
-            element: <AdminIndex />,
-          },
+            {
+                path: "/",
+                element: <Index />,
+            },
+            {
+                path: "/Register",
+                element: <Register />,
+            },
+            {
+                path: "/Login",
+                element: <Login />,
+            },
+            {
+                path: "/Game_comment/:gameID",
+                element: <Game_comment />,
+            },
+            {
+                path: "/Game_search",
+                element: <Game_search />,
+            },
+            {
+                path: "/Game_content/:gameID",
+                element: <Game_content />,
+            },
+            {
+                path: "/TeamBuy",
+                element: <TeamBuy />,
+            },
+            {
+                path: "/About_us",
+                element: <About_us />,
+            },
+            {
+                path: "/User_profile/:user_id",
+                element: <UserProfile />,
+            },
+            {
+                path: "/TeamBuyComment/:group_id",
+                element: <TeamBuyComment />,
+            },
+            {
+                path: "/Admin",
+                element: <AdminLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <AdminIndex />,
+                    },
+                ],
+            },
         ],
-      },
-    ],
-  },
+    },
 ]);
 
 export default Router;

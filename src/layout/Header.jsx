@@ -9,31 +9,34 @@ const navbar = [
     { path: "TeamBuy", name: "揪團去" },
 ];
 
-//這是管理者的頁面，請Leo補上path
-const adminBtn = [
-    { path: "/1}", name: "會員管理" },
-    { path: "/2", name: "密室管理" },
-    { path: "/3", name: "揪團資料" },
-];
 
-//這是一般會員的下拉式選單，請Toung補上path
-const userBtn = [
-    { path: "/User_profile/${user_id}", name: "個人資料" }, //path先亂填，後續再補
-    { path: "/2", name: "我的評論" },
-    { path: "/3", name: "我的揪團" },
-];
-
-//這是店家會員的下拉式選單，請Toung補上path
-const storeBtn = [
-    { path: "/User_profile/${user_id}", name: "個人資料" }, //path先亂填，後續再補
-    { path: "/3", name: "我的密室" },
-];
 
 function Header() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { user, user_token } = useSelector((state) => state.userInfo);
     const [finalBtn, setFinalBtn] = useState(null);
+    const user_id = Number(user?.user_id);
+
+    //這是管理者的頁面，請Leo補上path
+    const adminBtn = [
+        { path: "/1}", name: "會員管理" },
+        { path: "/2", name: "密室管理" },
+        { path: "/3", name: "揪團資料" },
+    ];
+
+    //這是一般會員的下拉式選單，請Toung補上path
+    const userBtn = [
+        { path: `/User_profile/${user_id}`, name: "個人資料" }, //path先亂填，後續再補
+        { path: "/2", name: "我的評論" },
+        { path: "/3", name: "我的揪團" },
+    ];
+
+    //這是店家會員的下拉式選單，請Toung補上path
+    const storeBtn = [
+        { path: `/User_profile/${user_id}`, name: "個人資料" }, //path先亂填，後續再補
+        { path: "/3", name: "我的密室" },
+    ];
 
     useEffect(() => {
         if (user_token) {
@@ -100,7 +103,7 @@ function Header() {
                                         </NavLink>
                                     </li>
                                 ))}
-                                <li className="nav-item bg-Secondary-99">
+                                <li className="nav-item bg-Secondary-99 dropdown">
                                     <NavLink
                                         className="dropdown-toggle nav-link nav-link-bg px-0 py-4 fs-h6 fw-bold"
                                         id="dropdownMenuLink"
