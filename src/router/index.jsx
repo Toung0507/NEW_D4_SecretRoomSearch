@@ -51,7 +51,7 @@ const Router = createHashRouter([
                 element: <About_us />,
             },
             {
-                path: "/User_profile/:user_id",
+                path: "/User_profile/:user_id/:activedefaultTab",
                 element: <UserProfile />,
             },
             {

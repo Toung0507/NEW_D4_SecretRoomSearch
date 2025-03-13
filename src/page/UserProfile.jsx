@@ -2,13 +2,14 @@ import { createContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import BasicInfo from "../components/BasicInfo";
+import ParticipatingGroup from "../components/ParticipatingGroup";
 export const userContext = createContext({});
 
 function UserProfile() {
     const { user, user_token } = useSelector((state) => state.userInfo);
-    const { user_id } = useParams();
+    const { user_id, activedefaultTab } = useParams();
     const [isAuthMySelf, setIsAuthMySelf] = useState(false);
-    const [activeTab, setActiveTab] = useState("basicInfo");
+    const [activeTab, setActiveTab] = useState(activedefaultTab);
 
     const checkMySelf = () => {
         if (user_token) {
@@ -26,8 +27,9 @@ function UserProfile() {
 
     useEffect(() => {
         checkMySelf();
-    }, [user_id]);
+        setActiveTab(activedefaultTab)
 
+    }, [user_id, activedefaultTab]);
 
     return (
         <>
@@ -73,7 +75,7 @@ function UserProfile() {
                                     {/* 內容區塊 */}
                                     <userContext.Provider value={{ user }}>
                                         {activeTab === "basicInfo" && <BasicInfo />}
-                                        {activeTab === "participatingGroup" && <div className="p-3 bg-light border">這是區塊 2</div>}
+                                        {activeTab === "participatingGroup" && <ParticipatingGroup />}
                                         {activeTab === "myComments" && <div className="p-3 bg-light border">這是區塊 3</div>}
                                     </userContext.Provider>
                                 </div>

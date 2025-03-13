@@ -29,7 +29,16 @@ function Login() {
 
         if (res.meta.requestStatus === 'fulfilled'); {
             const user_id = res.payload.user.user_id;
-            navigate(`/User_profile/${user_id}`);
+            const user_role = res.payload.user.user_role;
+            if (user_role === '管理者') {
+                navigate(`/Admin`);
+            }
+            else if (user_role === '會員') {
+                navigate(`/User_profile/${user_id}/basicInfo`);
+            }
+            else {
+                navigate(`/User_profile/${user_id}/basicInfo`);
+            }
         }
 
     };
