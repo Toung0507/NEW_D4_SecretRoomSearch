@@ -7,42 +7,15 @@ import { useSelector } from "react-redux";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function Game_comment() {
-  const [gamesData, setGamesData] = useState([]);
-  const { gameID } = useParams();
+  // 注意：因為 state 為保留字，這邊用 mode 來接收
+  const { state: mode, id } = useParams();
+  // 另外使用 currentMode 來記錄實際的模式，初始為 mode (通常為 "new")
+  const [currentMode, setCurrentMode] = useState(mode);
+  const [gameData, setGamesData] = useState(null);
+  const [commentData, setCommentData] = useState(null);
+  // const { gameID } = useParams();
+  // 從 URL 中取得 state 與 id
   const { user, user_token } = useSelector((state) => state.userInfo);
-
-  const getGamesData = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/gamesData/${gameID}`);
-      const data = res.data;
-      // 只取第一張圖片
-      data.game_img = data.game_img[0];
-      setGamesData(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getGamesData();
-    window.scrollTo(0, 0);
-  }, [gameID]);
-
-  if (!user) {
-    return (
-      <>
-        <div className="container-fluid container-lg">
-          <div className="row d-flex justify-content-center">
-            <div className="col-xl-10">
-              <div className="pb-10">
-                <h2 className="text-center">請先登入</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
 
   const {
     register,
@@ -53,45 +26,141 @@ function Game_comment() {
   } = useForm({
     defaultValues: {
       coment_star: 0,
-      game_id: Number(gameID),
-      user_id: user.user_id,
+      game_id: Number(id),
+      user_id: user ? user.user_id : null,
       comment_isPass: null,
       comment_isSpoilered: null,
+      coment_content: "",
+      commet_played_time: "",
     },
   });
 
-  const onSubmit = handleSubmit((data) => {
-    const {
-      user_id,
-      game_id,
-      comment_isSpoilered,
-      coment_content,
-      coment_star,
-      commet_played_time,
-      comment_isPass,
-    } = data;
-    const commentsData = {
-      user_id,
-      game_id,
-      comment_isSpoilered,
-      coment_content,
-      coment_star,
-      commet_played_time,
-      comment_isPass,
-    };
+  // 根據 mode 判斷該載入遊戲資料或評論資料
+  useEffect(() => {
+    // 先取得遊戲資料
+    fetchGameData(Number(id));
+    fetchCommentData(Number(id));
+    // 瀏覽器捲動到頂端
+    window.scrollTo(0, 0);
+  }, [mode, id]);
 
-    checkout(commentsData);
-  });
-
-  const checkout = async (data) => {
+  const fetchGameData = async (gameId) => {
     try {
-      await axios.post(`${BASE_URL}/commentsData`, data);
-      reset();
+      const res = await axios.get(`${BASE_URL}/gamesData/${gameId}`);
+      const data = res.data;
+      // 只取第一張圖片
+      data.game_img = data.game_img[0];
+      setGamesData(data);
     } catch (error) {
-      alert(error);
-      console.log(error);
+      console.error("取得遊戲資料錯誤：", error);
     }
   };
+
+  // 取得評論資料，並順帶設定遊戲資料與表單預設值
+  const fetchCommentData = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/commentsData`);
+      console.log(res.data);
+      const comments = res.data;
+      // 找出符合 user.user_id 與 game_id（從 URL 取得 id）的評論
+      const matchedComment = comments.find(
+        (comment) =>
+          comment.user_id === user.user_id && comment.game_id === Number(id)
+      );
+      if (matchedComment) {
+        console.log("找到對應的評論資料：", matchedComment);
+        setCurrentMode("edit");
+        setCommentData(matchedComment);
+        // 依據評論資料取得該遊戲資料
+        fetchGameData(matchedComment.game_id);
+        // 重設表單初始值，注意日期格式可能需要調整
+        reset({
+          coment_star: matchedComment.coment_star,
+          game_id: matchedComment.game_id,
+          user_id: matchedComment.user_id,
+          comment_isPass: matchedComment.comment_isPass,
+          comment_isSpoilered: matchedComment.comment_isSpoilered,
+          coment_content: matchedComment.coment_content,
+          // 假設後端傳回的日期格式為 ISO 字串
+          commet_played_time: matchedComment.commet_played_time.slice(0, 10),
+        });
+      }
+
+      // if (data.user_id && data.game_id && data.comment_id) {
+      //   setCurrentMode("edit");
+      //   setCommentData(data);
+      //   // 依據評論資料取得該遊戲資料
+      //   fetchGameData(data.game_id);
+      //   // 重設表單初始值，注意日期格式可能需要調整
+      //   reset({
+      //     coment_star: data.coment_star,
+      //     game_id: data.game_id,
+      //     user_id: data.user_id,
+      //     comment_isPass: data.comment_isPass,
+      //     comment_isSpoilered: data.comment_isSpoilered,
+      //     coment_content: data.coment_content,
+      //     // 假設後端傳回的日期格式為 ISO 字串
+      //     commet_played_time: data.commet_played_time.slice(0, 10),
+      //   });
+      // }
+    } catch (error) {
+      console.error("取得評論資料錯誤：", error);
+    }
+  };
+
+  // 表單送出處理：若是新增則用 POST，若是編輯則用 PUT 更新
+  const onSubmit = async (data) => {
+    try {
+      if (currentMode === "new") {
+        await axios.post(`${BASE_URL}/commentsData`, data);
+        reset();
+        alert("新增評論成功！");
+      } else if (currentMode === "edit") {
+        // 假設編輯評論的 API 為 PUT 到 /commentsData/{comment_id}
+        await axios.put(
+          `${BASE_URL}/commentsData/${commentData.comment_id}`,
+          data
+        );
+        alert("更新評論成功！");
+      }
+    } catch (error) {
+      alert("送出資料時發生錯誤");
+      console.error(error);
+    }
+  };
+
+  // const onSubmit = handleSubmit((data) => {
+  //   const {
+  //     user_id,
+  //     game_id,
+  //     comment_isSpoilered,
+  //     coment_content,
+  //     coment_star,
+  //     commet_played_time,
+  //     comment_isPass,
+  //   } = data;
+  //   const commentsData = {
+  //     user_id,
+  //     game_id,
+  //     comment_isSpoilered,
+  //     coment_content,
+  //     coment_star,
+  //     commet_played_time,
+  //     comment_isPass,
+  //   };
+
+  //   checkout(commentsData);
+  // });
+
+  // const checkout = async (data) => {
+  //   try {
+  //     await axios.post(`${BASE_URL}/commentsData`, data);
+  //     reset();
+  //   } catch (error) {
+  //     alert(error);
+  //     console.log(error);
+  //   }
+  // };
 
   const StarRating = ({ value, onChange }) => {
     return (
@@ -115,6 +184,24 @@ function Game_comment() {
     );
   };
 
+  if (!user) {
+    return (
+      <div className="container-fluid container-lg">
+        <div className="row d-flex justify-content-center">
+          <div className="col-xl-10">
+            <div className="pb-10">
+              <h2 className="text-center">請先登入</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  // 若尚未取得遊戲資料則顯示 Loading
+  if (!gameData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       {user_token ? (
@@ -125,10 +212,10 @@ function Game_comment() {
                 <picture className="ratio ratio-16x9">
                   <source
                     media="(min-width: 992px)"
-                    src={`${gamesData.game_img}`}
+                    src={`${gameData.game_img}`}
                   />
                   <img
-                    src={`${gamesData.game_img}`}
+                    src={`${gameData.game_img}`}
                     alt="banner"
                     className="w-100 img-fluid rounded-3"
                     style={{
@@ -139,7 +226,7 @@ function Game_comment() {
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <div className="py-10">
                     <h1 className="fs-lg-Display2 fs-h5 fw-bold">
-                      遊戲名稱：{`${gamesData.game_name}`}
+                      遊戲名稱：{`${gameData.game_name}`}
                     </h1>
                   </div>
                   <div className="mb-6">
@@ -165,7 +252,7 @@ function Game_comment() {
                         <div className="row py-3">
                           <h3 className="fs-lg-h3 fs-h6 fw-bold pb-2">難度</h3>
                           <div className="col-auto">
-                            {`${gamesData.game_dif_tagname}`}
+                            {`${gameData.game_dif_tagname}`}
                           </div>
                         </div>
                         <div className="row py-3" id="input_3_2">
@@ -173,7 +260,7 @@ function Game_comment() {
                             主題特色
                           </h3>
                           <div className="col-lg-3 col-md-4 col-sm-6 col-12">
-                            {`${gamesData.game_main_tag1name} ${gamesData.game_main_tag2name}`}
+                            {`${gameData.game_main_tag1name} ${gameData.game_main_tag2name}`}
                           </div>
                         </div>
                       </div>
@@ -318,7 +405,7 @@ function Game_comment() {
                           type="submit"
                           className="btn btn-secondary-60 link-white rounded-1"
                         >
-                          送出
+                          {currentMode === "new" ? "送出評論" : "更新評論"}
                         </button>
                       </div>
                     </div>

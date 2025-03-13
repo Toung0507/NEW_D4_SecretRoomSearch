@@ -82,7 +82,10 @@ function Header() {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span className="navbar-toggler-icon"></span>
+              <span
+                className="navbar-toggler-icon"
+                id="navbarSupportedContent"
+              ></span>
             </button>
             <Link className="navbar-brand m-0 d-inline" to="/">
               <img src="./logo/Logo-Type-sm.svg" alt="logo" />
