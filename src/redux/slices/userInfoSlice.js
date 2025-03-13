@@ -21,7 +21,8 @@ const userInfoSlice = createSlice({
             state.user = null;
         },
         updateUser: (state, action) => {
-            state.user = action.payload
+            state.user = action.payload;
+            localStorage.setItem("user", JSON.stringify(action.payload));
         },
     },
     extraReducers: (builder) => {

@@ -29,7 +29,16 @@ function Login() {
 
         if (res.meta.requestStatus === 'fulfilled'); {
             const user_id = res.payload.user.user_id;
-            navigate(`/User_profile/${user_id}`);
+            const user_role = res.payload.user.user_role;
+            if (user_role === '管理者') {
+                navigate(`/Admin`);
+            }
+            else if (user_role === '會員') {
+                navigate(`/User_profile/${user_id}/basicInfo`);
+            }
+            else {
+                navigate(`/User_profile/${user_id}/basicInfo`);
+            }
         }
 
     };
@@ -37,7 +46,7 @@ function Login() {
     return (
         <>
             <div className="container">
-                <div className="login py-3 d-flex justify-content-center bg-secondary-99">
+                <div className="login py-3 d-flex justify-content-center bg-white">
                     <div className="p-8 bg-primary-80 rounded-2 ">
                         <h3 className="text-center mb-3">密室搜搜 - 登入</h3>
                         <form onSubmit={handleSingIn} className="m-50 d-flex flex-column">
