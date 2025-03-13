@@ -8,8 +8,9 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 function Game_content() {
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
   const { gameID } = useParams();
   const [game, setGame] = useState(null);
   const [price, setPrice] = useState(null);
