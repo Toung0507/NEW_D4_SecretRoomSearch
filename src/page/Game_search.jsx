@@ -286,18 +286,18 @@ function Game_search() {
   const hiddenSubmitBtnRef = useRef(null);
 
   //網址後方參數消除
-  // useEffect(() => {
-  //   if (search.area.length > 0) {
-  //     // 取得目前的 hash 部分，例如 "#/Game_search?area=台北市"
-  //     const currentHash = window.location.hash;
-  //     // 如果包含問號，表示有查詢參數
-  //     if (currentHash.includes('?')) {
-  //       // 只取 hash 的路徑部分，捨棄 ? 後面的查詢參數
-  //       const newHash = currentHash.split('?')[0];
-  //       window.history.replaceState(null, '', newHash);
-  //     }
-  //   }
-  // }, [search.area, search.num, search.property]);
+  useEffect(() => {
+    if (search.area.length > 0) {
+      // 取得目前的 hash 部分，例如 "#/Game_search?area=台北市"
+      const currentHash = window.location.hash;
+      // 如果包含問號，表示有查詢參數
+      if (currentHash.includes('?')) {
+        // 只取 hash 的路徑部分，捨棄 ? 後面的查詢參數
+        const newHash = currentHash.split('?')[0];
+        window.history.replaceState(null, '', newHash);
+      }
+    }
+  }, [search.area, search.num, search.property, search.difficulty]);
 
   //下方搜尋按鈕自動點擊
   useEffect(() => {
@@ -310,7 +310,7 @@ function Game_search() {
         }
       }, 300);  
     }
-  }, [[search.property, search.area, search.game_people]]);  // 監聽 game_people 的變化
+  }, [[search.property, search.area, search.game_people, search.difficulty]]);  // 監聽 game_people 的變化
 
   return (
     <>
