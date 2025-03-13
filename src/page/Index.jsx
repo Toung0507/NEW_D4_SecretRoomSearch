@@ -4,7 +4,6 @@ import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 
-
 import 'swiper/swiper-bundle.css';
 
 import styled from "styled-components";
@@ -55,8 +54,8 @@ function Index() {
 	}, [])
 
 	const area = [
-		"台北", "新北", "桃園", "新竹", "苗栗", "台中",
-		"彰化", "雲林", "嘉義", "台南", "高雄", "屏東"
+		"台北市", "新北市", "基隆市", "桃園市", "新竹市", "台中市", "彰化縣", "南投縣",
+		"嘉義市", "台南市", "高雄市", "屏東縣", "宜蘭縣", "花蓮縣", "台東縣"
 	];
 	const memberNum = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 	const [areaSelect, setAreaSelect] = useState(area[0]);
@@ -66,11 +65,9 @@ function Index() {
 	const [isHover, setIsHover] = useState(null);
 
 
-	
-
 	return (
 		<>
-			<div className="d-flex flex-column align-items-center">
+			<div className="container d-flex flex-column align-items-center">
 				<div
 					style={{
 						width: '100%',
@@ -111,10 +108,11 @@ function Index() {
 
 							</div>
 						</div>
-						<div className="w-100">
+						<div className="w-100 mb-5">
 							<label htmlFor="" className="form-label">搜尋</label>
 							<input type="text" className="form-control " placeholder="搜尋關鍵字" />
 						</div>
+						<a href={`/#/Game_search?area=${areaSelect}&num=${numSelect}`} className="btn btn-primary w-100">搜尋</a>
 					</div>
 				</div>
 				<div
@@ -184,19 +182,19 @@ function Index() {
 							<div className="row">
 								{gameDifficulty.map((diff) => (
 									<div className="col-lg-4 col-6" key={diff.difficulty_id}>
-									<div className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
+									<a href={`/#/Game_search?difficulty=${diff.difficulty_id}`} className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
 										<span className="material-symbols-outlined">{diff.difficulty_icon_text}</span>
 										<p className="fs-lg-h6">{diff.difficulty_name}</p>
-									</div>
+									</a>
 								</div>
 								))}
 								
 								{gameProperty.slice(0, 9).map((property) => (
 									<div className="col-lg-4 col-6" key={property.property_id}>
-										<div className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
+										<a href={`/#/Game_search?property=${property.property_id}`} className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
 											<span className="material-symbols-outlined">{property.property_icon_text}</span>
 											<p className="fs-lg-h6">{property.property_name}</p>
-										</div>
+										</a>
 									</div>
 								))}
 
