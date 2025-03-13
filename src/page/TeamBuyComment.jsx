@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function TeamBuyComment() {
-  const [group, setGroup] = useState([]);
-  const [games, setGames] = useState([]);
+  const [group, setGroup] = useState(null);
+  const [games, setGames] = useState(null);
   const [users, setUsers] = useState([]);
   const [price, setPrice] = useState(null);
   const [infoMessage, setInfoMessage] = useState(""); // 用來顯示訊息
@@ -15,6 +15,83 @@ function TeamBuyComment() {
   const { group_id } = useParams();
 
   const { user, user_token } = useSelector((state) => state.userInfo);
+
+  // 初始載入群組資料
+  useEffect(() => {
+    const fetchGroup = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/groupsData/${group_id}`);
+        setGroup(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchGroup();
+  }, []);
+
+  const changeGroup = async () => {
+    // 檢查是否登入
+    if (!user || !user_token) {
+      setInfoMessage("請先登入");
+      return;
+    }
+
+    // 如果群組資料還沒抓到就不做任何操作
+    if (!group) {
+      setInfoMessage("群組資料讀取中，請稍後再試");
+      return;
+    }
+
+    // 檢查群組中是否已存在該 user_id
+    if (
+      group.group_participants &&
+      group.group_participants.map(String).includes(String(user.user_id))
+    ) {
+      setInfoMessage("已重複加入");
+      return;
+    }
+
+    // if (
+    //   group &&
+    //   group.group_participants &&
+    //   group.group_participants.includes(user.user_id)
+    // ) {
+    //   setInfoMessage("已重複加入");
+    //   return;
+    // }
+    // 若未重複，則將 user.user_id 加入群組 participants 陣列中
+    try {
+      const newParticipants =
+        group.group_participants && Array.isArray(group.group_participants)
+          ? [...group.group_participants, user.user_id]
+          : [user.user_id];
+
+      // const newParticipants =
+      //   group && group.group_participants
+      //     ? [...group.group_participants, user.user_id]
+      //     : [user.user_id];
+
+      const res = await axios.patch(`${BASE_URL}/groupsData/${group_id}`, {
+        group_participants: newParticipants,
+      });
+      // 若 API PATCH 回傳資料有問題，也可呼叫 getGroup() 重新取得最新資料
+      if (res.data) {
+        setGroup(res.data);
+      } else {
+        // 重新取得最新群組資料
+        const refreshed = await axios.get(`${BASE_URL}/groupsData/${group_id}`);
+        setGroup(refreshed.data);
+      }
+      setInfoMessage("報名完成");
+
+      // console.log(res.data);
+      // setGroup(res.data);
+      // setInfoMessage("報名完成");
+    } catch (error) {
+      console.error(error);
+      setInfoMessage("報名失敗，請稍後再試");
+    }
+  };
 
   const getGroup = async () => {
     try {
@@ -52,39 +129,6 @@ function TeamBuyComment() {
     }
   };
 
-  const changeGroup = async () => {
-    // 檢查是否登入
-    if (!user || !user_token) {
-      setInfoMessage("請先登入");
-      return;
-    }
-
-    // 檢查群組中是否已存在該 user_id
-    if (
-      group &&
-      group.group_participants &&
-      group.group_participants.includes(user.user_id)
-    ) {
-      setInfoMessage("已重複加入");
-      return;
-    }
-    try {
-      // 檢查是否已有 group_participants 資料，若有則追加，若無則初始化成陣列
-      const newParticipants =
-        group && group.group_participants
-          ? [...group.group_participants, userInfo.user_id]
-          : [userInfo.user_id];
-
-      const res = await axios.patch(`${BASE_URL}/groupsData/${group_id}`, {
-        group_participants: newParticipants,
-      });
-      console.log(res.data);
-      // setGroup(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     getGroup();
     getGames();
@@ -94,7 +138,7 @@ function TeamBuyComment() {
 
   // 資料尚未載入時，顯示 Loading
   if (!group) return <div>Loading...</div>;
-  if (!games.length) return <div>Loading games data...</div>;
+  if (!games?.length) return <div>Loading games data...</div>;
   if (!price) return <div>Loading...</div>;
 
   const gameInfo = games.find((game) => game.game_id === group.game_id);
@@ -268,30 +312,19 @@ function TeamBuyComment() {
                       </td>
                     </tr>
                     <tr>
-                      {/* <td className="my-5" colSpan="3">
-                        <button
-                          type="button"
-                          className="btn btn-secondary-60 text-white px-17 py-2"
-                          onClick={changeGroup}
-                        >
-                          我要參加
-                        </button>
-                      </td> */}
                       <td className="my-5" colSpan="3">
                         <span
                           className="d-inline-block"
                           tabIndex="0"
                           data-bs-toggle="tooltip"
-                          title="Disabled tooltip"
+                          data-bs-placement="right"
+                          title="請先登入"
                         >
                           <button
                             type="button"
                             className="btn btn-secondary-60 text-white px-17 py-2"
                             onClick={changeGroup}
                             disabled={!user || !user_token}
-                            // data-bs-toggle="tooltip"
-                            // data-bs-placement="right"
-                            // title="Tooltip on right"
                           >
                             我要參加
                           </button>
@@ -302,7 +335,7 @@ function TeamBuyComment() {
                 </table>
               </div>
             </div>
-            {/* {infoMessage && (
+            {infoMessage && (
               <div className="container-fluid container-lg">
                 <div className="row d-flex justify-content-center">
                   <div className="col-xl-10">
@@ -312,7 +345,7 @@ function TeamBuyComment() {
                   </div>
                 </div>
               </div>
-            )} */}
+            )}
           </div>
         </div>
       </div>
