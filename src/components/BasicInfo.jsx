@@ -5,22 +5,35 @@ import { userContext } from "../page/UserProfile";
 import { Modal } from "bootstrap";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { updateUser } from "../redux/slices/userInfoSlice";
+import { getUserInfoAsyncThunk, updateUser } from "../redux/slices/userInfoSlice";
 import { FaFacebook } from "react-icons/fa6";
 import { FaGoogle } from "react-icons/fa";
+import { pushMessage } from "../redux/slices/toastSlice";
+import Toast from "../layout/Toast";
 
 const baseApi = import.meta.env.VITE_BASE_URL;
 
 const BasicInfo = () => {
+    const dispatch = useDispatch();
+
+    // FROM 表單驗證相關 - useForm
     const { register: userInfo, handleSubmit: handleSubmitUser, formState: { errors: userErrors } } = useForm();  // 處理user
+
+    // 共用的資料 - useContext
     const { user } = useContext(userContext); //共用的user資料
-    const [formData, setFormData] = useState(user); //放在此張內追蹤用
-    const [isFormChanged, setIsFormChanged] = useState(false);  // 用來追蹤是否有更動
+
+    // 此元件使用 
+    const [formData, setFormData] = useState(user); //是否資料有變動 > 儲存(有/無)變動過的資料
+    const [isFormChanged, setIsFormChanged] = useState(false);  // 是否資料有變動 > 布林值
+    const [passwordError, setPasswordError] = useState("尚未驗證");
+
+    // modal ref
     const updatePawwordModalRef = useRef(null); //驗證密碼
     const updateInputPawwordModalRef = useRef(null); //修改密碼
     const authpasswordRef = useRef(null); //
-    const dispatch = useDispatch();
+    const inputpasswordRef = useRef(null); //
 
+    // 按下儲存變更後的處理 - 更新user資料
     const onSubmitUser = handleSubmitUser((data) => {
         const user_id = user.user_id;
         const updateUser2 = async (data) => {
@@ -29,8 +42,9 @@ const BasicInfo = () => {
                 await axios.patch(`${baseApi}/usersData/${user_id}`, data);
                 try {
                     const res = await axios.get(`${baseApi}/usersData/${user_id}`);
-                    console.log(res.data);
                     dispatch(updateUser(res.data));
+
+                    setIsFormChanged(false);
                 } catch (error) {
                     const message = error.response.data;
                     dispatch(pushMessage({
@@ -46,12 +60,13 @@ const BasicInfo = () => {
                 }));
             }
         }
+        //確保有變動在更新，不包含更新密碼的部分
         if (isFormChanged) {
             updateUser2(data);
         }
     });
 
-    // 當表單數據更動時檢查
+    // 當表單數據更動時更新資料及更改表單是否修改狀態
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => {
@@ -63,7 +78,7 @@ const BasicInfo = () => {
         });
     };
 
-
+    // 驗證輸入的密碼前的密碼是否有正確
     const handleAuthPassword = async () => {
         const user_email = user.user_email;
         const user_password = authpasswordRef.current.value;
@@ -71,11 +86,46 @@ const BasicInfo = () => {
             user_email,
             user_password
         }
-        try {
-            await axios.post(`${baseApi}/login`, data);
+        const res = await dispatch(getUserInfoAsyncThunk(data));
+
+        if (res.meta.requestStatus === 'fulfilled') {
             openupdateInputPawword();
+            handleHideUpdatePasswordtModal();
+            setPasswordError("請輸入新密碼");
+            authpasswordRef.current.value = '';
+        }
+        else {
+            setPasswordError(res.payload === '信箱及密碼需要輸入' || res.payload === '密碼請超過4碼' ? '請輸入密碼驗證或密碼未超過4碼' : res.payload);
+        }
+
+    };
+
+    // 驗證輸入的密碼是否有錯誤
+    const handleNewInputPassword = async () => {
+        const user_password = inputpasswordRef.current.value;
+        const data = {
+            user_password
+        }
+        const user_id = user.user_id;
+        data["user_update_at"] = dayjs().format("YYYY-MM-DD HH:mm:ss");
+        try {
+            const res = await axios.patch(`${baseApi}/usersData/${user_id}`, data);
+            dispatch(pushMessage({
+                text: '修改密碼成功\n請下次登入使用新密碼',
+                status: 'success'
+            }));
+
+            setPasswordError("尚未驗證");
+            inputpasswordRef.current.value = '';
+
+            // 延遲關閉 Modal，確保訊息顯示
+            setTimeout(() => {
+                handleHideupdateInputPawwordtModal();
+            }, 1000);  // 0.5 秒後關閉
         } catch (error) {
-            console.error(error);
+            console.log(error);
+            // const message = error.response.data;
+            // setPasswordError(message);
         }
 
     };
@@ -103,8 +153,6 @@ const BasicInfo = () => {
         const modalInstance = Modal.getInstance(updateInputPawwordModalRef.current);
         modalInstance.hide();
     };
-
-
 
     useEffect(() => {
         new Modal(updatePawwordModalRef.current, {
@@ -141,7 +189,7 @@ const BasicInfo = () => {
                         <div className="user_information p-6 ">
                             <form className="text-start" onSubmit={onSubmitUser} id="userinfoform">
                                 {/* 姓名 */}
-                                <div className="row align-items-center mb-sm-6 mb-5">
+                                <div className="row mb-1">
                                     <label htmlFor="user_name" className="col-sm-2">姓名</label>
                                     <div className="col-sm-10">
                                         <input
@@ -154,15 +202,19 @@ const BasicInfo = () => {
                                             value={formData.user_name}
                                             onChange={handleInputChange}
                                         />
+                                        <div className="error-message text-danger mt-1 fs-caption lh-1">
+                                            {userErrors.user_name ? userErrors.user_name.message : "　"}
+                                        </div>
                                     </div>
+
                                 </div>
                                 {/* 信箱 */}
-                                <div className="row mb-5">
+                                <div className="row  mb-1">
                                     <label htmlFor="user_email" className="col-sm-2">信箱</label>
                                     <div className="col-sm-10">
                                         <input
-                                            {...userInfo('user_email')}
-                                            type="text"
+                                            {...userInfo('user_email', { required: "信箱欄位必填" })}
+                                            type="email"
                                             className="form-control"
                                             id="user_email"
                                             name="user_email"
@@ -170,16 +222,23 @@ const BasicInfo = () => {
                                             onChange={handleInputChange}
                                         />
                                         <button className="text-secondary-50 bg-transparent border-0 border-bottom pt-1 " onClick={openUpdatePassword}>修改密碼</button>
+                                        <div className="error-message text-danger mt-1 fs-caption lh-1">
+                                            {userErrors.user_email ? userErrors.user_email.message : "　"}
+                                        </div>
                                     </div>
                                 </div>
                                 {/* 性別 */}
-                                <div className="row mb-5">
+                                <div className="row mb-1">
                                     <label htmlFor="user_sex" className="col-sm-2">性別</label>
                                     <div className="col-sm-10">
                                         <select
                                             className={`form-select ${userErrors.user_sex && 'is-invalid'}`}
                                             aria-label="Default select example"
-                                            {...userInfo('user_sex')}
+                                            {...userInfo('user_sex', {
+                                                required: "性別欄位必填",
+                                                validate: (value) =>
+                                                    value !== '請選擇性別' || "請選擇性別",
+                                            })}
                                             value={formData.user_sex}
                                             onChange={handleInputChange}
                                         >
@@ -188,14 +247,22 @@ const BasicInfo = () => {
                                             <option value="女">女</option>
                                             <option value="不提供">不提供</option>
                                         </select>
+                                        <div className="error-message text-danger mt-1 fs-caption lh-1">
+                                            {userErrors.user_email ? userErrors.user_email.message : "　"}
+                                        </div>
                                     </div>
                                 </div>
                                 {/* 電話 */}
-                                <div className="row mb-5">
+                                <div className="row mb-1">
                                     <label htmlFor="user_tel" className="col-sm-2">電話</label>
                                     <div className="col-sm-10">
                                         <input
-                                            {...userInfo('user_tel')}
+                                            {...userInfo('user_tel', {
+                                                pattern: {
+                                                    value: /^(0[2-8]-\d{7,8}|09\d{8})$/,
+                                                    message: "市話格式為02-12345678手機格式為0912456789"
+                                                }
+                                            })}
                                             type="tel"
                                             className={`form-control ${userErrors.user_tel && 'is-invalid'}`}
                                             id="user_tel"
@@ -203,6 +270,9 @@ const BasicInfo = () => {
                                             value={formData.user_tel}
                                             onChange={handleInputChange}
                                         />
+                                        <div className="error-message text-danger mt-1">
+                                            {userErrors.user_tel ? userErrors.user_tel.message : "　"}
+                                        </div>
                                     </div>
                                 </div>
                                 {/* 第三方登入icon */}
@@ -249,32 +319,33 @@ const BasicInfo = () => {
                             <h4 className="modal-title fw-bold mb-2">修改密碼</h4>
                             <p>請先輸入目前密碼進行驗證</p>
                         </div>
-                        <div className="modal-body px-6 py-10">
-                            <input type="password" className="w-100 border border-1 border-black rounded-1 " ref={authpasswordRef} name="user" />
+                        <div className="modal-body px-5 py-10">
+                            <input type="password" className="w-100 border border-1 border-black rounded-1 " ref={authpasswordRef} />
+                            <div className={`error-message ${passwordError === '尚未驗證' ? 'text-secondary-40' : 'text-danger'}  mt-1 fs-caption lh-1`}>
+                                {passwordError}
+                            </div>
                         </div>
                         <div className="modal-footer">
-                            <button
-                                onClick={handleHideUpdatePasswordtModal}
-                                type="button"
-                                className="btn btn-secondary"
-                            >
-                                取消
-                            </button>
-                            <button type="button"
-                                onClick={handleAuthPassword} className="btn btn-danger">
-                                下一步
-                            </button>
+                            <div className="btn_2 d-flex  text-center ">
+                                <button type="button" className="btn bg-nature-60 text-white me-6" onClick={handleHideUpdatePasswordtModal}>
+                                    取消更改
+                                </button>
+                                <button type="button" className="btn bg-secondary-60 text-white" onClick={handleAuthPassword}>
+                                    下一步
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
             {/* 修改密碼MODAL */}
-            <div
+            < div
                 ref={updateInputPawwordModalRef}
                 className="modal fade m-0"
                 id="updatePawwordModal"
                 tabIndex="-1"
-                style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+                style={{ backgroundColor: "rgba(0,0,0,0.5)" }
+                }
             >
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
@@ -282,23 +353,25 @@ const BasicInfo = () => {
                             <h4 className="modal-title fw-bold ">修改密碼</h4>
                         </div>
                         <div className="modal-body px-6 py-10">
-                            <input type="password" className="w-100 border border-1 border-black rounded-1 " ref={authpasswordRef} name="user" />
+                            <input type="password" className="w-100 border border-1 border-black rounded-1 " ref={inputpasswordRef} />
+                            <div className={`error-message ${passwordError === '尚未驗證' ? 'text-secondary-40' : 'text-danger'}  mt-1 fs-caption lh-1`}>
+                                {passwordError}
+                            </div>
                         </div>
                         <div className="modal-footer">
-                            <button
-                                onClick={handleHideupdateInputPawwordtModal}
-                                type="button"
-                                className="btn btn-secondary"
-                            >
-                                取消
-                            </button>
-                            <button type="button" className="btn btn-danger">
-                                下一步
-                            </button>
+                            <div className="btn_2 d-flex  text-center ">
+                                <button type="button" className="btn bg-nature-60 text-white me-6" onClick={handleHideupdateInputPawwordtModal}>
+                                    取消更改
+                                </button>
+                                <button type="button" className="btn bg-secondary-60 text-white" onClick={handleNewInputPassword}                                >
+                                    儲存變更
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
+            <Toast />
         </>
 
     )

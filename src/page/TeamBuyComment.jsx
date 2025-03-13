@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -9,8 +10,11 @@ function TeamBuyComment() {
   const [games, setGames] = useState([]);
   const [users, setUsers] = useState([]);
   const [price, setPrice] = useState(null);
+  const [infoMessage, setInfoMessage] = useState(""); // 用來顯示訊息
 
   const { group_id } = useParams();
+
+  const { user, user_token } = useSelector((state) => state.userInfo);
 
   const getGroup = async () => {
     try {
@@ -43,6 +47,39 @@ function TeamBuyComment() {
     try {
       const res = await axios.get(`${BASE_URL}/pricesData`);
       setPrice(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const changeGroup = async () => {
+    // 檢查是否登入
+    if (!user || !user_token) {
+      setInfoMessage("請先登入");
+      return;
+    }
+
+    // 檢查群組中是否已存在該 user_id
+    if (
+      group &&
+      group.group_participants &&
+      group.group_participants.includes(user.user_id)
+    ) {
+      setInfoMessage("已重複加入");
+      return;
+    }
+    try {
+      // 檢查是否已有 group_participants 資料，若有則追加，若無則初始化成陣列
+      const newParticipants =
+        group && group.group_participants
+          ? [...group.group_participants, userInfo.user_id]
+          : [userInfo.user_id];
+
+      const res = await axios.patch(`${BASE_URL}/groupsData/${group_id}`, {
+        group_participants: newParticipants,
+      });
+      console.log(res.data);
+      // setGroup(res.data);
     } catch (error) {
       console.error(error);
     }
@@ -231,16 +268,51 @@ function TeamBuyComment() {
                       </td>
                     </tr>
                     <tr>
-                      <td className="my-5" colSpan="3">
-                        <button className="btn btn-secondary-60 text-white px-17 py-2">
+                      {/* <td className="my-5" colSpan="3">
+                        <button
+                          type="button"
+                          className="btn btn-secondary-60 text-white px-17 py-2"
+                          onClick={changeGroup}
+                        >
                           我要參加
                         </button>
+                      </td> */}
+                      <td className="my-5" colSpan="3">
+                        <span
+                          className="d-inline-block"
+                          tabIndex="0"
+                          data-bs-toggle="tooltip"
+                          title="Disabled tooltip"
+                        >
+                          <button
+                            type="button"
+                            className="btn btn-secondary-60 text-white px-17 py-2"
+                            onClick={changeGroup}
+                            disabled={!user || !user_token}
+                            // data-bs-toggle="tooltip"
+                            // data-bs-placement="right"
+                            // title="Tooltip on right"
+                          >
+                            我要參加
+                          </button>
+                        </span>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
+            {/* {infoMessage && (
+              <div className="container-fluid container-lg">
+                <div className="row d-flex justify-content-center">
+                  <div className="col-xl-10">
+                    <div className="pb-10">
+                      <h2 className="text-center">{infoMessage}</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )} */}
           </div>
         </div>
       </div>

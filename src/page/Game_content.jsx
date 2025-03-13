@@ -479,7 +479,7 @@ function Game_content() {
 
       <div className="add-comment position-fixed z-1">
         <Link
-          to={`/Game_comment/${game.game_id}`}
+          to={`/Game_comment/new/${game.game_id}`}
           className="border border-none bg-primary-95 p-3 p-lg-4 rounded-circle"
         >
           <span className="material-symbols-outlined d-block text-primary-60">
