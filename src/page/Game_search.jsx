@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import CommendedGamesCard from "../layout/CommendedGamesCard";
 
+
 const baseApi = import.meta.env.VITE_BASE_URL;
 
 const area = [
@@ -24,16 +25,15 @@ const area = [
 ];
 
 const formData = {
-    order: 'order_price',
-    game_name: '',
+    order: "order_price",
+    game_name: "",
     area: [],
-    game_people: '',
+    game_people: "",
     difficulty: [],
     property: [],
 };
 
 function Game_search() {
-    const [isIndexSearch, setIsIndexSearch] = useState(false);
     // 原先的資料
     const [games, setGames] = useState([]);
     const [difficultys, setDifficultys] = useState([]);
@@ -53,19 +53,26 @@ function Game_search() {
     // 建立一個 ref 指向搜尋區塊
     const firstSectionRef = useRef(null);
 
+    //防止搜尋跳轉一直滾動頁面
+    const [hasScrolled, setHasScrolled] = useState(false);
+
+
     // axios拿到全部遊戲資料
     const getGames = async () => {
         try {
             const res = await axios.get(`${baseApi}/gamesData`);
             setGames(res.data);
-            const recommendedGames = [...res.data].sort((a, b) => b.game_score - a.game_score);
+
+            const recommendedGames = [...res.data].sort(
+                (a, b) => b.game_score - a.game_score
+            );
             setRecommendedGames(recommendedGames);
-            const newGames = [...res.data].sort((a, b) =>
-                new Date(b.game_start_date) - new Date(a.game_start_date)
+
+            const newGames = [...res.data].sort(
+                (a, b) => new Date(b.game_start_date) - new Date(a.game_start_date)
             );
             setNewedGames(newGames);
-            setMaxPeople(Math.max(...res.data.map(p => p.game_maxNum_Players)));
-
+            setMaxPeople(Math.max(...res.data.map((p) => p.game_maxNum_Players)));
         } catch (error) {
             console.error(error);
         }
@@ -79,7 +86,7 @@ function Game_search() {
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     // axios拿到全部難度資料
     const getDifficultys = async () => {
@@ -89,7 +96,7 @@ function Game_search() {
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     // 查看更多推薦
     const handleSeeRecommendMore = () => {
@@ -98,14 +105,7 @@ function Game_search() {
         } else {
             setIsAllRecommendDisplay(true);
         }
-        // window.scrollTo(0, 0); // 滾動到頁面頂部
-        // 搜尋完成後，利用 ref 捲動到搜尋區塊
-        if (firstSectionRef.current) {
-            window.scrollTo({
-                top: firstSectionRef.current.offsetTop - 120,
-                behavior: "smooth"
-            });
-        }
+        window.scrollTo(0, 0); // 滾動到頁面頂部
     };
 
     // 查看更多新作
@@ -115,14 +115,7 @@ function Game_search() {
         } else {
             setIsAllRecentlyDisplay(true);
         }
-        // window.scrollTo(0, 0); // 滾動到頁面頂部
-        // 搜尋完成後，利用 ref 捲動到搜尋區塊
-        if (firstSectionRef.current) {
-            window.scrollTo({
-                top: firstSectionRef.current.offsetTop - 120,
-                behavior: "smooth"
-            });
-        }
+        window.scrollTo(0, 0); // 滾動到頁面頂部
     };
 
     const handleReset = () => {
@@ -133,27 +126,26 @@ function Game_search() {
     // 監聽表單輸入況狀
     const handlEInputChange = (e) => {
         const { value, name } = e.target;
-        if (name == 'area' || name == 'difficulty' || name == "property") {
-            setSearch(prev => ({
+        if (name == "area" || name == "difficulty" || name == "property") {
+            console.log(value, name);
+
+            setSearch((prev) => ({
                 ...prev,
                 [name]: prev[name].includes(value)
-                    ? prev[name].filter(item => item !== value) // 如果已經選擇，就移除
-                    : [...prev[name], value] // 如果沒選擇，就加入
+                    ? prev[name].filter((item) => item !== value) // 如果已經選擇，就移除
+                    : [...prev[name], value], // 如果沒選擇，就加入
             }));
-        }
-        else {
+        } else {
             setSearch({
                 ...search,
-                [name]: value
+                [name]: value,
             });
         }
     };
 
     // 處理篩選後的結果呈現
     const handleSerach = async (e) => {
-        if (e) {
-            e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
-        }
+        e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
         setIsSearch(true);
         // 篩選資料
         const filteredGames = games.filter((game) => {
@@ -164,18 +156,33 @@ function Game_search() {
                     : game.game_name.includes(search.game_name);
 
             // 地區篩選（使用OR條件）
-            const matchesArea = search.area.length === 0 ? true : search.area.some(area => game.game_address.startsWith(area));
+            const matchesArea =
+                search.area.length === 0
+                    ? true
+                    : search.area.some((area) => game.game_address.startsWith(area));
 
             // 遊玩人數篩選
-            const matchesGamePeople = search.game_people === "" ? true :
-                (game.game_minNum_Players <= parseInt(search.game_people, 10) && game.game_maxNum_Players >= parseInt(search.game_people, 10));
+            const matchesGamePeople =
+                search.game_people === ""
+                    ? true
+                    : game.game_minNum_Players <= parseInt(search.game_people, 10) &&
+                    game.game_maxNum_Players >= parseInt(search.game_people, 10);
 
             // 難度篩選（使用OR條件）
-            const matchesDifficulty = search.difficulty.length === 0 ? true : search.difficulty.includes(String(game.game_dif_tag));
+            const matchesDifficulty =
+                search.difficulty.length === 0
+                    ? true
+                    : search.difficulty.includes(String(game.game_dif_tag));
 
             // 屬性篩選（使用OR條件）
-            const matchesProperty = search.property.length === 0 ? true :
-                search.property.some(property => String(game.game_main_tag1).includes(property) || String(game.game_main_tag2).includes(property));
+            const matchesProperty =
+                search.property.length === 0
+                    ? true
+                    : search.property.some(
+                        (property) =>
+                            String(game.game_main_tag1).includes(property) ||
+                            String(game.game_main_tag2).includes(property)
+                    );
 
             // 綜合判斷，使用AND邏輯
             return (
@@ -187,12 +194,12 @@ function Game_search() {
             );
         });
 
+        console.log();
         if (filteredGames.length === 0) {
             setIsHaveResultGames(false);
         } else if (filteredGames.length > 0) {
             setIsHaveResultGames(true);
         }
-
         // 排序資料
         setSearchGames(
             filteredGames.sort((a, b) => {
@@ -205,12 +212,17 @@ function Game_search() {
                 return 0; // 如果沒有匹配的排序條件，返回原順序
             })
         );
-        // 搜尋完成後，利用 ref 捲動到搜尋區塊
-        if (firstSectionRef.current) {
-            window.scrollTo({
-                top: firstSectionRef.current.offsetTop - 90,
-                behavior: "smooth"
-            });
+        // // 搜尋完成後，利用 ref 捲動到搜尋區塊
+        // if (firstSectionRef.current) {
+        //   firstSectionRef.current.scrollIntoView({ behavior: "smooth" });
+        // }
+
+        //如果已經滾動過 則不再滾動
+        if (!hasScrolled) {
+            if (firstSectionRef.current) {
+                firstSectionRef.current.scrollIntoView({ behavior: "smooth" });
+                setHasScrolled(true); // 設定已經滾動過
+            }
         }
     };
 
@@ -220,36 +232,86 @@ function Game_search() {
         getDifficultys();
     }, []);
 
+    //URL傳參數
+    // useEffect(() => {
+    //   // 取得 hash 部分，例如 "#/Game_search?area=..."
+    //   const hash = window.location.hash;
+    //   // 找出 "?" 的位置，並取得 query string
+    //   const queryIndex = hash.indexOf("?");
+    //   if (queryIndex !== -1) {
+    //     const queryString = hash.substring(queryIndex);
+    //     const params = new URLSearchParams(queryString);
+    //     const defaultArea = params.get("area");
+    //     const defaultNum = params.get("num");
+    //     const defaultProperty= params.get("property");
+    //     if (defaultArea) {
+    //       // 更新 search state，將 area 加入陣列中
+    //       setSearch(prev => ({
+    //         ...prev,
+    //         area: [defaultArea],
+    //         game_people: Number(defaultNum),
+    //         property: defaultProperty ? [String(defaultProperty)] : []
+    //       }));
+    //     }
+    //   }
+    // }, []);
     useEffect(() => {
-        const searchParams = new URLSearchParams(location.hash.split("?")[1]);
-        const game_name_index = searchParams.get("game_name");
-        const area_index = searchParams.get("area");
-        const game_people_index = searchParams.get("game_people");
-        console.log(game_name_index, area_index, game_people_index);
-        if (game_name_index === null && area_index === null && game_people_index === null) {
-            console.log('none');
-            setSearch(formData);
-            setIsIndexSearch(false);
-        }
-        else if (game_name_index !== '' || area_index !== '' || game_people_index != '') {
-            console.log('have');
-            setIsIndexSearch(true);
-            setSearch(formData);
-            setSearch(prev => ({
+        const hash = window.location.hash;
+        const queryIndex = hash.indexOf("?");
+        if (queryIndex !== -1) {
+            const queryString = hash.substring(queryIndex + 1); // ← 修正這裡，加 +1 是避免包含問號
+            const params = new URLSearchParams(queryString);
+
+            const defaultArea = params.get("area");
+            const defaultNum = params.get("num");
+            const defaultProperty = params.get("property");
+            const defaultDifficulty = params.get("difficulty");
+
+            console.log("URL 參數：", { defaultArea, defaultNum, defaultProperty });
+
+            setSearch((prev) => ({
                 ...prev,
-                game_name: game_name_index,
-                game_people: game_people_index,
-                area: area_index ? [...prev.area, area_index] : ''
+                area: defaultArea ? [defaultArea] : [],
+                game_people: defaultNum ? Number(defaultNum) : "",
+                property: defaultProperty ? [String(defaultProperty)] : [],
+                difficulty: defaultDifficulty ? [String(defaultDifficulty)] : []
             }));
         }
-    }, []);
+    }, [location]);
 
+
+
+    // 使用 useRef 來引用表單
+    const userFormRef = useRef(null);
+    const hiddenSubmitBtnRef = useRef(null);
+
+    //網址後方參數消除
     useEffect(() => {
-        if (games.length > 0 && isIndexSearch) {
-            console.log('one');
-            handleSerach();
+        if (search.area.length > 0) {
+            // 取得目前的 hash 部分，例如 "#/Game_search?area=台北市"
+            const currentHash = window.location.hash;
+            // 如果包含問號，表示有查詢參數
+            if (currentHash.includes('?')) {
+                // 只取 hash 的路徑部分，捨棄 ? 後面的查詢參數
+                const newHash = currentHash.split('?')[0];
+                window.history.replaceState(null, '', newHash);
+            }
         }
-    }, [games, isIndexSearch]);
+    }, [search.area, search.num, search.property, search.difficulty]);
+
+    //下方搜尋按鈕自動點擊
+    useEffect(() => {
+        // 如果 game_people 大於 0 且按鈕存在，觸發按鈕點擊
+        if (search.property.length > 0 || search.game_people > 0) {
+            // 使用 setTimeout 延遲觸發按鈕點擊，確保 DOM 更新後執行
+            setTimeout(() => {
+                if (hiddenSubmitBtnRef.current) {
+                    hiddenSubmitBtnRef.current.click();
+                }
+            }, 300);
+        }
+    }, [[search.property, search.area, search.game_people, search.difficulty]]);  // 監聽 game_people 的變化
+
     return (
         <>
             <div className="banner">
@@ -273,7 +335,7 @@ function Game_search() {
                     <div className="row d-flex flex-column flex-md-row g-0">
                         {/* <!-- 表單部分 --> */}
                         <div className="col-md-3 pe-lg-6 pe-md-3 ">
-                            <form className="p-4 bg-white" onSubmit={(e) => handleSerach(e)}>
+                            <form className="p-4 bg-white" onSubmit={(e) => handleSerach(e)} ref={userFormRef}>
                                 <div className="order">
                                     <p className="h5 pb-3  fw-bold">排序條件</p>
                                     <div className="mb-6">
@@ -609,7 +671,7 @@ function Game_search() {
                                     </div>
                                 </div>
                                 <div className="text-center">
-                                    <button className="btn btn-secondary-60 link-white rounded-2 w-100">
+                                    <button className="btn btn-secondary-60 link-white rounded-2 w-100" id="userSumbit" ref={hiddenSubmitBtnRef}>
                                         搜尋
                                     </button>
                                 </div>

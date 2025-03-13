@@ -4,6 +4,7 @@ import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { TiStarFullOutline, TiStarOutline } from 'react-icons/ti';
 import { Modal } from "bootstrap";
+import { Link } from "react-router-dom";
 const baseApi = import.meta.env.VITE_BASE_URL;
 
 const MyComments = () => {
@@ -195,7 +196,11 @@ const MyComments = () => {
                                 <button type="button" className="btn bg-nature-60 text-white me-6" onClick={handledetailComment}>
                                     刪除
                                 </button>
-                                <Link type="button" className="btn bg-secondary-60 text-white" to={`/Game_comment/edit/${commentModalData.comment_id}`}>
+                                <Link
+                                    type="button"
+                                    className="btn bg-secondary-60 text-white"
+                                    to={`/Game_comment/edit/${commentModalData.comment_id}`}
+                                    onClick={handledetailComment}>
                                     編輯
                                 </Link>
                             </div>

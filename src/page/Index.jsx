@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
+
 import 'swiper/swiper-bundle.css';
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -55,32 +56,21 @@ function Index() {
         getDifficulty();
     }, [])
 
-    // 三種條件
+    const area = [
+        "台北市", "新北市", "基隆市", "桃園市", "新竹市", "台中市", "彰化縣", "南投縣",
+        "嘉義市", "台南市", "高雄市", "屏東縣", "宜蘭縣", "花蓮縣", "台東縣"
+    ];
+    const memberNum = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const [areaSelect, setAreaSelect] = useState(area[0]);
     const [numSelect, setNumSelect] = useState(1);
-    const [searchGameName, setSearchGameName] = useState("");
 
     //hover狀態處理
     const [isHover, setIsHover] = useState(null);
 
-    const [isSearch, setIsSearch] = useState(false); //是否要跳頁搜尋
-
-    const navigate = useNavigate();
-
-    const showserach = () => {
-        setIsSearch(true);
-    }
-
-    useEffect(() => {
-        if (isSearch) {
-            navigate(`/Game_search?area=${areaSelect}&game_people=${numSelect}&game_name=${searchGameName}`);
-        }
-
-    }, [isSearch])
 
     return (
         <>
-            <div className="d-flex flex-column align-items-center">
+            <div className="container d-flex flex-column align-items-center">
                 <div
                     style={{
                         width: '100%',
@@ -106,6 +96,7 @@ function Index() {
                                         ))}
                                     </ul>
                                 </div>
+
                             </div>
                             <div className="w-50">
                                 <label htmlFor="" className="form-label">人數</label>
@@ -120,14 +111,13 @@ function Index() {
 
                             </div>
                         </div>
-                        <div className="w-100">
+                        <div className="w-100 mb-5">
                             <label htmlFor="" className="form-label">搜尋</label>
-                            <input type="text" className="form-control " name="seract_text" onChange={(e) => setSearchGameName(e.target.value)} placeholder="搜尋關鍵字" />
+                            <input type="text" className="form-control " placeholder="搜尋關鍵字" />
                         </div>
-                        <button className="btn btn-primary w-100 mt-5" onClick={showserach}>送出查詢</button>
+                        <a href={`/#/Game_search?area=${areaSelect}&num=${numSelect}`} className="btn btn-primary w-100">搜尋</a>
                     </div>
                 </div>
-
                 <div
                     style={{
                         width: '100%',
@@ -195,19 +185,19 @@ function Index() {
                             <div className="row">
                                 {gameDifficulty.map((diff) => (
                                     <div className="col-lg-4 col-6" key={diff.difficulty_id}>
-                                        <div className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
+                                        <a href={`/#/Game_search?difficulty=${diff.difficulty_id}`} className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
                                             <span className="material-symbols-outlined">{diff.difficulty_icon_text}</span>
                                             <p className="fs-lg-h6">{diff.difficulty_name}</p>
-                                        </div>
+                                        </a>
                                     </div>
                                 ))}
 
                                 {gameProperty.slice(0, 9).map((property) => (
                                     <div className="col-lg-4 col-6" key={property.property_id}>
-                                        <div className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
+                                        <a href={`/#/Game_search?property=${property.property_id}`} className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
                                             <span className="material-symbols-outlined">{property.property_icon_text}</span>
                                             <p className="fs-lg-h6">{property.property_name}</p>
-                                        </div>
+                                        </a>
                                     </div>
                                 ))}
 
