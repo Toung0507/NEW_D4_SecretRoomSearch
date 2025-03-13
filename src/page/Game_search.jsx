@@ -33,6 +33,7 @@ const formData = {
 };
 
 function Game_search() {
+    const [isIndexSearch, setIsIndexSearch] = useState(false);
     // 原先的資料
     const [games, setGames] = useState([]);
     const [difficultys, setDifficultys] = useState([]);
@@ -57,6 +58,8 @@ function Game_search() {
         try {
             const res = await axios.get(`${baseApi}/gamesData`);
             setGames(res.data);
+            console.log('i/4');
+
 
             const recommendedGames = [...res.data].sort((a, b) => b.game_score - a.game_score);
             setRecommendedGames(recommendedGames);
@@ -154,8 +157,14 @@ function Game_search() {
 
     // 處理篩選後的結果呈現
     const handleSerach = async (e) => {
-        e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
+        if (e) {
+
+            e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
+        }
         setIsSearch(true);
+        console.log(search);
+        console.log(games);
+
         // 篩選資料
         const filteredGames = games.filter((game) => {
             // 遊戲名稱
@@ -189,9 +198,12 @@ function Game_search() {
         });
 
         if (filteredGames.length === 0) {
+            console.log('null');
+
             setIsHaveResultGames(false);
         } else if (filteredGames.length > 0) {
             setIsHaveResultGames(true);
+            console.log('havse');
         }
 
         // 排序資料
@@ -221,6 +233,29 @@ function Game_search() {
         getDifficultys();
     }, []);
 
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.hash.split("?")[1]);
+        const game_name_index = searchParams.get("game_name");
+        const area_index = searchParams.get("area");
+        const game_people_index = searchParams.get("game_people");
+        if (game_name_index !== '' || area_index !== '' || game_people_index != '') {
+            setIsIndexSearch(true);
+            setSearch(formData);
+            setSearch(prev => ({
+                ...prev,
+                game_name: game_name_index,
+                game_people: game_people_index,
+                area: area_index ? [...prev.area, area_index] : ''
+            }));
+        }
+    }, []);
+
+    useEffect(() => {
+        if (games.length > 0 && isIndexSearch) {
+            handleSerach();
+        }
+    }, [games, isIndexSearch]); // 監聽 `games` & `isIndexSearch`，確保搜尋在 `games` 載入後執行
     return (
         <>
             <div className="banner">

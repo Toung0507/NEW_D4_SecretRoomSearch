@@ -5,8 +5,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import 'swiper/swiper-bundle.css';
 import styled from "styled-components";
-
+import { useNavigate } from "react-router-dom";
 const BASE_URL = 'https://new-json.onrender.com/';
+const area = ["台北市", "基隆市", "新竹市", "彰化縣", "嘉義市", "高雄市", "宜蘭縣", "台東縣", "新北市", "桃園市", "台中市", "南投縣", "台南市", "屏東縣", "花蓮縣", "澎湖金門馬祖"];
+
+
+const memberNum = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 function Index() {
     const [product, setProduct] = useState([]);
@@ -51,16 +55,28 @@ function Index() {
         getDifficulty();
     }, [])
 
-    const area = [
-        "台北", "新北", "桃園", "新竹", "苗栗", "台中",
-        "彰化", "雲林", "嘉義", "台南", "高雄", "屏東"
-    ];
-    const memberNum = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    // 三種條件
     const [areaSelect, setAreaSelect] = useState(area[0]);
     const [numSelect, setNumSelect] = useState(1);
+    const [searchGameName, setSearchGameName] = useState("");
 
     //hover狀態處理
     const [isHover, setIsHover] = useState(null);
+
+    const [isSearch, setIsSearch] = useState(false); //是否要跳頁搜尋
+
+    const navigate = useNavigate();
+
+    const showserach = () => {
+        setIsSearch(true);
+    }
+
+    useEffect(() => {
+        if (isSearch) {
+            navigate(`/Game_search?area=${areaSelect}&game_people=${numSelect}&game_name=${searchGameName}`);
+        }
+
+    }, [isSearch])
 
     return (
         <>
@@ -90,7 +106,6 @@ function Index() {
                                         ))}
                                     </ul>
                                 </div>
-
                             </div>
                             <div className="w-50">
                                 <label htmlFor="" className="form-label">人數</label>
@@ -107,10 +122,12 @@ function Index() {
                         </div>
                         <div className="w-100">
                             <label htmlFor="" className="form-label">搜尋</label>
-                            <input type="text" className="form-control " placeholder="搜尋關鍵字" />
+                            <input type="text" className="form-control " name="seract_text" onChange={(e) => setSearchGameName(e.target.value)} placeholder="搜尋關鍵字" />
                         </div>
+                        <button className="btn btn-primary" onClick={showserach}>測試</button>
                     </div>
                 </div>
+
                 <div
                     style={{
                         width: '100%',
