@@ -58,12 +58,8 @@ function Game_search() {
         try {
             const res = await axios.get(`${baseApi}/gamesData`);
             setGames(res.data);
-            console.log('i/4');
-
-
             const recommendedGames = [...res.data].sort((a, b) => b.game_score - a.game_score);
             setRecommendedGames(recommendedGames);
-
             const newGames = [...res.data].sort((a, b) =>
                 new Date(b.game_start_date) - new Date(a.game_start_date)
             );
@@ -82,7 +78,6 @@ function Game_search() {
             setPropertys(res.data);
         } catch (error) {
             console.error(error);
-
         }
     }
 
@@ -93,7 +88,6 @@ function Game_search() {
             setDifficultys(res.data);
         } catch (error) {
             console.error(error);
-
         }
     }
 
@@ -158,13 +152,9 @@ function Game_search() {
     // 處理篩選後的結果呈現
     const handleSerach = async (e) => {
         if (e) {
-
             e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
         }
         setIsSearch(true);
-        console.log(search);
-        console.log(games);
-
         // 篩選資料
         const filteredGames = games.filter((game) => {
             // 遊戲名稱
@@ -198,12 +188,9 @@ function Game_search() {
         });
 
         if (filteredGames.length === 0) {
-            console.log('null');
-
             setIsHaveResultGames(false);
         } else if (filteredGames.length > 0) {
             setIsHaveResultGames(true);
-            console.log('havse');
         }
 
         // 排序資料
@@ -233,13 +220,19 @@ function Game_search() {
         getDifficultys();
     }, []);
 
-
     useEffect(() => {
         const searchParams = new URLSearchParams(location.hash.split("?")[1]);
         const game_name_index = searchParams.get("game_name");
         const area_index = searchParams.get("area");
         const game_people_index = searchParams.get("game_people");
-        if (game_name_index !== '' || area_index !== '' || game_people_index != '') {
+        console.log(game_name_index, area_index, game_people_index);
+        if (game_name_index === null && area_index === null && game_people_index === null) {
+            console.log('none');
+            setSearch(formData);
+            setIsIndexSearch(false);
+        }
+        else if (game_name_index !== '' || area_index !== '' || game_people_index != '') {
+            console.log('have');
             setIsIndexSearch(true);
             setSearch(formData);
             setSearch(prev => ({
@@ -253,9 +246,10 @@ function Game_search() {
 
     useEffect(() => {
         if (games.length > 0 && isIndexSearch) {
+            console.log('one');
             handleSerach();
         }
-    }, [games, isIndexSearch]); // 監聽 `games` & `isIndexSearch`，確保搜尋在 `games` 載入後執行
+    }, [games, isIndexSearch]);
     return (
         <>
             <div className="banner">

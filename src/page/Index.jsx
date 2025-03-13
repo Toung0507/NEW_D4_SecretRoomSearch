@@ -124,7 +124,7 @@ function Index() {
                             <label htmlFor="" className="form-label">搜尋</label>
                             <input type="text" className="form-control " name="seract_text" onChange={(e) => setSearchGameName(e.target.value)} placeholder="搜尋關鍵字" />
                         </div>
-                        <button className="btn btn-primary" onClick={showserach}>測試</button>
+                        <button className="btn btn-primary w-100 mt-5" onClick={showserach}>送出查詢</button>
                     </div>
                 </div>
 

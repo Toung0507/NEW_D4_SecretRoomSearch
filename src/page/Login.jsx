@@ -46,7 +46,7 @@ function Login() {
     return (
         <>
             <div className="container">
-                <div className="login py-3 d-flex justify-content-center bg-secondary-99">
+                <div className="login py-3 d-flex justify-content-center bg-white">
                     <div className="p-8 bg-primary-80 rounded-2 ">
                         <h3 className="text-center mb-3">密室搜搜 - 登入</h3>
                         <form onSubmit={handleSingIn} className="m-50 d-flex flex-column">
