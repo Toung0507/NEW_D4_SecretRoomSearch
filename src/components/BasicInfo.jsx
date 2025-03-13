@@ -127,7 +127,7 @@ const BasicInfo = () => {
                     <div className="user-info bg-white ">
                         <div className="user_name d-flex px-6 py-sm-5 py-4 align-items-center border-nature-90 border-1 border-top border-bottom" >
                             <img
-                                src="https://images.unsplash.com/photo-1642103122127-cef548803935?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                src={user.user_sex === '男' ? './icon/man.png' : user.user_sex === '女' ? './icon/woman.png' : './icon/user.png'}
                                 alt={user.user_name}
                                 className="rounded-circle"
                                 style={{

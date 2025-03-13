@@ -4,6 +4,7 @@ import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 
+
 import 'swiper/swiper-bundle.css';
 
 import styled from "styled-components";
@@ -61,23 +62,28 @@ function Index() {
 	const [areaSelect, setAreaSelect] = useState(area[0]);
 	const [numSelect, setNumSelect] = useState(1);
 
+	//hover狀態處理
+	const [isHover, setIsHover] = useState(null);
+
 
 	
 
 	return (
 		<>
-			<div
-				style={{
-					width: '100%',
-					height: '800px',
-					backgroundImage: `url(${'./illustration/Banner_web_up_1.png'}), url(${'./illustration/Banner-web-down-1.png'})`,
-					backgroundRepeat: 'no-repeat, no-repeat',
-					backgroundPosition: 'top center, bottom center',
-					backgroundSize: 'contain, contain'
-				}}
-				className="row justify-content-center align-items-center vh-100 mt-20"
-			>
-				<div className="col-6 bg-primary-95 rounded-6">
+			<div className="d-flex flex-column align-items-center">
+				<div
+					style={{
+						width: '100%',
+						height:'408px',
+						backgroundImage: `url(${'./illustration/Banner_web_up_1.png'})`,
+						backgroundRepeat: 'no-repeat',
+						backgroundPosition: 'center',
+						backgroundSize: 'contain'
+					}}
+					className="justify-content-center"
+				>
+				</div>
+				<div className="col-6 bg-primary-95 rounded-6 justify-content-center">
 					<div className="p-12">
 						<div className="d-flex gap-3">
 							<div className="w-50">
@@ -110,6 +116,18 @@ function Index() {
 							<input type="text" className="form-control " placeholder="搜尋關鍵字" />
 						</div>
 					</div>
+				</div>
+				<div
+					style={{
+						width: '100%',
+						height:'392px',
+						backgroundImage: `url(${'./illustration/Banner-web-down-1.png'})`,
+						backgroundRepeat: 'no-repeat',
+						backgroundPosition: 'center',
+						backgroundSize: 'contain'
+					}}
+					
+				>
 				</div>
 			</div>
 
@@ -210,52 +228,54 @@ function Index() {
 					{/* 輪播 */}
 					{product.map((game) => (
 						<SwiperSlide key={game.game_id}>
-							<div class="d-flex flex-column bg-white rounded-10 p-5">
-								<img src={game.game_img[0]} alt={game.game_name} class="rounded-7 mb-3 object-fit-cover" style={{width:'100%', height:'150px'}}/>
-								<h3 class="card-title fw-bold fs-h6">{game.game_name}</h3>
-								<p class="fs-Body-1 mb-3 text-nature-40">{game.game_address.slice(0,3)}</p>
-								<div class="d-flex mb-2" style={{gap:'8px'}}>
-									<div class="d-flex align-items-center pe-3" style={{borderRight:'1px solid #CCC5C2', gap:'4px'}}>
-										<img src="./icon/star.png" alt="" style={{width:'16px', height:'16px'}} />
-										<p>{game.game_score}</p>
+							<a href={`/#/Game_content/${game.game_id}`} style={{color:'inherit'}}>
+								<div class={`d-flex flex-column rounded-10 p-5 ${`${isHover===game.game_id?"bg-primary-95":"bg-primary-99"}`}`} onMouseEnter={() => setIsHover(game.game_id)} onMouseLeave={() => setIsHover(false)}>
+									<img src={game.game_img[0]} alt={game.game_name} class="rounded-7 mb-3 object-fit-cover" style={{width:'100%', height:'150px'}}/>
+									<h3 class="card-title fw-bold fs-h6">{game.game_name}</h3>
+									<p class="fs-Body-1 mb-3 text-nature-40">{game.game_address.slice(0,3)}</p>
+									<div class="d-flex mb-2" style={{gap:'8px'}}>
+										<div class="d-flex align-items-center pe-3" style={{borderRight:'1px solid #CCC5C2', gap:'4px'}}>
+											<img src="./icon/star.png" alt="" style={{width:'16px', height:'16px'}} />
+											<p>{game.game_score}</p>
+										</div>
+										<div class="d-flex">
+											<span>{game.game_score_num}</span>
+											<p>人評論</p>
+										</div>
 									</div>
-									<div class="d-flex">
-										<span>{game.game_score_num}</span>
-										<p>人評論</p>
+									<div class="d-flex mb-3" style={{gap:'8px'}}>
+										<div class="d-flex align-items-center pe-3" style={{borderRight:'1px solid #CCC5C2', gap:'6px'}}>
+											<img src="./icon/person.png" alt="" style={{width:'16px', height:'16px'}} />
+											<p>{game.game_minNum_Players}-{game.game_maxNum_Players}人</p>
+										</div>
+										<div class="d-flex">
+											<span class="material-symbols-outlined">attach_money</span>
+											<p>每人</p>
+											<span>{game.game_min_price}元起</span>
+										</div>
 									</div>
-								</div>
-								<div class="d-flex mb-3" style={{gap:'8px'}}>
-									<div class="d-flex align-items-center pe-3" style={{borderRight:'1px solid #CCC5C2', gap:'6px'}}>
-										<img src="./icon/person.png" alt="" style={{width:'16px', height:'16px'}} />
-										<p>{game.game_minNum_Players}-{game.game_maxNum_Players}人</p>
+									<div class="d-flex mb-2" style={{gap:'8px'}}>
+										<div class="d-flex bg-nature-95 rounded-4 py-1 px-3" style={{gap:'4px'}}>
+											<span class="material-symbols-outlined">{gameDifficulty.map((diff) => {
+												if(diff.difficulty_name === game.game_dif_tagname){return diff.difficulty_icon_text}
+											})}</span>
+											<p class="fs-Body-2">{game.game_dif_tagname}</p>
+										</div>
+										<div class="d-flex bg-nature-95 rounded-4 py-1 px-3" style={{gap:'4px'}}>
+											<span class="material-symbols-outlined">{gameProperty.map((property) => {
+												if(property.property_name === game.game_main_tag1name){return property.property_icon_text}
+											})}</span>
+											<p class="fs-Body-2">{game.game_main_tag1name}</p>
+										</div>
 									</div>
-									<div class="d-flex">
-										<span class="material-symbols-outlined">attach_money</span>
-										<p>每人</p>
-										<span>{game.game_min_price}元起</span>
-									</div>
-								</div>
-								<div class="d-flex mb-2" style={{gap:'8px'}}>
-									<div class="d-flex bg-nature-95 rounded-4 py-1 px-3" style={{gap:'4px'}}>
-										<span class="material-symbols-outlined">{gameDifficulty.map((diff) => {
-											if(diff.difficulty_name === game.game_dif_tagname){return diff.difficulty_icon_text}
-										})}</span>
-										<p class="fs-Body-2">{game.game_dif_tagname}</p>
-									</div>
-									<div class="d-flex bg-nature-95 rounded-4 py-1 px-3" style={{gap:'4px'}}>
+									<div class="d-flex bg-nature-95 rounded-4 py-1 px-3 align-self-start" style={{gap:'4px'}}>
 										<span class="material-symbols-outlined">{gameProperty.map((property) => {
-											if(property.property_name === game.game_main_tag1name){return property.property_icon_text}
-										})}</span>
-										<p class="fs-Body-2">{game.game_main_tag1name}</p>
+												if(property.property_name === game.game_main_tag2name){return property.property_icon_text}
+											})}</span>
+										<p class="fs-Body-2">{game.game_main_tag2name}</p>
 									</div>
 								</div>
-								<div class="d-flex bg-nature-95 rounded-4 py-1 px-3 align-self-start" style={{gap:'4px'}}>
-									<span class="material-symbols-outlined">{gameProperty.map((property) => {
-											if(property.property_name === game.game_main_tag2name){return property.property_icon_text}
-										})}</span>
-									<p class="fs-Body-2">{game.game_main_tag2name}</p>
-								</div>
-							</div>
+							</a>
 						</SwiperSlide>
 					))}
 
@@ -289,52 +309,54 @@ function Index() {
 					{/* 輪播 */}
 					{product.map((game) => (
 						<SwiperSlide key={game.game_id}>
-							<div class="d-flex flex-column bg-white rounded-10 p-5">
-								<img src={game.game_img[0]} alt={game.game_name} class="rounded-7 mb-3 object-fit-cover" style={{width:'100%', height:'150px'}}/>
-								<h3 class="card-title fw-bold fs-h6">{game.game_name}</h3>
-								<p class="fs-Body-1 mb-3 text-nature-40">{game.game_address.slice(0,3)}</p>
-								<div class="d-flex mb-2" style={{gap:'8px'}}>
-									<div class="d-flex align-items-center pe-3" style={{borderRight:'1px solid #CCC5C2', gap:'4px'}}>
-										<img src="./icon/star.png" alt="" style={{width:'16px', height:'16px'}} />
-										<p>{game.game_score}</p>
+							<a href={`/#/Game_content/${game.game_id}`} style={{color:'inherit'}}>
+								<div class={`d-flex flex-column rounded-10 p-5 ${`${isHover===game.game_id?"bg-primary-95":"bg-primary-99"}`}`} onMouseEnter={() => setIsHover(game.game_id)} onMouseLeave={() => setIsHover(false)}>
+									<img src={game.game_img[0]} alt={game.game_name} class="rounded-7 mb-3 object-fit-cover" style={{width:'100%', height:'150px'}}/>
+									<h3 class="card-title fw-bold fs-h6">{game.game_name}</h3>
+									<p class="fs-Body-1 mb-3 text-nature-40">{game.game_address.slice(0,3)}</p>
+									<div class="d-flex mb-2" style={{gap:'8px'}}>
+										<div class="d-flex align-items-center pe-3" style={{borderRight:'1px solid #CCC5C2', gap:'4px'}}>
+											<img src="./icon/star.png" alt="" style={{width:'16px', height:'16px'}} />
+											<p>{game.game_score}</p>
+										</div>
+										<div class="d-flex">
+											<span>{game.game_score_num}</span>
+											<p>人評論</p>
+										</div>
 									</div>
-									<div class="d-flex">
-										<span>{game.game_score_num}</span>
-										<p>人評論</p>
+									<div class="d-flex mb-3" style={{gap:'8px'}}>
+										<div class="d-flex align-items-center pe-3" style={{borderRight:'1px solid #CCC5C2', gap:'6px'}}>
+											<img src="./icon/person.png" alt="" style={{width:'16px', height:'16px'}} />
+											<p>{game.game_minNum_Players}-{game.game_maxNum_Players}人</p>
+										</div>
+										<div class="d-flex">
+											<span class="material-symbols-outlined">attach_money</span>
+											<p>每人</p>
+											<span>{game.game_min_price}元起</span>
+										</div>
 									</div>
-								</div>
-								<div class="d-flex mb-3" style={{gap:'8px'}}>
-									<div class="d-flex align-items-center pe-3" style={{borderRight:'1px solid #CCC5C2', gap:'6px'}}>
-										<img src="./icon/person.png" alt="" style={{width:'16px', height:'16px'}} />
-										<p>{game.game_minNum_Players}-{game.game_maxNum_Players}人</p>
+									<div class="d-flex mb-2" style={{gap:'8px'}}>
+										<div class="d-flex bg-nature-95 rounded-4 py-1 px-3" style={{gap:'4px'}}>
+											<span class="material-symbols-outlined">{gameDifficulty.map((diff) => {
+												if(diff.difficulty_name === game.game_dif_tagname){return diff.difficulty_icon_text}
+											})}</span>
+											<p class="fs-Body-2">{game.game_dif_tagname}</p>
+										</div>
+										<div class="d-flex bg-nature-95 rounded-4 py-1 px-3" style={{gap:'4px'}}>
+											<span class="material-symbols-outlined">{gameProperty.map((property) => {
+												if(property.property_name === game.game_main_tag1name){return property.property_icon_text}
+											})}</span>
+											<p class="fs-Body-2">{game.game_main_tag1name}</p>
+										</div>
 									</div>
-									<div class="d-flex">
-										<span class="material-symbols-outlined">attach_money</span>
-										<p>每人</p>
-										<span>{game.game_min_price}元起</span>
-									</div>
-								</div>
-								<div class="d-flex mb-2" style={{gap:'8px'}}>
-									<div class="d-flex bg-nature-95 rounded-4 py-1 px-3" style={{gap:'4px'}}>
-										<span class="material-symbols-outlined">{gameDifficulty.map((diff) => {
-											if(diff.difficulty_name === game.game_dif_tagname){return diff.difficulty_icon_text}
-										})}</span>
-										<p class="fs-Body-2">{game.game_dif_tagname}</p>
-									</div>
-									<div class="d-flex bg-nature-95 rounded-4 py-1 px-3" style={{gap:'4px'}}>
+									<div class="d-flex bg-nature-95 rounded-4 py-1 px-3 align-self-start" style={{gap:'4px'}}>
 										<span class="material-symbols-outlined">{gameProperty.map((property) => {
-											if(property.property_name === game.game_main_tag1name){return property.property_icon_text}
-										})}</span>
-										<p class="fs-Body-2">{game.game_main_tag1name}</p>
+												if(property.property_name === game.game_main_tag2name){return property.property_icon_text}
+											})}</span>
+										<p class="fs-Body-2">{game.game_main_tag2name}</p>
 									</div>
 								</div>
-								<div class="d-flex bg-nature-95 rounded-4 py-1 px-3 align-self-start" style={{gap:'4px'}}>
-									<span class="material-symbols-outlined">{gameProperty.map((property) => {
-											if(property.property_name === game.game_main_tag2name){return property.property_icon_text}
-										})}</span>
-									<p class="fs-Body-2">{game.game_main_tag2name}</p>
-								</div>
-							</div>
+							</a>
 						</SwiperSlide>
 					))}
 
