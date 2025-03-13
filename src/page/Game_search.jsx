@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import CommendedGamesCard from "../layout/CommendedGamesCard";
 
@@ -48,6 +48,9 @@ function Game_search() {
   const [recommendedGames, setRecommendedGames] = useState([]);
   const [newedGames, setNewedGames] = useState([]);
   const [searchGames, setSearchGames] = useState([]);
+
+  // 建立一個 ref 指向搜尋區塊
+  const firstSectionRef = useRef(null);
 
   // axios拿到全部遊戲資料
   const getGames = async () => {
@@ -112,15 +115,15 @@ function Game_search() {
 
   const handleReset = () => {
     setSearch(formData);
-    console.log("Before setIsSearch:", isSearch);
     setIsSearch(false);
-    console.log("After setIsSearch:", isSearch);
   };
 
   // 監聽表單輸入況狀
   const handlEInputChange = (e) => {
     const { value, name } = e.target;
     if (name == "area" || name == "difficulty" || name == "property") {
+      console.log(value, name);
+
       setSearch((prev) => ({
         ...prev,
         [name]: prev[name].includes(value)
@@ -138,9 +141,7 @@ function Game_search() {
   // 處理篩選後的結果呈現
   const handleSerach = async (e) => {
     e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
-    console.log("Before handleSerach setIsSearch:", isSearch);
     setIsSearch(true);
-    console.log("After handleSerach setIsSearch:", isSearch);
     // 篩選資料
     const filteredGames = games.filter((game) => {
       // 遊戲名稱
@@ -188,6 +189,12 @@ function Game_search() {
       );
     });
 
+    console.log();
+    if (filteredGames.length === 0) {
+      setIsHaveResultGames(false);
+    } else if (filteredGames.length > 0) {
+      setIsHaveResultGames(true);
+    }
     // 排序資料
     setSearchGames(
       filteredGames.sort((a, b) => {
@@ -197,10 +204,13 @@ function Game_search() {
         } else if (search.order === "order_popularity") {
           return b.game_score_num - a.game_score_num;
         }
-
         return 0; // 如果沒有匹配的排序條件，返回原順序
       })
     );
+    // 搜尋完成後，利用 ref 捲動到搜尋區塊
+    if (firstSectionRef.current) {
+      firstSectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
@@ -282,6 +292,7 @@ function Game_search() {
                         placeholder="搜尋關鍵字"
                         aria-label="Search"
                         name="game_name"
+                        value={search.game_name}
                       />
                       <span className="input-group-text search-input border-0">
                         <a href="">
@@ -303,6 +314,7 @@ function Game_search() {
                           className="form-select d-md-none mb-md-6 mb-3 border  rounded-1  border-primary-black"
                           aria-label="Default select example"
                           name="area"
+                          value={search.area.length > 0 ? search.area[0] : ""}
                         >
                           <option defaultValue>請選擇遊玩地區</option>
                           {area.map((item, index) => (
@@ -328,6 +340,9 @@ function Game_search() {
                                     value={item.area_name}
                                     id={item.area_value}
                                     name="area"
+                                    checked={search.area.includes(
+                                      item.area_name
+                                    )}
                                   />
                                   <label
                                     className="form-check-label text-nowrap"
@@ -348,6 +363,7 @@ function Game_search() {
                                   value={item.area_name}
                                   id={item.area_value}
                                   name="area"
+                                  checked={search.area.includes(item.area_name)}
                                 />
                                 <label
                                   className="form-check-label text-nowrap"
@@ -369,6 +385,7 @@ function Game_search() {
                           className="form-select mb-md-6 mb-3 border  rounded-1  border-primary-black"
                           aria-label="Default select example"
                           name="game_people"
+                          value={search.game_people}
                         >
                           <option defaultValue>請選擇遊玩人數</option>
                           {Array.from({ length: Number(maxPeople) }).map(
@@ -395,6 +412,11 @@ function Game_search() {
                           className="form-select d-md-none mb-md-6 mb-3 border  rounded-1  border-primary-black"
                           aria-label="Default select example"
                           name="difficulty"
+                          value={
+                            search.difficulty.length > 0
+                              ? search.difficulty[0]
+                              : ""
+                          }
                         >
                           <option defaultValue>請選擇難度</option>
                           {difficultys.map((difficulty) => (
@@ -424,6 +446,9 @@ function Game_search() {
                                     value={difficulty.difficulty_id}
                                     id={difficulty.difficulty_id}
                                     name="difficulty"
+                                    checked={search.difficulty.includes(
+                                      String(difficulty.difficulty_id)
+                                    )}
                                   />
                                   <label
                                     className="form-check-label text-nowrap"
@@ -449,6 +474,9 @@ function Game_search() {
                                     value={difficulty.difficulty_id}
                                     id={difficulty.difficulty_id}
                                     name="difficulty"
+                                    checked={search.difficulty.includes(
+                                      String(difficulty.difficulty_id)
+                                    )}
                                   />
                                   <label
                                     className="form-check-label text-nowrap"
@@ -471,6 +499,9 @@ function Game_search() {
                           className="form-select d-md-none mb-md-6 mb-3 border  rounded-1  border-primary-black"
                           aria-label="Default select example"
                           name="property"
+                          value={
+                            search.property.length > 0 ? search.property[0] : ""
+                          }
                         >
                           <option defaultValue>請選擇主題類別</option>
                           {propertys.map((property) => (
@@ -500,6 +531,9 @@ function Game_search() {
                                     value={property.property_id}
                                     id={property.property_name}
                                     name="property"
+                                    checked={search.property.includes(
+                                      String(property.property_id)
+                                    )}
                                   />
                                   <label
                                     className="form-check-label text-nowrap"
@@ -525,6 +559,9 @@ function Game_search() {
                                     value={property.property_id}
                                     id={property.property_name}
                                     name="property"
+                                    checked={search.property.includes(
+                                      String(property.property_id)
+                                    )}
                                   />
                                   <label
                                     className="form-check-label text-nowrap"
@@ -556,7 +593,7 @@ function Game_search() {
               </div>
             </div>
             {/* <!-- 遊戲卡片 --> */}
-            <div className="col-md-9 p-0">
+            <div className="col-md-9 p-0" ref={firstSectionRef}>
               {isSearch ? (
                 <div className="search my-5 my-md-10 ">
                   <div className="title-container w-100  d-flex justify-content-center align-items-center">
@@ -564,11 +601,22 @@ function Game_search() {
                       依據您的搜尋/排序結果如下
                     </h3>
                   </div>
+
                   <div className="row m-0">
                     <div className="row m-0">
-                      {searchGames.map((game) => (
-                        <CommendedGamesCard game={game} />
-                      ))}
+                      {isHaveResultGames ? (
+                        searchGames.map((game) => (
+                          <CommendedGamesCard game={game} />
+                        ))
+                      ) : (
+                        <div className="text-center">
+                          <p className="h4">
+                            您輸入的條件未查詢到相符合結果
+                            <br />
+                            請放寬條件重新查詢
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
