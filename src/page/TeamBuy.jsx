@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import GroupCard from "../layout/GroupCard";
 
@@ -50,6 +50,9 @@ function TeamBuy() {
   const [recommendedGames, setRecommendedGames] = useState([]);
   const [newedGames, setNewedGames] = useState([]);
   const [searchGames, setSearchGames] = useState([]);
+
+  // 建立一個 ref 指向搜尋區塊
+  const firstSectionRef = useRef(null);
 
   // axios拿到全部遊戲資料
   const getGames = async () => {
@@ -193,6 +196,11 @@ function TeamBuy() {
         return 0; // 如果沒有匹配的排序條件，返回原順序
       })
     );
+
+    // 搜尋完成後，利用 ref 捲動到搜尋區塊
+    if (firstSectionRef.current) {
+      firstSectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   //根據共同的 ID關聯
@@ -321,7 +329,9 @@ function TeamBuy() {
                 <div className="search">
                   <p className="h5 pb-3  fw-bold">遊戲名稱</p>
                   <div className="search-all-group mb-6">
-                    <label htmlFor="" className="pb-1"></label>
+                    <label htmlFor="" className="pb-1">
+                      搜尋
+                    </label>
                     <div className=" input-group search-group border  rounded-1  border-primary-black">
                       <input
                         onChange={handlEInputChange}
@@ -330,6 +340,7 @@ function TeamBuy() {
                         placeholder="搜尋關鍵字"
                         aria-label="Search"
                         name="game_name"
+                        value={search.game_name}
                       />
                       <span className="input-group-text search-input border-0">
                         <a href="">
@@ -351,6 +362,7 @@ function TeamBuy() {
                           className="form-select d-md-none mb-md-6 mb-3 border  rounded-1  border-primary-black"
                           aria-label="Default select example"
                           name="area"
+                          value={search.area.length > 0 ? search.area[0] : ""}
                         >
                           <option defaultValue>請選擇遊玩地區</option>
                           {area.map((item, index) => (
@@ -376,6 +388,9 @@ function TeamBuy() {
                                     value={item.area_name}
                                     id={item.area_value}
                                     name="area"
+                                    checked={search.area.includes(
+                                      item.area_name
+                                    )}
                                   />
                                   <label
                                     className="form-check-label text-nowrap"
@@ -396,6 +411,7 @@ function TeamBuy() {
                                   value={item.area_name}
                                   id={item.area_value}
                                   name="area"
+                                  checked={search.area.includes(item.area_name)}
                                 />
                                 <label
                                   className="form-check-label text-nowrap"
@@ -417,6 +433,7 @@ function TeamBuy() {
                           className="form-select mb-md-6 mb-3 border  rounded-1  border-primary-black"
                           aria-label="Default select example"
                           name="game_people"
+                          value={search.game_people}
                         >
                           <option defaultValue>請選擇遊玩人數</option>
                           {Array.from({ length: Number(maxPeople) }).map(
@@ -443,6 +460,11 @@ function TeamBuy() {
                           className="form-select d-md-none mb-md-6 mb-3 border  rounded-1  border-primary-black"
                           aria-label="Default select example"
                           name="difficulty"
+                          value={
+                            search.difficulty.length > 0
+                              ? search.difficulty[0]
+                              : ""
+                          }
                         >
                           <option defaultValue>請選擇難度</option>
                           {difficultys.map((difficulty) => (
@@ -472,6 +494,9 @@ function TeamBuy() {
                                     value={difficulty.difficulty_id}
                                     id={difficulty.difficulty_id}
                                     name="difficulty"
+                                    checked={search.difficulty.includes(
+                                      String(difficulty.difficulty_id)
+                                    )}
                                   />
                                   <label
                                     className="form-check-label text-nowrap"
@@ -497,6 +522,9 @@ function TeamBuy() {
                                     value={difficulty.difficulty_id}
                                     id={difficulty.difficulty_id}
                                     name="difficulty"
+                                    checked={search.difficulty.includes(
+                                      String(difficulty.difficulty_id)
+                                    )}
                                   />
                                   <label
                                     className="form-check-label text-nowrap"
@@ -519,6 +547,9 @@ function TeamBuy() {
                           className="form-select d-md-none mb-md-6 mb-3 border  rounded-1  border-primary-black"
                           aria-label="Default select example"
                           name="property"
+                          value={
+                            search.property.length > 0 ? search.property[0] : ""
+                          }
                         >
                           <option defaultValue>請選擇主題類別</option>
                           {propertys.map((property) => (
@@ -548,6 +579,9 @@ function TeamBuy() {
                                     value={property.property_id}
                                     id={property.property_name}
                                     name="property"
+                                    checked={search.property.includes(
+                                      String(property.property_id)
+                                    )}
                                   />
                                   <label
                                     className="form-check-label text-nowrap"
@@ -573,6 +607,9 @@ function TeamBuy() {
                                     value={property.property_id}
                                     id={property.property_name}
                                     name="property"
+                                    checked={search.property.includes(
+                                      String(property.property_id)
+                                    )}
                                   />
                                   <label
                                     className="form-check-label text-nowrap"
@@ -604,7 +641,7 @@ function TeamBuy() {
               </div>
             </div>
             {/* <!-- 遊戲卡片 --> */}
-            <div className="col-md-9 p-0">
+            <div className="col-md-9 p-0" ref={firstSectionRef}>
               {isSearch ? (
                 <div className="search my-5 my-md-10 ">
                   <div className="title-container w-100  d-flex justify-content-center align-items-center">
