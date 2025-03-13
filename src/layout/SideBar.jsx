@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import { FaChevronDown, FaChevronLeft } from "react-icons/fa";
 
 const MenuBookIcon = () => (
   <span className="material-symbols-outlined">menu_book</span>
@@ -21,7 +20,7 @@ const SportsEsports = () => (
 const Groups = () => <span className="material-symbols-outlined">groups</span>;
 
 const CustomSidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   const menuItemStyles = {
     root: {
@@ -53,18 +52,12 @@ const CustomSidebar = () => {
     <div className="sidebar">
       <Sidebar
         collapsed={collapsed}
-        backgroundColor="#006684"
         width="250px"
+        backgroundColor="#006684"
         collapsedWidth="80px"
-        marginTop="56px"
+        onMouseEnter={() => setCollapsed(false)}
+        onMouseLeave={() => setCollapsed(true)}
       >
-        <div
-          className={`sidebar-toggle ${collapsed ? "collapsed" : ""}`}
-          onClick={() => setCollapsed(!collapsed)}
-        >
-          <FaChevronLeft />
-        </div>
-
         <Menu menuItemStyles={menuItemStyles}>
           <SubMenu icon={<MenuBookIcon />} label="會員管理">
             <MenuItem icon={<AccountCircle />}>會員</MenuItem>

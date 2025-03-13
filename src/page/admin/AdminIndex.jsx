@@ -1,6 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import * as React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { TableVirtuoso } from "react-virtuoso";
+
 function AdminIndex() {
   // TODO 使用真實資料，目前因為資料沒有審核狀態與建立時間，所以先用假資料
   const [data, setData] = useState([
@@ -236,13 +246,9 @@ function AdminIndex() {
             </button>
           </div>
         </div>
-        <div
-          className="table container-fluid overflow-auto bg-white p-6 border rounded-2 border-nature-90"
-          style={{ maxHeight: "528px" }}
-        >
+        <div className="table container-fluid overflow-auto bg-white p-6 border rounded-2 border-nature-90">
           <table className="storeTable w-100">
             <thead>
-              {/* TODO 固定標頭，不會隨著滾動消失 */}
               <tr>
                 <th className="px-4 py-3">ID</th>
                 <th className="px-4 py-3">店家名稱</th>
@@ -298,5 +304,44 @@ const getStatusBadgeStyle = (status) => {
       return "bg-gray-100 text-gray-700";
   }
 };
+
+const columns = [
+  {
+    width: 100,
+    label: "ID",
+    dataKey: "ID",
+  },
+  {
+    width: 100,
+    label: "店家名稱",
+    dataKey: "storeName",
+  },
+  {
+    width: 50,
+    label: "聯絡人",
+    dataKey: "contact",
+    numeric: true,
+  },
+  {
+    width: 110,
+    label: "聯絡電話",
+    dataKey: "phone",
+  },
+  {
+    width: 130,
+    label: "審核狀態",
+    dataKey: "status",
+  },
+  {
+    width: 130,
+    label: "建立時間",
+    dataKey: "createdAt",
+  },
+  {
+    width: 50,
+    label: "",
+    dataKey: "action",
+  },
+];
 
 export default AdminIndex;

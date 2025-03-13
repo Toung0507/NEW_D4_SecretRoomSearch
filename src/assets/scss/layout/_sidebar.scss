@@ -1,8 +1,7 @@
 .sidebar {
-  position: fixed;
-  z-index: 10;
+  // position: fixed;
+  // z-index: 10;
   display: flex;
-  height: 100%;
 }
 
 .ps-submenu-expand-icon span {
@@ -10,5 +9,22 @@
   height: 10px !important;
 }
 
+.ps-sidebar-root.css-1wvake5 {
+  position: fixed;
+}
+
+.ps-sidebar-container {
+  padding-top: 56px;
+  padding-bottom: 20px;
+  border-radius: 0 20px 20px 0;
+}
+
 .sidebar-toggle {
+  position: fixed;
+  top: 115px;
+  left: 270px;
+
+  .material-symbols-outlined {
+    font-style: 30px;
+  }
 }
