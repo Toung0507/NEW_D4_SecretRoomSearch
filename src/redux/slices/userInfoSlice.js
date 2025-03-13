@@ -20,6 +20,10 @@ const userInfoSlice = createSlice({
             state.user_token = null;
             state.user = null;
         },
+        updateUser: (state, action) => {
+            state.user = action.payload;
+            localStorage.setItem("user", JSON.stringify(action.payload));
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -61,6 +65,6 @@ export const getUserInfoAsyncThunk = createAsyncThunk(
     },
 );
 
-export const { logOut } = userInfoSlice.actions;
+export const { logOut, updateUser } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;

@@ -1,170 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import VirtualizedTable from "../../layout/VirtualizedTable";
+import axios from "axios";
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function AdminIndex() {
-  // TODO 使用真實資料，目前因為資料沒有審核狀態與建立時間，所以先用假資料
-  const [data, setData] = useState([
+  const [storeData, setStoreData] = useState([]);
+  const [tableData, setTableData] = useState([]);
+  const labels = [
     {
-      id: 1,
-      name: "笨蛋工作室密室逃脫",
-      contact: "張碩家",
-      phone: "0912345678",
-      status: "處理中",
-      createdAt: "2024-09-26 10:10:02",
+      width: 50,
+      label: "ID",
+      dataKey: "ID",
     },
     {
-      id: 2,
-      name: "FunkLock 放樂工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-09-30 23:02:55",
+      width: 250,
+      label: "店家名稱",
+      dataKey: "storeName",
     },
     {
-      id: 3,
-      name: "神不在場實境遊戲",
-      contact: "張碩家",
-      phone: "0912345678",
-      status: "已退回",
-      createdAt: "2024-11-13 10:10:02",
+      width: 100,
+      label: "聯絡人",
+      dataKey: "contact",
     },
     {
-      id: 4,
-      name: "LoGin密室逃脫",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "處理中",
-      createdAt: "2024-11-26 13:20:55",
+      width: 200,
+      label: "聯絡電話",
+      dataKey: "phone",
+      // numeric: true,
     },
     {
-      id: 5,
-      name: "智慧獵人",
-      contact: "張碩家",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-03 01:10:02",
+      width: 200,
+      label: "審核狀態",
+      dataKey: "status",
     },
     {
-      id: 6,
-      name: "頂級豬排遊戲工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-12 23:02:55",
+      width: 200,
+      label: "建立時間",
+      dataKey: "createdAt",
     },
     {
-      id: 7,
-      name: "頂級豬排遊戲工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-12 23:02:55",
+      width: 50,
+      label: "",
+      dataKey: "action",
     },
-    {
-      id: 8,
-      name: "頂級豬排遊戲工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-12 23:02:55",
-    },
-    {
-      id: 9,
-      name: "頂級豬排遊戲工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-12 23:02:55",
-    },
-    {
-      id: 10,
-      name: "頂級豬排遊戲工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-12 23:02:55",
-    },
-    {
-      id: 11,
-      name: "笨蛋工作室密室逃脫",
-      contact: "張碩家",
-      phone: "0912345678",
-      status: "處理中",
-      createdAt: "2024-09-26 10:10:02",
-    },
-    {
-      id: 12,
-      name: "FunkLock 放樂工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-09-30 23:02:55",
-    },
-    {
-      id: 13,
-      name: "神不在場實境遊戲",
-      contact: "張碩家",
-      phone: "0912345678",
-      status: "已退回",
-      createdAt: "2024-11-13 10:10:02",
-    },
-    {
-      id: 14,
-      name: "LoGin密室逃脫",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "處理中",
-      createdAt: "2024-11-26 13:20:55",
-    },
-    {
-      id: 15,
-      name: "智慧獵人",
-      contact: "張碩家",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-03 01:10:02",
-    },
-    {
-      id: 16,
-      name: "頂級豬排遊戲工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-12 23:02:55",
-    },
-    {
-      id: 17,
-      name: "頂級豬排遊戲工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-12 23:02:55",
-    },
-    {
-      id: 18,
-      name: "頂級豬排遊戲工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-12 23:02:55",
-    },
-    {
-      id: 19,
-      name: "頂級豬排遊戲工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-12 23:02:55",
-    },
-    {
-      id: 20,
-      name: "頂級豬排遊戲工作室",
-      contact: "李珮謙",
-      phone: "0912345678",
-      status: "通過",
-      createdAt: "2024-12-12 23:02:55",
-    },
-  ]);
+  ];
+
+  useEffect(() => {
+    const getStoreData = async () => {
+      const res = await axios.get(`${BASE_URL}/storesData`);
+      setStoreData(res.data);
+    };
+    getStoreData();
+  }, []);
+
+  useEffect(() => {
+    const newTableData = storeData.map((item, index) => ({
+      ID: index + 1,
+      storeName: item.store_name,
+      contact: item.store_contact,
+      phone: item.store_self_tel,
+      status: item.store_isAuth,
+      createdAt: item.store_create_at,
+    }));
+    setTableData(newTableData);
+  }, [storeData]);
 
   return (
     <div className="admin-bg">
@@ -236,67 +137,66 @@ function AdminIndex() {
             </button>
           </div>
         </div>
-        <div
-          className="table container-fluid overflow-auto bg-white p-6 border rounded-2 border-nature-90"
-          style={{ maxHeight: "528px" }}
-        >
-          <table className="storeTable w-100">
-            <thead>
-              {/* TODO 固定標頭，不會隨著滾動消失 */}
-              <tr>
-                <th className="px-4 py-3">ID</th>
-                <th className="px-4 py-3">店家名稱</th>
-                <th className="px-4 py-3">聯絡人</th>
-                <th className="px-4 py-3">聯絡電話</th>
-                <th className="px-4 py-3">審核狀態</th>
-                <th className="px-4 py-3">建立時間</th>
-                <th className="px-4 py-3"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row) => (
-                <tr key={row.id}>
-                  <td className="py-2 px-4">{row.id}</td>
-                  <td className="py-2 px-4">{row.name}</td>
-                  <td className="py-2 px-4">{row.contact}</td>
-                  <td className="py-2 px-4">{row.phone}</td>
-                  <td className="py-2 px-4 text-sm">
-                    <div
-                      className={`px-3 py-1 rounded-full text-black ${getStatusBadgeStyle(
-                        row.status
-                      )}`}
-                    >
-                      {row.status}
-                    </div>
-                  </td>
-                  <td className="py-2 px-4">{row.createdAt}</td>
-                  <td className="py-2 px-4">
-                    <button className="edit-btn d-flex justify-content-center align-items-center">
-                      <span className="material-symbols-outlined">edit</span>
-                    </button>
-                  </td>
+        <div className="table-container bg-white border rounded-2 border-nature-90 p-6">
+          <div className="table-scroll-container overflow-scroll">
+            <table className="storeTable w-100">
+              <thead>
+                <tr>
+                  <th className="px-4 py-3">ID</th>
+                  <th className="px-4 py-3">店家名稱</th>
+                  <th className="px-4 py-3">聯絡人</th>
+                  <th className="px-4 py-3">聯絡電話</th>
+                  <th className="px-4 py-3">審核狀態</th>
+                  <th className="px-4 py-3">建立時間</th>
+                  <th className="px-4 py-3"></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {storeData.map((row) => (
+                  <tr key={row.store_id}>
+                    <td className="py-2 px-4">{row.store_id}</td>
+                    <td className="py-2 px-4">{row.store_name}</td>
+                    <td className="py-2 px-4">{row.store_contact}</td>
+                    <td className="py-2 px-4">{row.store_self_tel}</td>
+                    <td className="py-2 px-4">
+                      <span
+                        className={`px-2 py-1 rounded-2 text-black ${getStatusBadgeStyle(
+                          row.store_isAuth
+                        )}`}
+                      >
+                        {row.store_isAuth === "processing" ? "處理中" : ""}
+                        {row.store_isAuth === "pass" ? "通過" : ""}
+                        {row.store_isAuth === "rejected" ? "已退回" : ""}
+                      </span>
+                    </td>
+                    <td className="py-2 px-4">{row.store_create_at}</td>
+                    <td className="py-2 px-4">
+                      <button className="edit-btn d-flex justify-content-center align-items-center">
+                        <span className="material-symbols-outlined">edit</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// Function to get the status badge style based on status
+export default AdminIndex;
+
 const getStatusBadgeStyle = (status) => {
   switch (status) {
-    case "處理中":
+    case "processing":
       return "bg-secondary-95";
-    case "通過":
-      return "bg-green-100 text-green-700";
-    case "已退回":
-      return "bg-pink-100 text-pink-700";
+    case "pass":
+      return "bg-green-100";
+    case "rejected":
+      return "bg-pink-100";
     default:
-      return "bg-gray-100 text-gray-700";
+      return "bg-gray-100";
   }
 };
-
-export default AdminIndex;
