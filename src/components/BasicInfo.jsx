@@ -283,10 +283,9 @@ const BasicInfo = () => {
                                         <FaGoogle size={24} />
                                     </div>
                                 </div>
-
                             </form>
-                            {/* 按鈕區 */}
                         </div>
+                        {/* 按鈕區 */}
                         <div className="ps-6 py-4 border-nature-90 border-1 border-top">
                             <div className="btn_2 d-flex  text-center ">
                                 <button type="reset" className="btn bg-nature-60 text-white me-6" disabled={!isFormChanged} form="userinfoform">
