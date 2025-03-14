@@ -51,14 +51,6 @@ function TeamBuyComment() {
       return;
     }
 
-    // if (
-    //   group &&
-    //   group.group_participants &&
-    //   group.group_participants.includes(user.user_id)
-    // ) {
-    //   setInfoMessage("已重複加入");
-    //   return;
-    // }
     // 若未重複，則將 user.user_id 加入群組 participants 陣列中
     try {
       const newParticipants =
@@ -66,27 +58,13 @@ function TeamBuyComment() {
           ? [...group.group_participants, user.user_id]
           : [user.user_id];
 
-      // const newParticipants =
-      //   group && group.group_participants
-      //     ? [...group.group_participants, user.user_id]
-      //     : [user.user_id];
-
       const res = await axios.patch(`${BASE_URL}/groupsData/${group_id}`, {
         group_participants: newParticipants,
       });
-      // 若 API PATCH 回傳資料有問題，也可呼叫 getGroup() 重新取得最新資料
-      if (res.data) {
-        setGroup(res.data);
-      } else {
-        // 重新取得最新群組資料
-        const refreshed = await axios.get(`${BASE_URL}/groupsData/${group_id}`);
-        setGroup(refreshed.data);
-      }
-      setInfoMessage("報名完成");
+      console.log(res.data);
 
-      // console.log(res.data);
-      // setGroup(res.data);
-      // setInfoMessage("報名完成");
+      await getGroup();
+      setInfoMessage("報名完成");
     } catch (error) {
       console.error(error);
       setInfoMessage("報名失敗，請稍後再試");
@@ -130,7 +108,7 @@ function TeamBuyComment() {
   };
 
   useEffect(() => {
-    getGroup();
+    //getGroup();
     getGames();
     getUsers();
     getPriceData();
@@ -294,7 +272,24 @@ function TeamBuyComment() {
                       </th>
                     </tr>
                     <tr>
-                      <td colSpan="3">{group.group_participants}</td>
+                      {/* <td colSpan="3">{group.group_participants}</td> */}
+                      <td colSpan="3">
+                        {group.group_participants &&
+                        group.group_participants.length > 0
+                          ? group.group_participants.map((userId, index) => {
+                              const participant = users.find(
+                                (u) => u.user_id === userId
+                              );
+                              return (
+                                <span key={userId}>
+                                  {participant ? participant.user_name : userId}
+                                  {index !==
+                                    group.group_participants.length - 1 && ", "}
+                                </span>
+                              );
+                            })
+                          : "尚無參與者"}
+                      </td>
                     </tr>
                     <tr>
                       <td colSpan="3">
@@ -313,13 +308,24 @@ function TeamBuyComment() {
                     </tr>
                     <tr>
                       <td className="my-5" colSpan="3">
-                        <span
-                          className="d-inline-block"
-                          tabIndex="0"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="right"
-                          title="請先登入"
-                        >
+                        {!user || !user_token ? (
+                          <span
+                            className="d-inline-block"
+                            tabIndex="0"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="請先登入"
+                          >
+                            <button
+                              type="button"
+                              className="btn btn-secondary-60 text-white px-17 py-2"
+                              onClick={changeGroup}
+                              disabled={!user || !user_token}
+                            >
+                              我要參加
+                            </button>
+                          </span>
+                        ) : (
                           <button
                             type="button"
                             className="btn btn-secondary-60 text-white px-17 py-2"
@@ -328,7 +334,7 @@ function TeamBuyComment() {
                           >
                             我要參加
                           </button>
-                        </span>
+                        )}
                       </td>
                     </tr>
                   </tbody>
