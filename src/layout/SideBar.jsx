@@ -1,5 +1,5 @@
-import { menuItemClasses } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 
 const MenuBookIcon = () => (
@@ -22,6 +22,13 @@ const Groups = () => <span className="material-symbols-outlined">groups</span>;
 
 const CustomSidebar = () => {
   const [collapsed, setCollapsed] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation(); // 取得當前路徑
+
+  // 檢查路徑是否匹配特定模式
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
 
   const menuItemStyles = {
     root: {
@@ -53,13 +60,35 @@ const CustomSidebar = () => {
       >
         <Menu menuItemStyles={menuItemStyles}>
           <SubMenu icon={<MenuBookIcon />} label="會員管理">
-            <MenuItem icon={<AccountCircle />}>會員</MenuItem>
-            <MenuItem icon={<StoreFront />} active={true}>
+            <MenuItem
+              icon={<AccountCircle />}
+              active={isActive("/Admin/User")}
+              onClick={() => navigate("/Admin/User")}
+            >
+              會員
+            </MenuItem>
+            <MenuItem
+              icon={<StoreFront />}
+              active={isActive("/Admin")}
+              onClick={() => navigate("/Admin")}
+            >
               店家
             </MenuItem>
           </SubMenu>
-          <MenuItem icon={<SportsEsports />}>密室資料</MenuItem>
-          <MenuItem icon={<Groups />}>揪團資料</MenuItem>
+          <MenuItem
+            icon={<SportsEsports />}
+            active={isActive("/Admin/Game")}
+            onClick={() => navigate("/Admin/Game")}
+          >
+            密室資料
+          </MenuItem>
+          <MenuItem
+            icon={<Groups />}
+            active={isActive("/Admin/Group")}
+            onClick={() => navigate("/Admin/Group")}
+          >
+            揪團資料
+          </MenuItem>
         </Menu>
       </Sidebar>
     </div>

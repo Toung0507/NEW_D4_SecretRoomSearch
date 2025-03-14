@@ -269,7 +269,7 @@ function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmi
                                     </form>
                                     <form className="text-start" onSubmit={onSubmitStore} id="storeForm" ref={storeFormRef}>
                                         <div className="row mb-3">
-                                            <label htmlFor="store_contact" className="col-sm-2 col-form-label formrequired">聯絡人</label>
+                                            <label htmlFor="store_self_address" className="col-sm-2 col-form-label formrequired">店家地址</label>
                                             <div className="col-sm-10">
                                                 < AddressForm onChange={(fullAddress) => setValue("store_self_address", fullAddress)} />
                                                 <input
@@ -294,7 +294,7 @@ function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmi
                                             <div className="col-sm-10">
                                                 <input
                                                     {...store('store_contact', {
-                                                        required: "店家名稱欄位必填",
+                                                        required: "聯絡人欄位必填",
                                                     })}
                                                     type="text"
                                                     className={`form-control ${storeErrors.store_contact && 'is-invalid'}`}

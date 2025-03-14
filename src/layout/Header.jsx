@@ -37,11 +37,13 @@ function Header() {
     { path: `/User_profile/${user_id}/myComments`, name: "我的評論" },
   ];
 
-  //這是店家會員的下拉式選單，請Toung補上path
-  const storeBtn = [
-    { path: `/User_profile/${user_id}`, name: "個人資料" }, //path先亂填，後續再補
-    { path: "/3", name: "我的密室" },
-  ];
+
+    //這是店家會員的下拉式選單，請Toung補上path
+    const storeBtn = [
+        { path: `/Store_profile/${user_id}/basicStoreInfo`, name: "個人資料" }, //path先亂填，後續再補
+        { path: `/Store_profile/${user_id}/myGames`, name: "我的密室" },
+    ];
+
 
   const [show, setShow] = useState(false);
 
