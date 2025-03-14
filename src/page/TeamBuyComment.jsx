@@ -2,19 +2,89 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import GroupCard from "../layout/GroupCard";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function TeamBuyComment() {
-  const [group, setGroup] = useState([]);
-  const [games, setGames] = useState([]);
+  const [group, setGroup] = useState(null);
+  const [games, setGames] = useState(null);
   const [users, setUsers] = useState([]);
   const [price, setPrice] = useState(null);
   const [infoMessage, setInfoMessage] = useState(""); // 用來顯示訊息
+  const [groupsList, setGroupsList] = useState([]);
 
   const { group_id } = useParams();
 
   const { user, user_token } = useSelector((state) => state.userInfo);
+
+  // 初始載入群組資料
+  useEffect(() => {
+    const fetchGroup = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/groupsData/${group_id}`);
+        setGroup(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchGroup();
+  }, [group_id]);
+
+  // 取得所有群組資料，作為推薦來源
+  useEffect(() => {
+    const fetchGroupsList = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/groupsData`);
+        setGroupsList(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchGroupsList();
+  }, []);
+
+  const changeGroup = async () => {
+    // 檢查是否登入
+    if (!user || !user_token) {
+      setInfoMessage("請先登入");
+      return;
+    }
+
+    // 如果群組資料還沒抓到就不做任何操作
+    if (!group) {
+      setInfoMessage("群組資料讀取中，請稍後再試");
+      return;
+    }
+
+    // 檢查群組中是否已存在該 user_id
+    if (
+      group.group_participants &&
+      group.group_participants.map(String).includes(String(user.user_id))
+    ) {
+      setInfoMessage("已重複加入");
+      return;
+    }
+
+    // 若未重複，則將 user.user_id 加入群組 participants 陣列中
+    try {
+      const newParticipants =
+        group.group_participants && Array.isArray(group.group_participants)
+          ? [...group.group_participants, user.user_id]
+          : [user.user_id];
+
+      const res = await axios.patch(`${BASE_URL}/groupsData/${group_id}`, {
+        group_participants: newParticipants,
+      });
+      console.log(res.data);
+
+      await getGroup();
+      setInfoMessage("報名完成");
+    } catch (error) {
+      console.error(error);
+      setInfoMessage("報名失敗，請稍後再試");
+    }
+  };
 
   const getGroup = async () => {
     try {
@@ -52,41 +122,8 @@ function TeamBuyComment() {
     }
   };
 
-  const changeGroup = async () => {
-    // 檢查是否登入
-    if (!user || !user_token) {
-      setInfoMessage("請先登入");
-      return;
-    }
-
-    // 檢查群組中是否已存在該 user_id
-    if (
-      group &&
-      group.group_participants &&
-      group.group_participants.includes(user.user_id)
-    ) {
-      setInfoMessage("已重複加入");
-      return;
-    }
-    try {
-      // 檢查是否已有 group_participants 資料，若有則追加，若無則初始化成陣列
-      const newParticipants =
-        group && group.group_participants
-          ? [...group.group_participants, userInfo.user_id]
-          : [userInfo.user_id];
-
-      const res = await axios.patch(`${BASE_URL}/groupsData/${group_id}`, {
-        group_participants: newParticipants,
-      });
-      console.log(res.data);
-      // setGroup(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    getGroup();
+    //getGroup();
     getGames();
     getUsers();
     getPriceData();
@@ -94,7 +131,7 @@ function TeamBuyComment() {
 
   // 資料尚未載入時，顯示 Loading
   if (!group) return <div>Loading...</div>;
-  if (!games.length) return <div>Loading games data...</div>;
+  if (!games?.length) return <div>Loading games data...</div>;
   if (!price) return <div>Loading...</div>;
 
   const gameInfo = games.find((game) => game.game_id === group.game_id);
@@ -105,8 +142,8 @@ function TeamBuyComment() {
     <>
       <div className="container-fluid container-lg">
         <div className="row d-flex justify-content-center">
-          <div className="col-xl-10">
-            <div className="mt-9 mb-6">
+          <div className="col-xl-10 mt-9 mb-20">
+            <div className="mb-6">
               <h2 className="fs-h2 fw-bold">
                 {`${group.group_active_date}`}
                 {group.game_address?.slice(0, 3)}
@@ -250,7 +287,24 @@ function TeamBuyComment() {
                       </th>
                     </tr>
                     <tr>
-                      <td colSpan="3">{group.group_participants}</td>
+                      {/* <td colSpan="3">{group.group_participants}</td> */}
+                      <td colSpan="3">
+                        {group.group_participants &&
+                        group.group_participants.length > 0
+                          ? group.group_participants.map((userId, index) => {
+                              const participant = users.find(
+                                (u) => u.user_id === userId
+                              );
+                              return (
+                                <span key={userId}>
+                                  {participant ? participant.user_name : userId}
+                                  {index !==
+                                    group.group_participants.length - 1 && ", "}
+                                </span>
+                              );
+                            })
+                          : "尚無參與者"}
+                      </td>
                     </tr>
                     <tr>
                       <td colSpan="3">
@@ -268,41 +322,41 @@ function TeamBuyComment() {
                       </td>
                     </tr>
                     <tr>
-                      {/* <td className="my-5" colSpan="3">
-                        <button
-                          type="button"
-                          className="btn btn-secondary-60 text-white px-17 py-2"
-                          onClick={changeGroup}
-                        >
-                          我要參加
-                        </button>
-                      </td> */}
                       <td className="my-5" colSpan="3">
-                        <span
-                          className="d-inline-block"
-                          tabIndex="0"
-                          data-bs-toggle="tooltip"
-                          title="Disabled tooltip"
-                        >
+                        {!user || !user_token ? (
+                          <span
+                            className="d-inline-block"
+                            tabIndex="0"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="請先登入"
+                          >
+                            <button
+                              type="button"
+                              className="btn btn-secondary-60 text-white px-17 py-2"
+                              onClick={changeGroup}
+                              disabled={!user || !user_token}
+                            >
+                              我要參加
+                            </button>
+                          </span>
+                        ) : (
                           <button
                             type="button"
                             className="btn btn-secondary-60 text-white px-17 py-2"
                             onClick={changeGroup}
                             disabled={!user || !user_token}
-                            // data-bs-toggle="tooltip"
-                            // data-bs-placement="right"
-                            // title="Tooltip on right"
                           >
                             我要參加
                           </button>
-                        </span>
+                        )}
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-            {/* {infoMessage && (
+            {infoMessage && (
               <div className="container-fluid container-lg">
                 <div className="row d-flex justify-content-center">
                   <div className="col-xl-10">
@@ -312,7 +366,70 @@ function TeamBuyComment() {
                   </div>
                 </div>
               </div>
-            )} */}
+            )}
+            <div className="row m-0 mt-3">
+              <div className="title-container w-100 d-flex justify-content-center align-items-center">
+                <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
+                  相關推薦
+                </h3>
+              </div>
+              {(() => {
+                // 取得當前群組對應的遊戲資訊
+                const currentGameInfo = games.find(
+                  (g) => g.game_id === group.game_id
+                );
+                if (!currentGameInfo) return null; // 如果當前群組遊戲資訊不存在，就不顯示推薦
+
+                // 過濾推薦：排除當前群組，並比對 tag（從 games 陣列中取得各推薦群組的遊戲資訊）
+                const recommendedGroups = groupsList
+                  .filter((item) => {
+                    // 排除當前群組
+                    if (String(item.group_id) === String(group_id))
+                      return false;
+
+                    // 取得該推薦群組的遊戲資訊
+                    const groupGame = games.find(
+                      (g) => g.game_id === item.game_id
+                    );
+                    if (!groupGame) return false;
+
+                    // 比對三個 tag，只要其中一個符合就算符合
+                    const matchDiff =
+                      groupGame.game_dif_tagname &&
+                      currentGameInfo.game_dif_tagname &&
+                      groupGame.game_dif_tagname ===
+                        currentGameInfo.game_dif_tagname;
+                    const matchMain1 =
+                      groupGame.game_main_tag1name &&
+                      currentGameInfo.game_main_tag1name &&
+                      groupGame.game_main_tag1name ===
+                        currentGameInfo.game_main_tag1name;
+                    const matchMain2 =
+                      groupGame.game_main_tag2name &&
+                      currentGameInfo.game_main_tag2name &&
+                      groupGame.game_main_tag2name ===
+                        currentGameInfo.game_main_tag2name;
+
+                    return matchDiff || matchMain1 || matchMain2;
+                  })
+                  .slice(0, 4);
+
+                return recommendedGroups.map((item) => {
+                  // 取得推薦群組的遊戲與使用者資訊
+                  const groupGame = games.find(
+                    (g) => g.game_id === item.game_id
+                  );
+                  return (
+                    <GroupCard
+                      key={item.group_id}
+                      game={groupGame}
+                      group={item}
+                      user={item.user || {}}
+                    />
+                  );
+                });
+              })()}
+            </div>
           </div>
         </div>
       </div>
