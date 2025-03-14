@@ -16,7 +16,7 @@
 }
 
 .table-scroll-container {
-  max-height: 60vh;
+  max-height: 55vh;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -35,7 +35,6 @@
 .storeTable thead th {
   position: sticky;
   top: 0;
-  background: #fff;
   z-index: 1;
 }
 
