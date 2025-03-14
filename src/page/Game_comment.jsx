@@ -38,28 +38,6 @@ function Game_comment() {
     },
   });
 
-  // 根據 mode 判斷該載入遊戲資料或評論資料
-  // useEffect(() => {
-  //   // 先取得遊戲資料
-  //   fetchGameData(Number(id));
-  //   fetchCommentData(Number(id));
-  //   // 瀏覽器捲動到頂端
-  //   window.scrollTo(0, 0);
-  // }, [mode, id]);
-
-  // useEffect(() => {
-  //   // 先取得遊戲資料
-  //   fetchGameData(Number(id));
-  //   // 進入 new 模式後，檢查是否已有該使用者對此遊戲的評論
-  //   if (mode === "new") {
-  //     fetchUserComment(Number(id));
-  //   } else if (mode === "edit") {
-  //     // 若進入 edit 模式（直接從 URL 帶入 comment_id），直接取得評論資料
-  //     fetchCommentData(Number(id));
-  //   }
-  //   window.scrollTo(0, 0);
-  // }, [id, mode]);
-
   useEffect(() => {
     // 先從三個 API 同時取得相關資料
     fetchRelatedData();
@@ -123,18 +101,6 @@ function Game_comment() {
     }
   };
 
-  // const fetchGameData = async (gameId) => {
-  //   try {
-  //     const res = await axios.get(`${BASE_URL}/gamesData/${gameId}`);
-  //     const data = res.data;
-  //     // 只取第一張圖片
-  //     data.game_img = data.game_img[0];
-  //     setGamesData(data);
-  //   } catch (error) {
-  //     console.error("取得遊戲資料錯誤：", error);
-  //   }
-  // };
-
   // 單獨取得遊戲資料（若整合資料中尚未取得或需要補充）
   const fetchGameData = async (gameId) => {
     try {
@@ -148,64 +114,6 @@ function Game_comment() {
       console.error("取得遊戲資料錯誤：", error);
     }
   };
-
-  // // 從所有評論中找出符合使用者與遊戲關聯的評論資料
-  // const fetchUserComment = async (gameId) => {
-  //   try {
-  //     const res = await axios.get(`${BASE_URL}/commentsData`);
-  //     console.log("所有評論資料：", res.data);
-  //     // 假設後端回傳的是一個陣列
-  //     const comments = res.data;
-  //     const matchedComment = comments.find(
-  //       (comment) =>
-  //         comment.game_id === Number(gameId) && comment.user_id === user.user_id
-  //     );
-  //     if (matchedComment) {
-  //       console.log("找到符合的評論資料：", matchedComment);
-  //       // 自動重新導向到 edit 模式，並使用評論的識別碼作為 URL 的 id
-  //       navigate(`/Game_comment/edit/${matchedComment.comment_id}`, {
-  //         replace: true,
-  //       });
-  //     } else {
-  //       console.log("找不到符合的評論資料，維持新增模式");
-  //     }
-  //   } catch (error) {
-  //     console.error("取得評論資料錯誤：", error);
-  //   }
-  // };
-
-  // const fetchCommentData = async (commentId) => {
-  //   try {
-  //     const res = await axios.get(`${BASE_URL}/commentsData/${commentId}`);
-  //     console.log("取得的評論資料：", res.data);
-  //     const data = res.data;
-  //     // 同時支援 comment_id 或 id 屬性
-  //     const cid = data.comment_id || data.id;
-  //     if (
-  //       cid &&
-  //       data.user_id === user.user_id &&
-  //       data.game_id === Number(gameData?.game_id || id)
-  //     ) {
-  //       setCurrentMode("edit");
-  //       setCommentData(data);
-  //       // 重設表單初始值
-  //       reset({
-  //         coment_star: data.coment_star,
-  //         game_id: data.game_id,
-  //         user_id: data.user_id,
-  //         comment_isPass: data.comment_isPass,
-  //         comment_isSpoilered: data.comment_isSpoilered,
-  //         coment_content: data.coment_content,
-  //         // 假設日期格式為 ISO 格式
-  //         commet_played_time: data.commet_played_time.slice(0, 10),
-  //       });
-  //     } else {
-  //       console.warn("評論資料不符合條件：", data);
-  //     }
-  //   } catch (error) {
-  //     console.error("取得評論資料錯誤：", error);
-  //   }
-  // };
 
   // 根據傳入的評論識別碼取得評論資料，並更新表單初始值
   const fetchCommentData = async (commentId) => {
@@ -239,39 +147,6 @@ function Game_comment() {
       console.error("取得評論資料錯誤：", error);
     }
   };
-
-  // 取得評論資料，並順帶設定遊戲資料與表單預設值
-  // const fetchCommentData = async () => {
-  //   try {
-  //     const res = await axios.get(`${BASE_URL}/commentsData`);
-  //     const comments = res.data;
-  //     // 找出符合 user.user_id 與 game_id（從 URL 取得 id）的評論
-  //     const matchedComment = comments.find(
-  //       (comment) =>
-  //         comment.user_id === user.user_id && comment.game_id === Number(id)
-  //     );
-  //     if (matchedComment) {
-  //       setCurrentMode("edit");
-  //       setCommentData(matchedComment);
-  //       // 依據評論資料取得該遊戲資料
-  //       // fetchGameData(matchedComment.game_id);
-  //       console.log(matchedComment.game_id);
-  //       // 重設表單初始值，注意日期格式可能需要調整
-  //       reset({
-  //         coment_star: matchedComment.coment_star,
-  //         game_id: matchedComment.game_id,
-  //         user_id: matchedComment.user_id,
-  //         comment_isPass: matchedComment.comment_isPass,
-  //         comment_isSpoilered: matchedComment.comment_isSpoilered,
-  //         coment_content: matchedComment.coment_content,
-  //         // 假設後端傳回的日期格式為 ISO 字串
-  //         commet_played_time: matchedComment.commet_played_time.slice(0, 10),
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("取得評論資料錯誤：", error);
-  //   }
-  // };
 
   // 表單送出處理：若是新增則用 POST，若是編輯則用 Patch 更新
   const onSubmit = async (data) => {
@@ -333,45 +208,6 @@ function Game_comment() {
   if (!gameData) {
     return <div>Loading...</div>;
   }
-
-  // const fetchRelatedData = async () => {
-  //   try {
-  //     // 同時發送三個 axios 請求：評論、使用者、遊戲
-  //     const [commentRes, userRes, gameRes] = await Promise.all([
-  //       axios.get(`${BASE_URL}/commentsData`),
-  //       axios.get(`${BASE_URL}/usersData`),
-  //       axios.get(`${BASE_URL}/gamesData`),
-  //     ]);
-  //     // 從回應中取得資料
-  //     const commentData = commentRes.data; // 評論資料陣列
-  //     const userData = userRes.data;
-  //     const gameData = gameRes.data;
-
-  //     // 建立遊戲與使用者的映射表，方便快速查找
-  //     const gameMap = gameData.reduce((acc, game) => {
-  //       acc[game.game_id] = game;
-  //       return acc;
-  //     }, {});
-
-  //     const userMap = userData.reduce((acc, user) => {
-  //       acc[user.user_id] = user;
-  //       return acc;
-  //     }, {});
-
-  //     // 依據評論資料中的 game_id 與 user_id 合併成一個物件
-  //     const relatedData = commentData.map((comment) => ({
-  //       comment, // 評論資料
-  //       game: gameMap[comment.game_id], // 對應的遊戲資料
-  //       user: userMap[comment.user_id], // 對應的使用者資料
-  //     }));
-
-  //     // 將合併後的資料存入 state (例如 setGroup 或 setRelatedData)
-  //     setGroupComment(relatedData);
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw error;
-  //   }
-  // };
 
   return (
     <>

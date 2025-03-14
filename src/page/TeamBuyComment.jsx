@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import GroupCard from "../layout/GroupCard";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -11,6 +12,7 @@ function TeamBuyComment() {
   const [users, setUsers] = useState([]);
   const [price, setPrice] = useState(null);
   const [infoMessage, setInfoMessage] = useState(""); // 用來顯示訊息
+  const [groupsList, setGroupsList] = useState([]);
 
   const { group_id } = useParams();
 
@@ -27,6 +29,19 @@ function TeamBuyComment() {
       }
     };
     fetchGroup();
+  }, [group_id]);
+
+  // 取得所有群組資料，作為推薦來源
+  useEffect(() => {
+    const fetchGroupsList = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/groupsData`);
+        setGroupsList(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchGroupsList();
   }, []);
 
   const changeGroup = async () => {
@@ -127,8 +142,8 @@ function TeamBuyComment() {
     <>
       <div className="container-fluid container-lg">
         <div className="row d-flex justify-content-center">
-          <div className="col-xl-10">
-            <div className="mt-9 mb-6">
+          <div className="col-xl-10 mt-9 mb-20">
+            <div className="mb-6">
               <h2 className="fs-h2 fw-bold">
                 {`${group.group_active_date}`}
                 {group.game_address?.slice(0, 3)}
@@ -352,6 +367,69 @@ function TeamBuyComment() {
                 </div>
               </div>
             )}
+            <div className="row m-0 mt-3">
+              <div className="title-container w-100 d-flex justify-content-center align-items-center">
+                <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
+                  相關推薦
+                </h3>
+              </div>
+              {(() => {
+                // 取得當前群組對應的遊戲資訊
+                const currentGameInfo = games.find(
+                  (g) => g.game_id === group.game_id
+                );
+                if (!currentGameInfo) return null; // 如果當前群組遊戲資訊不存在，就不顯示推薦
+
+                // 過濾推薦：排除當前群組，並比對 tag（從 games 陣列中取得各推薦群組的遊戲資訊）
+                const recommendedGroups = groupsList
+                  .filter((item) => {
+                    // 排除當前群組
+                    if (String(item.group_id) === String(group_id))
+                      return false;
+
+                    // 取得該推薦群組的遊戲資訊
+                    const groupGame = games.find(
+                      (g) => g.game_id === item.game_id
+                    );
+                    if (!groupGame) return false;
+
+                    // 比對三個 tag，只要其中一個符合就算符合
+                    const matchDiff =
+                      groupGame.game_dif_tagname &&
+                      currentGameInfo.game_dif_tagname &&
+                      groupGame.game_dif_tagname ===
+                        currentGameInfo.game_dif_tagname;
+                    const matchMain1 =
+                      groupGame.game_main_tag1name &&
+                      currentGameInfo.game_main_tag1name &&
+                      groupGame.game_main_tag1name ===
+                        currentGameInfo.game_main_tag1name;
+                    const matchMain2 =
+                      groupGame.game_main_tag2name &&
+                      currentGameInfo.game_main_tag2name &&
+                      groupGame.game_main_tag2name ===
+                        currentGameInfo.game_main_tag2name;
+
+                    return matchDiff || matchMain1 || matchMain2;
+                  })
+                  .slice(0, 4);
+
+                return recommendedGroups.map((item) => {
+                  // 取得推薦群組的遊戲與使用者資訊
+                  const groupGame = games.find(
+                    (g) => g.game_id === item.game_id
+                  );
+                  return (
+                    <GroupCard
+                      key={item.group_id}
+                      game={groupGame}
+                      group={item}
+                      user={item.user || {}}
+                    />
+                  );
+                });
+              })()}
+            </div>
           </div>
         </div>
       </div>
