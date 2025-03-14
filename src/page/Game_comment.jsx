@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
-import { Form, useParams } from "react-router-dom";
+import { Form, useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -9,10 +9,13 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 function Game_comment() {
   // 注意：因為 state 為保留字，這邊用 mode 來接收
   const { state: mode, id } = useParams();
+  const navigate = useNavigate();
   // 另外使用 currentMode 來記錄實際的模式，初始為 mode (通常為 "new")
   const [currentMode, setCurrentMode] = useState(mode);
-  const [gameData, setGamesData] = useState(null);
+  const [gameData, setGameData] = useState(null);
   const [commentData, setCommentData] = useState(null);
+  // 存放整合後的資料（評論、使用者與遊戲）
+  const [relatedData, setRelatedData] = useState([]);
   // const { gameID } = useParams();
   // 從 URL 中取得 state 與 id
   const { user, user_token } = useSelector((state) => state.userInfo);
@@ -36,59 +39,241 @@ function Game_comment() {
   });
 
   // 根據 mode 判斷該載入遊戲資料或評論資料
-  useEffect(() => {
-    // 先取得遊戲資料
-    fetchGameData(Number(id));
-    fetchCommentData(Number(id));
-    // 瀏覽器捲動到頂端
-    window.scrollTo(0, 0);
-  }, [mode, id]);
+  // useEffect(() => {
+  //   // 先取得遊戲資料
+  //   fetchGameData(Number(id));
+  //   fetchCommentData(Number(id));
+  //   // 瀏覽器捲動到頂端
+  //   window.scrollTo(0, 0);
+  // }, [mode, id]);
 
+  // useEffect(() => {
+  //   // 先取得遊戲資料
+  //   fetchGameData(Number(id));
+  //   // 進入 new 模式後，檢查是否已有該使用者對此遊戲的評論
+  //   if (mode === "new") {
+  //     fetchUserComment(Number(id));
+  //   } else if (mode === "edit") {
+  //     // 若進入 edit 模式（直接從 URL 帶入 comment_id），直接取得評論資料
+  //     fetchCommentData(Number(id));
+  //   }
+  //   window.scrollTo(0, 0);
+  // }, [id, mode]);
+
+  useEffect(() => {
+    // 先從三個 API 同時取得相關資料
+    fetchRelatedData();
+    // 若是 edit 模式（URL 的 id 為評論識別碼），直接取得該筆評論資料
+    if (mode === "edit") {
+      fetchCommentData(Number(id));
+    } else if (mode === "new") {
+      // 當 new 模式時，以 id 當作遊戲編號取得遊戲資料
+      fetchGameData(Number(id));
+    }
+    window.scrollTo(0, 0);
+  }, [id, mode, user]);
+
+  // 取得所有評論、使用者與遊戲資料，並整合成一個陣列
+  const fetchRelatedData = async () => {
+    try {
+      const [commentRes, userRes, gameRes] = await Promise.all([
+        axios.get(`${BASE_URL}/commentsData`),
+        axios.get(`${BASE_URL}/usersData`),
+        axios.get(`${BASE_URL}/gamesData`),
+      ]);
+      const comments = commentRes.data; // 假設回傳為陣列
+      const users = userRes.data;
+      const games = gameRes.data;
+
+      // 建立遊戲與使用者映射表
+      const gameMap = games.reduce((acc, game) => {
+        acc[game.game_id] = game;
+        return acc;
+      }, {});
+
+      const userMap = users.reduce((acc, u) => {
+        acc[u.user_id] = u;
+        return acc;
+      }, {});
+
+      // 整合每筆評論，並將對應的遊戲與使用者資料放進去
+      const integrated = comments.map((comment) => ({
+        comment,
+        game: gameMap[comment.game_id],
+        user: userMap[comment.user_id],
+      }));
+      setRelatedData(integrated);
+
+      // 若是 new 模式，依據使用者與遊戲 id 過濾出符合的評論
+      if (mode === "new" && user && id) {
+        const matched = integrated.find(
+          (item) =>
+            item.comment.game_id === Number(id) &&
+            item.comment.user_id === user.user_id
+        );
+        if (matched) {
+          // 自動導向 edit 模式：URL 的 id 為該筆評論的 comment_id
+          navigate(`/Game_comment/edit/${matched.comment.comment_id}`, {
+            replace: true,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("取得相關資料錯誤：", error);
+    }
+  };
+
+  // const fetchGameData = async (gameId) => {
+  //   try {
+  //     const res = await axios.get(`${BASE_URL}/gamesData/${gameId}`);
+  //     const data = res.data;
+  //     // 只取第一張圖片
+  //     data.game_img = data.game_img[0];
+  //     setGamesData(data);
+  //   } catch (error) {
+  //     console.error("取得遊戲資料錯誤：", error);
+  //   }
+  // };
+
+  // 單獨取得遊戲資料（若整合資料中尚未取得或需要補充）
   const fetchGameData = async (gameId) => {
     try {
       const res = await axios.get(`${BASE_URL}/gamesData/${gameId}`);
       const data = res.data;
-      // 只取第一張圖片
-      data.game_img = data.game_img[0];
-      setGamesData(data);
+      if (Array.isArray(data.game_img)) {
+        data.game_img = data.game_img[0];
+      }
+      setGameData(data);
     } catch (error) {
       console.error("取得遊戲資料錯誤：", error);
     }
   };
 
-  // 取得評論資料，並順帶設定遊戲資料與表單預設值
-  const fetchCommentData = async () => {
+  // // 從所有評論中找出符合使用者與遊戲關聯的評論資料
+  // const fetchUserComment = async (gameId) => {
+  //   try {
+  //     const res = await axios.get(`${BASE_URL}/commentsData`);
+  //     console.log("所有評論資料：", res.data);
+  //     // 假設後端回傳的是一個陣列
+  //     const comments = res.data;
+  //     const matchedComment = comments.find(
+  //       (comment) =>
+  //         comment.game_id === Number(gameId) && comment.user_id === user.user_id
+  //     );
+  //     if (matchedComment) {
+  //       console.log("找到符合的評論資料：", matchedComment);
+  //       // 自動重新導向到 edit 模式，並使用評論的識別碼作為 URL 的 id
+  //       navigate(`/Game_comment/edit/${matchedComment.comment_id}`, {
+  //         replace: true,
+  //       });
+  //     } else {
+  //       console.log("找不到符合的評論資料，維持新增模式");
+  //     }
+  //   } catch (error) {
+  //     console.error("取得評論資料錯誤：", error);
+  //   }
+  // };
+
+  // const fetchCommentData = async (commentId) => {
+  //   try {
+  //     const res = await axios.get(`${BASE_URL}/commentsData/${commentId}`);
+  //     console.log("取得的評論資料：", res.data);
+  //     const data = res.data;
+  //     // 同時支援 comment_id 或 id 屬性
+  //     const cid = data.comment_id || data.id;
+  //     if (
+  //       cid &&
+  //       data.user_id === user.user_id &&
+  //       data.game_id === Number(gameData?.game_id || id)
+  //     ) {
+  //       setCurrentMode("edit");
+  //       setCommentData(data);
+  //       // 重設表單初始值
+  //       reset({
+  //         coment_star: data.coment_star,
+  //         game_id: data.game_id,
+  //         user_id: data.user_id,
+  //         comment_isPass: data.comment_isPass,
+  //         comment_isSpoilered: data.comment_isSpoilered,
+  //         coment_content: data.coment_content,
+  //         // 假設日期格式為 ISO 格式
+  //         commet_played_time: data.commet_played_time.slice(0, 10),
+  //       });
+  //     } else {
+  //       console.warn("評論資料不符合條件：", data);
+  //     }
+  //   } catch (error) {
+  //     console.error("取得評論資料錯誤：", error);
+  //   }
+  // };
+
+  // 根據傳入的評論識別碼取得評論資料，並更新表單初始值
+  const fetchCommentData = async (commentId) => {
     try {
-      const res = await axios.get(`${BASE_URL}/commentsData`);
-      const comments = res.data;
-      // 找出符合 user.user_id 與 game_id（從 URL 取得 id）的評論
-      const matchedComment = comments.find(
-        (comment) =>
-          comment.user_id === user.user_id && comment.game_id === Number(id)
-      );
-      if (matchedComment) {
+      const res = await axios.get(`${BASE_URL}/commentsData/${commentId}`);
+      const data = res.data;
+      // 支援 comment_id 或 id
+      const cid = data.comment_id || data.id;
+      // 檢查該評論是否屬於當前使用者
+      if (cid && data.user_id === user.user_id) {
         setCurrentMode("edit");
-        setCommentData(matchedComment);
-        // 依據評論資料取得該遊戲資料
-        fetchGameData(matchedComment.game_id);
-        // 重設表單初始值，注意日期格式可能需要調整
+        setCommentData(data);
+        // 若遊戲資料尚未取得，依據評論中的 game_id 取得遊戲資料
+        if (!gameData) {
+          fetchGameData(data.game_id);
+        }
         reset({
-          coment_star: matchedComment.coment_star,
-          game_id: matchedComment.game_id,
-          user_id: matchedComment.user_id,
-          comment_isPass: matchedComment.comment_isPass,
-          comment_isSpoilered: matchedComment.comment_isSpoilered,
-          coment_content: matchedComment.coment_content,
-          // 假設後端傳回的日期格式為 ISO 字串
-          commet_played_time: matchedComment.commet_played_time.slice(0, 10),
+          coment_star: data.coment_star,
+          game_id: data.game_id,
+          user_id: data.user_id,
+          comment_isPass: data.comment_isPass,
+          comment_isSpoilered: data.comment_isSpoilered,
+          coment_content: data.coment_content,
+          // 假設後端傳回的日期為 ISO 格式字串
+          commet_played_time: data.commet_played_time.slice(0, 10),
         });
+      } else {
+        console.warn("取得的評論資料不符合當前使用者：", data);
       }
     } catch (error) {
       console.error("取得評論資料錯誤：", error);
     }
   };
 
-  // 表單送出處理：若是新增則用 POST，若是編輯則用 PUT 更新
+  // 取得評論資料，並順帶設定遊戲資料與表單預設值
+  // const fetchCommentData = async () => {
+  //   try {
+  //     const res = await axios.get(`${BASE_URL}/commentsData`);
+  //     const comments = res.data;
+  //     // 找出符合 user.user_id 與 game_id（從 URL 取得 id）的評論
+  //     const matchedComment = comments.find(
+  //       (comment) =>
+  //         comment.user_id === user.user_id && comment.game_id === Number(id)
+  //     );
+  //     if (matchedComment) {
+  //       setCurrentMode("edit");
+  //       setCommentData(matchedComment);
+  //       // 依據評論資料取得該遊戲資料
+  //       // fetchGameData(matchedComment.game_id);
+  //       console.log(matchedComment.game_id);
+  //       // 重設表單初始值，注意日期格式可能需要調整
+  //       reset({
+  //         coment_star: matchedComment.coment_star,
+  //         game_id: matchedComment.game_id,
+  //         user_id: matchedComment.user_id,
+  //         comment_isPass: matchedComment.comment_isPass,
+  //         comment_isSpoilered: matchedComment.comment_isSpoilered,
+  //         coment_content: matchedComment.coment_content,
+  //         // 假設後端傳回的日期格式為 ISO 字串
+  //         commet_played_time: matchedComment.commet_played_time.slice(0, 10),
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("取得評論資料錯誤：", error);
+  //   }
+  // };
+
+  // 表單送出處理：若是新增則用 POST，若是編輯則用 Patch 更新
   const onSubmit = async (data) => {
     try {
       if (currentMode === "new") {
@@ -96,8 +281,8 @@ function Game_comment() {
         reset();
         alert("新增評論成功！");
       } else if (currentMode === "edit") {
-        // 假設編輯評論的 API 為 PUT 到 /commentsData/{comment_id}
-        await axios.put(
+        // 假設編輯評論的 API 為 Patch 到 /commentsData/{comment_id}
+        await axios.patch(
           `${BASE_URL}/commentsData/${commentData.comment_id}`,
           data
         );
@@ -148,6 +333,45 @@ function Game_comment() {
   if (!gameData) {
     return <div>Loading...</div>;
   }
+
+  // const fetchRelatedData = async () => {
+  //   try {
+  //     // 同時發送三個 axios 請求：評論、使用者、遊戲
+  //     const [commentRes, userRes, gameRes] = await Promise.all([
+  //       axios.get(`${BASE_URL}/commentsData`),
+  //       axios.get(`${BASE_URL}/usersData`),
+  //       axios.get(`${BASE_URL}/gamesData`),
+  //     ]);
+  //     // 從回應中取得資料
+  //     const commentData = commentRes.data; // 評論資料陣列
+  //     const userData = userRes.data;
+  //     const gameData = gameRes.data;
+
+  //     // 建立遊戲與使用者的映射表，方便快速查找
+  //     const gameMap = gameData.reduce((acc, game) => {
+  //       acc[game.game_id] = game;
+  //       return acc;
+  //     }, {});
+
+  //     const userMap = userData.reduce((acc, user) => {
+  //       acc[user.user_id] = user;
+  //       return acc;
+  //     }, {});
+
+  //     // 依據評論資料中的 game_id 與 user_id 合併成一個物件
+  //     const relatedData = commentData.map((comment) => ({
+  //       comment, // 評論資料
+  //       game: gameMap[comment.game_id], // 對應的遊戲資料
+  //       user: userMap[comment.user_id], // 對應的使用者資料
+  //     }));
+
+  //     // 將合併後的資料存入 state (例如 setGroup 或 setRelatedData)
+  //     setGroupComment(relatedData);
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw error;
+  //   }
+  // };
 
   return (
     <>
