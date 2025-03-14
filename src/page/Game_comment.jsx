@@ -60,7 +60,6 @@ function Game_comment() {
   const fetchCommentData = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/commentsData`);
-      console.log(res.data);
       const comments = res.data;
       // 找出符合 user.user_id 與 game_id（從 URL 取得 id）的評論
       const matchedComment = comments.find(
@@ -68,7 +67,6 @@ function Game_comment() {
           comment.user_id === user.user_id && comment.game_id === Number(id)
       );
       if (matchedComment) {
-        console.log("找到對應的評論資料：", matchedComment);
         setCurrentMode("edit");
         setCommentData(matchedComment);
         // 依據評論資料取得該遊戲資料
@@ -85,24 +83,6 @@ function Game_comment() {
           commet_played_time: matchedComment.commet_played_time.slice(0, 10),
         });
       }
-
-      // if (data.user_id && data.game_id && data.comment_id) {
-      //   setCurrentMode("edit");
-      //   setCommentData(data);
-      //   // 依據評論資料取得該遊戲資料
-      //   fetchGameData(data.game_id);
-      //   // 重設表單初始值，注意日期格式可能需要調整
-      //   reset({
-      //     coment_star: data.coment_star,
-      //     game_id: data.game_id,
-      //     user_id: data.user_id,
-      //     comment_isPass: data.comment_isPass,
-      //     comment_isSpoilered: data.comment_isSpoilered,
-      //     coment_content: data.coment_content,
-      //     // 假設後端傳回的日期格式為 ISO 字串
-      //     commet_played_time: data.commet_played_time.slice(0, 10),
-      //   });
-      // }
     } catch (error) {
       console.error("取得評論資料錯誤：", error);
     }
@@ -128,39 +108,6 @@ function Game_comment() {
       console.error(error);
     }
   };
-
-  // const onSubmit = handleSubmit((data) => {
-  //   const {
-  //     user_id,
-  //     game_id,
-  //     comment_isSpoilered,
-  //     coment_content,
-  //     coment_star,
-  //     commet_played_time,
-  //     comment_isPass,
-  //   } = data;
-  //   const commentsData = {
-  //     user_id,
-  //     game_id,
-  //     comment_isSpoilered,
-  //     coment_content,
-  //     coment_star,
-  //     commet_played_time,
-  //     comment_isPass,
-  //   };
-
-  //   checkout(commentsData);
-  // });
-
-  // const checkout = async (data) => {
-  //   try {
-  //     await axios.post(`${BASE_URL}/commentsData`, data);
-  //     reset();
-  //   } catch (error) {
-  //     alert(error);
-  //     console.log(error);
-  //   }
-  // };
 
   const StarRating = ({ value, onChange }) => {
     return (
