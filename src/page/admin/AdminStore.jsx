@@ -1,82 +1,87 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import VirtualizedTable from "../../layout/VirtualizedTable";
+// import VirtualizedTable from "../../layout/VirtualizedTable";
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-function AdminIndex() {
+function AdminStore() {
   const [storeData, setStoreData] = useState([]);
-  const [tableData, setTableData] = useState([]);
-  const labels = [
-    {
-      width: 50,
-      label: "ID",
-      dataKey: "ID",
-    },
-    {
-      width: 250,
-      label: "店家名稱",
-      dataKey: "storeName",
-    },
-    {
-      width: 100,
-      label: "聯絡人",
-      dataKey: "contact",
-    },
-    {
-      width: 200,
-      label: "聯絡電話",
-      dataKey: "phone",
-      // numeric: true,
-    },
-    {
-      width: 200,
-      label: "審核狀態",
-      dataKey: "status",
-    },
-    {
-      width: 200,
-      label: "建立時間",
-      dataKey: "createdAt",
-    },
-    {
-      width: 50,
-      label: "",
-      dataKey: "action",
-    },
-  ];
+
+  // TODO 這裡是原本的 table 套件程式碼，因為要改成自己寫的 table，所以先註解掉
+  // table 套件程式碼
+  // const [tableData, setTableData] = useState([]);
+  // const labels = [
+  //   {
+  //     width: 50,
+  //     label: "ID",
+  //     dataKey: "ID",
+  //   },
+  //   {
+  //     width: 250,
+  //     label: "店家名稱",
+  //     dataKey: "storeName",
+  //   },
+  //   {
+  //     width: 100,
+  //     label: "聯絡人",
+  //     dataKey: "contact",
+  //   },
+  //   {
+  //     width: 200,
+  //     label: "聯絡電話",
+  //     dataKey: "phone",
+  //     // numeric: true,
+  //   },
+  //   {
+  //     width: 200,
+  //     label: "審核狀態",
+  //     dataKey: "status",
+  //   },
+  //   {
+  //     width: 200,
+  //     label: "建立時間",
+  //     dataKey: "createdAt",
+  //   },
+  //   {
+  //     width: 50,
+  //     label: "",
+  //     dataKey: "action",
+  //   },
+  // ];
+  // useEffect(() => {
+  //   const newTableData = storeData.map((item, index) => ({
+  //     ID: index + 1,
+  //     storeName: item.store_name,
+  //     contact: item.store_contact,
+  //     phone: item.store_self_tel,
+  //     status: item.store_isAuth,
+  //     createdAt: item.store_create_at,
+  //   }));
+  //   setTableData(newTableData);
+  // }, [storeData]);
 
   useEffect(() => {
     const getStoreData = async () => {
-      const res = await axios.get(`${BASE_URL}/storesData`);
-      setStoreData(res.data);
+      try {
+        const res = await axios.get(`${BASE_URL}/storesData`);
+        setStoreData(res.data);
+      } catch (error) {
+        console.error(error);
+      }
     };
     getStoreData();
   }, []);
 
-  useEffect(() => {
-    const newTableData = storeData.map((item, index) => ({
-      ID: index + 1,
-      storeName: item.store_name,
-      contact: item.store_contact,
-      phone: item.store_self_tel,
-      status: item.store_isAuth,
-      createdAt: item.store_create_at,
-    }));
-    setTableData(newTableData);
-  }, [storeData]);
-
   return (
     <div className="admin-bg">
-      <div className="adminIndex container pt-11 pb-6">
+      <div className="adminUser container pt-11 pb-6">
         <nav
           style={{ "--bs-breadcrumb-divider": "'>'" }}
           aria-label="breadcrumb"
         >
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <Link className="fs-Body-2 fw-bold text-nature-50">會員管理</Link>
+              <span className="fs-Body-2 fw-bold text-nature-50">會員管理</span>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
               <span className="fs-Body-2 fw-bold text-nature-70">店家</span>
@@ -89,7 +94,7 @@ function AdminIndex() {
               htmlFor="workName"
               className="form-label fs-Caption text-black"
             >
-              工作家名稱
+              工作室名稱
             </label>
             <input
               type="text"
@@ -103,7 +108,7 @@ function AdminIndex() {
               htmlFor="contact"
               className="form-label fs-Caption text-black"
             >
-              關係人
+              聯絡人
             </label>
             <input
               type="text"
@@ -124,7 +129,7 @@ function AdminIndex() {
               style={{ color: "#C6C6CA" }}
               id="status"
             >
-              <option defaultValue>請選擇</option>
+              <option defaultValue>所有狀態</option>
               <option value="processing">處理中</option>
               <option value="pass">通過</option>
               <option value="rejected">已退回</option>
@@ -170,8 +175,8 @@ function AdminIndex() {
                       </span>
                     </td>
                     <td className="py-2 px-4">{row.store_create_at}</td>
-                    <td className="py-2 px-4">
-                      <button className="edit-btn d-flex justify-content-center align-items-center">
+                    <td className="py-2 px-4 text-end">
+                      <button className="edit-btn">
                         <span className="material-symbols-outlined">edit</span>
                       </button>
                     </td>
@@ -186,7 +191,7 @@ function AdminIndex() {
   );
 }
 
-export default AdminIndex;
+export default AdminStore;
 
 const getStatusBadgeStyle = (status) => {
   switch (status) {

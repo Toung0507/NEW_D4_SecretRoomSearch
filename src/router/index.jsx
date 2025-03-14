@@ -11,7 +11,10 @@ import UserProfile from "../page/UserProfile";
 import TeamBuyComment from "../page/TeamBuyComment";
 import Register from "../page/Register";
 import AdminLayout from "../page/admin/AdminLayout";
-import AdminIndex from "../page/admin/AdminIndex";
+import AdminStore from "../page/admin/AdminStore";
+import AdminUser from "../page/admin/AdminUser";
+import AdminGame from "../page/admin/AdminGame";
+import AdminGroup from "../page/admin/AdminGroup";
 import StoreProfile from "../page/StoreProfile";
 
 const Router = createHashRouter([
@@ -69,7 +72,19 @@ const Router = createHashRouter([
                 children: [
                     {
                         index: true,
-                        element: <AdminIndex />,
+                        element: <AdminStore />,
+                    },
+                    {
+                        path: "/Admin/User",
+                        element: <AdminUser />,
+                    },
+                    {
+                        path: "/Admin/Game",
+                        element: <AdminGame />,
+                    },
+                    {
+                        path: "/Admin/Group",
+                        element: <AdminGroup />,
                     },
                 ],
             }
