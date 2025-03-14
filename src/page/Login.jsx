@@ -37,7 +37,7 @@ function Login() {
                 navigate(`/User_profile/${user_id}/basicInfo`);
             }
             else {
-                navigate(`/User_profile/${user_id}/basicInfo`);
+                navigate(`/Store_profile/${user_id}/basicStoreInfo`);
             }
         }
 
