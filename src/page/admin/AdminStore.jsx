@@ -175,8 +175,8 @@ function AdminStore() {
                       </span>
                     </td>
                     <td className="py-2 px-4">{row.store_create_at}</td>
-                    <td className="py-2 px-4">
-                      <button className="edit-btn d-flex justify-content-center align-items-center">
+                    <td className="py-2 px-4 text-end">
+                      <button className="edit-btn">
                         <span className="material-symbols-outlined">edit</span>
                       </button>
                     </td>

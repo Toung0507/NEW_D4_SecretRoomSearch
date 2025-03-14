@@ -14,6 +14,7 @@ import AdminLayout from "../page/admin/AdminLayout";
 import AdminStore from "../page/admin/AdminStore";
 import AdminUser from "../page/admin/AdminUser";
 import AdminGame from "../page/admin/AdminGame";
+import AdminGroup from "../page/admin/AdminGroup";
 
 const Router = createHashRouter([
   {
@@ -75,6 +76,10 @@ const Router = createHashRouter([
           {
             path: "/Admin/Game",
             element: <AdminGame />,
+          },
+          {
+            path: "/Admin/Group",
+            element: <AdminGroup />,
           },
         ],
       },

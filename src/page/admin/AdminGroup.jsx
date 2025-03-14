@@ -3,19 +3,45 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-function AdminGame() {
-  const [gameData, setGameData] = useState([]);
+function AdminGroup() {
+  const [groupData, setGroupData] = useState([]);
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    const getGameData = async () => {
+    const getGroupData = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/gamesData`);
-        setGameData(res.data);
+        const res = await axios.get(`${BASE_URL}/groupsData`);
+        setGroupData(res.data);
+
+        // 提取所有不重複的 user_id
+        const userIds = [...new Set(res.data.map((item) => item.user_id))];
+        console.log(userIds);
+
+        try {
+          // 平行發出所有請求
+          const userPromises = userIds.map((id) =>
+            axios.get(`${BASE_URL}/usersData/${id}`)
+          );
+          const userResponses = await Promise.all(userPromises);
+          console.log(userResponses);
+
+          // 建立 id 到用戶資料的映射
+          const userMap = {};
+          userResponses.forEach((response) => {
+            const userData = response.data;
+            userMap[userData.id] = userData;
+          });
+
+          setUserData(userMap);
+        } catch (error) {
+          console.error("獲取用戶資料時出錯:", error);
+        }
       } catch (error) {
         console.error(error);
       }
     };
-    getGameData();
+
+    getGroupData();
   }, []);
 
   return (
@@ -27,7 +53,7 @@ function AdminGame() {
         >
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <span className="fs-Body-2 fw-bold text-nature-50">密室管理</span>
+              <span className="fs-Body-2 fw-bold text-nature-50">揪團資料</span>
             </li>
           </ol>
         </nav>
@@ -51,7 +77,7 @@ function AdminGame() {
               htmlFor="contact"
               className="form-label fs-Caption text-black"
             >
-              標籤
+              主糾人
             </label>
             <input
               type="text"
@@ -65,7 +91,7 @@ function AdminGame() {
               htmlFor="status"
               className="form-label fs-Caption text-black"
             >
-              審核狀態
+              狀態
             </label>
             <select
               className="form-select border-black"
@@ -73,9 +99,10 @@ function AdminGame() {
               id="role"
             >
               <option defaultValue>全部狀態</option>
-              <option value="member">處理中</option>
-              <option value="store">通過</option>
-              <option value="admin">已退回</option>
+              <option value="member">揪團中</option>
+              <option value="store">揪團成功</option>
+              <option value="admin">已取消</option>
+              <option value="admin">已結束</option>
             </select>
           </div>
           <div className="col-2">
@@ -92,39 +119,26 @@ function AdminGame() {
                 <tr>
                   <th className="px-4 py-3">ID</th>
                   <th className="px-4 py-3">密室名稱</th>
-                  <th className="px-4 py-3 text-center">評分</th>
-                  <th className="px-4 py-3 text-center">評論人數</th>
-                  <th className="px-4 py-3">標籤</th>
-                  <th className="px-4 py-3 text-center">狀態</th>
+                  <th className="px-4 py-3">主糾人</th>
+                  <th className="px-4 py-3">總人數</th>
+                  <th className="px-4 py-3">狀態</th>
+                  <th className="px-4 py-3">揪團截止日期</th>
+                  <th className="px-4 py-3">活動日期</th>
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
               <tbody>
-                {gameData.map((row) => (
-                  <tr key={row.game_id}>
-                    <td className="py-2 px-4">{row.game_id}</td>
+                {groupData.map((row) => (
+                  <tr key={row.group_id}>
+                    <td className="py-2 px-4">{row.group_id}</td>
                     <td className="py-2 px-4">{row.game_name}</td>
-                    <td className="py-2 px-4 text-center">{row.game_score}</td>
-                    <td className="py-2 px-4 text-center">
-                      {row.game_score_num}
-                    </td>
                     <td className="py-2 px-4">
-                      <span className="px-2 py-1 rounded-2 text-black bg-nature-95">
-                        {row.game_dif_tagname}
-                      </span>
-                      <span className="px-2 py-1 mx-2 rounded-2 text-black bg-nature-95">
-                        {row.game_main_tag1name}
-                      </span>
-                      <span className="px-2 py-1 rounded-2 text-black bg-nature-95">
-                        {row.game_main_tag2name}
-                      </span>
+                      {userData[row.user_id]?.user_name || "未知用戶"}
                     </td>
-                    {/* TODO 加上 上/下架 真實資料 */}
-                    <td className="py-2 px-4 text-center">
-                      <span className="px-2 py-1 rounded-2 text-black bg-pass">
-                        上架
-                      </span>
-                    </td>
+                    <td className="py-2 px-4">{row.group_member}</td>
+                    <td className="py-2 px-4">{row.user_reg_method}</td>
+                    <td className="py-2 px-4">{row.group_end_at}</td>
+                    <td className="py-2 px-4">{row.group_active_date}</td>
                     <td className="py-2 px-4 text-end">
                       <button className="edit-btn">
                         <span className="material-symbols-outlined">edit</span>
@@ -141,4 +155,4 @@ function AdminGame() {
   );
 }
 
-export default AdminGame;
+export default AdminGroup;

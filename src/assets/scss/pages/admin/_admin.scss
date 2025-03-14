@@ -1,5 +1,6 @@
 .admin-bg {
   background-color: #f3f4f6;
+  min-height: 100vh;
 }
 
 .breadcrumb-item {
@@ -18,13 +19,21 @@
 .table-scroll-container {
   max-height: 55vh;
   overflow-y: auto;
+  overflow-x: hidden;
 
   &::-webkit-scrollbar {
-    width: 0;
+    width: 6px;
     height: 0;
+  }
+
+  &::-webkit-scrollbar-horizontal {
     display: none;
   }
-  scrollbar-width: none;
+
+  // Firefox
+  scrollbar-width: thin;
+
+  // 隱藏水平捲軸 (IE)
   -ms-overflow-style: none;
 }
 
