@@ -3,13 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { logOut } from "../redux/slices/userInfoSlice";
-import {
-  Navbar,
-  Nav,
-  NavDropdown,
-  Container,
-  Offcanvas,
-} from "react-bootstrap";
 
 const navbar = [
   { path: "Game_search", name: "找遊戲" },
@@ -37,18 +30,13 @@ function Header() {
     { path: `/User_profile/${user_id}/myComments`, name: "我的評論" },
   ];
 
-
-    //這是店家會員的下拉式選單，請Toung補上path
-    const storeBtn = [
-        { path: `/Store_profile/${user_id}/basicStoreInfo`, name: "個人資料" }, //path先亂填，後續再補
-        { path: `/Store_profile/${user_id}/myGames`, name: "我的密室" },
-    ];
-
+  //這是店家會員的下拉式選單，請Toung補上path
+  const storeBtn = [
+    { path: `/Store_profile/${user_id}/basicStoreInfo`, name: "個人資料" }, //path先亂填，後續再補
+    { path: `/Store_profile/${user_id}/myGames`, name: "我的密室" },
+  ];
 
   const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   useEffect(() => {
     if (user_token) {
@@ -70,14 +58,6 @@ function Header() {
     dispatch(logOut());
     navigate("/");
   };
-
-  //   useEffect(() => {
-  //     const collapseElement = document.getElementById("navbarSupportedContent");
-  //     if (collapseElement) {
-  //       // 確保 global.bootstrap 存在，或從 bootstrap/js/dist/collapse 模組導入
-  //       new window.bootstrap.Collapse(collapseElement, { toggle: false });
-  //     }
-  //   }, []);
 
   return (
     <>
