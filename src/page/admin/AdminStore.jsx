@@ -204,18 +204,20 @@ function AdminStore() {
               </label>
               <select
                 className="form-select border-black"
-                style={{
-                  color:
-                    searchParams.status === "所有狀態" ? "#C6C6CA" : "inherit",
-                }}
                 id="status"
                 value={searchParams.status}
                 onChange={handleSearchChange}
               >
                 <option value="所有狀態">所有狀態</option>
-                <option value="processing">處理中</option>
-                <option value="pass">通過</option>
-                <option value="rejected">已退回</option>
+                <option className="text-processing" value="processing">
+                  處理中
+                </option>
+                <option className="text-pass" value="pass">
+                  通過
+                </option>
+                <option className="text-tertiary-90" value="rejected">
+                  已退回
+                </option>
               </select>
             </div>
             <div className="col-1">
@@ -230,7 +232,7 @@ function AdminStore() {
             <div className="col-1">
               <label className="form-label">&nbsp;</label>
               <button
-                className="btn btn-reset btn-outline-secondary form-control"
+                className="btn btn-reset btn-secondary text-white form-control"
                 onClick={handleReset}
               >
                 重置

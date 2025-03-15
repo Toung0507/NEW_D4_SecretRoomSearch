@@ -190,23 +190,25 @@ function AdminGame() {
             </label>
             <select
               className="form-select border-black"
-              style={{
-                color:
-                  searchParams.is_stock === "全部狀態" ? "#C6C6CA" : "inherit",
-              }}
               id="is_stock"
               value={searchParams.is_stock}
               onChange={handleSearchChange}
             >
-              <option value="全部狀態">全部狀態</option>
-              <option value="true">上架</option>
-              <option value="false">下架</option>
+              <option className="text-black" value="全部狀態">
+                全部狀態
+              </option>
+              <option className="text-pass" value="true">
+                上架
+              </option>
+              <option className="text-tertiary-90" value="false">
+                下架
+              </option>
             </select>
           </div>
           <div className="col-1">
             <label className="form-label">&nbsp;</label>
             <button
-              className="btn btn-primary-50 text-white form-control"
+              className="btn btn-search btn-primary-50 text-white form-control"
               onClick={handleSearch}
             >
               搜尋
@@ -215,7 +217,7 @@ function AdminGame() {
           <div className="col-1">
             <label className="form-label">&nbsp;</label>
             <button
-              className="btn btn-outline-secondary form-control"
+              className="btn btn-reset btn-secondary text-white form-control"
               onClick={handleReset}
             >
               重置

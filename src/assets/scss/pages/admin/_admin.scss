@@ -52,6 +52,18 @@
   &.btn-reset:hover {
     background-color: $nature-40;
   }
+
+  &.btn-search:focus {
+    background-color: $primary-50 !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  &.btn-reset:focus {
+    background-color: $secondary !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
 }
 
 .edit-btn {

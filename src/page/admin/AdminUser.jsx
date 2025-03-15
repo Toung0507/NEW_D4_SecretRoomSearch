@@ -180,9 +180,6 @@ function AdminUser() {
             </label>
             <select
               className="form-select border-black"
-              style={{
-                color: searchParams.role === "全部角色" ? "#C6C6CA" : "inherit",
-              }}
               id="role"
               value={searchParams.role}
               onChange={handleSearchChange}
@@ -196,7 +193,7 @@ function AdminUser() {
           <div className="col-1">
             <label className="form-label">&nbsp;</label>
             <button
-              className="btn btn-primary-50 text-white form-control"
+              className="btn btn-search btn-primary-50 text-white form-control"
               onClick={handleSearch}
             >
               搜尋
@@ -205,7 +202,7 @@ function AdminUser() {
           <div className="col-1">
             <label className="form-label">&nbsp;</label>
             <button
-              className="btn btn-outline-secondary form-control"
+              className="btn btn-reset btn-secondary text-white form-control"
               onClick={handleReset}
             >
               重置

@@ -231,7 +231,7 @@ function AdminGroup() {
           <div className="col-1">
             <label className="form-label">&nbsp;</label>
             <button
-              className="btn btn-primary-50 text-white form-control"
+              className="btn btn-search btn-primary-50 text-white form-control"
               onClick={handleSearch}
             >
               搜尋
@@ -240,7 +240,7 @@ function AdminGroup() {
           <div className="col-1">
             <label className="form-label">&nbsp;</label>
             <button
-              className="btn btn-outline-secondary form-control"
+              className="btn btn-reset btn-secondary text-white form-control"
               onClick={handleReset}
             >
               重置
