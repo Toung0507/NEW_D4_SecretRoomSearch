@@ -15,7 +15,7 @@ function AdminUser() {
   const [searchParams, setSearchParams] = useState({
     userName: "",
     email: "",
-    role: "全部角色",
+    role: "all",
   });
 
   useEffect(() => {
@@ -188,9 +188,9 @@ function AdminUser() {
               onChange={handleSearchChange}
             >
               <option value="全部角色">全部角色</option>
-              <option value="member">會員</option>
-              <option value="store">店家</option>
-              <option value="admin">管理者</option>
+              <option value="會員">會員</option>
+              <option value="店家">店家</option>
+              <option value="管理者">管理者</option>
             </select>
           </div>
           <div className="col-1">
