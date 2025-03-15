@@ -21,13 +21,9 @@ const MyGames = () => {
 
     const getAllGames = async () => {
         if (store.store_isAuth !== 'pass') {
-            console.log(store.store_isAuth);
-            console.log('not pass 123');
             setIsAuthStore(false);
         }
         else if (store.store_isAuth === 'pass') {
-            console.log('pass 123 ');
-            console.log(store.store_isAuth);
             setIsAuthStore(true);
         }
         let upG = [];
@@ -65,11 +61,6 @@ const MyGames = () => {
         getAllGames();
     }, []);
 
-    useEffect(() => {
-        console.log(isAuthStore);
-
-    }, [isAuthStore])
-
     return (
 
         <>
@@ -103,7 +94,7 @@ const MyGames = () => {
                                         </tr>
                                     )
                                 }
-                                {isAuthStore && isHaveUpgames ? (
+                                {isAuthStore && upGames.length > 0 && (
                                     upGames.map((game) => (
                                         <tr key={game.game_id} className="ParticipatingGroupThead">
                                             <td className="ps-5 py-2 pe-0">{game.game_name}</td>
@@ -118,7 +109,9 @@ const MyGames = () => {
                                             </td>
                                         </tr>
                                     ))
-                                ) : (
+                                )
+                                }
+                                {isAuthStore && upGames.length == 0 && (
                                     <tr>
                                         <td colSpan={6} className="text-center fs-h6">
                                             <p>
@@ -164,7 +157,7 @@ const MyGames = () => {
                                         </tr>
                                     )
                                 }
-                                {(isAuthStore && isDownUpgames) ?
+                                {isAuthStore && dowmGames.length > 0 &&
                                     (dowmGames.map((game) => (
                                         <tr key={game.game_id} className="ParticipatingGroupThead">
                                             <td className="ps-5 py-2 pe-0">{game.game_name}</td>
@@ -178,7 +171,11 @@ const MyGames = () => {
                                                 </Link>
                                             </td>
                                         </tr>
-                                    ))) :
+                                    )))
+
+                                }
+
+                                {isAuthStore && dowmGames.length == 0 &&
                                     (
                                         <tr>
                                             <td colSpan={6} className="text-center fs-h6">
