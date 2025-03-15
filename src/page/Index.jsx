@@ -1,72 +1,92 @@
-
+import ReactLoading from 'react-loading';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-
 import 'swiper/swiper-bundle.css';
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-const BASE_URL = 'https://new-json.onrender.com/';
-const area = ["台北市", "基隆市", "新竹市", "彰化縣", "嘉義市", "高雄市", "宜蘭縣", "台東縣", "新北市", "桃園市", "台中市", "南投縣", "台南市", "屏東縣", "花蓮縣", "澎湖金門馬祖"];
 
+const BASE_URL = 'https://new-json.onrender.com/';
+
+const area = ["台北市", "基隆市", "新竹市", "彰化縣", "嘉義市", "高雄市", "宜蘭縣", "台東縣", "新北市", "桃園市", "台中市", "南投縣", "台南市", "屏東縣", "花蓮縣", "澎湖金門馬祖"];
 
 const memberNum = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 function Index() {
+    const [isAllscreenLoading, setIsAllscreenLoading] = useState(true);
     const [product, setProduct] = useState([]);
     const [gameProperty, setGameProperty] = useState([]);
     const [gameDifficulty, setGameDifficulty] = useState([]);
+    const getProduct = async () => {
+        try {
+            const res = await axios.get(`${BASE_URL}gamesData`);
+            setProduct(res.data);
+        } catch (error) {
+            alert('獲取產品失敗');
+            console.log(`${BASE_URL}gamesData`, error.message);
+        }
+    }
+
+    const getProperty = async () => {
+        try {
+            const res = await axios.get(`${BASE_URL}propertys_fixed_Data`);
+            setGameProperty(res.data);
+        } catch (error) {
+            alert('獲取遊戲屬性失敗');
+        }
+    }
+
+    const getDifficulty = async () => {
+        try {
+            const res = await axios.get(`${BASE_URL}difficultys_fixed_Data`);
+            setGameDifficulty(res.data);
+        } catch (error) {
+            alert('獲取遊戲屬性失敗');
+        }
+    }
+
 
     useEffect(() => {
-        const getProduct = async () => {
-            try {
-                const res = await axios.get(`${BASE_URL}gamesData`);
-                setProduct(res.data);
-                // console.log(res.data);
-            } catch (error) {
-                alert('獲取產品失敗');
-                console.log(`${BASE_URL}gamesData`, error.message);
-            }
-        }
-        getProduct();
-    }, [])
+        setIsAllscreenLoading(true);
+        const fetchData = async () => {
+            await Promise.all([getProduct(), getProperty(), getDifficulty()]);
+        };
+
+        fetchData();
+    }, []);
 
     useEffect(() => {
-        const getProperty = async () => {
-            try {
-                const res = await axios.get(`${BASE_URL}propertys_fixed_Data`);
-                setGameProperty(res.data);
-            } catch (error) {
-                alert('獲取遊戲屬性失敗');
-            }
-        }
-        getProperty();
-    }, [])
+        //console.log(product);
+        //console.log(gameProperty);
+        //console.log(gameDifficulty);
+        if (product.length > 0 && gameDifficulty.length > 0 && gameProperty.length > 0) {
+            console.log('完成');
 
-    useEffect(() => {
-        const getDifficulty = async () => {
-            try {
-                const res = await axios.get(`${BASE_URL}difficultys_fixed_Data`);
-                setGameDifficulty(res.data);
-            } catch (error) {
-                alert('獲取遊戲屬性失敗');
-            }
+            setIsAllscreenLoading(false);
         }
-        getDifficulty();
-    }, [])
 
-    const area = [
-        "台北市", "新北市", "基隆市", "桃園市", "新竹市", "台中市", "彰化縣", "南投縣",
-        "嘉義市", "台南市", "高雄市", "屏東縣", "宜蘭縣", "花蓮縣", "台東縣"
-    ];
-    const memberNum = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    }, [product, gameProperty, gameDifficulty]);
+
     const [areaSelect, setAreaSelect] = useState(area[0]);
     const [numSelect, setNumSelect] = useState(1);
 
     //hover狀態處理
     const [isHover, setIsHover] = useState(null);
 
+    if (isAllscreenLoading) {
+        return (
+            <div
+                className="d-flex justify-content-center align-items-center"
+                style={{
+                    position: "fixed",
+                    inset: 0,
+                    backgroundColor: "rgba(255,255,255,0.3)",
+                    zIndex: 999,
+                }}
+            >
+                <ReactLoading type="spin" color="black" width="4rem" height="4rem" />
+            </div>
+        )
+    }
     return (
         <>
             <div className="container d-flex flex-column align-items-center">
@@ -114,7 +134,7 @@ function Index() {
                             <label htmlFor="" className="form-label">搜尋</label>
                             <input type="text" className="form-control " placeholder="搜尋關鍵字" />
                         </div>
-                        <a href={`/#/Game_search?area=${areaSelect}&num=${numSelect}`} className="btn btn-primary w-100">搜尋</a>
+                        <a href={`./#/Game_search?area=${areaSelect}&num=${numSelect}`} className="btn btn-primary w-100">搜尋</a>
                     </div>
                 </div>
                 <div
@@ -367,6 +387,7 @@ function Index() {
                 )}
 
             </div>
+
 
         </>
     );
