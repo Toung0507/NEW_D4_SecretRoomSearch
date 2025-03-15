@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import GroupCard from "../layout/GroupCard";
+import Toast from "../layout/Toast";
+import { pushMessage } from "../redux/slices/toastSlice";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -11,12 +13,13 @@ function TeamBuyComment() {
   const [games, setGames] = useState(null);
   const [users, setUsers] = useState([]);
   const [price, setPrice] = useState(null);
-  const [infoMessage, setInfoMessage] = useState(""); // 用來顯示訊息
   const [groupsList, setGroupsList] = useState([]);
 
   const { group_id } = useParams();
 
   const { user, user_token } = useSelector((state) => state.userInfo);
+
+  const dispatch = useDispatch();
 
   // 初始載入群組資料
   useEffect(() => {
@@ -47,13 +50,23 @@ function TeamBuyComment() {
   const changeGroup = async () => {
     // 檢查是否登入
     if (!user || !user_token) {
-      setInfoMessage("請先登入");
+      dispatch(
+        pushMessage({
+          text: "請先登入",
+          status: "failed",
+        })
+      );
       return;
     }
 
     // 如果群組資料還沒抓到就不做任何操作
     if (!group) {
-      setInfoMessage("群組資料讀取中，請稍後再試");
+      dispatch(
+        pushMessage({
+          text: "群組資料讀取中，請稍後再試",
+          status: "success",
+        })
+      );
       return;
     }
 
@@ -62,7 +75,12 @@ function TeamBuyComment() {
       group.group_participants &&
       group.group_participants.map(String).includes(String(user.user_id))
     ) {
-      setInfoMessage("已重複加入");
+      dispatch(
+        pushMessage({
+          text: "已重複加入",
+          status: "failed",
+        })
+      );
       return;
     }
 
@@ -79,10 +97,20 @@ function TeamBuyComment() {
       console.log(res.data);
 
       await getGroup();
-      setInfoMessage("報名完成");
+      dispatch(
+        pushMessage({
+          text: "報名完成",
+          status: "success",
+        })
+      );
     } catch (error) {
       console.error(error);
-      setInfoMessage("報名失敗，請稍後再試");
+      dispatch(
+        pushMessage({
+          text: "報名失敗，請稍後再試",
+          status: "failed",
+        })
+      );
     }
   };
 
@@ -123,7 +151,6 @@ function TeamBuyComment() {
   };
 
   useEffect(() => {
-    //getGroup();
     getGames();
     getUsers();
     getPriceData();
@@ -165,7 +192,7 @@ function TeamBuyComment() {
                   }}
                 />
               </picture>
-              <div className="px-6 py-5">
+              <div className="px-6 py-5 border-bottom border-nature-95">
                 <div className="row">
                   <div className="col-6">
                     <img
@@ -196,7 +223,7 @@ function TeamBuyComment() {
                         活動日期
                       </th>
                     </tr>
-                    <tr>
+                    <tr className="border-bottom border-nature-95">
                       <td>{group.game_name}</td>
                       <td>{group.group_end_at}</td>
                       <td>{group.group_active_date}</td>
@@ -206,7 +233,7 @@ function TeamBuyComment() {
                         密室地址
                       </th>
                     </tr>
-                    <tr>
+                    <tr className="border-bottom border-nature-95">
                       <td colSpan="3">{group.game_address}</td>
                     </tr>
                     <tr>
@@ -217,7 +244,7 @@ function TeamBuyComment() {
                         價格
                       </th>
                     </tr>
-                    <tr>
+                    <tr className="border-bottom border-nature-95">
                       <td>{group.group_member}人</td>
                       <td colSpan="2">
                         <ul className="d-flex flex-column gap-2">
@@ -269,7 +296,7 @@ function TeamBuyComment() {
                         聯絡方式
                       </th>
                     </tr>
-                    <tr>
+                    <tr className="border-bottom border-nature-95">
                       <td>{group.group_noob ? "是" : "否"}</td>
                       <td colSpan="2">{group.group_channel}</td>
                     </tr>
@@ -278,7 +305,7 @@ function TeamBuyComment() {
                         揪團理念
                       </th>
                     </tr>
-                    <tr>
+                    <tr className="border-bottom border-nature-95">
                       <td colSpan="3">{group.group_philosophy}</td>
                     </tr>
                     <tr>
@@ -286,8 +313,7 @@ function TeamBuyComment() {
                         報名者
                       </th>
                     </tr>
-                    <tr>
-                      {/* <td colSpan="3">{group.group_participants}</td> */}
+                    <tr className="border-bottom border-nature-95">
                       <td colSpan="3">
                         {group.group_participants &&
                         group.group_participants.length > 0
@@ -356,17 +382,6 @@ function TeamBuyComment() {
                 </table>
               </div>
             </div>
-            {infoMessage && (
-              <div className="container-fluid container-lg">
-                <div className="row d-flex justify-content-center">
-                  <div className="col-xl-10">
-                    <div className="pb-10">
-                      <h2 className="text-center">{infoMessage}</h2>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
             <div className="row m-0 mt-3">
               <div className="title-container w-100 d-flex justify-content-center align-items-center">
                 <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
@@ -433,6 +448,7 @@ function TeamBuyComment() {
           </div>
         </div>
       </div>
+      <Toast />
     </>
   );
 }

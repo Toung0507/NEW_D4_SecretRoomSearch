@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { Form, useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import Toast from "../layout/Toast";
+import { pushMessage } from "../redux/slices/toastSlice";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -19,6 +21,8 @@ function Game_comment() {
   // const { gameID } = useParams();
   // 從 URL 中取得 state 與 id
   const { user, user_token } = useSelector((state) => state.userInfo);
+
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -154,17 +158,32 @@ function Game_comment() {
       if (currentMode === "new") {
         await axios.post(`${BASE_URL}/commentsData`, data);
         reset();
-        alert("新增評論成功！");
+        dispatch(
+          pushMessage({
+            text: "新增評論成功！",
+            status: "success",
+          })
+        );
       } else if (currentMode === "edit") {
         // 假設編輯評論的 API 為 Patch 到 /commentsData/{comment_id}
         await axios.patch(
           `${BASE_URL}/commentsData/${commentData.comment_id}`,
           data
         );
-        alert("更新評論成功！");
+        dispatch(
+          pushMessage({
+            text: "更新評論成功！",
+            status: "success",
+          })
+        );
       }
     } catch (error) {
-      alert("送出資料時發生錯誤");
+      dispatch(
+        pushMessage({
+          text: "送出資料時發生錯誤",
+          status: "failed",
+        })
+      );
       console.error(error);
     }
   };
@@ -433,6 +452,7 @@ function Game_comment() {
           </div>
         </div>
       )}
+      <Toast />
     </>
   );
 }
