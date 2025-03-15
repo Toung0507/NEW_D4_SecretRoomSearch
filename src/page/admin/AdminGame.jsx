@@ -15,7 +15,7 @@ function AdminGame() {
   const [searchParams, setSearchParams] = useState({
     gameName: "",
     tag: "",
-    status: "全部狀態",
+    is_stock: "全部狀態",
   });
 
   useEffect(() => {
@@ -60,8 +60,11 @@ function AdminGame() {
           .toLowerCase()
           .includes(searchParams.tag.toLowerCase());
 
-      // 這裡假設有 game_status 欄位，實際上可能需要調整
-      const statusMatch = searchParams.status === "全部狀態" || true; // 暫時略過
+      // 檢查狀態
+      const statusMatch =
+        searchParams.is_stock === "全部狀態" ||
+        (searchParams.is_stock === "true" && game.game_isStock === true) ||
+        (searchParams.is_stock === "false" && game.game_isStock === false);
 
       return nameMatch && tagMatch && statusMatch;
     });
@@ -73,7 +76,7 @@ function AdminGame() {
     setSearchParams({
       gameName: "",
       tag: "",
-      status: "全部狀態",
+      is_stock: "全部狀態", // 修正：重置為 "全部狀態"
     });
     setFilteredData(gameData);
   };
@@ -180,25 +183,24 @@ function AdminGame() {
           </div>
           <div className="col-2">
             <label
-              htmlFor="status"
+              htmlFor="is_stock"
               className="form-label fs-Caption text-black"
             >
-              審核狀態
+              狀態
             </label>
             <select
               className="form-select border-black"
               style={{
                 color:
-                  searchParams.status === "全部狀態" ? "#C6C6CA" : "inherit",
+                  searchParams.is_stock === "全部狀態" ? "#C6C6CA" : "inherit",
               }}
-              id="status"
-              value={searchParams.status}
+              id="is_stock"
+              value={searchParams.is_stock}
               onChange={handleSearchChange}
             >
               <option value="全部狀態">全部狀態</option>
-              <option value="processing">處理中</option>
-              <option value="pass">通過</option>
-              <option value="rejected">已退回</option>
+              <option value="true">上架</option>
+              <option value="false">下架</option>
             </select>
           </div>
           <div className="col-1">
@@ -278,11 +280,16 @@ function AdminGame() {
                         {row.game_main_tag2name}
                       </span>
                     </td>
-                    {/* TODO 加上 上/下架 真實資料 */}
                     <td className="py-2 px-4 text-center">
-                      <span className="px-2 py-1 rounded-2 text-black bg-pass">
-                        上架
-                      </span>
+                      {row.game_isStock == true ? (
+                        <span className="px-2 py-1 rounded-2 text-black bg-pass">
+                          上架
+                        </span>
+                      ) : (
+                        <span className="px-2 py-1 rounded-2 text-black bg-tertiary-90">
+                          下架
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}
