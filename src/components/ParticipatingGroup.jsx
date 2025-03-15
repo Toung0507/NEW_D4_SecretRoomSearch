@@ -43,7 +43,6 @@ const ParticipatingGroup = () => {
         try {
             const res = await axios.get(`${baseApi}/groupsData`);
             res.data.map((data) => {
-                console.log(data.group_participants);
                 if (data.group_participants.includes(user_id)) {
                     if (!data.group_cancel && data.group_isSuccessful === null) {
                         nowG.push(data);
@@ -61,11 +60,6 @@ const ParticipatingGroup = () => {
         } catch (error) {
             console.error(error);
         }
-
-
-        console.log(nowG);
-        console.log(historyG);
-
 
         if (nowG.length === 0) {
             setIsHaveNowGroups(false);
