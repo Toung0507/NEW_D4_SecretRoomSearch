@@ -36,7 +36,7 @@ function Header() {
     { path: `/Store_profile/${user_id}/myGames`, name: "我的密室" },
   ];
 
-  const [show, setShow] = useState(false);
+  //const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (user_token) {
@@ -91,7 +91,7 @@ function Header() {
                 {navbar.map((routes) => (
                   <li className="nav-item" key={routes.path}>
                     <NavLink
-                      className="nav-link nav-link-bg px-0 py-4 fs-h6 fw-bold d-none d-lg-block"
+                      className="nav-link nav-link-bg px-0 py-4 fs-h6 fw-bold"
                       aria-current="page"
                       to={routes.path}
                     >
