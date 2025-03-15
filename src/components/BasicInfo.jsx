@@ -43,7 +43,6 @@ const BasicInfo = () => {
                 try {
                     const res = await axios.get(`${baseApi}/usersData/${user_id}`);
                     dispatch(updateUser(res.data));
-
                     setIsFormChanged(false);
                 } catch (error) {
                     const message = error.response.data;
@@ -87,7 +86,6 @@ const BasicInfo = () => {
             user_password
         }
         const res = await dispatch(getUserInfoAsyncThunk(data));
-
         if (res.meta.requestStatus === 'fulfilled') {
             openupdateInputPawword();
             handleHideUpdatePasswordtModal();
@@ -109,23 +107,19 @@ const BasicInfo = () => {
         const user_id = user.user_id;
         data["user_update_at"] = dayjs().format("YYYY-MM-DD HH:mm:ss");
         try {
-            const res = await axios.patch(`${baseApi}/usersData/${user_id}`, data);
+            await axios.patch(`${baseApi}/usersData/${user_id}`, data);
             dispatch(pushMessage({
-                text: '修改密碼成功\n請下次登入使用新密碼',
+                text: '修改密碼成功\n下次登入請使用新密碼',
                 status: 'success'
             }));
-
             setPasswordError("尚未驗證");
             inputpasswordRef.current.value = '';
-
             // 延遲關閉 Modal，確保訊息顯示
             setTimeout(() => {
                 handleHideupdateInputPawwordtModal();
-            }, 1000);  // 0.5 秒後關閉
+            }, 3000);
         } catch (error) {
             console.log(error);
-            // const message = error.response.data;
-            // setPasswordError(message);
         }
 
     };
@@ -303,6 +297,7 @@ const BasicInfo = () => {
                         </div>
                     </div>
                 </div>
+                <Toast />
             </div>
             {/* 驗證密碼MODAL */}
             <div
@@ -370,7 +365,7 @@ const BasicInfo = () => {
                     </div>
                 </div>
             </div >
-            <Toast />
+
         </>
 
     )

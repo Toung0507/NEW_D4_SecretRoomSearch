@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { userStoreContext } from "../page/StoreProfile";
 import { useForm } from "react-hook-form";
 import { FaCheckDouble } from "react-icons/fa";
@@ -7,14 +7,27 @@ import { IoInformationCircle } from "react-icons/io5";
 import AddressForm from "../layout/AddressForm";
 import dayjs from "dayjs";
 import axios from "axios";
-
+import { Modal } from "bootstrap";
+import { useDispatch } from "react-redux";
+import { getUserInfoAsyncThunk, updateUser } from "../redux/slices/userInfoSlice";
+import { pushMessage } from "../redux/slices/toastSlice";
+import Toast from "../layout/Toast";
 const baseApi = import.meta.env.VITE_BASE_URL;
 
 const BasicInfo = () => {
+    const dispatch = useDispatch();
     const { user, store } = useContext(userStoreContext);
     const { register: storeData, handleSubmit: handleStoreData, formState: { errors: storeErrors }, setValue: setStoreValue } = useForm();
     const { register: storeUserData, handleSubmit: handleStoreUserData, formState: { errors: storeUserErrors }, setValue: setStoreUserValue, watch } = useForm();
     const watchMethod = watch("store_method");
+
+
+    // modal ref
+    const updatePawwordModalRef = useRef(null); //驗證密碼
+    const updateInputPawwordModalRef = useRef(null); //修改密碼
+    const authpasswordRef = useRef(null); //
+    const inputpasswordRef = useRef(null); //
+    const [passwordError, setPasswordError] = useState("尚未驗證");
 
     useEffect(() => {
         setStoreUserValue("store_method", storeUserFormData.store_method);
@@ -70,10 +83,20 @@ const BasicInfo = () => {
             }
         };
 
-        const updateUser = async (data) => {
+        const updateUser2 = async (data) => {
             data["user_update_at"] = dayjs().format("YYYY-MM-DD HH:mm:ss");
             try {
-                const res = await axios.patch(`${baseApi}/usersData/${user_id}`, data);
+                await axios.patch(`${baseApi}/usersData/${user_id}`, data);
+                try {
+                    const res = await axios.get(`${baseApi}/usersData/${user_id}`);
+                    dispatch(updateUser(res.data));
+                } catch (error) {
+                    const message = error.response.data;
+                    dispatch(pushMessage({
+                        text: message,
+                        status: 'failed'
+                    }));
+                }
             } catch (error) {
                 const message = error.response.data;
                 dispatch(pushMessage({
@@ -85,7 +108,7 @@ const BasicInfo = () => {
 
         if (isStoreUserFormChanged) {
             updateStore(storeData);
-            updateUser(userData);
+            updateUser2(userData);
             setStoreUserFormData(data);
             setIsStoreUserFormChanged(false);
         }
@@ -134,7 +157,7 @@ const BasicInfo = () => {
 
     });
 
-    // 場館資料的input
+    // 場館資料的submit
     const handleInputStore = (e) => {
         const { name, value } = e.target;
         setStoreFormData((prevData) => {
@@ -148,6 +171,92 @@ const BasicInfo = () => {
             return updateStore;
         });
     };
+
+    // 驗證輸入的密碼前的密碼是否有正確
+    const handleAuthPassword = async () => {
+        const user_email = user.user_email;
+        const user_password = authpasswordRef.current.value;
+        const data = {
+            user_email,
+            user_password
+        }
+        const res = await dispatch(getUserInfoAsyncThunk(data));
+
+        if (res.meta.requestStatus === 'fulfilled') {
+            openupdateInputPawword();
+            handleHideUpdatePasswordtModal();
+            setPasswordError("請輸入新密碼");
+            authpasswordRef.current.value = '';
+        }
+        else {
+            setPasswordError(res.payload === '信箱及密碼需要輸入' || res.payload === '密碼請超過4碼' ? '請輸入密碼驗證或密碼未超過4碼' : res.payload);
+        }
+
+    };
+
+    // 驗證輸入的密碼是否有錯誤
+    const handleNewInputPassword = async () => {
+        const user_password = inputpasswordRef.current.value;
+        const data = {
+            user_password
+        }
+        const user_id = user.user_id;
+        data["user_update_at"] = dayjs().format("YYYY-MM-DD HH:mm:ss");
+        try {
+            const res = await axios.patch(`${baseApi}/usersData/${user_id}`, data);
+            dispatch(pushMessage({
+                text: '修改密碼成功\n請下次登入使用新密碼',
+                status: 'success'
+            }));
+
+            setPasswordError("尚未驗證");
+            inputpasswordRef.current.value = '';
+
+            // 延遲關閉 Modal，確保訊息顯示
+            setTimeout(() => {
+                handleHideupdateInputPawwordtModal();
+            }, 1000);  // 0.5 秒後關閉
+        } catch (error) {
+            console.log(error);
+            // const message = error.response.data;
+            // setPasswordError(message);
+        }
+
+    };
+
+    // 顯示Modal - 刪除
+    const openUpdatePassword = () => {
+        const modalInstance = Modal.getInstance(updatePawwordModalRef.current);
+        modalInstance.show();
+    };
+
+    // 隱藏Modal - 刪除
+    const handleHideUpdatePasswordtModal = () => {
+        const modalInstance = Modal.getInstance(updatePawwordModalRef.current);
+        modalInstance.hide();
+    };
+
+    // 顯示Modal - 刪除
+    const openupdateInputPawword = () => {
+        const modalInstance = Modal.getInstance(updateInputPawwordModalRef.current);
+        modalInstance.show();
+    };
+
+    // 隱藏Modal - 刪除
+    const handleHideupdateInputPawwordtModal = () => {
+        const modalInstance = Modal.getInstance(updateInputPawwordModalRef.current);
+        modalInstance.hide();
+    };
+
+    useEffect(() => {
+        new Modal(updatePawwordModalRef.current, {
+            backdrop: false
+        }); //從boostrap裡面來的
+
+        new Modal(updateInputPawwordModalRef.current, {
+            backdrop: false
+        }); //從boostrap裡面來的
+    }, []);
 
     return (
         <>
@@ -175,7 +284,7 @@ const BasicInfo = () => {
                                     (<span className="text-secondary-40"><IoInformationCircle className="ms-3 me-1" /> 發布遊戲資格審核中</span>) :
                                     store.store_isAuth === 'pass' ?
                                         (<span className="text-success"><FaCheckDouble className="ms-3 me-1" /> 審核成功，可新增遊戲</span>) :
-                                        (<span className="text-danger"><VscError className="ms-3 me-1" /> 資格審核失敗，請再次確認相關資訊</span>)
+                                        (<span className="text-danger"><VscError className="ms-3 me-1" /> 資格審核失敗，請再次確認相關資訊，才可發布遊戲</span>)
                                 }
                             </h5>
                         </div>
@@ -221,6 +330,7 @@ const BasicInfo = () => {
                                             value={storeUserFormData.user_email}
                                             onChange={handleInputStoreUser}
                                         />
+                                        <button className="text-secondary-50 bg-transparent border-0 border-bottom pt-1 " onClick={openUpdatePassword}>修改密碼</button>
                                         <div className="error-message text-danger mt-1 fs-caption lh-1">
                                             {storeUserErrors.user_email ? storeUserErrors.user_email.message : "　"}
                                         </div>
@@ -404,12 +514,9 @@ const BasicInfo = () => {
                                 </button>
                             </div>
                         </div>
-
                     </div>
                 </div>
-                <div className=" border-nature-90 border rounded-2">
-
-                </div>
+                <Toast />
             </div>
             {/* 場館資料 */}
             <div className="col-12 m-0 pt-10 px-0 mb-10">
@@ -559,13 +666,77 @@ const BasicInfo = () => {
                                 </button>
                             </div>
                         </div>
-
                     </div>
                 </div>
-                <div className=" border-nature-90 border rounded-2">
 
-                </div>
             </div>
+            {/* 驗證密碼MODAL */}
+            <div
+                ref={updatePawwordModalRef}
+                className="modal fade m-0"
+                id="updatePawwordModal"
+                tabIndex="-1"
+                style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+            >
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header bg-secondary-95 flex-column align-items-start">
+                            <h4 className="modal-title fw-bold mb-2">修改密碼</h4>
+                            <p>請先輸入目前密碼進行驗證</p>
+                        </div>
+                        <div className="modal-body px-5 py-10">
+                            <input type="password" className="w-100 border border-1 border-black rounded-1 " ref={authpasswordRef} />
+                            <div className={`error-message ${passwordError === '尚未驗證' ? 'text-secondary-40' : 'text-danger'}  mt-1 fs-caption lh-1`}>
+                                {passwordError}
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <div className="btn_2 d-flex  text-center ">
+                                <button type="button" className="btn bg-nature-60 text-white me-6" onClick={handleHideUpdatePasswordtModal}>
+                                    取消更改
+                                </button>
+                                <button type="button" className="btn bg-secondary-60 text-white" onClick={handleAuthPassword}>
+                                    下一步
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div >
+            {/* 修改密碼MODAL */}
+            < div
+                ref={updateInputPawwordModalRef}
+                className="modal fade m-0"
+                id="updatePawwordModal"
+                tabIndex="-1"
+                style={{ backgroundColor: "rgba(0,0,0,0.5)" }
+                }
+            >
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header bg-secondary-95">
+                            <h4 className="modal-title fw-bold ">修改密碼</h4>
+                        </div>
+                        <div className="modal-body px-6 py-10">
+                            <input type="password" className="w-100 border border-1 border-black rounded-1 " ref={inputpasswordRef} />
+                            <div className={`error-message ${passwordError === '尚未驗證' ? 'text-secondary-40' : 'text-danger'}  mt-1 fs-caption lh-1`}>
+                                {passwordError}
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <div className="btn_2 d-flex  text-center ">
+                                <button type="button" className="btn bg-nature-60 text-white me-6" onClick={handleHideupdateInputPawwordtModal}>
+                                    取消更改
+                                </button>
+                                <button type="button" className="btn bg-secondary-60 text-white" onClick={handleNewInputPassword}                                >
+                                    儲存變更
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div >
+
         </>
     )
 };
