@@ -652,14 +652,19 @@ function TeamBuy() {
                   <div className="row m-0">
                     <div className="row m-0">
                       {isHaveResultGames ? (
-                        searchGames.map(({ game, group, user }) => (
-                          <GroupCard
-                            game={game}
-                            group={group}
-                            user={user}
-                            key={group.game_id}
-                          />
-                        ))
+                        searchGames
+                          .filter(
+                            ({ group }) =>
+                              new Date(group.group_active_date) >= new Date()
+                          )
+                          .map(({ game, group, user }) => (
+                            <GroupCard
+                              game={game}
+                              group={group}
+                              user={user}
+                              key={group.game_id}
+                            />
+                          ))
                       ) : (
                         <div className="text-center">
                           <p className="h4">
@@ -678,13 +683,17 @@ function TeamBuy() {
                       </div>
                       {/* 若 searchGames 中找不到相同 game_id 的項目，就保留該推薦 */}
                       {group
+                        .slice(0, 4)
+                        .filter(
+                          ({ group }) =>
+                            new Date(group.group_active_date) >= new Date()
+                        )
                         .filter(({ game }) => {
                           return !searchGames.some(
                             (searchItem) =>
                               searchItem.game.game_id === game.game_id
                           );
                         })
-                        .slice(0, 4)
                         .map(({ game, group, user }) => (
                           <GroupCard
                             game={game}
@@ -707,16 +716,27 @@ function TeamBuy() {
                       </div>
                       <div className="row m-0">
                         {isAllRecommendDisplay
-                          ? group.map(({ game, group, user }) => (
-                              <GroupCard
-                                game={game}
-                                group={group}
-                                user={user}
-                                key={group.group_id}
-                              />
-                            ))
+                          ? group
+                              .filter(
+                                ({ group }) =>
+                                  new Date(group.group_active_date) >=
+                                  new Date()
+                              )
+                              .map(({ game, group, user }) => (
+                                <GroupCard
+                                  game={game}
+                                  group={group}
+                                  user={user}
+                                  key={group.group_id}
+                                />
+                              ))
                           : group
                               .slice(0, 8)
+                              .filter(
+                                ({ group }) =>
+                                  new Date(group.group_active_date) >=
+                                  new Date()
+                              )
                               .map(({ game, group, user }) => (
                                 <GroupCard
                                   game={game}
