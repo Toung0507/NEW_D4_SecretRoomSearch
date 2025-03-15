@@ -256,7 +256,6 @@ function AdminGame() {
                     標籤 {getSortIcon("game_dif_tagname")}
                   </th>
                   <th className="px-4 py-3 text-center">狀態</th>
-                  <th className="px-4 py-3"></th>
                 </tr>
               </thead>
               <tbody>
@@ -284,11 +283,6 @@ function AdminGame() {
                       <span className="px-2 py-1 rounded-2 text-black bg-pass">
                         上架
                       </span>
-                    </td>
-                    <td className="py-2 px-4 text-end">
-                      <button className="edit-btn">
-                        <span className="material-symbols-outlined">edit</span>
-                      </button>
                     </td>
                   </tr>
                 ))}
