@@ -12,18 +12,17 @@ const ParticipatingGroup = () => {
     const user_id = user.user_id;
 
     // 此元件使用 
-    const [allGroups, setAllGroups] = useState([]);
     const [nowGroups, setNowGroups] = useState([]);
+    const [isHavenowGroups, setIsHaveNowGroups] = useState(true);
     const [historyGroups, setHistorysGroups] = useState([]);
+    const [isHavehistoryGroups, setIsHaveHistorysGroups] = useState(true);
 
     const getAllGroups = async () => {
         let nowG = [];
         let historyG = [];
+        // 先判斷是否有主揪的資料
         try {
             const res = await axios.get(`${baseApi}/usersData/${user_id}/groupsData`);
-            setAllGroups(res.data);
-            // console.log(res.data);
-
             res.data.map((data) => {
                 if (!data.group_cancel && data.group_isSuccessful === null) {
                     nowG.push(data);
@@ -38,10 +37,50 @@ const ParticipatingGroup = () => {
                 }
             })
         } catch (error) {
-
+            console.error(error);
         }
-        setNowGroups(nowG);
-        setHistorysGroups(historyG);
+        // 再判斷是否有參與者的資料
+        try {
+            const res = await axios.get(`${baseApi}/groupsData`);
+            res.data.map((data) => {
+                console.log(data.group_participants);
+                if (data.group_participants.includes(user_id)) {
+                    if (!data.group_cancel && data.group_isSuccessful === null) {
+                        nowG.push(data);
+                    }
+                    else if (data.group_cancel && data.group_isSuccessful) {
+                        data["status"] = '已遊玩結束';
+                        historyG.push(data);
+                    }
+                    else if (data.group_cancel && !data.group_isSuccessful) {
+                        data["status"] = '已棄團';
+                        historyG.push(data);
+                    }
+                }
+            })
+        } catch (error) {
+            console.error(error);
+        }
+
+
+        console.log(nowG);
+        console.log(historyG);
+
+
+        if (nowG.length === 0) {
+            setIsHaveNowGroups(false);
+        }
+        else {
+            setNowGroups(nowG);
+        }
+
+        if (historyG.length === 0) {
+            setIsHaveHistorysGroups(false);
+        }
+        else {
+            setHistorysGroups(historyG);
+        }
+
     };
 
     useEffect(() => {
@@ -68,7 +107,7 @@ const ParticipatingGroup = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
+                                {isHavenowGroups ?
                                     nowGroups.map((oneGroup) => (
                                         <tr key={oneGroup.group_id} className="ParticipatingGroupThead">
                                             <td className="ps-5 py-2 pe-0">{oneGroup.game_name}</td>
@@ -81,7 +120,23 @@ const ParticipatingGroup = () => {
                                                 </Link>
                                             </td>
                                         </tr>
-                                    ))
+                                    )) :
+                                    (
+                                        <>
+                                            <tr>
+                                                <td colSpan={6} className="text-center fs-h6">
+                                                    <p>
+                                                        沒有正在進行中的揪團
+                                                        <br />
+                                                        快到<Link className="d-inline text-nowrap" to='/TeamBuy'>揪團中</Link>
+                                                        找尋你想玩的密室，一起加入吧！
+
+                                                    </p>
+
+                                                </td>
+                                            </tr>
+                                        </>
+                                    )
                                 }
                             </tbody>
                         </table>
@@ -96,22 +151,38 @@ const ParticipatingGroup = () => {
                         <table className="table">
                             <thead className="table-light px-3" >
                                 <tr className="ParticipatingGroupThead ">
-                                    <th scope="col" className="text-secondary-40 ps-6 py-3 pe-0">密室名稱</th>
+                                    <th scope="col" className="text-secondary-40 ps-6 py-3 pe-0">狀態</th>
+                                    <th scope="col" className="text-secondary-40 py-3 px-0">密室地點</th>
                                     <th scope="col" className="text-secondary-40 py-3 px-0">密室地點</th>
                                     <th scope="col" className="text-secondary-40 py-3 px-0">遊玩日期</th>
                                     <th scope="col" className="text-secondary-40 py-3 px-0">參與人數/人數上限</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {
+                                {isHavehistoryGroups ?
                                     historyGroups.map((oneGroup) => (
                                         <tr key={oneGroup.group_id} className="ParticipatingGroupThead">
-                                            <td className="ps-5 py-2 pe-0">{oneGroup.game_name}</td>
+                                            <td className="py-2 py-2 pe-0">{oneGroup.status}</td>
+                                            <td className="py-2 px-0">{oneGroup.game_name}</td>
                                             <td className="py-2 px-0">{oneGroup.game_address}</td>
                                             <td className="py-2 px-0">{oneGroup.group_active_date}</td>
                                             <td className="pe-5 py-2 ps-0">{oneGroup.group_participants.length}人/{oneGroup.group_member}人</td>
                                         </tr>
-                                    ))
+                                    )) :
+                                    (
+                                        <>
+                                            <tr>
+                                                <td colSpan={6} className="text-center fs-h6">
+                                                    <p>
+                                                        未參加過任何揪團
+                                                        <br />
+                                                        快到<Link className="d-inline text-nowrap" to='/TeamBuy'>揪團中</Link>
+                                                        找尋你想玩的密室，一起加入吧！
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </>
+                                    )
                                 }
                             </tbody>
                         </table>

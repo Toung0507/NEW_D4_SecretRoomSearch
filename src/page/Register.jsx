@@ -127,7 +127,7 @@ function Register() {
                     }));
                     setTimeout(() => {
                         navigate(`/Login`);
-                    }, 5000);
+                    }, 3000);
                 }
             } catch (error) {
                 const message = error.response.data;

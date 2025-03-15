@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { userContext } from "../page/UserProfile";
-import axios from "axios";
+import axios, { Axios } from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { TiStarFullOutline, TiStarOutline } from 'react-icons/ti';
 import { Modal } from "bootstrap";
@@ -15,9 +15,12 @@ const MyComments = () => {
     // 此元件使用 
     const [allComments, setAllComments] = useState([]);
     const [allCommentsGames, setAllCommentsGames] = useState([]);
+    const [delOneCommentID, setDelOneCommentID] = useState([]);
+    const [isHaveComment, setIsHaveComment] = useState(true);
 
     // modal
     const detailCommentRef = useRef(null);
+    const delCommentModalRef = useRef(null);
     const [commentModalData, setCommentModalData] = useState({});
 
     const getAllComments = async () => {
@@ -27,18 +30,25 @@ const MyComments = () => {
             const res = await axios.get(`${baseApi}/usersData/${user_id}/commentsData`);
             setAllComments(res.data);
             // 使用 for...of 來處理每一個 comment
-            for (newComments of res.data) {
-                try {
-                    const gameRes = await axios.get(`${baseApi}/gamesData/${newComments.game_id}`);
-                    newComments["game_name"] = gameRes.data.game_name;
-                    newComments["game_dif_tagname"] = gameRes.data.game_dif_tagname;
-                    newComments["game_main_tag1name"] = gameRes.data.game_main_tag1name;
-                    newComments["game_main_tag2name"] = gameRes.data.game_main_tag2name;
-                    new2Comments.push(newComments);
-                } catch (error) {
-                    console.error("Error fetching game data:", error);
+            if (!res.data[0].includes("在 commentsData 資料表中無相關資料")) {
+                for (newComments of res.data) {
+                    try {
+                        const gameRes = await axios.get(`${baseApi}/gamesData/${newComments.game_id}`);
+                        newComments["game_name"] = gameRes.data.game_name;
+                        newComments["game_dif_tagname"] = gameRes.data.game_dif_tagname;
+                        newComments["game_main_tag1name"] = gameRes.data.game_main_tag1name;
+                        newComments["game_main_tag2name"] = gameRes.data.game_main_tag2name;
+                        new2Comments.push(newComments);
+                    } catch (error) {
+
+                        console.error("Error fetching game data:", error);
+                    }
                 }
             }
+            else {
+                setIsHaveComment(false)
+            }
+
         } catch (error) {
             console.error(error);
         }
@@ -73,21 +83,48 @@ const MyComments = () => {
         return content
     };
 
-    // 顯示Modal - 刪除
+    //刪除某則評論
+    const delOneComment = async (comment_id) => {
+        console.log(delOneCommentID);
+        try {
+            await axios.delete(`${baseApi}/commentsData/${delOneCommentID}`);
+            getAllComments();
+            handleDelComment();
+            handledetailComment();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // 顯示Modal - 詳細
     const opendetailComment = (comment) => {
         setCommentModalData(comment);
         const modalInstance = Modal.getInstance(detailCommentRef.current);
         modalInstance.show();
     };
 
-    // 隱藏Modal - 刪除
+    // 隱藏Modal - 詳細
     const handledetailComment = () => {
         const modalInstance = Modal.getInstance(detailCommentRef.current);
         modalInstance.hide();
     };
 
+    // 顯示Modal - 刪除
+    const openDelComment = (comment) => {
+        setDelOneCommentID(comment);
+        const modalInstance = Modal.getInstance(delCommentModalRef.current);
+        modalInstance.show();
+    };
+
+    // 隱藏Modal - 刪除
+    const handleDelComment = () => {
+        const modalInstance = Modal.getInstance(delCommentModalRef.current);
+        modalInstance.hide();
+    };
+
     useEffect(() => {
         new Modal(detailCommentRef.current);
+        new Modal(delCommentModalRef.current);
     }, []);
 
     useEffect(() => {
@@ -100,7 +137,7 @@ const MyComments = () => {
             <div className="col-12 m-0  px-0 ">
                 <div className="border-nature-90 border rounded-2 my-10">
                     <div className="ParticipatingGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6" >
-                        揪團中
+                        我的評論
                     </div>
                     <div className="p-6 bg-white">
                         <table className="table">
@@ -117,7 +154,7 @@ const MyComments = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
+                                {isHaveComment ?
                                     allCommentsGames.map((omeomment) => (
                                         <tr key={omeomment.comment_id} className="ParticipatingGroupThead">
                                             <td className="ps-5 py-2 pe-0">{omeomment.commet_played_time}</td>
@@ -128,26 +165,32 @@ const MyComments = () => {
                                             <td className="py-2 px-0">{omeomment.game_main_tag1name}、{omeomment.game_main_tag2name}</td>
                                             <td className="py-2 px-0">{MyComponent(omeomment.coment_content, 10)}</td>
                                             <td className="pe-5 py-2 ps-0">
-                                                <button onClick={() => opendetailComment(omeomment)} className="text-black btn btn-white  ">
+                                                <button onClick={() => opendetailComment(omeomment)} className="text-black border-0 fs-Body-1 btn btn-white p-0 commentButton m-0 ">
                                                     查看詳情 <IoIosArrowForward color="black" />
                                                 </button>
                                             </td>
                                         </tr>
-                                    ))
+                                    )) : (<>
+                                        <tr>
+                                            <td colSpan={8} className="text-center fs-h6">未留下任何評論，<br />
+                                                歡迎到密室頁面分享你的心得讓更多人參考！</td>
+                                        </tr>
+                                    </>)
                                 }
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
+            </div >
 
             {/* 評論詳細頁面 */}
-            <div
+            < div
                 ref={detailCommentRef}
                 className="modal fade m-0"
                 id="detailComment "
                 tabIndex="-1"
-                style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+                style={{ backgroundColor: "rgba(0,0,0,0.5)" }
+                }
             >
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
@@ -193,7 +236,7 @@ const MyComments = () => {
                         </div>
                         <div className="modal-footer">
                             <div className="btn_2 d-flex  text-center ">
-                                <button type="button" className="btn bg-nature-60 text-white me-6" onClick={handledetailComment}>
+                                <button type="button" className="btn bg-nature-60 text-white me-6" onClick={() => openDelComment(commentModalData.comment_id)}>
                                     刪除
                                 </button>
                                 <Link
@@ -208,6 +251,48 @@ const MyComments = () => {
                     </div>
                 </div>
             </div >
+
+            {/* 刪除確認 */}
+            < div
+                ref={delCommentModalRef}
+                className="modal fade"
+                id="delCommentModal"
+                tabIndex="-1"
+                style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+            >
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5">刪除此則評論</h1>
+                            <button
+                                onClick={handleDelComment}
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div className="modal-body">
+                            你是否要刪除
+                            <span className="text-danger fw-bold"> {commentModalData.game_name} </span>
+                            此則遊戲的評論內容
+                        </div>
+                        <div className="modal-footer">
+                            <button
+                                onClick={handleDelComment}
+                                type="button"
+                                className="btn btn-secondary"
+                            >
+                                取消
+                            </button>
+                            <button onClick={delOneComment} type="button" className="btn btn-danger">
+                                刪除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div >
+
         </>
 
     )

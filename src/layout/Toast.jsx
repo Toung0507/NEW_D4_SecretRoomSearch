@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeMessage } from "../redux/slices/toastSlice";;
 import { Toast as BsToast } from "bootstrap";
 
-const TOAST_DURATION = 5000;
+const TOAST_DURATION = 3000;
 
 function Toast() {
     const messages = useSelector((state) => state.toast.messages);
@@ -42,9 +42,17 @@ function Toast() {
                             ></button>
                         </div>
                         <div className="toast-body bg-white">
-                            <pre >
-                                {message.text}
-                            </pre>
+                            {message.text.includes("註冊成功") ?
+                                (<pre>
+                                    {message.text}
+                                </pre>) :
+                                (
+                                    <pre className="fs-h6">
+                                        {message.text}
+                                    </pre>
+                                )
+                            }
+
                         </div>
                     </div>
                 ))
