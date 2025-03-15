@@ -3,13 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { logOut } from "../redux/slices/userInfoSlice";
-import {
-  Navbar,
-  Nav,
-  NavDropdown,
-  Container,
-  Offcanvas,
-} from "react-bootstrap";
 
 const navbar = [
   { path: "Game_search", name: "找遊戲" },
@@ -45,9 +38,6 @@ function Header() {
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   useEffect(() => {
     if (user_token) {
       const role = user.user_role;
@@ -68,14 +58,6 @@ function Header() {
     dispatch(logOut());
     navigate("/");
   };
-
-  //   useEffect(() => {
-  //     const collapseElement = document.getElementById("navbarSupportedContent");
-  //     if (collapseElement) {
-  //       // 確保 global.bootstrap 存在，或從 bootstrap/js/dist/collapse 模組導入
-  //       new window.bootstrap.Collapse(collapseElement, { toggle: false });
-  //     }
-  //   }, []);
 
   return (
     <>
