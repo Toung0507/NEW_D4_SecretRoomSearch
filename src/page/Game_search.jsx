@@ -1,8 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import CommendedGamesCard from "../layout/CommendedGamesCard";
-
-
+import { IoEllipseSharp } from "react-icons/io5";
 const baseApi = import.meta.env.VITE_BASE_URL;
 
 const area = [
@@ -50,24 +49,21 @@ function Game_search() {
     const [newedGames, setNewedGames] = useState([]);
     const [searchGames, setSearchGames] = useState([]);
 
+    // 判斷是否為首頁搜尋
+    const [isIndexSearch, setIsIndexSerach] = useState(false);
+
     // 建立一個 ref 指向搜尋區塊
     const firstSectionRef = useRef(null);
-
-    //防止搜尋跳轉一直滾動頁面
-    const [hasScrolled, setHasScrolled] = useState(false);
-
 
     // axios拿到全部遊戲資料
     const getGames = async () => {
         try {
             const res = await axios.get(`${baseApi}/gamesData`);
             setGames(res.data);
-
             const recommendedGames = [...res.data].sort(
                 (a, b) => b.game_score - a.game_score
             );
             setRecommendedGames(recommendedGames);
-
             const newGames = [...res.data].sort(
                 (a, b) => new Date(b.game_start_date) - new Date(a.game_start_date)
             );
@@ -105,7 +101,14 @@ function Game_search() {
         } else {
             setIsAllRecommendDisplay(true);
         }
-        window.scrollTo(0, 0); // 滾動到頁面頂部
+        // window.scrollTo(0, 0); // 滾動到頁面頂部
+        // 搜尋完成後，利用 ref 捲動到搜尋區塊
+        if (firstSectionRef.current) {
+            window.scrollTo({
+                top: firstSectionRef.current.offsetTop - 120,
+                behavior: "smooth"
+            });
+        }
     };
 
     // 查看更多新作
@@ -115,20 +118,31 @@ function Game_search() {
         } else {
             setIsAllRecentlyDisplay(true);
         }
-        window.scrollTo(0, 0); // 滾動到頁面頂部
+        // window.scrollTo(0, 0); // 滾動到頁面頂部
+        // 搜尋完成後，利用 ref 捲動到搜尋區塊
+        if (firstSectionRef.current) {
+            window.scrollTo({
+                top: firstSectionRef.current.offsetTop - 90,
+                behavior: "smooth"
+            });
+        }
     };
 
     const handleReset = () => {
         setSearch(formData);
         setIsSearch(false);
+        if (firstSectionRef.current) {
+            window.scrollTo({
+                top: firstSectionRef.current.offsetTop - 120,
+                behavior: "smooth"
+            });
+        }
     };
 
     // 監聽表單輸入況狀
     const handlEInputChange = (e) => {
         const { value, name } = e.target;
         if (name == "area" || name == "difficulty" || name == "property") {
-            console.log(value, name);
-
             setSearch((prev) => ({
                 ...prev,
                 [name]: prev[name].includes(value)
@@ -145,7 +159,9 @@ function Game_search() {
 
     // 處理篩選後的結果呈現
     const handleSerach = async (e) => {
-        e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
+        if (e !== undefined) {
+            e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
+        }
         setIsSearch(true);
         // 篩選資料
         const filteredGames = games.filter((game) => {
@@ -194,7 +210,6 @@ function Game_search() {
             );
         });
 
-        console.log();
         if (filteredGames.length === 0) {
             setIsHaveResultGames(false);
         } else if (filteredGames.length > 0) {
@@ -212,17 +227,12 @@ function Game_search() {
                 return 0; // 如果沒有匹配的排序條件，返回原順序
             })
         );
-        // // 搜尋完成後，利用 ref 捲動到搜尋區塊
-        // if (firstSectionRef.current) {
-        //   firstSectionRef.current.scrollIntoView({ behavior: "smooth" });
-        // }
-
-        //如果已經滾動過 則不再滾動
-        if (!hasScrolled) {
-            if (firstSectionRef.current) {
-                firstSectionRef.current.scrollIntoView({ behavior: "smooth" });
-                setHasScrolled(true); // 設定已經滾動過
-            }
+        // 搜尋完成後，利用 ref 捲動到搜尋區塊
+        if (firstSectionRef.current) {
+            window.scrollTo({
+                top: firstSectionRef.current.offsetTop - 90,
+                behavior: "smooth"
+            });
         }
     };
 
@@ -232,42 +242,18 @@ function Game_search() {
         getDifficultys();
     }, []);
 
-    //URL傳參數
-    // useEffect(() => {
-    //   // 取得 hash 部分，例如 "#/Game_search?area=..."
-    //   const hash = window.location.hash;
-    //   // 找出 "?" 的位置，並取得 query string
-    //   const queryIndex = hash.indexOf("?");
-    //   if (queryIndex !== -1) {
-    //     const queryString = hash.substring(queryIndex);
-    //     const params = new URLSearchParams(queryString);
-    //     const defaultArea = params.get("area");
-    //     const defaultNum = params.get("num");
-    //     const defaultProperty= params.get("property");
-    //     if (defaultArea) {
-    //       // 更新 search state，將 area 加入陣列中
-    //       setSearch(prev => ({
-    //         ...prev,
-    //         area: [defaultArea],
-    //         game_people: Number(defaultNum),
-    //         property: defaultProperty ? [String(defaultProperty)] : []
-    //       }));
-    //     }
-    //   }
-    // }, []);
     useEffect(() => {
         const hash = window.location.hash;
         const queryIndex = hash.indexOf("?");
         if (queryIndex !== -1) {
             const queryString = hash.substring(queryIndex + 1); // ← 修正這裡，加 +1 是避免包含問號
             const params = new URLSearchParams(queryString);
-
             const defaultArea = params.get("area");
             const defaultNum = params.get("num");
             const defaultProperty = params.get("property");
             const defaultDifficulty = params.get("difficulty");
 
-            console.log("URL 參數：", { defaultArea, defaultNum, defaultProperty });
+            console.log("URL 參數：", { defaultArea, defaultNum, defaultProperty, defaultDifficulty });
 
             setSearch((prev) => ({
                 ...prev,
@@ -276,14 +262,23 @@ function Game_search() {
                 property: defaultProperty ? [String(defaultProperty)] : [],
                 difficulty: defaultDifficulty ? [String(defaultDifficulty)] : []
             }));
+            setIsIndexSerach(true);
+        }
+        else if (queryIndex === -1) {
+
         }
     }, [location]);
-
-
 
     // 使用 useRef 來引用表單
     const userFormRef = useRef(null);
     const hiddenSubmitBtnRef = useRef(null);
+
+    useEffect(() => {
+        // 確保載入後，再做搜尋的動作
+        if (isIndexSearch && games.length > 0) {
+            handleSerach();
+        }
+    }, [isIndexSearch, games])
 
     //網址後方參數消除
     useEffect(() => {
@@ -298,19 +293,6 @@ function Game_search() {
             }
         }
     }, [search.area, search.num, search.property, search.difficulty]);
-
-    //下方搜尋按鈕自動點擊
-    useEffect(() => {
-        // 如果 game_people 大於 0 且按鈕存在，觸發按鈕點擊
-        if (search.property.length > 0 || search.game_people > 0) {
-            // 使用 setTimeout 延遲觸發按鈕點擊，確保 DOM 更新後執行
-            setTimeout(() => {
-                if (hiddenSubmitBtnRef.current) {
-                    hiddenSubmitBtnRef.current.click();
-                }
-            }, 300);
-        }
-    }, [[search.property, search.area, search.game_people, search.difficulty]]);  // 監聽 game_people 的變化
 
     return (
         <>

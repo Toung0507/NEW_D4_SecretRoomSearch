@@ -140,7 +140,6 @@ const BasicInfo = () => {
             data["store_update_at"] = dayjs().format("YYYY-MM-DD HH:mm:ss");
             try {
                 const res = await axios.patch(`${baseApi}/storesData/${store_id}`, data);
-                console.log(res);
                 setStoreFormData(data);
                 setIsStoreFormChanged(false);
             } catch (error) {

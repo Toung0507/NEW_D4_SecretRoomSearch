@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { userContext } from "../page/UserProfile";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { TiStarFullOutline, TiStarOutline } from 'react-icons/ti';
 import { Modal } from "bootstrap";
@@ -84,8 +84,7 @@ const MyComments = () => {
     };
 
     //刪除某則評論
-    const delOneComment = async (comment_id) => {
-        console.log(delOneCommentID);
+    const delOneComment = async () => {
         try {
             await axios.delete(`${baseApi}/commentsData/${delOneCommentID}`);
             getAllComments();
