@@ -169,52 +169,49 @@ function Game_search() {
         setIsSearch(true);
         // 篩選資料
         const filteredGames = games.filter((game) => {
-            if (game.game.game_isStock !== false) {
+            // 遊戲名稱
+            const matchesGameName =
+                search.game_name === ""
+                    ? true
+                    : game.game_name.includes(search.game_name);
 
-                // 遊戲名稱
-                const matchesGameName =
-                    search.game_name === ""
-                        ? true
-                        : game.game_name.includes(search.game_name);
+            // 地區篩選（使用OR條件）
+            const matchesArea =
+                search.area.length === 0
+                    ? true
+                    : search.area.some((area) => game.game_address.startsWith(area));
 
-                // 地區篩選（使用OR條件）
-                const matchesArea =
-                    search.area.length === 0
-                        ? true
-                        : search.area.some((area) => game.game_address.startsWith(area));
+            // 遊玩人數篩選
+            const matchesGamePeople =
+                search.game_people === ""
+                    ? true
+                    : game.game_minNum_Players <= parseInt(search.game_people, 10) &&
+                    game.game_maxNum_Players >= parseInt(search.game_people, 10);
 
-                // 遊玩人數篩選
-                const matchesGamePeople =
-                    search.game_people === ""
-                        ? true
-                        : game.game_minNum_Players <= parseInt(search.game_people, 10) &&
-                        game.game_maxNum_Players >= parseInt(search.game_people, 10);
+            // 難度篩選（使用OR條件）
+            const matchesDifficulty =
+                search.difficulty.length === 0
+                    ? true
+                    : search.difficulty.includes(String(game.game_dif_tag));
 
-                // 難度篩選（使用OR條件）
-                const matchesDifficulty =
-                    search.difficulty.length === 0
-                        ? true
-                        : search.difficulty.includes(String(game.game_dif_tag));
+            // 屬性篩選（使用OR條件）
+            const matchesProperty =
+                search.property.length === 0
+                    ? true
+                    : search.property.some(
+                        (property) =>
+                            String(game.game_main_tag1).includes(property) ||
+                            String(game.game_main_tag2).includes(property)
+                    );
 
-                // 屬性篩選（使用OR條件）
-                const matchesProperty =
-                    search.property.length === 0
-                        ? true
-                        : search.property.some(
-                            (property) =>
-                                String(game.game_main_tag1).includes(property) ||
-                                String(game.game_main_tag2).includes(property)
-                        );
-
-                // 綜合判斷，使用AND邏輯
-                return (
-                    matchesGameName &&
-                    matchesArea &&
-                    matchesGamePeople &&
-                    matchesDifficulty &&
-                    matchesProperty
-                );
-            }
+            // 綜合判斷，使用AND邏輯
+            return (
+                matchesGameName &&
+                matchesArea &&
+                matchesGamePeople &&
+                matchesDifficulty &&
+                matchesProperty
+            );
 
         });
 

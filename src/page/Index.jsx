@@ -204,7 +204,7 @@ function Index() {
                             <div className="row">
                                 {gameDifficulty.map((diff) => (
                                     <div className="col-lg-4 col-6" key={diff.difficulty_id}>
-                                        <a href={`/#/Game_search?difficulty=${diff.difficulty_id}`} className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
+                                        <a href={`./#/Game_search?difficulty=${diff.difficulty_id}`} className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
                                             <span className="material-symbols-outlined">{diff.difficulty_icon_text}</span>
                                             <p className="fs-lg-h6">{diff.difficulty_name}</p>
                                         </a>
@@ -213,7 +213,7 @@ function Index() {
 
                                 {gameProperty.slice(0, 9).map((property) => (
                                     <div className="col-lg-4 col-6" key={property.property_id}>
-                                        <a href={`/#/Game_search?property=${property.property_id}`} className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
+                                        <a href={`./#/Game_search?property=${property.property_id}`} className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4">
                                             <span className="material-symbols-outlined">{property.property_icon_text}</span>
                                             <p className="fs-lg-h6">{property.property_name}</p>
                                         </a>

@@ -95,20 +95,31 @@ const MyGames = () => {
                                     )
                                 }
                                 {isAuthStore && upGames.length > 0 && (
-                                    upGames.map((game) => (
-                                        <tr key={game.game_id} className="ParticipatingGroupThead">
-                                            <td className="ps-5 py-2 pe-0">{game.game_name}</td>
-                                            <td className="py-2 px-0">{game.game_address}</td>
-                                            <td className="py-2 px-0">{game.game_start_date}</td>
-                                            <td className="py-2 px-0">{game.game_min_price}元起</td>
-                                            <td className="py-2 px-0">{game.game_maxNum_Players}人</td>
-                                            <td className="pe-5 py-2 ps-0">
-                                                <Link to={`/Game_content/${game.game_id}`} className="text-black">
-                                                    查看詳情 <IoIosArrowForward color="black" />
-                                                </Link>
+                                    <>
+                                        {
+                                            upGames.map((game) => (
+                                                <tr key={game.game_id} className="ParticipatingGroupThead">
+                                                    <td className="ps-5 py-2 pe-0">{game.game_name}</td>
+                                                    <td className="py-2 px-0">{game.game_address}</td>
+                                                    <td className="py-2 px-0">{game.game_start_date}</td>
+                                                    <td className="py-2 px-0">{game.game_min_price}元起</td>
+                                                    <td className="py-2 px-0">{game.game_maxNum_Players}人</td>
+                                                    <td className="pe-5 py-2 ps-0">
+                                                        <Link to={`/Game_content/${game.game_id}`} className="text-black">
+                                                            查看詳情 <IoIosArrowForward color="black" />
+                                                        </Link>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        }
+                                        <tr>
+                                            <td colSpan={6} className="text-center fs-h6">
+                                                <p>
+                                                    <Link className="d-inline text-nowrap" to='/TeamBuy'>新增密室資訊</Link>
+                                                </p>
                                             </td>
                                         </tr>
-                                    ))
+                                    </>
                                 )
                                 }
                                 {isAuthStore && upGames.length == 0 && (
@@ -158,20 +169,31 @@ const MyGames = () => {
                                     )
                                 }
                                 {isAuthStore && dowmGames.length > 0 &&
-                                    (dowmGames.map((game) => (
-                                        <tr key={game.game_id} className="ParticipatingGroupThead">
-                                            <td className="ps-5 py-2 pe-0">{game.game_name}</td>
-                                            <td className="py-2 px-0">{game.game_address}</td>
-                                            <td className="py-2 px-0">{game.game_start_date}</td>
-                                            <td className="py-2 px-0">{game.game_min_price}</td>
-                                            <td className="py-2 px-0">{game.game_maxNum_Players}人</td>
-                                            <td className="pe-5 py-2 ps-0">
-                                                <Link to={`/StoreGameInfo/${game.game_id}`} className="text-black">
-                                                    查看詳情 <IoIosArrowForward color="black" />
-                                                </Link>
+                                    <>
+                                        {
+                                            (dowmGames.map((game) => (
+                                                <tr key={game.game_id} className="ParticipatingGroupThead">
+                                                    <td className="ps-5 py-2 pe-0">{game.game_name}</td>
+                                                    <td className="py-2 px-0">{game.game_address}</td>
+                                                    <td className="py-2 px-0">{game.game_start_date}</td>
+                                                    <td className="py-2 px-0">{game.game_min_price}</td>
+                                                    <td className="py-2 px-0">{game.game_maxNum_Players}人</td>
+                                                    <td className="pe-5 py-2 ps-0">
+                                                        <Link to={`/StoreGameInfo/${game.game_id}`} className="text-black">
+                                                            查看詳情 <IoIosArrowForward color="black" />
+                                                        </Link>
+                                                    </td>
+                                                </tr>
+                                            )))
+                                        }
+                                        <tr>
+                                            <td colSpan={6} className="text-center fs-h6">
+                                                <p>
+                                                    <Link className="d-inline text-nowrap" to='/TeamBuy'>新增密室資訊</Link>
+                                                </p>
                                             </td>
                                         </tr>
-                                    )))
+                                    </>
 
                                 }
 
