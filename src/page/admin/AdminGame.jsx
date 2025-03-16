@@ -5,18 +5,138 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function AdminGame() {
   const [gameData, setGameData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  // 新增排序狀態
+  const [sortConfig, setSortConfig] = useState({
+    key: "game_id",
+    direction: "asc",
+  });
+
+  const [searchParams, setSearchParams] = useState({
+    gameName: "",
+    tag: "",
+    is_stock: "全部狀態",
+  });
 
   useEffect(() => {
     const getGameData = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/gamesData`);
         setGameData(res.data);
+        setFilteredData(res.data);
       } catch (error) {
         console.error(error);
       }
     };
     getGameData();
   }, []);
+
+  const handleSearchChange = (e) => {
+    setSearchParams({
+      ...searchParams,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleSearch = () => {
+    const filtered = gameData.filter((game) => {
+      // 檢查密室名稱
+      const nameMatch =
+        searchParams.gameName === "" ||
+        game.game_name
+          .toLowerCase()
+          .includes(searchParams.gameName.toLowerCase());
+
+      // 檢查標籤 - 這裡可能需要根據實際的標籤結構調整
+      const tagMatch =
+        searchParams.tag === "" ||
+        game.game_dif_tagname
+          .toLowerCase()
+          .includes(searchParams.tag.toLowerCase()) ||
+        game.game_main_tag1name
+          .toLowerCase()
+          .includes(searchParams.tag.toLowerCase()) ||
+        game.game_main_tag2name
+          .toLowerCase()
+          .includes(searchParams.tag.toLowerCase());
+
+      // 檢查狀態
+      const statusMatch =
+        searchParams.is_stock === "全部狀態" ||
+        (searchParams.is_stock === "true" && game.game_isStock === true) ||
+        (searchParams.is_stock === "false" && game.game_isStock === false);
+
+      return nameMatch && tagMatch && statusMatch;
+    });
+
+    setFilteredData(filtered);
+  };
+
+  const handleReset = () => {
+    setSearchParams({
+      gameName: "",
+      tag: "",
+      is_stock: "全部狀態", // 修正：重置為 "全部狀態"
+    });
+    setFilteredData(gameData);
+  };
+
+  // 排序
+  const handleSort = (key) => {
+    let direction = "asc";
+
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+
+    setSortConfig({ key, direction });
+
+    const sortedData = [...filteredData].sort((a, b) => {
+      if (key === "game_score" || key === "game_score_num") {
+        // 數字比較
+        const numA = parseFloat(a[key]);
+        const numB = parseFloat(b[key]);
+
+        if (direction === "asc") {
+          return numA - numB;
+        } else {
+          return numB - numA;
+        }
+      } else {
+        // 一般字符串比較
+        if (direction === "asc") {
+          return a[key] > b[key] ? 1 : -1;
+        } else {
+          return a[key] < b[key] ? 1 : -1;
+        }
+      }
+    });
+
+    setFilteredData(sortedData);
+  };
+
+  // 獲取排序圖標
+  const getSortIcon = (key) => {
+    if (sortConfig.key !== key) {
+      return <div></div>;
+    }
+
+    return sortConfig.direction === "asc" ? (
+      <span
+        className="material-symbols-outlined"
+        style={{ fontSize: "18px", position: "absolute", padding: "3px 0" }}
+      >
+        arrow_upward
+      </span>
+    ) : (
+      <span
+        className="material-symbols-outlined"
+        style={{ fontSize: "18px", position: "absolute", padding: "3px 0" }}
+      >
+        arrow_downward
+      </span>
+    );
+  };
 
   return (
     <div className="admin-bg">
@@ -34,7 +154,7 @@ function AdminGame() {
         <div className="searchBar mt-5 mb-6 row">
           <div className="col-2">
             <label
-              htmlFor="workName"
+              htmlFor="gameName"
               className="form-label fs-Caption text-black"
             >
               密室名稱
@@ -42,46 +162,65 @@ function AdminGame() {
             <input
               type="text"
               className="form-control bg-transparent border-black"
-              id="workName"
+              id="gameName"
               placeholder="請輸入內容"
+              value={searchParams.gameName}
+              onChange={handleSearchChange}
             />
           </div>
           <div className="col-2">
-            <label
-              htmlFor="contact"
-              className="form-label fs-Caption text-black"
-            >
+            <label htmlFor="tag" className="form-label fs-Caption text-black">
               標籤
             </label>
             <input
               type="text"
               className="form-control bg-transparent border-black"
-              id="contact"
+              id="tag"
               placeholder="請輸入內容"
+              value={searchParams.tag}
+              onChange={handleSearchChange}
             />
           </div>
           <div className="col-2">
             <label
-              htmlFor="status"
+              htmlFor="is_stock"
               className="form-label fs-Caption text-black"
             >
-              審核狀態
+              狀態
             </label>
             <select
               className="form-select border-black"
-              style={{ color: "#C6C6CA" }}
-              id="role"
+              id="is_stock"
+              value={searchParams.is_stock}
+              onChange={handleSearchChange}
             >
-              <option defaultValue>全部狀態</option>
-              <option value="member">處理中</option>
-              <option value="store">通過</option>
-              <option value="admin">已退回</option>
+              <option className="text-black" value="全部狀態">
+                全部狀態
+              </option>
+              <option className="text-pass" value="true">
+                上架
+              </option>
+              <option className="text-tertiary-90" value="false">
+                下架
+              </option>
             </select>
           </div>
-          <div className="col-2">
+          <div className="col-1">
             <label className="form-label">&nbsp;</label>
-            <button className="btn btn-primary-50 text-white disabled form-control">
+            <button
+              className="btn btn-search btn-primary-50 text-white form-control"
+              onClick={handleSearch}
+            >
               搜尋
+            </button>
+          </div>
+          <div className="col-1">
+            <label className="form-label">&nbsp;</label>
+            <button
+              className="btn btn-reset btn-secondary text-white form-control"
+              onClick={handleReset}
+            >
+              重置
             </button>
           </div>
         </div>
@@ -90,17 +229,41 @@ function AdminGame() {
             <table className="storeTable w-100">
               <thead>
                 <tr>
-                  <th className="px-4 py-3">ID</th>
-                  <th className="px-4 py-3">密室名稱</th>
-                  <th className="px-4 py-3 text-center">評分</th>
-                  <th className="px-4 py-3 text-center">評論人數</th>
-                  <th className="px-4 py-3">標籤</th>
+                  <th
+                    className="px-4 py-3"
+                    onClick={() => handleSort("game_id")}
+                  >
+                    ID {getSortIcon("game_id")}
+                  </th>
+                  <th
+                    className="px-4 py-3"
+                    onClick={() => handleSort("game_name")}
+                  >
+                    密室名稱 {getSortIcon("game_name")}
+                  </th>
+                  <th
+                    className="px-4 py-3 text-center"
+                    onClick={() => handleSort("game_score")}
+                  >
+                    評分 {getSortIcon("game_score")}
+                  </th>
+                  <th
+                    className="px-4 py-3 text-center"
+                    onClick={() => handleSort("game_score_num")}
+                  >
+                    評論人數 {getSortIcon("game_score_num")}
+                  </th>
+                  <th
+                    className="px-4 py-3"
+                    onClick={() => handleSort("game_dif_tagname")}
+                  >
+                    標籤 {getSortIcon("game_dif_tagname")}
+                  </th>
                   <th className="px-4 py-3 text-center">狀態</th>
-                  <th className="px-4 py-3"></th>
                 </tr>
               </thead>
               <tbody>
-                {gameData.map((row) => (
+                {filteredData.map((row) => (
                   <tr key={row.game_id}>
                     <td className="py-2 px-4">{row.game_id}</td>
                     <td className="py-2 px-4">{row.game_name}</td>
@@ -119,16 +282,16 @@ function AdminGame() {
                         {row.game_main_tag2name}
                       </span>
                     </td>
-                    {/* TODO 加上 上/下架 真實資料 */}
                     <td className="py-2 px-4 text-center">
-                      <span className="px-2 py-1 rounded-2 text-black bg-pass">
-                        上架
-                      </span>
-                    </td>
-                    <td className="py-2 px-4 text-end">
-                      <button className="edit-btn">
-                        <span className="material-symbols-outlined">edit</span>
-                      </button>
+                      {row.game_isStock == true ? (
+                        <span className="px-2 py-1 rounded-2 text-black bg-pass">
+                          上架
+                        </span>
+                      ) : (
+                        <span className="px-2 py-1 rounded-2 text-black bg-tertiary-90">
+                          下架
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}
