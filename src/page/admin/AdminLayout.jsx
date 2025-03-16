@@ -1,13 +1,37 @@
 import { Outlet } from "react-router-dom";
 import CustomSidebar from "../../layout/SideBar";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 function AdminLayout() {
-  return (
-    <>
-      <CustomSidebar />
-      <Outlet />
-    </>
-  );
+    const { user } = useSelector((state) => state.userInfo);
+    const [isAdmin, setIsAdmin] = useState(false);
+    useEffect(() => {
+        if (user?.user_role !== '管理者') {
+            console.log('你不是管理者');
+
+        } else if (user?.user_role === '管理者') {
+            setIsAdmin(true);
+            console.log('你是管理者');
+        }
+    }, [user]);
+
+    return (
+        <>
+            {isAdmin ?
+                (<>
+                    <CustomSidebar />
+                    <Outlet />
+                </>
+                ) :
+                (
+                    <h1 className="text-center">
+                        權限錯誤
+                    </h1>
+                )}
+
+        </>
+    );
 }
 
 export default AdminLayout;
