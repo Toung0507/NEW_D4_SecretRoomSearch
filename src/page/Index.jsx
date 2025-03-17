@@ -55,12 +55,7 @@ function Index() {
     }, []);
 
     useEffect(() => {
-        //console.log(product);
-        //console.log(gameProperty);
-        //console.log(gameDifficulty);
         if (product.length > 0 && gameDifficulty.length > 0 && gameProperty.length > 0) {
-            console.log('完成');
-
             setIsAllscreenLoading(false);
         }
 

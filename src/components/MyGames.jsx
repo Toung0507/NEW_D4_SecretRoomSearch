@@ -115,7 +115,7 @@ const MyGames = () => {
                                         <tr>
                                             <td colSpan={6} className="text-center fs-h6">
                                                 <p>
-                                                    <Link className="d-inline text-nowrap" to='/TeamBuy'>新增密室資訊</Link>
+                                                    <Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
                                                 </p>
                                             </td>
                                         </tr>
@@ -128,7 +128,7 @@ const MyGames = () => {
                                             <p>
                                                 沒有發布任何遊戲
                                                 <br />
-                                                <Link className="d-inline text-nowrap" to='/TeamBuy'>新增密室資訊</Link>
+                                                <Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
                                                 提供給使用者吧!
                                             </p>
                                         </td>
@@ -189,7 +189,7 @@ const MyGames = () => {
                                         <tr>
                                             <td colSpan={6} className="text-center fs-h6">
                                                 <p>
-                                                    <Link className="d-inline text-nowrap" to='/TeamBuy'>新增密室資訊</Link>
+                                                    <Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
                                                 </p>
                                             </td>
                                         </tr>

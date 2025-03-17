@@ -161,7 +161,7 @@ const BasicInfo = () => {
     return (
         <>
             {/* 主畫面 */}
-            <div className="col-8 m-0 pt-10 px-0 ">
+            <div className="col-12 col-lg-8 m-0 py-sm-10 px-0 ">
                 <div className=" border-nature-90 border-1 border">
                     <div className="basicInfoTitle fs-h6 lh-sm bg-secondary-95 fw-bold px-5 py-6 text-secondary-50" >
                         會員資料
@@ -184,7 +184,7 @@ const BasicInfo = () => {
                             <form className="text-start" onSubmit={onSubmitUser} id="userinfoform">
                                 {/* 姓名 */}
                                 <div className="row mb-1">
-                                    <label htmlFor="user_name" className="col-sm-2">姓名</label>
+                                    <label htmlFor="user_name" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">姓名</label>
                                     <div className="col-sm-10">
                                         <input
                                             {...userInfo('user_name', { required: "姓名欄位必填" })}
@@ -204,7 +204,7 @@ const BasicInfo = () => {
                                 </div>
                                 {/* 信箱 */}
                                 <div className="row  mb-1">
-                                    <label htmlFor="user_email" className="col-sm-2">信箱</label>
+                                    <label htmlFor="user_email" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">信箱</label>
                                     <div className="col-sm-10">
                                         <input
                                             {...userInfo('user_email', { required: "信箱欄位必填" })}
@@ -223,7 +223,7 @@ const BasicInfo = () => {
                                 </div>
                                 {/* 性別 */}
                                 <div className="row mb-1">
-                                    <label htmlFor="user_sex" className="col-sm-2">性別</label>
+                                    <label htmlFor="user_sex" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">性別</label>
                                     <div className="col-sm-10">
                                         <select
                                             className={`form-select ${userErrors.user_sex && 'is-invalid'}`}
@@ -248,7 +248,7 @@ const BasicInfo = () => {
                                 </div>
                                 {/* 電話 */}
                                 <div className="row mb-1">
-                                    <label htmlFor="user_tel" className="col-sm-2">電話</label>
+                                    <label htmlFor="user_tel" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">電話</label>
                                     <div className="col-sm-10">
                                         <input
                                             {...userInfo('user_tel', {
@@ -271,7 +271,7 @@ const BasicInfo = () => {
                                 </div>
                                 {/* 第三方登入icon */}
                                 <div className="row mb-5">
-                                    <label htmlFor="user_email" className="col-sm-2">第三方登入</label>
+                                    <label htmlFor="user_email" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">第三方登入</label>
                                     <div className="col-sm-10">
                                         <FaFacebook size={24} className="me-3" />
                                         <FaGoogle size={24} />
@@ -280,9 +280,9 @@ const BasicInfo = () => {
                             </form>
                         </div>
                         {/* 按鈕區 */}
-                        <div className="ps-6 py-4 border-nature-90 border-1 border-top">
-                            <div className="btn_2 d-flex  text-center ">
-                                <button type="reset" className="btn bg-nature-60 text-white me-6" disabled={!isFormChanged} form="userinfoform">
+                        <div className="px-6 py-4 border-nature-90 border-1 border-top">
+                            <div className="btn_2 d-flex text-center flex-column flex-sm-row ">
+                                <button type="reset" className="btn bg-nature-60 text-white me-sm-6 mb-sm-0 mb-2" disabled={!isFormChanged} form="userinfoform">
                                     取消更改
                                 </button>
                                 <button
