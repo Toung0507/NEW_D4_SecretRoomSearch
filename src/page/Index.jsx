@@ -108,33 +108,33 @@ function Index() {
   }
   return (
     <>
-      <div className="container-fluid container-lg">
+      <div className="container-fluid">
         <div className="row d-flex justify-content-center">
-          <div className="col-xl-10 mt-9 mb-20">
-            <div>
+          <div className="mt-9 mb-20">
+            <div className="banner">
               <div>
                 <picture>
                   <source
                     media="(min-width: 992px)"
-                    srcSet="./illustration/Banner_web_up_1.png"
+                    srcSet="./illustration/Banner-web-up-1.svg"
                   />
                   <img
-                    src="./illustration/Rectangle25.png"
+                    src="./illustration/Rectangle-25.svg"
                     alt="banner"
                     className="rounded mx-auto d-block"
                   />
                 </picture>
               </div>
               <div className="row d-flex justify-content-center align-items-center">
-                <div className="bg-primary-95 rounded-6 select col-6">
+                <div className="bg-primary-95 rounded-6 select col-12 col-lg-6 p-6 p-lg-12">
                   <div className="d-grid gap-6">
-                    <div className="d-flex justify-content-center align-items-center d-grid gap-3">
-                      <div>
-                        <label htmlFor="area" className="form-label">
+                    <div className="d-flex justify-content-between row">
+                      <div className="col-6">
+                        <label htmlFor="area" className="form-label fs-Caption">
                           地點
                         </label>
                         <select
-                          className="form-select form-select-lg w-100"
+                          className="form-select fs-Body-1"
                           aria-label="Default select example"
                           id="area"
                           value={areaSelect}
@@ -147,12 +147,15 @@ function Index() {
                           ))}
                         </select>
                       </div>
-                      <div>
-                        <label htmlFor="people" className="form-label">
+                      <div className="col-6">
+                        <label
+                          htmlFor="people"
+                          className="form-label fs-Caption"
+                        >
                           人數
                         </label>
                         <select
-                          className="form-select form-select-lg w-100"
+                          className="form-select fs-Body-1"
                           aria-label="Default select example"
                           id="people"
                           value={numSelect}
@@ -166,84 +169,52 @@ function Index() {
                         </select>
                       </div>
                     </div>
-                    <div></div>
-                    {/* <div className="d-flex gap-3">
-                    <div className="w-50">
-                      <label htmlFor="" className="form-label">
-                        地點
+                    <div>
+                      <label htmlFor="search" className="form-label fs-Caption">
+                        搜尋
                       </label>
-                      <div className="input-group bg-white">
+                      <div className="input-group fs-Body-1">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="search"
+                          placeholder="搜尋關鍵字"
+                          aria-describedby="button-addon2"
+                        ></input>
                         <button
-                          className="btn btn-outline-secondary dropdown-toggle w-100 d-flex justify-content-between align-items-center"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
+                          className="btn btn-outline-secondary"
+                          type="submit"
+                          id="button-addon2"
+                          onClick={() =>
+                            (window.location.href = `./#/Game_search?area=${areaSelect}&num=${numSelect}`)
+                          }
                         >
-                          {areaSelect}
+                          <i className="bi bi-search"></i>
                         </button>
-                        <ul className="dropdown-menu">
-                          {area.map((area) => (
-                            <li key={area}>
-                              <span
-                                className="dropdown-item"
-                                href="#"
-                                onClick={() => setAreaSelect(area)}
-                              >
-                                {area}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
                       </div>
                     </div>
-                    <div className="w-50">
-                      <label htmlFor="" className="form-label">
-                        人數
-                      </label>
-                      <div className="input-group bg-white">
-                        <button
-                          className="btn btn-outline-secondary dropdown-toggle w-100 d-flex justify-content-between align-items-center"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          {numSelect}
-                        </button>
-                        <ul className="dropdown-menu">
-                          {memberNum.map((num) => (
-                            <li key={num}>
-                              <span
-                                className="dropdown-item"
-                                href="#"
-                                onClick={() => setNumSelect(num)}
-                              >
-                                {num}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-100 mb-5">
-                    <label htmlFor="" className="form-label">
-                      搜尋
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control "
-                      placeholder="搜尋關鍵字"
-                    />
-                  </div>
-                  <a
-                    href={`./#/Game_search?area=${areaSelect}&num=${numSelect}`}
-                    className="btn btn-primary w-100"
-                  >
-                    搜尋
-                  </a> */}
                   </div>
                 </div>
               </div>
+              <div className="bannerBottom">
+                <picture>
+                  <source
+                    media="(min-width: 992px)"
+                    srcSet="./illustration/Banner-web-down-1.svg"
+                  />
+                  <img
+                    src="./illustration/Rectangle-26.svg"
+                    alt="banner2"
+                    className="rounded mx-auto d-block"
+                  />
+                </picture>
+              </div>
+            </div>
+            <div className="introduction">
+              <h3 className="title fw-bold fs-lg-h3 fs-h6">
+                想找好玩的密室遊戲，但卻發現資訊分散難找
+              </h3>
+              <div></div>
             </div>
           </div>
         </div>
