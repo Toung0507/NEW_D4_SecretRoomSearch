@@ -38,6 +38,24 @@
     }
   }
 }
+.help {
+  @include media-breakpoint-up(lg) {
+    background-image: url(./illustration/4e22d675a9dee38e5e86384f7a6fb988.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
+.gameText {
+  width: 306px;
+}
+.gameImg {
+  @include media-breakpoint-up(lg) {
+    width: 416px;
+  }
+  img {
+    border: 2px dashed $primary-80;
+  }
+}
 
 // .main {
 //   margin-top: 72px;

@@ -4,7 +4,6 @@ import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/swiper-bundle.css";
-import styled from "styled-components";
 
 const BASE_URL = "https://new-json.onrender.com/";
 
@@ -80,6 +79,8 @@ function Index() {
       gameDifficulty.length > 0 &&
       gameProperty.length > 0
     ) {
+      console.log("完成");
+
       setIsAllscreenLoading(false);
     }
   }, [product, gameProperty, gameDifficulty]);
@@ -107,7 +108,240 @@ function Index() {
   }
   return (
     <>
-      <div className="container d-flex flex-column align-items-center">
+      <div className="container-fluid">
+        <div className="row d-flex justify-content-center">
+          <div className="mt-9 mb-20">
+            <div className="banner">
+              <div>
+                <picture>
+                  <source
+                    media="(min-width: 992px)"
+                    srcSet="./illustration/Banner-web-up-1.svg"
+                  />
+                  <img
+                    src="./illustration/Rectangle-25.svg"
+                    alt="banner"
+                    className="rounded mx-auto d-block"
+                  />
+                </picture>
+              </div>
+              <div className="row d-flex justify-content-center align-items-center">
+                <div className="bg-primary-95 rounded-6 select col-12 col-lg-6 p-6 p-lg-12">
+                  <div className="d-grid gap-6">
+                    <div className="d-flex justify-content-between row">
+                      <div className="col-6">
+                        <label htmlFor="area" className="form-label fs-Caption">
+                          地點
+                        </label>
+                        <select
+                          className="form-select fs-Body-1"
+                          aria-label="Default select example"
+                          id="area"
+                          value={areaSelect}
+                          onChange={(e) => setAreaSelect(e.target.value)}
+                        >
+                          {area.map((city, index) => (
+                            <option key={index} value={city}>
+                              {city}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="col-6">
+                        <label
+                          htmlFor="people"
+                          className="form-label fs-Caption"
+                        >
+                          人數
+                        </label>
+                        <select
+                          className="form-select fs-Body-1"
+                          aria-label="Default select example"
+                          id="people"
+                          value={numSelect}
+                          onChange={(e) => setNumSelect(e.target.value)}
+                        >
+                          {memberNum.map((people, index) => (
+                            <option key={index} value={people}>
+                              {people}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label htmlFor="search" className="form-label fs-Caption">
+                        搜尋
+                      </label>
+                      <div className="input-group fs-Body-1">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="search"
+                          placeholder="搜尋關鍵字"
+                          aria-describedby="button-addon2"
+                        ></input>
+                        <button
+                          className="btn btn-outline-secondary"
+                          type="submit"
+                          id="button-addon2"
+                          onClick={() =>
+                            (window.location.href = `./#/Game_search?area=${areaSelect}&num=${numSelect}`)
+                          }
+                        >
+                          <i className="bi bi-search"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bannerBottom">
+                <picture>
+                  <source
+                    media="(min-width: 992px)"
+                    srcSet="./illustration/Banner-web-down-1.svg"
+                  />
+                  <img
+                    src="./illustration/Rectangle-26.svg"
+                    alt="banner2"
+                    className="rounded mx-auto d-block"
+                  />
+                </picture>
+              </div>
+            </div>
+            <div className="introduction">
+              <div className="title mb-8 mb-lg-17">
+                <h3 className="fw-bold fs-lg-h3 fs-h6">
+                  想找好玩的密室遊戲，但卻發現資訊分散難找
+                </h3>
+              </div>
+              <div className="information">
+                <ul className="d-flex flex-column flex-lg-row gap-8 gap-lg-6">
+                  <li className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="p-3 p-lg-6">
+                      <div className="text-center">
+                        <img
+                          src="./illustration/man-looking-into-distance-1.svg"
+                          alt="information"
+                          className="px-lg-20 py-3 pt-lg-6 pb-lg-8"
+                        />
+                      </div>
+                      <div className="text-center">
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          我是密室新手
+                        </h6>
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          想嘗試卻不知如何開始
+                        </h6>
+                      </div>
+                    </div>
+                  </li>
+                  <li className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="p-3 p-lg-6">
+                      <div className="text-center">
+                        <img
+                          src="./illustration/woman-with-a-book-1.svg"
+                          alt="information"
+                          className="px-lg-20 py-3 pt-lg-6 pb-lg-8"
+                        />
+                      </div>
+                      <div className="text-center">
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          不確定附近有哪些
+                        </h6>
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          密室逃脫遊戲可以體驗
+                        </h6>
+                      </div>
+                    </div>
+                  </li>
+                  <li className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="p-3 p-lg-6">
+                      <div className="text-center">
+                        <img
+                          src="./illustration/man-raising-hand-1.svg"
+                          alt="information"
+                          className="px-lg-20 py-3 pt-lg-6 pb-lg-8"
+                        />
+                      </div>
+                      <div className="text-center">
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          想找人一起玩密室遊戲
+                        </h6>
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          但不知道該如何尋找隊友
+                        </h6>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div className="help d-flex flex-column align-items-center py-20">
+                <div className="mb-16 mb-lg-20">
+                  <h3 className="fw-bold fs-lg-h3 fs-h6 text-center">
+                    密室搜搜能幫助你
+                  </h3>
+                </div>
+                <div className="d-grid gap-16">
+                  <div className="d-flex justify-content-lg-between flex-column flex-lg-row d-grid gap-6">
+                    <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
+                      <h5 className="text-primary-20 fw-bold">
+                        快速找到喜歡的密室遊戲
+                      </h5>
+                      <p className="text-Body-1 lh-lg">
+                        搜尋全台各地的密室遊戲。不論是恐怖繁悚、科幻冒險還是古典懸疑，都能幫助你找到最符合你興趣的挑戰。詳細的遊戲介紹、圖片，讓你在參加前就能了解遊戲的風格和難度，為你打造前所未有的解謎體驗！
+                      </p>
+                    </div>
+                    <div className="ratio ratio-16x9 gameImg">
+                      <img
+                        src="./image/marek-szturc.png"
+                        alt="game"
+                        className="rounded-16 w-100 img-fluid"
+                      />
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-lg-between flex-column-reverse flex-lg-row d-grid gap-6">
+                    <div className="ratio ratio-16x9 gameImg">
+                      <img
+                        src="./image/vlad-hilitanu.png"
+                        alt="game"
+                        className="rounded-16 w-100 img-fluid"
+                      />
+                    </div>
+                    <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
+                      <h5 className="text-primary-20 fw-bold">
+                        與其他玩家組隊遊玩
+                      </h5>
+                      <p className="text-Body-1 lh-lg">
+                        結識來自全台密室愛好者，與他們組隊挑戰各種密室遊戲。無論是第一次體驗還是經驗豐富的老手，都能找到合適的隊友，一同享受團隊合作帶來的無限樂趣與成就感！
+                      </p>
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-lg-between flex-column flex-lg-row d-grid gap-6">
+                    <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
+                      <h5 className="text-primary-20 fw-bold">觀看玩家評價</h5>
+                      <p className="text-Body-1 lh-lg">
+                        瀏覽玩家提供的詳細評價和建議，了解各個密室遊戲的特色、難度和可玩性。不僅能看到評分和評論，還能看到玩家們的遊戲過程分享，確保每一次都能帶來愉快的遊戲體驗！
+                      </p>
+                    </div>
+                    <div className="ratio ratio-16x9 gameImg">
+                      <img
+                        src="./image/andrew-neel.png"
+                        alt="game"
+                        className="rounded-16 w-100 img-fluid"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <div className="container d-flex flex-column align-items-center">
         <div
           style={{
             width: "100%",
@@ -119,7 +353,7 @@ function Index() {
           }}
           className="justify-content-center"
         ></div>
-        <div className="col-lg-6 col-12 bg-primary-95 rounded-6 justify-content-center">
+        <div className="col-6 bg-primary-95 rounded-6 justify-content-center">
           <div className="p-12">
             <div className="d-flex gap-3">
               <div className="w-50">
@@ -207,7 +441,7 @@ function Index() {
             backgroundSize: "contain",
           }}
         ></div>
-      </div>
+      </div> */}
 
       {/* <div className="py-20">
         <div className="container">
@@ -217,39 +451,64 @@ function Index() {
             </h2>
           </div>
 
-                    <div className="row justify-content-center">
-                        <div className="col-8">
-                            <div className="d-flex flex-lg-row-reverse align-items-center flex-column justify-content-between text-center mb-12">
-                                <div className="">
-                                    <img src="./image/marek-szturc.png" alt="..." className="rounded-16" style={{ height: '294px', width: '416px' }} />
-                                </div>
-                                <div className="">
-                                    <h3 className="fs-h5 mb-6 text-primary-20">快速找到喜歡的密室遊戲</h3>
-                                    <p style={{ width: '306px' }}>搜尋全台各地的密室遊戲。不論是恐怖繁悚、科幻冒險還是古典懸疑，都能幫助你找到最符合你興趣的挑戰。詳細的遊戲介紹、圖片，讓你在參加前就能了解遊戲的風格和難度，為你打造前所未有的解謎體驗！</p>
-                                </div>
-                            </div>
-                            <div className="d-flex align-items-center justify-content-between flex-column flex-lg-row text-center mb-12">
-                                <div className="">
-                                    <img src="./image/vlad-hilitanu.png" alt="..." className="rounded-16" style={{ height: '294px', width: '424px' }} />
-                                </div>
-                                <div className="">
-                                    <h3 className="fs-h5 mb-6 text-primary-20">快速找到喜歡的密室遊戲</h3>
-                                    <p style={{ width: '306px' }}>結識來自全台密室愛好者，與他們組隊挑戰各種密室遊戲。無論是第一次體驗還是經驗豐富的老手，都能找到合適的隊友，一同享受團隊合作帶來的無限樂趣與成就感！</p>
-                                </div>
-                            </div>
-                            <div className="d-flex flex-lg-row-reverse flex-column justify-content-between align-items-center text-center">
-                                <div className="">
-                                    <img src="./image/andrew-neel.png" alt="..." className="rounded-16" style={{ height: '294px', width: '416px' }} />
-                                </div>
-                                <div className="">
-                                    <h3 className="fs-h5 mb-6 text-primary-20">觀看玩家評價</h3>
-                                    <p style={{ width: '306px' }}>瀏覽玩家提供的詳細評價和建議，了解各個密室遊戲的特色、難度和可玩性。不僅能看到評分和評論，還能看到玩家們的遊戲過程分享，確保每一次都能帶來愉快的遊戲體驗！</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          <div className="row justify-content-center">
+            <div className="col-8">
+              <div className="d-flex flex-row-reverse align-items-center justify-content-between mb-12">
+                <div className="">
+                  <img
+                    src="./image/marek-szturc.png"
+                    alt="..."
+                    className="rounded-16"
+                    style={{ height: "294px", width: "416px" }}
+                  />
                 </div>
+                <div className="">
+                  <h3 className="fs-h5 mb-6 text-primary-20">
+                    快速找到喜歡的密室遊戲
+                  </h3>
+                  <p style={{ width: "306px" }}>
+                    搜尋全台各地的密室遊戲。不論是恐怖繁悚、科幻冒險還是古典懸疑，都能幫助你找到最符合你興趣的挑戰。詳細的遊戲介紹、圖片，讓你在參加前就能了解遊戲的風格和難度，為你打造前所未有的解謎體驗！
+                  </p>
+                </div>
+              </div>
+              <div className="d-flex align-items-center justify-content-between mb-12">
+                <div className="">
+                  <img
+                    src="./image/vlad-hilitanu.png"
+                    alt="..."
+                    className="rounded-16"
+                    style={{ height: "294px", width: "424px" }}
+                  />
+                </div>
+                <div className="">
+                  <h3 className="fs-h5 mb-6 text-primary-20">
+                    快速找到喜歡的密室遊戲
+                  </h3>
+                  <p style={{ width: "306px" }}>
+                    結識來自全台密室愛好者，與他們組隊挑戰各種密室遊戲。無論是第一次體驗還是經驗豐富的老手，都能找到合適的隊友，一同享受團隊合作帶來的無限樂趣與成就感！
+                  </p>
+                </div>
+              </div>
+              <div className="d-flex flex-row-reverse justify-content-between align-items-center">
+                <div className="">
+                  <img
+                    src="./image/andrew-neel.png"
+                    alt="..."
+                    className="rounded-16"
+                    style={{ height: "294px", width: "416px" }}
+                  />
+                </div>
+                <div className="">
+                  <h3 className="fs-h5 mb-6 text-primary-20">觀看玩家評價</h3>
+                  <p style={{ width: "306px" }}>
+                    瀏覽玩家提供的詳細評價和建議，了解各個密室遊戲的特色、難度和可玩性。不僅能看到評分和評論，還能看到玩家們的遊戲過程分享，確保每一次都能帶來愉快的遊戲體驗！
+                  </p>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div> */}
 
       {/* <div className="bg-nature-20 py-20">
         <div className="container">
@@ -307,28 +566,18 @@ function Index() {
         {product.length > 0 && (
           <Swiper
             modules={[Navigation]}
+            slidesPerView={4}
             spaceBetween={24}
             navigation={{
               nextEl: ".swiper-button-next",
               prevEl: ".swiper-button-prev",
-            }}
-            breakpoints={{
-              0: {
-                slidesPerView: 1,
-              },
-              576: {
-                slidesPerView: 2,
-              },
-              1280: {
-                slidesPerView: 4,
-              },
             }}
           >
             {/* 輪播 */}
             {product.map((game) => (
               <SwiperSlide key={game.game_id}>
                 <a
-                  href={`./#/Game_content/${game.game_id}`}
+                  href={`/#/Game_content/${game.game_id}`}
                   style={{ color: "inherit" }}
                 >
                   <div
@@ -460,22 +709,11 @@ function Index() {
         {product.length > 0 && (
           <Swiper
             modules={[Navigation, Autoplay]}
-            // slidesPerView={1}
+            slidesPerView={4}
             spaceBetween={24}
             navigation={{
               nextEl: ".swiper-button-next",
               prevEl: ".swiper-button-prev",
-            }}
-            breakpoints={{
-              0: {
-                slidesPerView: 1,
-              },
-              576: {
-                slidesPerView: 2,
-              },
-              1280: {
-                slidesPerView: 4,
-              },
             }}
             loop={true}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
@@ -484,7 +722,7 @@ function Index() {
             {product.map((game) => (
               <SwiperSlide key={game.game_id}>
                 <a
-                  href={`./#/Game_content/${game.game_id}`}
+                  href={`/#/Game_content/${game.game_id}`}
                   style={{ color: "inherit" }}
                 >
                   <div
