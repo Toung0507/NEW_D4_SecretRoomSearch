@@ -4,7 +4,7 @@ function CommendedGamesCard({ game }) {
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 col2 ">
       <Link to={`/Game_content/${game.game_id}`}>
-        <div className="card p-3 rounded-6 ">
+        <div className="card card-recommend p-3 rounded-6 ">
           <div className="row g-0 align-items-start h-100">
             <div className=" col-auto col-sm-12 ratio ratio-16x9">
               <picture

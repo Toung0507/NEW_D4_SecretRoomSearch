@@ -152,7 +152,7 @@ function AdminGame() {
           </ol>
         </nav>
         <div className="searchBar mt-5 mb-6 row">
-          <div className="col-2">
+          <div className="col-6 col-lg-2">
             <label
               htmlFor="gameName"
               className="form-label fs-Caption text-black"
@@ -168,7 +168,7 @@ function AdminGame() {
               onChange={handleSearchChange}
             />
           </div>
-          <div className="col-2">
+          <div className="col-6 col-lg-2">
             <label htmlFor="tag" className="form-label fs-Caption text-black">
               標籤
             </label>
@@ -181,7 +181,7 @@ function AdminGame() {
               onChange={handleSearchChange}
             />
           </div>
-          <div className="col-2">
+          <div className="col-6 col-lg-2">
             <label
               htmlFor="is_stock"
               className="form-label fs-Caption text-black"
@@ -190,6 +190,10 @@ function AdminGame() {
             </label>
             <select
               className="form-select border-black"
+              style={{
+                color:
+                  searchParams.is_stock === "全部狀態" ? "#C6C6CA" : "inherit",
+              }}
               id="is_stock"
               value={searchParams.is_stock}
               onChange={handleSearchChange}
@@ -205,26 +209,24 @@ function AdminGame() {
               </option>
             </select>
           </div>
-          <div className="col-1">
-            <label className="form-label">&nbsp;</label>
+          <div className="col-lg-1 col-12 d-flex align-items-end">
             <button
-              className="btn btn-search btn-primary-50 text-white form-control"
+              className="btn btn-search btn-primary-50 text-white form-control my-3"
               onClick={handleSearch}
             >
               搜尋
             </button>
           </div>
-          <div className="col-1">
-            <label className="form-label">&nbsp;</label>
+          <div className="col-lg-1 col-12 d-flex align-items-end">
             <button
-              className="btn btn-reset btn-secondary text-white form-control"
+              className="btn btn-reset btn-outline-secondary form-control"
               onClick={handleReset}
             >
               重置
             </button>
           </div>
         </div>
-        <div className="table-container bg-white border rounded-2 border-nature-90 p-6">
+        <div className="table-container d-none d-lg-block bg-white border rounded-2 border-nature-90 p-6">
           <div className="table-scroll-container overflow-scroll">
             <table className="storeTable w-100">
               <thead>
@@ -298,6 +300,78 @@ function AdminGame() {
               </tbody>
             </table>
           </div>
+        </div>
+        <div className="cards-container d-lg-none row row-cols-1 row-cols-md-2 g-3">
+          {filteredData.length > 0 ? (
+            filteredData.map((game) => (
+              <div key={game.game_id} className="col">
+                <div className="card card-admin h-100">
+                  <div className="card-body row">
+                    <p className="id col-4">ID</p>
+                    <p className="game_name col-8">密室名稱</p>
+                    <p className="id col-4">{game.game_id}</p>
+                    <p className="game_name col-8">{game.game_name}</p>
+                    <p className="score col-4 mt-4">評分</p>
+                    <p className="review_num col-8 mt-4">評論人數</p>
+                    <p className="score col-4 mb-4">{game.game_score}</p>
+                    <p className="review_num col-8 mb-4">
+                      {game.game_score_num}
+                    </p>
+                    <p className="tags col-4">標籤</p>
+                    <p className="status col-8">狀態</p>
+                    <p className="tags col-4">
+                      <span
+                        className="px-1 py-1 rounded-2 text-black bg-nature-95"
+                        style={{ fontSize: "12px" }}
+                      >
+                        {game.game_dif_tagname}
+                      </span>
+                    </p>
+                    <div className="status col-8">
+                      {game.game_isStock == true ? (
+                        <span
+                          className="px-2 py-1 rounded-2 text-black bg-pass"
+                          style={{ fontSize: "12px" }}
+                        >
+                          上架
+                        </span>
+                      ) : (
+                        <span
+                          className="px-2 py-1 rounded-2 text-black bg-tertiary-90"
+                          style={{ fontSize: "12px" }}
+                        >
+                          下架
+                        </span>
+                      )}
+                    </div>
+                    <div className="col-12 text-nature-95">
+                      <hr
+                        style={{
+                          marginBottom: 0,
+                          height: "2px",
+                          borderWidth: "2px",
+                        }}
+                      />
+                    </div>
+                    <div className="col-12 d-flex justify-content-end mt-2">
+                      <button
+                        className="edit-btn d-flex align-items-center justify-content-center"
+                        onClick={() => handleShowModal(store)}
+                      >
+                        <span className="material-symbols-outlined">edit</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-12">
+              <div className="card">
+                <div className="card-body text-center py-4">沒有符合的資料</div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
