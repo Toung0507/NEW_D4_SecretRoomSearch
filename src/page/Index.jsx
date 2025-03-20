@@ -211,10 +211,117 @@ function Index() {
               </div>
             </div>
             <div className="introduction">
-              <h3 className="title fw-bold fs-lg-h3 fs-h6">
-                想找好玩的密室遊戲，但卻發現資訊分散難找
-              </h3>
-              <div></div>
+              <div className="title mb-8 mb-lg-17">
+                <h3 className="fw-bold fs-lg-h3 fs-h6">
+                  想找好玩的密室遊戲，但卻發現資訊分散難找
+                </h3>
+              </div>
+              <div className="information">
+                <ul className="d-flex flex-column flex-lg-row gap-8 gap-lg-6">
+                  <li className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="p-3 p-lg-6">
+                      <div className="text-center">
+                        <img
+                          src="./illustration/man-looking-into-distance-1.svg"
+                          alt="information"
+                          className="px-lg-20 py-3 pt-lg-6 pb-lg-8"
+                        />
+                      </div>
+                      <div className="text-center">
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          我是密室新手
+                        </h6>
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          想嘗試卻不知如何開始
+                        </h6>
+                      </div>
+                    </div>
+                  </li>
+                  <li className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="p-3 p-lg-6">
+                      <div className="text-center">
+                        <img
+                          src="./illustration/woman-with-a-book-1.svg"
+                          alt="information"
+                          className="px-lg-20 py-3 pt-lg-6 pb-lg-8"
+                        />
+                      </div>
+                      <div className="text-center">
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          不確定附近有哪些
+                        </h6>
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          密室逃脫遊戲可以體驗
+                        </h6>
+                      </div>
+                    </div>
+                  </li>
+                  <li className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="p-3 p-lg-6">
+                      <div className="text-center">
+                        <img
+                          src="./illustration/man-raising-hand-1.svg"
+                          alt="information"
+                          className="px-lg-20 py-3 pt-lg-6 pb-lg-8"
+                        />
+                      </div>
+                      <div className="text-center">
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          想找人一起玩密室遊戲
+                        </h6>
+                        <h6 className="fw-bold fs-Body-1 fs-lg-h6">
+                          但不知道該如何尋找隊友
+                        </h6>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                {/* <div className="row row-cols-1 row-cols-lg-3 g-6">
+                  <div className="col">
+                    <div className="card h-100">
+                      <img
+                        src="./illustration/man-looking-into-distance-1.svg"
+                        className="card-img-top"
+                        alt="..."
+                      />
+                      <div className="card-body">
+                        <h5 className="card-title">Card title</h5>
+                        <p className="card-text">
+                          This is a longer card with supporting text below as a
+                          natural lead-in to additional content. This content is
+                          a little bit longer.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="card h-100">
+                      <img src="..." className="card-img-top" alt="..." />
+                      <div className="card-body">
+                        <h5 className="card-title">Card title</h5>
+                        <p className="card-text">
+                          This is a longer card with supporting text below as a
+                          natural lead-in to additional content. This content is
+                          a little bit longer.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="card h-100">
+                      <img src="..." className="card-img-top" alt="..." />
+                      <div className="card-body">
+                        <h5 className="card-title">Card title</h5>
+                        <p className="card-text">
+                          This is a longer card with supporting text below as a
+                          natural lead-in to additional content. This content is
+                          a little bit longer.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div> */}
+              </div>
             </div>
           </div>
         </div>
