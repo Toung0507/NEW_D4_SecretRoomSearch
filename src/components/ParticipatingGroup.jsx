@@ -84,7 +84,7 @@ const ParticipatingGroup = () => {
 
     return (
         <>
-            {/* 主畫面 */}
+            {/* 電腦版 */}
             <div className="col-12 m-0 pt-10 px-0 d-none d-lg-block">
                 <div className="border-nature-90 border rounded-2">
                     <div className="ParticipatingGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6" >
@@ -183,7 +183,7 @@ const ParticipatingGroup = () => {
                     </div>
                 </div>
             </div>
-            {/* 按鈕區塊 */}
+            {/* 手機板 */}
             <div className="m-0 d-block d-lg-none">
                 <div className="d-flex m-0 pt-5 ps-3 pb-3" >
                     <button

@@ -18,6 +18,7 @@ const MyGames = () => {
     const [isHaveUpgames, setIsHaveUpGames] = useState(true);
     const [isDownUpgames, setIsDownUpGames] = useState(true);
     const [isAuthStore, setIsAuthStore] = useState(false);
+    const [activeTab, setActiveTab] = useState("upGames");
 
     const getAllGames = async () => {
         if (store.store_isAuth !== 'pass') {
@@ -64,8 +65,8 @@ const MyGames = () => {
     return (
 
         <>
-            {/* 主畫面 */}
-            <div className="col-12 m-0 pt-10 px-0 ">
+            {/* 電腦版 */}
+            <div className="col-12 m-0 pt-10 px-0 d-none d-lg-block ">
                 <div className="border-nature-90 border rounded-2">
                     <div className="ParticipatingGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6" >
                         已上架
@@ -94,7 +95,7 @@ const MyGames = () => {
                                         </tr>
                                     )
                                 }
-                                {isAuthStore && upGames.length > 0 && (
+                                {isAuthStore && isHaveUpgames && upGames.length > 0 && (
                                     <>
                                         {
                                             upGames.map((game) => (
@@ -168,7 +169,7 @@ const MyGames = () => {
                                         </tr>
                                     )
                                 }
-                                {isAuthStore && dowmGames.length > 0 &&
+                                {isAuthStore && isDownUpgames && dowmGames.length > 0 &&
                                     <>
                                         {
                                             (dowmGames.map((game) => (
@@ -216,6 +217,159 @@ const MyGames = () => {
                     </div>
                 </div>
             </div>
+
+
+            {/* 手機板 */}
+            <div className="m-0 d-block d-lg-none">
+                <div className="d-flex m-0 pt-5 ps-3 pb-3" >
+                    <button
+                        className={`commentButton btn border-1 border-secondary-50 me-3  fw-bold rounded-16 ${activeTab === 'upGames' ? 'bg-secondary-50 text-secondary-99' : 'text-secondary-50'}`}
+                        onClick={() => setActiveTab("upGames")}
+                    >
+                        已上架
+                    </button>
+                    <button
+                        className={`commentButton btn border-1 border-secondary-50 rounded-16 fw-bold ${activeTab === 'downGames' ? 'bg-secondary-50 text-secondary-99' : 'text-secondary-50'}`}
+                        onClick={() => setActiveTab("downGames")}
+                    >
+                        等待上架
+                    </button>
+                </div>
+                {activeTab === 'upGames' &&
+                    (<div className="">
+                        <div className="ParticipatingGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6" >
+                            已上架
+                        </div>
+                        <div className=" ">
+                            {
+                                isAuthStore === false && (
+                                    <>
+                                        <dl>
+                                            <dt className="text-center fs-h6 bg-white">
+                                                尚未驗證成功，請先驗證
+                                            </dt>
+                                        </dl>
+                                    </>
+                                )
+                            }
+                            {isAuthStore && isHaveUpgames && upGames.length > 0 &&
+                                (
+                                    <>
+                                        <div className="text-center bg-white my-2">
+                                            < Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+
+                                        </div>
+                                        {
+                                            upGames.map((game) => (
+                                                <dl className="mb-4 bg-white p-4" key={game.game_id}>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">密室名稱</dt>
+                                                    <dd>{game.game_name}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">密室地點</dt>
+                                                    <dd>{game.game_address}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">開幕日期</dt>
+                                                    <dd>{game.game_start_date}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">最低價格</dt>
+                                                    <dd>{game.game_min_price}元起</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">人數上限</dt>
+                                                    <dd className="mb-3">{game.game_maxNum_Players}人</dd>
+                                                    <dd className="py-1 m-0">
+                                                        <Link to={`/Game_content/${game.game_id}`} className="text-black">
+                                                            查看詳情 <IoIosArrowForward color="black" />
+                                                        </Link>
+                                                    </dd>
+                                                </dl>
+                                            ))
+                                        }
+                                    </>
+                                )
+                            }
+                            {
+                                isAuthStore && upGames.length == 0 && (
+                                    <>
+                                        <dl>
+                                            <dt className="text-center fs-h6 bg-white">
+                                                <p>
+                                                    未有任何密室審核中，
+                                                    <br />
+                                                    <Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+                                                    提供給使用者吧！
+                                                </p>
+
+                                            </dt>
+                                        </dl>
+                                    </>
+                                )
+                            }
+                        </div>
+                    </div>)
+                }
+
+                {activeTab === 'downGames' &&
+                    (<div className="">
+                        <div className="ParticipatingGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6" >
+                            等待上架
+                        </div>
+                        <div className=" ">
+                            {
+                                isAuthStore === false && (
+                                    <>
+                                        <dl>
+                                            <dt className="text-center fs-h6 bg-white">
+                                                尚未驗證成功，請先驗證
+                                            </dt>
+                                        </dl>
+                                    </>
+                                )
+                            }
+                            {isAuthStore && isDownUpgames && dowmGames.length > 0 &&
+                                (
+                                    <>
+                                        <div className="text-center bg-white my-2">
+                                            < Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+
+                                        </div>
+                                        {
+                                            dowmGames.map((game) => (
+                                                <dl className="mb-4 bg-white p-4" key={game.game_id}>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">密室名稱</dt>
+                                                    <dd>{game.game_name}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">密室地點</dt>
+                                                    <dd>{game.game_address}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">開幕日期</dt>
+                                                    <dd>{game.game_start_date}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">最低價格</dt>
+                                                    <dd>{game.game_min_price}元起</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">人數上限</dt>
+                                                    <dd className="mb-3">{game.game_maxNum_Players}人</dd>
+                                                </dl>
+                                            ))
+                                        }
+                                    </>
+                                )
+                            }
+                            {
+                                isAuthStore && dowmGames.length == 0 && (
+                                    <>
+                                        <dl>
+                                            <dt className="text-center fs-h6 bg-white">
+                                                <p>
+                                                    未有任何密室審核中，
+                                                    <br />
+                                                    <Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+                                                    提供給使用者吧！
+                                                </p>
+
+                                            </dt>
+                                        </dl>
+                                    </>
+                                )
+                            }
+                        </div>
+                    </div>)
+                }
+
+            </div >
+
         </>
     )
 };

@@ -43,7 +43,7 @@ function AddressForm({ onChange, initialAddress = "" }) {
         <div className="row">
             {/* 縣市選擇 */}
             <div className="col-md-4">
-                <label className="form-label">縣市</label>
+                <label className="form-label fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">縣市</label>
                 <select
                     className="form-select"
                     value={selectedCity}
@@ -63,7 +63,7 @@ function AddressForm({ onChange, initialAddress = "" }) {
 
             {/* 區域選擇 */}
             <div className="col-md-4">
-                <label className="form-label">區域</label>
+                <label className="form-label fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">區域</label>
                 <select
                     className="form-select"
                     value={selectedArea}
@@ -88,7 +88,7 @@ function AddressForm({ onChange, initialAddress = "" }) {
 
             {/* 詳細地址輸入 */}
             <div className="col-md-4">
-                <label className="form-label">詳細地址</label>
+                <label className="form-label fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">詳細地址</label>
                 <input
                     type="text"
                     className="form-control"
