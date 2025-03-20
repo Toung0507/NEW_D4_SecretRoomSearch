@@ -326,47 +326,18 @@ function AdminStore() {
             {filteredData.length > 0 ? (
               filteredData.map((store) => (
                 <div key={store.store_id} className="col">
-                  <div className="card card-admin h-100">
-                    <div className="card-body row">
-                      <p className="id col-4">ID</p>
-                      <p className="store_name col-8">店家名稱</p>
-                      <p className="id col-4">{store.store_id}</p>
-                      <p className="store_name col-8">{store.store_name}</p>
-                      <p className="contact col-4 mt-4">聯絡人</p>
-                      <p className="contact_tel col-8 mt-4">聯絡電話</p>
-                      <p className="contact col-4 mb-4">
-                        {store.store_contact}
-                      </p>
-                      <p className="contact_tel col-8 mb-4">
-                        {store.store_self_tel}
-                      </p>
-                      <p className="status col-4">審核狀態</p>
-                      <p className="create_time col-8">建立時間</p>
-                      <div className="status col-4">
-                        <span
-                          className={`px-2 py-1 rounded-2 text-black ${getStatusBadgeStyle(
-                            store.store_isAuth
-                          )}`}
-                          style={{ fontSize: "12px" }}
-                        >
-                          {store.store_isAuth === "processing" ? "處理中" : ""}
-                          {store.store_isAuth === "pass" ? "通過" : ""}
-                          {store.store_isAuth === "rejected" ? "已退回" : ""}
-                        </span>
-                      </div>
-                      <p className="create_time col-8">
-                        {store.store_create_at}
-                      </p>
-                      <div className="col-12 text-nature-95">
-                        <hr
-                          style={{
-                            marginBottom: 0,
-                            height: "2px",
-                            borderWidth: "2px",
-                          }}
-                        />
-                      </div>
-                      <div className="col-12 d-flex justify-content-end mt-2">
+                  <div className="card card-admin">
+                    <div className="card-body">
+                      <div className="d-flex justify-content-between">
+                        <div className="d-flex align-items-center">
+                          <span
+                            className="me-2 px-2 fs-6 rounded-3 bg-secondary-95"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            ID: {store.store_id}
+                          </span>
+                          <p className="fw-bold fs-1">{store.store_name}</p>
+                        </div>
                         <button
                           className="edit-btn d-flex align-items-center justify-content-center"
                           onClick={() => handleShowModal(store)}
@@ -375,6 +346,68 @@ function AdminStore() {
                             edit
                           </span>
                         </button>
+                      </div>
+                      <div className="status my-4">
+                        {getStoreStatusCard(store)}
+                      </div>
+                      <div className="content d-flex row row-cols-2">
+                        <div className="contact d-flex align-items-center">
+                          <span className="material-symbols-outlined me-1 text-nature-50">
+                            person
+                          </span>
+                          <div className="d-flex flex-column">
+                            <p
+                              className="text-nature-50"
+                              style={{ fontSize: "0.8rem" }}
+                            >
+                              聯絡人
+                            </p>
+                            <p
+                              className="fw-bold"
+                              style={{ fontSize: "0.8rem" }}
+                            >
+                              {store.store_contact}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="tel d-flex align-items-center">
+                          <span className="material-symbols-outlined me-1 text-nature-50">
+                            call
+                          </span>
+                          <div className="d-flex flex-column">
+                            <p
+                              className="text-nature-50"
+                              style={{ fontSize: "0.8rem" }}
+                            >
+                              聯絡電話
+                            </p>
+                            <p
+                              className="fw-bold"
+                              style={{ fontSize: "0.8rem" }}
+                            >
+                              {store.store_self_tel}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-nature-60">
+                        <hr />
+                      </div>
+                      <div className="date d-flex align-items-center">
+                        <span className="material-symbols-outlined me-1 text-nature-50">
+                          calendar_month
+                        </span>
+                        <div className="d-flex flex-column">
+                          <p
+                            className="text-nature-50"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            建立時間
+                          </p>
+                          <p className="fw-bold" style={{ fontSize: "0.8rem" }}>
+                            {store.store_create_at}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -396,8 +429,6 @@ function AdminStore() {
   );
 }
 
-export default AdminStore;
-
 const getStatusBadgeStyle = (status) => {
   switch (status) {
     case "processing":
@@ -408,3 +439,63 @@ const getStatusBadgeStyle = (status) => {
       return "bg-tertiary-90";
   }
 };
+
+const getStoreStatusCard = (store) => {
+  switch (store.store_isAuth) {
+    case "processing":
+      return (
+        <div
+          className="d-inline-flex align-items-center bg-secondary-95 px-2 rounded-2 border border-secondary-80"
+          style={{ height: "26px" }}
+        >
+          <span
+            className="material-symbols-outlined me-1 text-secondary-50"
+            style={{ fontSize: "0.8rem" }}
+          >
+            progress_activity
+          </span>
+          <p className="text-secondary-60" style={{ fontSize: "0.8rem" }}>
+            處理中
+          </p>
+        </div>
+      );
+    case "pass":
+      return (
+        <div
+          className="d-inline-flex align-items-center bg-pass px-2 rounded-2 border border-success"
+          style={{ height: "26px" }}
+        >
+          <span
+            className="material-symbols-outlined me-1 text-success"
+            style={{ fontSize: "1rem" }}
+          >
+            priority
+          </span>
+          <p className="text-success" style={{ fontSize: "0.8rem" }}>
+            通過
+          </p>
+        </div>
+      );
+    case "rejected":
+      return (
+        <div
+          className="d-inline-flex align-items-center bg-tertiary-90 px-2 rounded-2 border border-primary-80"
+          style={{ height: "26px" }}
+        >
+          <span
+            className="material-symbols-outlined me-1 text-danger"
+            style={{ fontSize: "1rem" }}
+          >
+            close_small
+          </span>
+          <p className="text-primary-50" style={{ fontSize: "0.8rem" }}>
+            已退回
+          </p>
+        </div>
+      );
+    default:
+      return null;
+  }
+};
+
+export default AdminStore;

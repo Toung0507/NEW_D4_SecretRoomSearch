@@ -107,7 +107,7 @@ function AdminGame() {
         if (direction === "asc") {
           return a[key] > b[key] ? 1 : -1;
         } else {
-          return a[key] < b[key] ? 1 : -1;
+          return a[key] < b[key] ? -1 : 1;
         }
       }
     });
@@ -306,60 +306,123 @@ function AdminGame() {
             filteredData.map((game) => (
               <div key={game.game_id} className="col">
                 <div className="card card-admin h-100">
-                  <div className="card-body row">
-                    <p className="id col-4">ID</p>
-                    <p className="game_name col-8">密室名稱</p>
-                    <p className="id col-4">{game.game_id}</p>
-                    <p className="game_name col-8">{game.game_name}</p>
-                    <p className="score col-4 mt-4">評分</p>
-                    <p className="review_num col-8 mt-4">評論人數</p>
-                    <p className="score col-4 mb-4">{game.game_score}</p>
-                    <p className="review_num col-8 mb-4">
-                      {game.game_score_num}
-                    </p>
-                    <p className="tags col-4">標籤</p>
-                    <p className="status col-8">狀態</p>
-                    <p className="tags col-4">
-                      <span
-                        className="px-1 py-1 rounded-2 text-black bg-nature-95"
-                        style={{ fontSize: "12px" }}
-                      >
-                        {game.game_dif_tagname}
-                      </span>
-                    </p>
-                    <div className="status col-8">
-                      {game.game_isStock == true ? (
+                  <div className="card-body">
+                    <div className="d-flex justify-content-between">
+                      <div className="d-flex align-items-center">
                         <span
-                          className="px-2 py-1 rounded-2 text-black bg-pass"
-                          style={{ fontSize: "12px" }}
+                          className="me-2 px-2 fs-6 rounded-3 bg-secondary-95"
+                          style={{ fontSize: "0.8rem" }}
                         >
-                          上架
+                          ID: {game.game_id}
                         </span>
-                      ) : (
-                        <span
-                          className="px-2 py-1 rounded-2 text-black bg-tertiary-90"
-                          style={{ fontSize: "12px" }}
-                        >
-                          下架
-                        </span>
-                      )}
-                    </div>
-                    <div className="col-12 text-nature-95">
-                      <hr
-                        style={{
-                          marginBottom: 0,
-                          height: "2px",
-                          borderWidth: "2px",
-                        }}
-                      />
-                    </div>
-                    <div className="col-12 d-flex justify-content-end mt-2">
+                        <p className="fw-bold fs-1">{game.game_name}</p>
+                      </div>
                       <button
                         className="edit-btn d-flex align-items-center justify-content-center"
-                        onClick={() => handleShowModal(store)}
+                        onClick={() => handleShowModal(game)}
                       >
                         <span className="material-symbols-outlined">edit</span>
                       </button>
+                    </div>
+                    <div className="status my-4">
+                      {game.game_isStock ? (
+                        <div
+                          className="d-inline-flex align-items-center bg-pass px-2 rounded-2 border border-success"
+                          style={{ height: "26px" }}
+                        >
+                          <span
+                            className="material-symbols-outlined me-1 text-success"
+                            style={{ fontSize: "1rem" }}
+                          >
+                            check_circle
+                          </span>
+                          <p
+                            className="text-success"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            上架
+                          </p>
+                        </div>
+                      ) : (
+                        <div
+                          className="d-inline-flex align-items-center bg-tertiary-90 px-2 rounded-2 border border-tertiary-80"
+                          style={{ height: "26px" }}
+                        >
+                          <span
+                            className="material-symbols-outlined me-1 text-tertiary-50"
+                            style={{ fontSize: "1rem" }}
+                          >
+                            cancel
+                          </span>
+                          <p
+                            className="text-tertiary-50"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            下架
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="content d-flex row row-cols-2">
+                      <div className="score d-flex align-items-center">
+                        <span className="material-symbols-outlined me-1 text-nature-50">
+                          star
+                        </span>
+                        <div className="d-flex flex-column">
+                          <p
+                            className="text-nature-50"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            評分
+                          </p>
+                          <p className="fw-bold" style={{ fontSize: "0.8rem" }}>
+                            {game.game_score}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="review-count d-flex align-items-center">
+                        <span className="material-symbols-outlined me-1 text-nature-50">
+                          forum
+                        </span>
+                        <div className="d-flex flex-column">
+                          <p
+                            className="text-nature-50"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            評論人數
+                          </p>
+                          <p className="fw-bold" style={{ fontSize: "0.8rem" }}>
+                            {game.game_score_num}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-nature-60">
+                      <hr />
+                    </div>
+                    <div className="tags">
+                      <div className="d-flex align-items-center mb-2">
+                        <span className="material-symbols-outlined me-1 text-nature-50">
+                          sell
+                        </span>
+                        <p
+                          className="text-nature-50"
+                          style={{ fontSize: "0.8rem" }}
+                        >
+                          標籤
+                        </p>
+                      </div>
+                      <div className="d-flex flex-wrap gap-1 mt-1">
+                        <span className="px-2 py-1 rounded-2 text-black bg-nature-95 fs-Caption">
+                          {game.game_dif_tagname}
+                        </span>
+                        <span className="px-2 py-1 rounded-2 text-black bg-nature-95 fs-Caption">
+                          {game.game_main_tag1name}
+                        </span>
+                        <span className="px-2 py-1 rounded-2 text-black bg-nature-95 fs-Caption">
+                          {game.game_main_tag2name}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
