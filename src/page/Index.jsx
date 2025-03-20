@@ -4,6 +4,7 @@ import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import 'swiper/swiper-bundle.css';
+import styled from 'styled-components';
 
 const BASE_URL = 'https://new-json.onrender.com/';
 
@@ -59,7 +60,6 @@ function Index() {
         //console.log(gameProperty);
         //console.log(gameDifficulty);
         if (product.length > 0 && gameDifficulty.length > 0 && gameProperty.length > 0) {
-            console.log('完成');
 
             setIsAllscreenLoading(false);
         }
@@ -102,7 +102,7 @@ function Index() {
                     className="justify-content-center"
                 >
                 </div>
-                <div className="col-6 bg-primary-95 rounded-6 justify-content-center">
+                <div className="col-lg-6 col-12 bg-primary-95 rounded-6 justify-content-center">
                     <div className="p-12">
                         <div className="d-flex gap-3">
                             <div className="w-50">
@@ -161,7 +161,7 @@ function Index() {
 
                     <div className="row justify-content-center">
                         <div className="col-8">
-                            <div className="d-flex flex-row-reverse align-items-center justify-content-between mb-12">
+                            <div className="d-flex flex-lg-row-reverse align-items-center flex-column justify-content-between text-center mb-12">
                                 <div className="">
                                     <img src="./image/marek-szturc.png" alt="..." className="rounded-16" style={{ height: '294px', width: '416px' }} />
                                 </div>
@@ -170,7 +170,7 @@ function Index() {
                                     <p style={{ width: '306px' }}>搜尋全台各地的密室遊戲。不論是恐怖繁悚、科幻冒險還是古典懸疑，都能幫助你找到最符合你興趣的挑戰。詳細的遊戲介紹、圖片，讓你在參加前就能了解遊戲的風格和難度，為你打造前所未有的解謎體驗！</p>
                                 </div>
                             </div>
-                            <div className="d-flex align-items-center justify-content-between mb-12">
+                            <div className="d-flex align-items-center justify-content-between flex-column flex-lg-row text-center mb-12">
                                 <div className="">
                                     <img src="./image/vlad-hilitanu.png" alt="..." className="rounded-16" style={{ height: '294px', width: '424px' }} />
                                 </div>
@@ -179,7 +179,7 @@ function Index() {
                                     <p style={{ width: '306px' }}>結識來自全台密室愛好者，與他們組隊挑戰各種密室遊戲。無論是第一次體驗還是經驗豐富的老手，都能找到合適的隊友，一同享受團隊合作帶來的無限樂趣與成就感！</p>
                                 </div>
                             </div>
-                            <div className="d-flex flex-row-reverse justify-content-between align-items-center">
+                            <div className="d-flex flex-lg-row-reverse flex-column justify-content-between align-items-center text-center">
                                 <div className="">
                                     <img src="./image/andrew-neel.png" alt="..." className="rounded-16" style={{ height: '294px', width: '416px' }} />
                                 </div>
@@ -236,19 +236,29 @@ function Index() {
                 {product.length > 0 && (
                     <Swiper
                         modules={[Navigation]}
-                        slidesPerView={4}
                         spaceBetween={24}
                         navigation={{
-                            nextEl: ".swiper-button-next",
-                            prevEl: ".swiper-button-prev",
+                                nextEl: ".swiper-button-next",
+                                prevEl: ".swiper-button-prev",
+                            }
                         }
-                        }
+                        breakpoints={{
+                            0:{
+                                slidesPerView: 1,
+                            },
+                            576:{
+                                slidesPerView: 2,
+                            },
+                            1280:{
+                                slidesPerView: 4,
+                            },
+                        }}
 
                     >
                         {/* 輪播 */}
                         {product.map((game) => (
                             <SwiperSlide key={game.game_id}>
-                                <a href={`/#/Game_content/${game.game_id}`} style={{ color: 'inherit' }}>
+                                <a href={`./#/Game_content/${game.game_id}`} style={{ color: 'inherit' }}>
                                     <div className={`d-flex flex-column rounded-10 p-5 ${`${isHover === game.game_id ? "bg-primary-95" : "bg-primary-99"}`}`} onMouseEnter={() => setIsHover(game.game_id)} onMouseLeave={() => setIsHover(false)}>
                                         <img src={game.game_img[0]} alt={game.game_name} className="rounded-7 mb-3 object-fit-cover" style={{ width: '100%', height: '150px' }} />
                                         <h3 className="card-title fw-bold fs-h6">{game.game_name}</h3>
@@ -316,20 +326,31 @@ function Index() {
                 {product.length > 0 && (
                     <Swiper
                         modules={[Navigation, Autoplay]}
-                        slidesPerView={4}
+                        // slidesPerView={1}
                         spaceBetween={24}
                         navigation={{
-                            nextEl: ".swiper-button-next",
-                            prevEl: ".swiper-button-prev",
+                                nextEl: ".swiper-button-next",
+                                prevEl: ".swiper-button-prev",
+                            }
                         }
-                        }
+                        breakpoints={{
+                            0:{
+                                slidesPerView: 1,
+                            },
+                            576:{
+                                slidesPerView: 2,
+                            },
+                            1280:{
+                                slidesPerView: 4,
+                            },
+                        }}
                         loop={true}
                         autoplay={{ delay: 3000, disableOnInteraction: false }}
                     >
                         {/* 輪播 */}
                         {product.map((game) => (
                             <SwiperSlide key={game.game_id}>
-                                <a href={`/#/Game_content/${game.game_id}`} style={{ color: 'inherit' }}>
+                                <a href={`./#/Game_content/${game.game_id}`} style={{ color: 'inherit' }}>
                                     <div className={`d-flex flex-column rounded-10 p-5 ${`${isHover === game.game_id ? "bg-primary-95" : "bg-primary-99"}`}`} onMouseEnter={() => setIsHover(game.game_id)} onMouseLeave={() => setIsHover(false)}>
                                         <img src={game.game_img[0]} alt={game.game_name} className="rounded-7 mb-3 object-fit-cover" style={{ width: '100%', height: '150px' }} />
                                         <h3 className="card-title fw-bold fs-h6">{game.game_name}</h3>
