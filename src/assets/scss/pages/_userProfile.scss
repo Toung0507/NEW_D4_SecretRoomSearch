@@ -27,34 +27,26 @@
 }
 
 .commentButton:hover {
-    background: none
+    background: none;
 }
 
-.ParticipatingGroup_mobile {
-    display: none;
-}
+// .ParticipatingGroup_mobile {
+//     display: none;
+// }
 
 @media (max-width: 767px) {
     .member-nav-item-active {
         padding-bottom: 6px !important;
         border-bottom: 2px solid $secondary-40 !important;
     }
-
-    .ParticipatingGroup_desktop {
-        display: block;
-    }
-
-    .ParticipatingGroup_mobile {
-        display: none;
-    }
 }
 
-@media (max-width: 991px) {
-    .ParticipatingGroup_desktop {
-        display: none;
-    }
+// @media (max-width: 991px) {
+//     .ParticipatingGroup_desktop {
+//         display: none;
+//     }
 
-    .ParticipatingGroup_mobile {
-        display: block;
-    }
-}
+//     .ParticipatingGroup_mobile {
+//         display: block;
+//     }
+// }
