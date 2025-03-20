@@ -49,7 +49,7 @@ const CustomSidebar = () => {
   };
 
   return (
-    <div className="sidebar">
+    <div className="sidebar d-none d-lg-block">
       <Sidebar
         collapsed={collapsed}
         width="250px"
