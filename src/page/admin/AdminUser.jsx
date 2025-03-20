@@ -145,7 +145,7 @@ function AdminUser() {
           </ol>
         </nav>
         <div className="searchBar mt-5 mb-6 row">
-          <div className="col-2">
+          <div className="col-6 col-lg-2">
             <label
               htmlFor="userName"
               className="form-label fs-Caption text-black"
@@ -161,7 +161,7 @@ function AdminUser() {
               onChange={handleSearchChange}
             />
           </div>
-          <div className="col-2">
+          <div className="col-6 col-lg-2">
             <label htmlFor="email" className="form-label fs-Caption text-black">
               信箱
             </label>
@@ -174,12 +174,15 @@ function AdminUser() {
               onChange={handleSearchChange}
             />
           </div>
-          <div className="col-2">
+          <div className="col-6 col-lg-2">
             <label htmlFor="role" className="form-label fs-Caption text-black">
               角色
             </label>
             <select
               className="form-select border-black"
+              style={{
+                color: searchParams.role === "全部角色" ? "#C6C6CA" : "inherit",
+              }}
               id="role"
               value={searchParams.role}
               onChange={handleSearchChange}
@@ -190,26 +193,24 @@ function AdminUser() {
               <option value="管理者">管理者</option>
             </select>
           </div>
-          <div className="col-1">
-            <label className="form-label">&nbsp;</label>
+          <div className="col-lg-1 col-12 d-flex align-items-end">
             <button
-              className="btn btn-search btn-primary-50 text-white form-control"
+              className="btn btn-search btn-primary-50 text-white form-control my-3 my-lg-0"
               onClick={handleSearch}
             >
               搜尋
             </button>
           </div>
-          <div className="col-1">
-            <label className="form-label">&nbsp;</label>
+          <div className="col-lg-1 col-12 d-flex align-items-end">
             <button
-              className="btn btn-reset btn-secondary text-white form-control"
+              className="btn btn-reset btn-outline-secondary form-control"
               onClick={handleReset}
             >
               重置
             </button>
           </div>
         </div>
-        <div className="table-container bg-white border rounded-2 border-nature-90 p-6">
+        <div className="table-container d-none d-lg-block bg-white border rounded-2 border-nature-90 p-6">
           <div className="table-scroll-container overflow-scroll">
             <table className="storeTable w-100">
               <thead>
@@ -253,19 +254,74 @@ function AdminUser() {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((row) => (
-                  <tr key={row.user_id}>
-                    <td className="py-2 px-4">{row.user_id}</td>
-                    <td className="py-2 px-4">{row.user_name}</td>
-                    <td className="py-2 px-4">{row.user_email}</td>
-                    <td className="py-2 px-4">{row.user_role}</td>
-                    <td className="py-2 px-4">{row.user_reg_method}</td>
-                    <td className="py-2 px-4">{row.user_create_at}</td>
+                {filteredData.length > 0 ? (
+                  filteredData.map((row) => (
+                    <tr key={row.user_id}>
+                      <td className="py-2 px-4">{row.user_id}</td>
+                      <td className="py-2 px-4">{row.user_name}</td>
+                      <td className="py-2 px-4">{row.user_email}</td>
+                      <td className="py-2 px-4">{row.user_role}</td>
+                      <td className="py-2 px-4">{row.user_reg_method}</td>
+                      <td className="py-2 px-4">{row.user_create_at}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="text-center py-4">
+                      沒有符合的資料
+                    </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
+        </div>
+        <div className="cards-container d-lg-none row row-cols-1 row-cols-md-2 g-3">
+          {filteredData.length > 0 ? (
+            filteredData.map((user) => (
+              <div key={user.user_id} className="col">
+                <div className="card card-admin h-100">
+                  <div className="card-body row">
+                    <p className="id col-4">ID</p>
+                    <p className="user_name col-8">使用者名稱</p>
+                    <p className="id col-4">{user.user_id}</p>
+                    <p className="user_name col-8">{user.user_name}</p>
+                    <p className="email col-12 mt-4">信箱</p>
+                    <p className="email col-12 mb-4">{user.user_email}</p>
+                    <p className="role col-4">角色</p>
+                    <p className="login_source col-8">登入來源</p>
+                    <p className="role col-4 mb-4">{user.user_role}</p>
+                    <p className="login_source col-8">{user.user_reg_method}</p>
+                    <p className="create_time col-8">建立時間</p>
+                    <p className="create_time col-8">{user.user_create_at}</p>
+                    <div className="col-12 text-nature-95">
+                      <hr
+                        style={{
+                          marginBottom: 0,
+                          height: "2px",
+                          borderWidth: "2px",
+                        }}
+                      />
+                    </div>
+                    <div className="col-12 d-flex justify-content-end mt-2">
+                      <button
+                        className="edit-btn d-flex align-items-center justify-content-center"
+                        onClick={() => handleShowModal(store)}
+                      >
+                        <span className="material-symbols-outlined">edit</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-12">
+              <div className="card">
+                <div className="card-body text-center py-4">沒有符合的資料</div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
