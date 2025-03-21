@@ -112,23 +112,55 @@ function AdminGroup() {
     setSortConfig({ key, direction });
 
     const sortedData = [...filteredData].sort((a, b) => {
+      // 處理特殊狀態排序
+      if (key === "group_isSuccessful") {
+        // 將狀態轉換為可排序的數值 (已結束:3 > 已取消:2 > 揪團成功:1 > 揪團中:0)
+        const getStatusValue = (row) => {
+          if (row.group_isEnd) return 3;
+          if (row.group_cancel) return 2;
+          if (row.group_isSuccessful) return 1;
+          return 0;
+        };
+
+        const valueA = getStatusValue(a);
+        const valueB = getStatusValue(b);
+
+        return direction === "asc" ? valueA - valueB : valueB - valueA;
+      }
+
+      // 處理數值型欄位
+      if (key === "group_id" || key === "group_member") {
+        const numA = parseInt(a[key], 10);
+        const numB = parseInt(b[key], 10);
+
+        return direction === "asc" ? numA - numB : numB - numA;
+      }
+
+      // 處理日期欄位
       if (key === "group_end_at" || key === "group_active_date") {
-        // 將日期字符串轉換為日期對象進行比較
         const dateA = new Date(a[key]);
         const dateB = new Date(b[key]);
 
+        return direction === "asc" ? dateA - dateB : dateB - dateA;
+      }
+
+      // 處理用戶ID (可能需要用到userData顯示名稱)
+      if (key === "user_id") {
+        const nameA = userData[a[key]]?.user_name || "";
+        const nameB = userData[b[key]]?.user_name || "";
+
         if (direction === "asc") {
-          return dateA - dateB;
+          return nameA.localeCompare(nameB);
         } else {
-          return dateB - dateA;
+          return nameB.localeCompare(nameA);
         }
+      }
+
+      // 一般字符串比較
+      if (direction === "asc") {
+        return String(a[key]).localeCompare(String(b[key]));
       } else {
-        // 一般字符串比較
-        if (direction === "asc") {
-          return a[key] > b[key] ? 1 : -1;
-        } else {
-          return a[key] < b[key] ? 1 : -1;
-        }
+        return String(b[key]).localeCompare(String(a[key]));
       }
     });
 
@@ -213,10 +245,6 @@ function AdminGroup() {
             </label>
             <select
               className="form-select border-black"
-              style={{
-                color:
-                  searchParams.status === "全部狀態" ? "#C6C6CA" : "inherit",
-              }}
               id="status"
               value={searchParams.status}
               onChange={handleSearchChange}
@@ -230,7 +258,7 @@ function AdminGroup() {
           </div>
           <div className="col-lg-1 col-12 d-flex align-items-end">
             <button
-              className="btn btn-search btn-primary-50 text-white form-control my-3"
+              className="btn btn-search btn-primary-50 text-white form-control my-3 my-lg-0"
               onClick={handleSearch}
             >
               搜尋
@@ -435,32 +463,27 @@ function AdminGroup() {
 }
 
 const getGroupStatusStyle = (row) => {
-  if (row.group_isEnd) return "bg-nature-90";
+  if (row.group_isSuccessful) return "bg-nature-90";
 
-  if (row.group_cancel) return "bg-tertiary-90";
-
-  if (row.group_isSuccessful) {
-    return "bg-pass";
+  if (row.group_cancel) {
+    return "bg-tertiary-90";
   } else {
     return "bg-secondary-90";
   }
 };
 
 const getGroupStatus = (row) => {
-  if (row.group_isEnd) return "已結束";
+  if (row.group_isSuccessful) return "已結束";
 
-  if (row.group_cancel) return "已取消";
-
-  if (row.group_isSuccessful) {
-    return "揪團成功";
+  if (row.group_cancel) {
+    return "已棄團";
   } else {
     return "揪團中";
   }
 };
 
 const getGroupStautsCard = (row) => {
-  if (row.group_isEnd)
-    // TODO 在後端做結束判斷
+  if (row.group_isSuccessful) {
     return (
       <div
         className="d-inline-flex align-items-center bg-nature-90 px-2 rounded-2 border border-nature-60"
@@ -477,33 +500,16 @@ const getGroupStautsCard = (row) => {
         </p>
       </div>
     );
+  }
 
-  if (row.group_cancel)
+  if (row.group_cancel) {
     return (
       <div className="d-inline-flex align-items-center bg-primary-95 px-2 rounded-2 border border-primary-80">
         <span className="material-symbols-outlined me-1 text-danger">
           close_small
         </span>
         <p className="text-primary-50" style={{ fontSize: "0.8rem" }}>
-          已取消
-        </p>
-      </div>
-    );
-
-  if (row.group_isSuccessful) {
-    return (
-      <div
-        className="d-inline-flex align-items-center bg-pass px-2 rounded-2 border border-success"
-        style={{ height: "26px" }}
-      >
-        <span
-          class="material-symbols-outlined me-1 text-success"
-          style={{ fontSize: "1rem" }}
-        >
-          priority
-        </span>
-        <p className="text-success" style={{ fontSize: "0.8rem" }}>
-          揪團成功
+          已棄團
         </p>
       </div>
     );

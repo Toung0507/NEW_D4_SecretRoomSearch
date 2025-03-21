@@ -204,10 +204,6 @@ function AdminStore() {
               </label>
               <select
                 className="form-select border-black"
-                style={{
-                  color:
-                    searchParams.status === "所有狀態" ? "#C6C6CA" : "inherit",
-                }}
                 id="status"
                 value={searchParams.status}
                 onChange={handleSearchChange}

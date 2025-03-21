@@ -180,9 +180,6 @@ function AdminUser() {
             </label>
             <select
               className="form-select border-black"
-              style={{
-                color: searchParams.role === "全部角色" ? "#C6C6CA" : "inherit",
-              }}
               id="role"
               value={searchParams.role}
               onChange={handleSearchChange}

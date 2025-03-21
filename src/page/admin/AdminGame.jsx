@@ -92,23 +92,49 @@ function AdminGame() {
     setSortConfig({ key, direction });
 
     const sortedData = [...filteredData].sort((a, b) => {
-      if (key === "game_score" || key === "game_score_num") {
-        // 數字比較
-        const numA = parseFloat(a[key]);
-        const numB = parseFloat(b[key]);
+      // 處理數值型欄位
+      if (
+        key === "game_id" ||
+        key === "game_score" ||
+        key === "game_score_num"
+      ) {
+        const numA = parseFloat(a[key] || 0);
+        const numB = parseFloat(b[key] || 0);
+
+        return direction === "asc" ? numA - numB : numB - numA;
+      }
+
+      // 處理上/下架狀態
+      if (key === "game_isStock") {
+        // true (上架) 排在 false (下架) 前面或後面
+        const boolA = Boolean(a[key]);
+        const boolB = Boolean(b[key]);
 
         if (direction === "asc") {
-          return numA - numB;
+          return boolA === boolB ? 0 : boolA ? 1 : -1;
         } else {
-          return numB - numA;
+          return boolA === boolB ? 0 : boolA ? -1 : 1;
         }
-      } else {
-        // 一般字符串比較
+      }
+
+      // 標籤排序 - 針對特定標籤欄位進行排序
+      if (
+        key === "game_dif_tagname" ||
+        key === "game_main_tag1name" ||
+        key === "game_main_tag2name"
+      ) {
         if (direction === "asc") {
-          return a[key] > b[key] ? 1 : -1;
+          return String(a[key] || "").localeCompare(String(b[key] || ""));
         } else {
-          return a[key] < b[key] ? -1 : 1;
+          return String(b[key] || "").localeCompare(String(a[key] || ""));
         }
+      }
+
+      // 一般字符串比較
+      if (direction === "asc") {
+        return String(a[key] || "").localeCompare(String(b[key] || ""));
+      } else {
+        return String(b[key] || "").localeCompare(String(a[key] || ""));
       }
     });
 
@@ -190,28 +216,18 @@ function AdminGame() {
             </label>
             <select
               className="form-select border-black"
-              style={{
-                color:
-                  searchParams.is_stock === "全部狀態" ? "#C6C6CA" : "inherit",
-              }}
               id="is_stock"
               value={searchParams.is_stock}
               onChange={handleSearchChange}
             >
-              <option className="text-black" value="全部狀態">
-                全部狀態
-              </option>
-              <option className="text-pass" value="true">
-                上架
-              </option>
-              <option className="text-tertiary-90" value="false">
-                下架
-              </option>
+              <option value="全部狀態">全部狀態</option>
+              <option value="true">上架</option>
+              <option value="false">下架</option>
             </select>
           </div>
           <div className="col-lg-1 col-12 d-flex align-items-end">
             <button
-              className="btn btn-search btn-primary-50 text-white form-control my-3"
+              className="btn btn-search btn-primary-50 text-white form-control my-3 my-lg-0"
               onClick={handleSearch}
             >
               搜尋
@@ -261,7 +277,12 @@ function AdminGame() {
                   >
                     標籤 {getSortIcon("game_dif_tagname")}
                   </th>
-                  <th className="px-4 py-3 text-center">狀態</th>
+                  <th
+                    className="px-4 py-3 text-center"
+                    onClick={() => handleSort("game_isStock")}
+                  >
+                    狀態 {getSortIcon("game_isStock")}
+                  </th>
                 </tr>
               </thead>
               <tbody>
