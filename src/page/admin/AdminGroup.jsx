@@ -251,8 +251,7 @@ function AdminGroup() {
             >
               <option value="全部狀態">全部狀態</option>
               <option value="揪團中">揪團中</option>
-              <option value="揪團成功">揪團成功</option>
-              <option value="已取消">已取消</option>
+              <option value="已棄團">已棄團</option>
               <option value="已結束">已結束</option>
             </select>
           </div>
