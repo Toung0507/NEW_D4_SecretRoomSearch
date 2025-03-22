@@ -245,10 +245,14 @@ function Index() {
               </div>
             </div>
             <div className="introduction">
-              <div className="title mb-8 mb-lg-17">
+              <div className="title mb-8 mb-lg-17 d-none d-lg-block">
                 <h3 className="fw-bold fs-lg-h3 fs-h6">
                   想找好玩的密室遊戲，但卻發現資訊分散難找
                 </h3>
+              </div>
+              <div className="title mb-8 mb-lg-17 d-block d-lg-none text-center">
+                <h3 className="fw-bold fs-lg-h3 fs-h6">想找好玩的密室遊戲，</h3>
+                <h3 className="fw-bold fs-lg-h3 fs-h6">但卻發現資訊分散難找</h3>
               </div>
               <div className="information">
                 <ul className="d-flex flex-column flex-lg-row gap-8 gap-lg-6">
@@ -372,9 +376,17 @@ function Index() {
             </div>
             <div className="bg-nature-20 d-flex justify-content-center">
               <div className="py-16 py-lg-23 px-3 px-lg-0 d-flex flex-column justify-content-between align-items-center">
-                <div>
-                  <h3 className="fw-bold fs-h6 fs-lg-h3 text-white mb-20">
+                <div className="d-none d-lg-block mb-20">
+                  <h3 className="fw-bold fs-h6 fs-lg-h3 text-white">
                     從驚悚到奇幻，12 種冒險領域讓你選擇！
+                  </h3>
+                </div>
+                <div className="text-center .d-block .d-lg-none mb-20">
+                  <h3 className="fw-bold fs-h6 fs-lg-h3 text-white">
+                    從驚悚到奇幻，
+                  </h3>
+                  <h3 className="fw-bold fs-h6 fs-lg-h3 text-white">
+                    12 種冒險領域讓你選擇！
                   </h3>
                 </div>
                 <div className="d-flex justify-content-center flex-column-reverse flex-lg-row">
@@ -446,7 +458,6 @@ function Index() {
                     delay: 5000,
                     disableOnInteraction: false,
                   }}
-                  loop={true}
                   modules={[Navigation, Autoplay]}
                   className="mySwiper"
                 >
@@ -488,7 +499,6 @@ function Index() {
                     delay: 5000,
                     disableOnInteraction: false,
                   }}
-                  loop={true}
                   modules={[Navigation, Autoplay]}
                   className="mySwiper"
                 >
