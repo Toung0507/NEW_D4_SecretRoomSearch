@@ -736,14 +736,14 @@ function Game_search() {
                                                             />
                                                         ))}
                                                 <button
-                                                    className={`btn btn-primary ${isAllRecommendDisplay ? "d-none" : ""
+                                                    className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "d-none" : ""
                                                         }`}
                                                     onClick={() => handleSeeRecommendMore()}
                                                 >
                                                     查看更多推薦
                                                 </button>
                                                 <button
-                                                    className={`btn btn-primary ${isAllRecommendDisplay ? "" : "d-none"
+                                                    className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "" : "d-none"
                                                         }`}
                                                     onClick={() => handleSeeRecommendMore()}
                                                 >
@@ -777,14 +777,14 @@ function Game_search() {
                                                                 />
                                                             ))}
                                                     <button
-                                                        className={`btn btn-primary  ${isAllRecentlyDisplay ? "d-none" : ""
+                                                        className={`btn btn-secondary-60 text-white   ${isAllRecentlyDisplay ? "d-none" : ""
                                                             }`}
                                                         onClick={() => handleSeeRecentlyMore()}
                                                     >
                                                         查看更多新作
                                                     </button>
                                                     <button
-                                                        className={`btn btn-primary  ${isAllRecentlyDisplay ? "" : "d-none"
+                                                        className={`btn btn-secondary-60 text-white   ${isAllRecentlyDisplay ? "" : "d-none"
                                                             }`}
                                                         onClick={() => handleSeeRecentlyMore()}
                                                     >
