@@ -61,7 +61,7 @@ function Game_search() {
             const res = await axios.get(`${baseApi}/gamesData`);
 
             // 過濾掉某個屬性為 false 的遊戲，例如 game_isActive 為 false
-            const upGames = res.data.filter(game => game.game_isStock === true);
+            const upGames = res.data.filter((game) => game.game_isStock === true);
 
             setGames(upGames);
             const recommendedGames = [...upGames].sort(
@@ -110,7 +110,7 @@ function Game_search() {
         if (firstSectionRef.current) {
             window.scrollTo({
                 top: firstSectionRef.current.offsetTop - 120,
-                behavior: "smooth"
+                behavior: "smooth",
             });
         }
     };
@@ -127,7 +127,7 @@ function Game_search() {
         if (firstSectionRef.current) {
             window.scrollTo({
                 top: firstSectionRef.current.offsetTop - 90,
-                behavior: "smooth"
+                behavior: "smooth",
             });
         }
     };
@@ -138,7 +138,7 @@ function Game_search() {
         if (firstSectionRef.current) {
             window.scrollTo({
                 top: firstSectionRef.current.offsetTop - 120,
-                behavior: "smooth"
+                behavior: "smooth",
             });
         }
     };
@@ -169,53 +169,49 @@ function Game_search() {
         setIsSearch(true);
         // 篩選資料
         const filteredGames = games.filter((game) => {
-            if (game.game.game_isStock !== false) {
+            // 遊戲名稱
+            const matchesGameName =
+                search.game_name === ""
+                    ? true
+                    : game.game_name.includes(search.game_name);
 
-                // 遊戲名稱
-                const matchesGameName =
-                    search.game_name === ""
-                        ? true
-                        : game.game_name.includes(search.game_name);
+            // 地區篩選（使用OR條件）
+            const matchesArea =
+                search.area.length === 0
+                    ? true
+                    : search.area.some((area) => game.game_address.startsWith(area));
 
-                // 地區篩選（使用OR條件）
-                const matchesArea =
-                    search.area.length === 0
-                        ? true
-                        : search.area.some((area) => game.game_address.startsWith(area));
+            // 遊玩人數篩選
+            const matchesGamePeople =
+                search.game_people === ""
+                    ? true
+                    : game.game_minNum_Players <= parseInt(search.game_people, 10) &&
+                    game.game_maxNum_Players >= parseInt(search.game_people, 10);
 
-                // 遊玩人數篩選
-                const matchesGamePeople =
-                    search.game_people === ""
-                        ? true
-                        : game.game_minNum_Players <= parseInt(search.game_people, 10) &&
-                        game.game_maxNum_Players >= parseInt(search.game_people, 10);
+            // 難度篩選（使用OR條件）
+            const matchesDifficulty =
+                search.difficulty.length === 0
+                    ? true
+                    : search.difficulty.includes(String(game.game_dif_tag));
 
-                // 難度篩選（使用OR條件）
-                const matchesDifficulty =
-                    search.difficulty.length === 0
-                        ? true
-                        : search.difficulty.includes(String(game.game_dif_tag));
+            // 屬性篩選（使用OR條件）
+            const matchesProperty =
+                search.property.length === 0
+                    ? true
+                    : search.property.some(
+                        (property) =>
+                            String(game.game_main_tag1).includes(property) ||
+                            String(game.game_main_tag2).includes(property)
+                    );
 
-                // 屬性篩選（使用OR條件）
-                const matchesProperty =
-                    search.property.length === 0
-                        ? true
-                        : search.property.some(
-                            (property) =>
-                                String(game.game_main_tag1).includes(property) ||
-                                String(game.game_main_tag2).includes(property)
-                        );
-
-                // 綜合判斷，使用AND邏輯
-                return (
-                    matchesGameName &&
-                    matchesArea &&
-                    matchesGamePeople &&
-                    matchesDifficulty &&
-                    matchesProperty
-                );
-            }
-
+            // 綜合判斷，使用AND邏輯
+            return (
+                matchesGameName &&
+                matchesArea &&
+                matchesGamePeople &&
+                matchesDifficulty &&
+                matchesProperty
+            );
         });
 
         if (filteredGames.length === 0) {
@@ -239,7 +235,7 @@ function Game_search() {
         if (firstSectionRef.current) {
             window.scrollTo({
                 top: firstSectionRef.current.offsetTop - 90,
-                behavior: "smooth"
+                behavior: "smooth",
             });
         }
     };
@@ -261,19 +257,22 @@ function Game_search() {
             const defaultProperty = params.get("property");
             const defaultDifficulty = params.get("difficulty");
 
-            console.log("URL 參數：", { defaultArea, defaultNum, defaultProperty, defaultDifficulty });
+            console.log("URL 參數：", {
+                defaultArea,
+                defaultNum,
+                defaultProperty,
+                defaultDifficulty,
+            });
 
             setSearch((prev) => ({
                 ...prev,
                 area: defaultArea ? [defaultArea] : [],
                 game_people: defaultNum ? Number(defaultNum) : "",
                 property: defaultProperty ? [String(defaultProperty)] : [],
-                difficulty: defaultDifficulty ? [String(defaultDifficulty)] : []
+                difficulty: defaultDifficulty ? [String(defaultDifficulty)] : [],
             }));
             setIsIndexSerach(true);
-        }
-        else if (queryIndex === -1) {
-
+        } else if (queryIndex === -1) {
         }
     }, [location]);
 
@@ -286,7 +285,7 @@ function Game_search() {
         if (isIndexSearch && games.length > 0) {
             handleSerach();
         }
-    }, [isIndexSearch, games])
+    }, [isIndexSearch, games]);
 
     //網址後方參數消除
     useEffect(() => {
@@ -294,10 +293,10 @@ function Game_search() {
             // 取得目前的 hash 部分，例如 "#/Game_search?area=台北市"
             const currentHash = window.location.hash;
             // 如果包含問號，表示有查詢參數
-            if (currentHash.includes('?')) {
+            if (currentHash.includes("?")) {
                 // 只取 hash 的路徑部分，捨棄 ? 後面的查詢參數
-                const newHash = currentHash.split('?')[0];
-                window.history.replaceState(null, '', newHash);
+                const newHash = currentHash.split("?")[0];
+                window.history.replaceState(null, "", newHash);
             }
         }
     }, [search.area, search.num, search.property, search.difficulty]);
@@ -325,7 +324,11 @@ function Game_search() {
                     <div className="row d-flex flex-column flex-md-row g-0">
                         {/* <!-- 表單部分 --> */}
                         <div className="col-md-3 pe-lg-6 pe-md-3 ">
-                            <form className="p-4 bg-white" onSubmit={(e) => handleSerach(e)} ref={userFormRef}>
+                            <form
+                                className="p-4 bg-white"
+                                onSubmit={(e) => handleSerach(e)}
+                                ref={userFormRef}
+                            >
                                 <div className="order">
                                     <p className="h5 pb-3  fw-bold">排序條件</p>
                                     <div className="mb-6">
@@ -661,7 +664,11 @@ function Game_search() {
                                     </div>
                                 </div>
                                 <div className="text-center">
-                                    <button className="btn btn-secondary-60 link-white rounded-2 w-100" id="userSumbit" ref={hiddenSubmitBtnRef}>
+                                    <button
+                                        className="btn btn-secondary-60 link-white rounded-2 w-100"
+                                        id="userSumbit"
+                                        ref={hiddenSubmitBtnRef}
+                                    >
                                         搜尋
                                     </button>
                                 </div>
@@ -729,14 +736,14 @@ function Game_search() {
                                                             />
                                                         ))}
                                                 <button
-                                                    className={`btn btn-primary ${isAllRecommendDisplay ? "d-none" : ""
+                                                    className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "d-none" : ""
                                                         }`}
                                                     onClick={() => handleSeeRecommendMore()}
                                                 >
                                                     查看更多推薦
                                                 </button>
                                                 <button
-                                                    className={`btn btn-primary ${isAllRecommendDisplay ? "" : "d-none"
+                                                    className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "" : "d-none"
                                                         }`}
                                                     onClick={() => handleSeeRecommendMore()}
                                                 >
@@ -770,14 +777,14 @@ function Game_search() {
                                                                 />
                                                             ))}
                                                     <button
-                                                        className={`btn btn-primary  ${isAllRecentlyDisplay ? "d-none" : ""
+                                                        className={`btn btn-secondary-60 text-white   ${isAllRecentlyDisplay ? "d-none" : ""
                                                             }`}
                                                         onClick={() => handleSeeRecentlyMore()}
                                                     >
                                                         查看更多新作
                                                     </button>
                                                     <button
-                                                        className={`btn btn-primary  ${isAllRecentlyDisplay ? "" : "d-none"
+                                                        className={`btn btn-secondary-60 text-white   ${isAllRecentlyDisplay ? "" : "d-none"
                                                             }`}
                                                         onClick={() => handleSeeRecentlyMore()}
                                                     >

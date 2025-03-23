@@ -260,7 +260,7 @@ const BasicInfo = () => {
     return (
         <>
             {/* 基本資料 */}
-            <div className="col-12 m-0 pt-10 px-0">
+            <div className="col-12 col-lg-8 m-0 py-sm-10 px-0 ">
                 <div className="border-nature-90 border rounded-2">
                     <div className="BasicStoreInfoTitle fs-h6 lh-sm bg-secondary-95 fw-bold px-5 py-5 text-secondary-50" >
                         基本資料
@@ -277,22 +277,24 @@ const BasicInfo = () => {
                                     aspectRatio: "1/1",
                                 }}
                             />
-                            <h5 className="ps-5 fw-bold">
+                            <p className="ps-5 fw-bold fs-h6">
                                 {user.user_name}
-                                {store.store_isAuth === 'processing' ?
-                                    (<span className="text-secondary-40"><IoInformationCircle className="ms-3 me-1" /> 發布遊戲資格審核中</span>) :
-                                    store.store_isAuth === 'pass' ?
-                                        (<span className="text-success"><FaCheckDouble className="ms-3 me-1" /> 審核成功，可新增遊戲</span>) :
-                                        (<span className="text-danger"><VscError className="ms-3 me-1" /> 資格審核失敗，請再次確認相關資訊，才可發布遊戲</span>)
-                                }
-                            </h5>
+                                <span className="fs-Body-2 fs-lg-h6">
+                                    {store.store_isAuth === 'processing' ?
+                                        (<span className="text-secondary-40"><IoInformationCircle className="ms-3 me-1" /> 發布遊戲資格審核中</span>) :
+                                        store.store_isAuth === 'pass' ?
+                                            (<span className="text-success"><FaCheckDouble className="ms-3 me-1" /> 審核成功，可新增遊戲</span>) :
+                                            (<span className="text-danger"><VscError className="ms-3 me-1" /> 資格審核失敗，請再次確認相關資訊，才可發布遊戲</span>)
+                                    }
+                                </span>
+                            </p>
                         </div>
                         {/* 表單 */}
                         <div className="user_information p-6 ">
                             <form className="text-start" onSubmit={onSubmitStoreUser} id="storeUserData">
                                 {/* 店家名稱 */}
                                 <div className="row mb-1">
-                                    <label htmlFor="user_name" className="col-sm-2">店家名稱</label>
+                                    <label htmlFor="user_name" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">店家名稱</label>
                                     <div className="col-sm-10">
                                         <input
                                             {...storeUserData('user_name', { required: "店家名稱欄位必填" })}
@@ -311,7 +313,7 @@ const BasicInfo = () => {
                                 </div>
                                 {/* 聯絡信箱  */}
                                 <div className="row mb-1">
-                                    <label htmlFor="user_email" className="col-sm-2">登入信箱</label>
+                                    <label htmlFor="user_email" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">登入信箱</label>
                                     <div className="col-sm-10">
                                         <input
                                             {...storeUserData('user_email', {
@@ -337,7 +339,7 @@ const BasicInfo = () => {
                                 </div>
                                 {/* 電話 */}
                                 <div className="row mb-1">
-                                    <label htmlFor="user_tel" className="col-sm-2">聯絡人電話</label>
+                                    <label htmlFor="user_tel" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">聯絡人電話</label>
                                     <div className="col-sm-10">
                                         <input
                                             {...storeUserData('user_tel', {
@@ -362,7 +364,7 @@ const BasicInfo = () => {
                                 </div>
                                 {/* 聯絡人  */}
                                 <div className="row mb-1">
-                                    <label htmlFor="store_contact" className="col-sm-2">聯絡人</label>
+                                    <label htmlFor="store_contact" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">聯絡人</label>
                                     <div className="col-sm-10">
                                         <input
                                             {...storeUserData('store_contact', {
@@ -383,13 +385,14 @@ const BasicInfo = () => {
                                 </div>
                                 {/* 店家地址 */}
                                 <div className="row mb-1">
-                                    <label htmlFor="store_self_address" className="col-sm-2 ">公司地址</label>
+                                    <label htmlFor="store_self_address" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">公司地址</label>
                                     <div className="col-sm-10">
                                         < AddressForm onChange={(fullAddress) => {
                                             setStoreUserValue("store_self_address", fullAddress);
                                             handleInputStoreUser({ target: { name: "store_self_address", value: fullAddress } });
                                         }}
                                             initialAddress={store.store_self_address} />
+                                        <label className="mt-1 mb-0">以下為完整地址自動帶入，無法修改</label>
                                         <input
                                             {...storeUserData("store_self_address", {
                                                 required: "請填寫完整地址"
@@ -409,7 +412,7 @@ const BasicInfo = () => {
                                 </div>
                                 {/* 驗證方式 */}
                                 <div className="row mb-3">
-                                    <label htmlFor="store_method" className="col-sm-2 col-form-label formrequired">驗證方式</label>
+                                    <label htmlFor="store_method" className="col-sm-2 col-form-label fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">驗證方式</label>
                                     <div className="col-sm-5">
                                         <select
                                             className={`form-select ${storeUserErrors.store_method && 'is-invalid'}`}
@@ -518,7 +521,7 @@ const BasicInfo = () => {
                 <Toast />
             </div>
             {/* 場館資料 */}
-            <div className="col-12 m-0 pt-10 px-0 mb-10">
+            <div className="col-12  col-lg-8  m-0 px-0 mt-5 mb-10 mt-sm-0">
                 <div className="border-nature-90 border rounded-2">
                     <div className="BasicStoreInfoTitle fs-h6 lh-sm bg-secondary-95 fw-bold px-5 py-5 text-secondary-50" >
                         場館資料(以下為提供給訪客的資訊)
@@ -530,7 +533,7 @@ const BasicInfo = () => {
                             <form className="text-start" onSubmit={onSubmitStore} id="storeData">
                                 {/* 店家名稱 */}
                                 <div className="row mb-1">
-                                    <label htmlFor="store_name" className="col-sm-2">店家名稱</label>
+                                    <label htmlFor="store_name" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">店家名稱</label>
                                     <div className="col-sm-10">
                                         <input
                                             {...storeData('store_name', { required: "店家名稱欄位必填" })}
@@ -549,13 +552,14 @@ const BasicInfo = () => {
                                 </div>
                                 {/* 店家地址 */}
                                 <div className="row mb-1">
-                                    <label htmlFor="store_address" className="col-sm-2 formrequired">店家地址</label>
+                                    <label htmlFor="store_address" className="col-sm-2 formrequired fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">店家地址</label>
                                     <div className="col-sm-10">
                                         < AddressForm onChange={(fullAddress) => {
                                             setStoreValue("store_address", fullAddress);
                                             handleInputStore({ target: { name: "store_address", value: fullAddress } });
                                         }}
                                             initialAddress={store.store_address} />
+                                        <label className="mt-1 mb-0">以下為完整地址自動帶入，無法修改</label>
                                         <input
                                             {...storeData("store_address", {
                                                 required: "請填寫完整地址"
@@ -595,7 +599,7 @@ const BasicInfo = () => {
                                 </div> */}
                                 {/* 聯絡信箱  */}
                                 <div className="row mb-1">
-                                    <label htmlFor="store_email" className="col-sm-2">聯絡信箱</label>
+                                    <label htmlFor="store_email" className="col-sm-2 fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0">聯絡信箱</label>
                                     <div className="col-sm-10">
                                         <input
                                             {...storeData('store_email', {

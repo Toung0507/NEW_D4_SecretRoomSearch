@@ -30,7 +30,10 @@ const MyComments = () => {
             const res = await axios.get(`${baseApi}/usersData/${user_id}/commentsData`);
             setAllComments(res.data);
             // 使用 for...of 來處理每一個 comment
-            if (!res.data[0].includes("在 commentsData 資料表中無相關資料")) {
+            if (typeof res.data[0] === 'string') {
+                setIsHaveComment(false);
+            }
+            else if (typeof res.data[0] === 'object') {
                 for (newComments of res.data) {
                     try {
                         const gameRes = await axios.get(`${baseApi}/gamesData/${newComments.game_id}`);
@@ -40,13 +43,9 @@ const MyComments = () => {
                         newComments["game_main_tag2name"] = gameRes.data.game_main_tag2name;
                         new2Comments.push(newComments);
                     } catch (error) {
-
                         console.error("Error fetching game data:", error);
                     }
                 }
-            }
-            else {
-                setIsHaveComment(false)
             }
 
         } catch (error) {
@@ -109,8 +108,14 @@ const MyComments = () => {
     };
 
     // 顯示Modal - 刪除
-    const openDelComment = (comment) => {
-        setDelOneCommentID(comment);
+    const openDelComment = (comment, status) => {
+        if (status === 'desktop') {
+            setDelOneCommentID(comment);
+        }
+        else {
+            setCommentModalData(comment);
+            setDelOneCommentID(comment.comment_id);
+        }
         const modalInstance = Modal.getInstance(delCommentModalRef.current);
         modalInstance.show();
     };
@@ -132,8 +137,8 @@ const MyComments = () => {
 
     return (
         <>
-            {/* 主畫面 */}
-            <div className="col-12 m-0  px-0 ">
+            {/* 主畫面 - 電腦版 */}
+            <div className="col-12 m-0  px-0 d-none d-lg-block">
                 <div className="border-nature-90 border rounded-2 my-10">
                     <div className="ParticipatingGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6" >
                         我的評論
@@ -178,6 +183,74 @@ const MyComments = () => {
                                 }
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div >
+
+            <div className="d-block d-lg-none m-0">
+                <div className="">
+                    <div className="ParticipatingGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6" >
+                        我的評論
+                    </div>
+                    <div className="">
+                        <div className=" ">
+                            {isHaveComment ?
+                                (<>
+                                    {
+                                        allCommentsGames.map((omeomment) => (
+                                            <div className="mb-4 bg-white" key={omeomment.comment_id}>
+                                                <dl className=" p-3 m-0 ">
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">遊玩日期</dt>
+                                                    <dd>{omeomment.commet_played_time}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">密室名稱</dt>
+                                                    <dd>{omeomment.game_name}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">整體評價</dt>
+                                                    <dd>{renderStars(omeomment.coment_star)}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">通關狀態</dt>
+                                                    <dd>{omeomment.comment_isPass ? '通關' : '未通關'}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">難度</dt>
+                                                    <dd>{omeomment.game_dif_tagname}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">主題特色</dt>
+                                                    <dd>{omeomment.game_main_tag1name}、{omeomment.game_main_tag2name}</dd>
+                                                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">體驗心得</dt>
+                                                    <dd className="m-0">
+                                                        <pre className="fs-Body-1 text-black m-0">{omeomment.coment_content}</pre>
+                                                    </dd>
+                                                </dl>
+                                                <div className="d-flex px-3 py-6 flex-column gap-2">
+                                                    <button className="btn bg-nature-60 text-white"
+                                                        onClick={() => openDelComment(omeomment)}>
+                                                        刪除</button>
+                                                    <Link
+                                                        type="button"
+                                                        className="btn bg-secondary-60 text-white"
+                                                        to={`/Game_comment/edit/${omeomment.comment_id}`}
+                                                    >
+                                                        編輯
+                                                    </Link>
+                                                </div>
+                                            </div>
+
+                                        ))
+                                    }
+
+                                </>
+                                )
+                                :
+                                (
+                                    <>
+                                        <dl>
+                                            <dt className="text-center fs-h6 bg-white" >
+                                                <p>
+                                                    未留下任何評論，<br />
+                                                    歡迎到密室頁面分享你的心得讓更多人參考！
+                                                </p>
+                                            </dt>
+                                        </dl>
+                                    </>
+                                )
+                            }
+                        </div>
                     </div>
                 </div>
             </div >
@@ -235,7 +308,8 @@ const MyComments = () => {
                         </div>
                         <div className="modal-footer">
                             <div className="btn_2 d-flex  text-center ">
-                                <button type="button" className="btn bg-nature-60 text-white me-6" onClick={() => openDelComment(commentModalData.comment_id)}>
+                                <button type="button" className="btn bg-nature-60 text-white me-6"
+                                    onClick={() => openDelComment(commentModalData.comment_id, "desktop")}>
                                     刪除
                                 </button>
                                 <Link

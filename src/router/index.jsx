@@ -17,85 +17,90 @@ import AdminGame from "../page/admin/AdminGame";
 import AdminGroup from "../page/admin/AdminGroup";
 import StoreProfile from "../page/StoreProfile";
 import StoreGameInfo from "../page/storeGameInfo";
+import AddGames from "../page/AddGames";
 
 const Router = createHashRouter([
-  {
-    path: "/",
-    element: <Base />,
-    children: [
-      {
+    {
         path: "/",
-        element: <Index />,
-      },
-      {
-        path: "/Register",
-        element: <Register />,
-      },
-      {
-        path: "/Login",
-        element: <Login />,
-      },
-      {
-        path: "/Game_comment/:state/:id",
-        element: <Game_comment />,
-      },
-      {
-        path: "/Game_search",
-        element: <Game_search />,
-      },
-      {
-        path: "/Game_content/:gameID",
-        element: <Game_content />,
-      },
-      {
-        path: "/TeamBuy",
-        element: <TeamBuy />,
-      },
-      {
-        path: "/About_us",
-        element: <About_us />,
-      },
-      {
-        path: "/User_profile/:user_id/:activedefaultTab",
-        element: <UserProfile />,
-      },
-      {
-        path: "/Store_profile/:user_id/:activedefaultTab",
-        element: <StoreProfile />,
-      },
-      {
-        path: "/TeamBuyComment/:group_id",
-        element: <TeamBuyComment />,
-      },
-      {
-        path: "/StoreGameInfo",
-        element: <StoreGameInfo />,
-      },
-      {
-        path: "/Admin",
-        element: <AdminLayout />,
+        element: <Base />,
         children: [
-          {
-            // index: true,
-            path: "/Admin/Store",
-            element: <AdminStore />,
-          },
-          {
-            path: "/Admin/User",
-            element: <AdminUser />,
-          },
-          {
-            path: "/Admin/Game",
-            element: <AdminGame />,
-          },
-          {
-            path: "/Admin/Group",
-            element: <AdminGroup />,
-          },
+            {
+                path: "/",
+                element: <Index />
+            },
+            {
+                path: "/Register",
+                element: <Register />,
+            },
+            {
+                path: "/Login",
+                element: <Login />,
+            },
+            {
+                path: "/Game_comment/:state/:id",
+                element: <Game_comment />,
+            },
+            {
+                path: "/Game_search",
+                element: <Game_search />,
+            },
+            {
+                path: "/Game_content/:gameID",
+                element: <Game_content />,
+            },
+            {
+                path: "/TeamBuy",
+                element: <TeamBuy />,
+            },
+            {
+                path: "/About_us",
+                element: <About_us />,
+            },
+            {
+                path: "/User_profile/:user_id/:activedefaultTab",
+                element: <UserProfile />,
+            },
+            {
+                path: "/Store_profile/:user_id/:activedefaultTab",
+                element: <StoreProfile />,
+            },
+            {
+                path: "/TeamBuyComment/:group_id",
+                element: <TeamBuyComment />,
+            },
+            {
+                path: "/StoreGameInfo",
+                element: <StoreGameInfo />,
+            },
+            {
+                path: "/AddGames?/:game_id",
+                element: <AddGames />
+            },
+            {
+                path: "/Admin",
+                element: <AdminLayout />,
+                children: [
+                    {
+                        // index: true,
+                        path: "/Admin/Store",
+                        element: <AdminStore />,
+                    },
+                    {
+                        path: "/Admin/User",
+                        element: <AdminUser />,
+                    },
+                    {
+                        path: "/Admin/Game",
+                        element: <AdminGame />,
+                    },
+                    {
+                        path: "/Admin/Group",
+                        element: <AdminGroup />,
+                    },
+                ],
+            },
         ],
-      },
-    ],
-  },
+    },
 ]);
 
 export default Router;
