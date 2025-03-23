@@ -43,7 +43,7 @@ function UserProfile() {
                                 <ul className="d-flex">
                                     <li className="">
                                         <Link
-                                            className={` border-0 text-nature-70 bg-primary-99 fs-h6 ${activeTab === "basicInfo" ? "member-nav-item-active" : ""} p-4`}
+                                            className={` border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1 ${activeTab === "basicInfo" ? "member-nav-item-active" : ""} p-2 p-sm-3`}
                                             to={`/User_profile/${user_id}/basicInfo`}
                                         >
                                             基本資訊
@@ -51,7 +51,7 @@ function UserProfile() {
                                     </li>
                                     <li className="">
                                         <Link
-                                            className={` border-0 text-nature-70 bg-primary-99 fs-h6 ${activeTab === "participatingGroup" ? "member-nav-item-active" : ""} p-4`}
+                                            className={` border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1  ${activeTab === "participatingGroup" ? "member-nav-item-active" : ""} p-2 p-sm-3`}
                                             to={`/User_profile/${user_id}/participatingGroup`}
                                         >
                                             參加的揪團
@@ -59,7 +59,7 @@ function UserProfile() {
                                     </li>
                                     <li className="">
                                         <Link
-                                            className={`border-0 text-nature-70 bg-primary-99 fs-h6  ${activeTab === "myComments" ? "member-nav-item-active" : ""} p-4`}
+                                            className={`border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1   ${activeTab === "myComments" ? "member-nav-item-active" : ""} p-2 p-sm-3`}
                                             to={`/User_profile/${user_id}/myComments`}
                                         >
                                             留下的評論
@@ -91,7 +91,6 @@ function UserProfile() {
                     <div className="container-lg">
                         <div className="row d-flex flex-column flex-md-row g-0">
                             <p className="h1 text-center" >尚未登入，或此頁面非您的會員ID</p>
-
                         </div>
                     </div>
                 </div >

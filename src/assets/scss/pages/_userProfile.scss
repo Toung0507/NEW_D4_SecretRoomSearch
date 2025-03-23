@@ -2,6 +2,7 @@
     color: $secondary-40 !important;
     padding-bottom: 8px !important;
     border-bottom: 4px solid $secondary-40 !important;
+    font-weight: bold !important;
 }
 
 .usermain {
@@ -26,5 +27,14 @@
 }
 
 .commentButton:hover {
-    background: none
+    background: none;
+}
+
+
+@media (max-width: 767px) {
+    .member-nav-item-active {
+        padding-bottom: 6px !important;
+        border-bottom: 2px solid $secondary-40 !important;
+        justify-content: flex-end;
+    }
 }

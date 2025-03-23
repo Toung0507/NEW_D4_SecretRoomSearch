@@ -28,6 +28,7 @@ function StoreGameInfo() {
 
         }
     }
+
     const getProduct = async () => {
         try {
             const res = await axios.get(`${BASE_URL}gamesData`);
