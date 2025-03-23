@@ -25,6 +25,10 @@ const Router = createHashRouter([
         element: <Base />,
         children: [
             {
+                path: "/",
+                element: <Index />
+            },
+            {
                 path: "/Register",
                 element: <Register />,
             },
