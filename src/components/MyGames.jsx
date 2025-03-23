@@ -116,7 +116,7 @@ const MyGames = () => {
                                         <tr>
                                             <td colSpan={6} className="text-center fs-h6">
                                                 <p>
-                                                    <Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+                                                    <Link className="d-inline text-nowrap" to='/AddGames'>新增密室資訊</Link>
                                                 </p>
                                             </td>
                                         </tr>
@@ -129,7 +129,7 @@ const MyGames = () => {
                                             <p>
                                                 沒有發布任何遊戲
                                                 <br />
-                                                <Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+                                                <Link className="d-inline text-nowrap" to='/AddGames'>新增密室資訊</Link>
                                                 提供給使用者吧!
                                             </p>
                                         </td>
@@ -180,8 +180,8 @@ const MyGames = () => {
                                                     <td className="py-2 px-0">{game.game_min_price}</td>
                                                     <td className="py-2 px-0">{game.game_maxNum_Players}人</td>
                                                     <td className="pe-5 py-2 ps-0">
-                                                        <Link to={`/StoreGameInfo/${game.game_id}`} className="text-black">
-                                                            查看詳情 <IoIosArrowForward color="black" />
+                                                        <Link to={`/AddGames/${game.game_id}`} className="text-black">
+                                                            編輯表單 <IoIosArrowForward color="black" />
                                                         </Link>
                                                     </td>
                                                 </tr>
@@ -190,7 +190,7 @@ const MyGames = () => {
                                         <tr>
                                             <td colSpan={6} className="text-center fs-h6">
                                                 <p>
-                                                    <Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+                                                    <Link className="d-inline text-nowrap" to='/AddGames'>新增密室資訊</Link>
                                                 </p>
                                             </td>
                                         </tr>
@@ -205,7 +205,7 @@ const MyGames = () => {
                                                 <p>
                                                     未有任何密室審核中，
                                                     <br />
-                                                    <Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+                                                    <Link className="d-inline text-nowrap" to='/AddGames'>新增密室資訊</Link>
                                                     提供給使用者吧！
                                                 </p>
                                             </td>
@@ -256,7 +256,7 @@ const MyGames = () => {
                                 (
                                     <>
                                         <div className="text-center bg-white my-2">
-                                            < Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+                                            < Link className="d-inline text-nowrap" to='/AddGames'>新增密室資訊</Link>
 
                                         </div>
                                         {
@@ -291,7 +291,7 @@ const MyGames = () => {
                                                 <p>
                                                     未有任何密室審核中，
                                                     <br />
-                                                    <Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+                                                    <Link className="d-inline text-nowrap" to='/AddGames'>新增密室資訊</Link>
                                                     提供給使用者吧！
                                                 </p>
 
@@ -325,7 +325,7 @@ const MyGames = () => {
                                 (
                                     <>
                                         <div className="text-center bg-white my-2">
-                                            < Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+                                            < Link className="d-inline text-nowrap" to='/AddGames'>新增密室資訊</Link>
 
                                         </div>
                                         {
@@ -341,6 +341,11 @@ const MyGames = () => {
                                                     <dd>{game.game_min_price}元起</dd>
                                                     <dt className="fs-Caption fw-bold text-nature-50 mb-1">人數上限</dt>
                                                     <dd className="mb-3">{game.game_maxNum_Players}人</dd>
+                                                    <dd>
+                                                        <Link to={`/AddGames/${game.game_id}`} className="text-black">
+                                                            編輯表單 <IoIosArrowForward color="black" />
+                                                        </Link>
+                                                    </dd>
                                                 </dl>
                                             ))
                                         }
@@ -355,7 +360,7 @@ const MyGames = () => {
                                                 <p>
                                                     未有任何密室審核中，
                                                     <br />
-                                                    <Link className="d-inline text-nowrap" to='/StoreGameInfo'>新增密室資訊</Link>
+                                                    <Link className="d-inline text-nowrap" to='/AddGames'>新增密室資訊</Link>
                                                     提供給使用者吧！
                                                 </p>
 

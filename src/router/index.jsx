@@ -17,6 +17,7 @@ import AdminGame from "../page/admin/AdminGame";
 import AdminGroup from "../page/admin/AdminGroup";
 import StoreProfile from "../page/StoreProfile";
 import StoreGameInfo from "../page/storeGameInfo";
+import AddGames from "../page/AddGames";
 
 const Router = createHashRouter([
     {
@@ -24,8 +25,8 @@ const Router = createHashRouter([
         element: <Base />,
         children: [
             {
-                path: "/",
-                element: <Index />,
+                path: "/test",
+                element: <Test />
             },
             {
                 path: "/Register",
@@ -70,6 +71,10 @@ const Router = createHashRouter([
             {
                 path: "/StoreGameInfo",
                 element: <StoreGameInfo />,
+            },
+            {
+                path: "/AddGames?/:game_id",
+                element: <AddGames />
             },
             {
                 path: "/Admin",
