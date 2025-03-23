@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
+import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -100,6 +100,7 @@ function Game_content() {
             </p>
           </div>
           <ul className="d-flex gap-2">
+            {/* TODO 每個 tag 要有獨立的 icon */}
             <li className="bg-nature-95 text-black px-2 py-1 d-flex align-items-center rounded-pill">
               <span className="material-symbols-outlined me-1">child_care</span>
               <p className="fs-Body-2 mb-0">{game.game_dif_tagname}</p>
@@ -118,7 +119,7 @@ function Game_content() {
         </div>
         <div className="row row-cols-1 row-cols-lg-2 gx-6 gy-3">
           <div className="col">
-            <div className="border border-nature-90 border-lg-nature-70 rounded-4 p-4">
+            <div className="border border-nature-70 rounded-4 p-4">
               <h6 className="fs-h6 fw-bold text-primary-20 mb-3">基本資訊</h6>
               <ul>
                 <li className="mb-2 d-flex align-items-center">
@@ -150,7 +151,11 @@ function Game_content() {
                 </li>
                 <li className="mb-2 d-flex align-items-center">
                   <img src="./icon/link.png" alt="link" className="me-3" />
-                  <a href="#" className="fs-Body-2 mb-0 text-break">
+                  <a
+                    href={game.game_website}
+                    target="_blank"
+                    className="fs-Body-2 mb-0 text-break"
+                  >
                     {game.game_website}
                   </a>
                 </li>
@@ -167,7 +172,7 @@ function Game_content() {
             </div>
           </div>
           <div className="col">
-            <div className="border border-nature-90 border-lg-nature-70 rounded-4 p-4">
+            <div className="border border-nature-70 rounded-4 p-4">
               <h6 className="fs-h6 fw-bold text-primary-20 mb-3">參考價格</h6>
               <ul className="d-flex flex-column gap-2">
                 {price?.map((item) => {
@@ -190,14 +195,15 @@ function Game_content() {
             <h2 className="text fs-h6 fs-lg-h3 text-primary-95 fw-bold mb-4">
               遊戲介紹
             </h2>
-            {/* TODO 解決長方形裝置無法解釋 */}
             <div className="rectangle bg-nature-30 rounded position-absolute"></div>
           </div>
           <p className="d-lg-none text-white text-center mb-11">
             {/* 平板以下文字 */}
           </p>
-          <p className="d-none d-lg-block fs-h6 text-white text-start mb-20">
-            {/* TODO 文字無換行問題 (從資料庫中就沒有換行) */}
+          <p
+            className="d-none d-lg-block fs-h6 text-white text-start mb-20"
+            style={{ whiteSpace: "pre-line" }}
+          >
             {game.game_info}
           </p>
           <div className="comment container px-0">
@@ -429,13 +435,50 @@ function Game_content() {
                   </p>
                 </div>
               </li>
+              <li className="comment-item">
+                <Link
+                  to={`/Game_comment/new/${game.game_id}`}
+                  className="add-comment d-flex flex-column justify-content-center align-items-center rounded-4 border-primary-80 text-primary-80"
+                  style={{
+                    backgroundColor: "#676664",
+                    height: "200px",
+                    marginTop: "68px",
+                    borderStyle: "dashed",
+                  }}
+                >
+                  <span
+                    className="material-symbols-outlined mb-1"
+                    style={{
+                      fontSize: "2rem",
+                    }}
+                  >
+                    add_circle
+                  </span>
+                  <p className="">分享你的想法</p>
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
       </div>
 
+      <div className="join_group">
+        <div className="container py-10 py-lg-12 d-flex align-items-center justify-content-center position-relative">
+          <div className="text me-21">
+            <p className="fs-h3 text-nature-30 fw-bold">點擊右側的「揪團去」</p>
+            <p className="fs-h3 text-nature-30 fw-bold position-absolute z-2">
+              一起找人解謎吧！
+            </p>
+            <div className="rectangle bg-secondary-80 rounded position-absolute z-1"></div>
+          </div>
+          <Link>
+            {/* TODO 更換揪團表單連結 */}
+            <img src="../../public/illustration/CTA-lg.png" alt="CTA-lg" />
+          </Link>
+        </div>
+      </div>
+
       <div className="others py-10">
-        {/* TODO 推薦遊戲 */}
         <div className="title position-relative d-flex flex-column align-items-center">
           <h2 className="text fs-h6 fs-lg-h3 fw-bold mb-7 mb-lg-12">
             您可能喜歡的遊戲
@@ -451,7 +494,12 @@ function Game_content() {
                 clickable: true,
               }}
               navigation={true}
-              modules={[Pagination, Navigation]}
+              loop={true}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false, // 用戶互動後仍繼續自動播放
+              }}
+              modules={[Pagination, Navigation, Autoplay]}
               className="mySwiper"
             >
               <SwiperSlide>
@@ -475,17 +523,6 @@ function Game_content() {
             </Swiper>
           )}
         </div>
-      </div>
-
-      <div className="add-comment position-fixed z-1">
-        <Link
-          to={`/Game_comment/new/${game.game_id}`}
-          className="border border-none bg-primary-95 p-3 p-lg-4 rounded-circle"
-        >
-          <span className="material-symbols-outlined d-block text-primary-60">
-            add_comment
-          </span>
-        </Link>
       </div>
     </main>
   );
