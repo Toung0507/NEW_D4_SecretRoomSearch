@@ -145,7 +145,7 @@ function AdminUser() {
           </ol>
         </nav>
         <div className="searchBar mt-5 mb-6 row">
-          <div className="col-2">
+          <div className="col-6 col-lg-2">
             <label
               htmlFor="userName"
               className="form-label fs-Caption text-black"
@@ -161,7 +161,7 @@ function AdminUser() {
               onChange={handleSearchChange}
             />
           </div>
-          <div className="col-2">
+          <div className="col-6 col-lg-2">
             <label htmlFor="email" className="form-label fs-Caption text-black">
               信箱
             </label>
@@ -174,7 +174,7 @@ function AdminUser() {
               onChange={handleSearchChange}
             />
           </div>
-          <div className="col-2">
+          <div className="col-6 col-lg-2">
             <label htmlFor="role" className="form-label fs-Caption text-black">
               角色
             </label>
@@ -190,26 +190,24 @@ function AdminUser() {
               <option value="管理者">管理者</option>
             </select>
           </div>
-          <div className="col-1">
-            <label className="form-label">&nbsp;</label>
+          <div className="col-lg-1 col-12 d-flex align-items-end">
             <button
-              className="btn btn-search btn-primary-50 text-white form-control"
+              className="btn btn-search btn-primary-50 text-white form-control my-3 my-lg-0"
               onClick={handleSearch}
             >
               搜尋
             </button>
           </div>
-          <div className="col-1">
-            <label className="form-label">&nbsp;</label>
+          <div className="col-lg-1 col-12 d-flex align-items-end">
             <button
-              className="btn btn-reset btn-secondary text-white form-control"
+              className="btn btn-reset btn-outline-secondary form-control"
               onClick={handleReset}
             >
               重置
             </button>
           </div>
         </div>
-        <div className="table-container bg-white border rounded-2 border-nature-90 p-6">
+        <div className="table-container d-none d-lg-block bg-white border rounded-2 border-nature-90 p-6">
           <div className="table-scroll-container overflow-scroll">
             <table className="storeTable w-100">
               <thead>
@@ -253,19 +251,137 @@ function AdminUser() {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((row) => (
-                  <tr key={row.user_id}>
-                    <td className="py-2 px-4">{row.user_id}</td>
-                    <td className="py-2 px-4">{row.user_name}</td>
-                    <td className="py-2 px-4">{row.user_email}</td>
-                    <td className="py-2 px-4">{row.user_role}</td>
-                    <td className="py-2 px-4">{row.user_reg_method}</td>
-                    <td className="py-2 px-4">{row.user_create_at}</td>
+                {filteredData.length > 0 ? (
+                  filteredData.map((row) => (
+                    <tr key={row.user_id}>
+                      <td className="py-2 px-4">{row.user_id}</td>
+                      <td className="py-2 px-4">{row.user_name}</td>
+                      <td className="py-2 px-4">{row.user_email}</td>
+                      <td className="py-2 px-4">{row.user_role}</td>
+                      <td className="py-2 px-4">{row.user_reg_method}</td>
+                      <td className="py-2 px-4">{row.user_create_at}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="text-center py-4">
+                      沒有符合的資料
+                    </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
+        </div>
+        <div className="cards-container d-lg-none row row-cols-1 row-cols-md-2 g-3">
+          {filteredData.length > 0 ? (
+            filteredData.map((user) => (
+              <div key={user.user_id} className="col">
+                <div className="card card-admin">
+                  <div className="card-body">
+                    <div className="d-flex justify-content-between">
+                      <div className="d-flex align-items-center">
+                        <span
+                          className="me-2 px-2 fs-6 rounded-3 bg-secondary-95"
+                          style={{ fontSize: "0.8rem" }}
+                        >
+                          ID: {user.user_id}
+                        </span>
+                        <p className="fw-bold fs-5">{user.user_name}</p>
+                      </div>
+                      <button className="edit-btn d-flex align-items-center justify-content-center">
+                        <span className="material-symbols-outlined">edit</span>
+                      </button>
+                    </div>
+
+                    <div className="status my-4">
+                      <div
+                        className="d-inline-flex align-items-center bg-nature-90 px-2 rounded-2 border border-nature-60"
+                        style={{ height: "26px" }}
+                      >
+                        <span
+                          className="material-symbols-outlined me-2 text-nature-60"
+                          style={{ fontSize: "1rem" }}
+                        >
+                          person
+                        </span>
+                        <p
+                          className="text-nature-50"
+                          style={{ fontSize: "0.8rem" }}
+                        >
+                          {user.user_role}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="content d-flex row row-cols-1">
+                      <div className="user d-flex align-items-center">
+                        <span className="material-symbols-outlined me-2 text-nature-50">
+                          mail
+                        </span>
+                        <div className="d-flex flex-column">
+                          <p
+                            className="text-nature-50"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            信箱
+                          </p>
+                          <p className="fw-bold" style={{ fontSize: "0.8rem" }}>
+                            {user.user_email}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="text-nature-60">
+                      <hr />
+                    </div>
+
+                    <div className="date d-flex row row-cols-2">
+                      <div className="login-source d-flex align-items-center">
+                        <span className="material-symbols-outlined me-2 text-nature-50">
+                          login
+                        </span>
+                        <div className="d-flex flex-column">
+                          <p
+                            className="text-nature-50"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            登入來源
+                          </p>
+                          <p className="fw-bold" style={{ fontSize: "0.8rem" }}>
+                            {user.user_reg_method}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="create-time d-flex align-items-center">
+                        <span className="material-symbols-outlined me-2 text-nature-50">
+                          calendar_month
+                        </span>
+                        <div className="d-flex flex-column">
+                          <p
+                            className="text-nature-50"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            建立時間
+                          </p>
+                          <p className="fw-bold" style={{ fontSize: "0.8rem" }}>
+                            {user.user_create_at}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-12">
+              <div className="card">
+                <div className="card-body text-center py-4">沒有符合的資料</div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

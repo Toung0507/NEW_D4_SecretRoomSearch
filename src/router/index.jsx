@@ -25,10 +25,6 @@ const Router = createHashRouter([
         element: <Base />,
         children: [
             {
-                path: "/test",
-                element: <Test />
-            },
-            {
                 path: "/Register",
                 element: <Register />,
             },
@@ -81,7 +77,8 @@ const Router = createHashRouter([
                 element: <AdminLayout />,
                 children: [
                     {
-                        index: true,
+                        // index: true,
+                        path: "/Admin/Store",
                         element: <AdminStore />,
                     },
                     {
@@ -97,7 +94,7 @@ const Router = createHashRouter([
                         element: <AdminGroup />,
                     },
                 ],
-            }
+            },
         ],
     },
 ]);

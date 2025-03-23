@@ -61,7 +61,7 @@ function Game_search() {
             const res = await axios.get(`${baseApi}/gamesData`);
 
             // 過濾掉某個屬性為 false 的遊戲，例如 game_isActive 為 false
-            const upGames = res.data.filter(game => game.game_isStock === true);
+            const upGames = res.data.filter((game) => game.game_isStock === true);
 
             setGames(upGames);
             const recommendedGames = [...upGames].sort(
@@ -110,7 +110,7 @@ function Game_search() {
         if (firstSectionRef.current) {
             window.scrollTo({
                 top: firstSectionRef.current.offsetTop - 120,
-                behavior: "smooth"
+                behavior: "smooth",
             });
         }
     };
@@ -127,7 +127,7 @@ function Game_search() {
         if (firstSectionRef.current) {
             window.scrollTo({
                 top: firstSectionRef.current.offsetTop - 90,
-                behavior: "smooth"
+                behavior: "smooth",
             });
         }
     };
@@ -138,7 +138,7 @@ function Game_search() {
         if (firstSectionRef.current) {
             window.scrollTo({
                 top: firstSectionRef.current.offsetTop - 120,
-                behavior: "smooth"
+                behavior: "smooth",
             });
         }
     };
@@ -212,7 +212,6 @@ function Game_search() {
                 matchesDifficulty &&
                 matchesProperty
             );
-
         });
 
         if (filteredGames.length === 0) {
@@ -236,7 +235,7 @@ function Game_search() {
         if (firstSectionRef.current) {
             window.scrollTo({
                 top: firstSectionRef.current.offsetTop - 90,
-                behavior: "smooth"
+                behavior: "smooth",
             });
         }
     };
@@ -258,19 +257,22 @@ function Game_search() {
             const defaultProperty = params.get("property");
             const defaultDifficulty = params.get("difficulty");
 
-            console.log("URL 參數：", { defaultArea, defaultNum, defaultProperty, defaultDifficulty });
+            console.log("URL 參數：", {
+                defaultArea,
+                defaultNum,
+                defaultProperty,
+                defaultDifficulty,
+            });
 
             setSearch((prev) => ({
                 ...prev,
                 area: defaultArea ? [defaultArea] : [],
                 game_people: defaultNum ? Number(defaultNum) : "",
                 property: defaultProperty ? [String(defaultProperty)] : [],
-                difficulty: defaultDifficulty ? [String(defaultDifficulty)] : []
+                difficulty: defaultDifficulty ? [String(defaultDifficulty)] : [],
             }));
             setIsIndexSerach(true);
-        }
-        else if (queryIndex === -1) {
-
+        } else if (queryIndex === -1) {
         }
     }, [location]);
 
@@ -283,7 +285,7 @@ function Game_search() {
         if (isIndexSearch && games.length > 0) {
             handleSerach();
         }
-    }, [isIndexSearch, games])
+    }, [isIndexSearch, games]);
 
     //網址後方參數消除
     useEffect(() => {
@@ -291,10 +293,10 @@ function Game_search() {
             // 取得目前的 hash 部分，例如 "#/Game_search?area=台北市"
             const currentHash = window.location.hash;
             // 如果包含問號，表示有查詢參數
-            if (currentHash.includes('?')) {
+            if (currentHash.includes("?")) {
                 // 只取 hash 的路徑部分，捨棄 ? 後面的查詢參數
-                const newHash = currentHash.split('?')[0];
-                window.history.replaceState(null, '', newHash);
+                const newHash = currentHash.split("?")[0];
+                window.history.replaceState(null, "", newHash);
             }
         }
     }, [search.area, search.num, search.property, search.difficulty]);
@@ -322,7 +324,11 @@ function Game_search() {
                     <div className="row d-flex flex-column flex-md-row g-0">
                         {/* <!-- 表單部分 --> */}
                         <div className="col-md-3 pe-lg-6 pe-md-3 ">
-                            <form className="p-4 bg-white" onSubmit={(e) => handleSerach(e)} ref={userFormRef}>
+                            <form
+                                className="p-4 bg-white"
+                                onSubmit={(e) => handleSerach(e)}
+                                ref={userFormRef}
+                            >
                                 <div className="order">
                                     <p className="h5 pb-3  fw-bold">排序條件</p>
                                     <div className="mb-6">
@@ -658,7 +664,11 @@ function Game_search() {
                                     </div>
                                 </div>
                                 <div className="text-center">
-                                    <button className="btn btn-secondary-60 link-white rounded-2 w-100" id="userSumbit" ref={hiddenSubmitBtnRef}>
+                                    <button
+                                        className="btn btn-secondary-60 link-white rounded-2 w-100"
+                                        id="userSumbit"
+                                        ref={hiddenSubmitBtnRef}
+                                    >
                                         搜尋
                                     </button>
                                 </div>

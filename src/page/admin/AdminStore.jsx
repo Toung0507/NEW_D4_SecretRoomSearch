@@ -163,7 +163,7 @@ function AdminStore() {
             </ol>
           </nav>
           <div className="searchBar mt-5 mb-6 row">
-            <div className="col-2">
+            <div className="col-6 col-lg-2">
               <label
                 htmlFor="storeName"
                 className="form-label fs-Caption text-black"
@@ -179,7 +179,7 @@ function AdminStore() {
                 onChange={handleSearchChange}
               />
             </div>
-            <div className="col-2">
+            <div className="col-6 col-lg-2">
               <label
                 htmlFor="contact"
                 className="form-label fs-Caption text-black"
@@ -195,7 +195,7 @@ function AdminStore() {
                 onChange={handleSearchChange}
               />
             </div>
-            <div className="col-2">
+            <div className="col-6 col-lg-2">
               <label
                 htmlFor="status"
                 className="form-label fs-Caption text-black"
@@ -209,19 +209,12 @@ function AdminStore() {
                 onChange={handleSearchChange}
               >
                 <option value="所有狀態">所有狀態</option>
-                <option className="text-processing" value="processing">
-                  處理中
-                </option>
-                <option className="text-pass" value="pass">
-                  通過
-                </option>
-                <option className="text-tertiary-90" value="rejected">
-                  已退回
-                </option>
+                <option value="processing">處理中</option>
+                <option value="pass">通過</option>
+                <option value="rejected">已退回</option>
               </select>
             </div>
-            <div className="col-1">
-              <label className="form-label">&nbsp;</label>
+            <div className="col-lg-1 col-12 d-flex align-items-end my-3 my-lg-0">
               <button
                 className="btn btn-search btn-primary-50 text-white form-control"
                 onClick={handleSearch}
@@ -229,17 +222,16 @@ function AdminStore() {
                 搜尋
               </button>
             </div>
-            <div className="col-1">
-              <label className="form-label">&nbsp;</label>
+            <div className="col-lg-1 col-12 d-flex align-items-end">
               <button
-                className="btn btn-reset btn-secondary text-white form-control"
+                className="btn btn-reset btn-outline-secondary form-control"
                 onClick={handleReset}
               >
                 重置
               </button>
             </div>
           </div>
-          <div className="table-container bg-white border rounded-2 border-nature-90 p-6">
+          <div className="table-container d-none d-lg-block bg-white border rounded-2 border-nature-90 p-6">
             <div className="table-scroll-container overflow-scroll">
               <table className="storeTable w-100">
                 <thead>
@@ -305,7 +297,7 @@ function AdminStore() {
                         <td className="py-2 px-4">{row.store_create_at}</td>
                         <td className="py-2 px-4 text-end">
                           <button
-                            className="edit-btn"
+                            className="edit-btn d-flex align-items-center justify-content-center"
                             onClick={() => handleShowModal(row)}
                           >
                             <span className="material-symbols-outlined">
@@ -326,13 +318,112 @@ function AdminStore() {
               </table>
             </div>
           </div>
+          <div className="cards-container d-lg-none row row-cols-1 row-cols-md-2 g-3">
+            {filteredData.length > 0 ? (
+              filteredData.map((store) => (
+                <div key={store.store_id} className="col">
+                  <div className="card card-admin">
+                    <div className="card-body">
+                      <div className="d-flex justify-content-between">
+                        <div className="d-flex align-items-center">
+                          <span
+                            className="me-2 px-2 fs-6 rounded-3 bg-secondary-95"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            ID: {store.store_id}
+                          </span>
+                          <p className="fw-bold fs-1">{store.store_name}</p>
+                        </div>
+                        <button
+                          className="edit-btn d-flex align-items-center justify-content-center"
+                          onClick={() => handleShowModal(store)}
+                        >
+                          <span className="material-symbols-outlined">
+                            edit
+                          </span>
+                        </button>
+                      </div>
+                      <div className="status my-4">
+                        {getStoreStatusCard(store)}
+                      </div>
+                      <div className="content d-flex row row-cols-2">
+                        <div className="contact d-flex align-items-center">
+                          <span className="material-symbols-outlined me-1 text-nature-50">
+                            person
+                          </span>
+                          <div className="d-flex flex-column">
+                            <p
+                              className="text-nature-50"
+                              style={{ fontSize: "0.8rem" }}
+                            >
+                              聯絡人
+                            </p>
+                            <p
+                              className="fw-bold"
+                              style={{ fontSize: "0.8rem" }}
+                            >
+                              {store.store_contact}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="tel d-flex align-items-center">
+                          <span className="material-symbols-outlined me-1 text-nature-50">
+                            call
+                          </span>
+                          <div className="d-flex flex-column">
+                            <p
+                              className="text-nature-50"
+                              style={{ fontSize: "0.8rem" }}
+                            >
+                              聯絡電話
+                            </p>
+                            <p
+                              className="fw-bold"
+                              style={{ fontSize: "0.8rem" }}
+                            >
+                              {store.store_self_tel}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-nature-60">
+                        <hr />
+                      </div>
+                      <div className="date d-flex align-items-center">
+                        <span className="material-symbols-outlined me-1 text-nature-50">
+                          calendar_month
+                        </span>
+                        <div className="d-flex flex-column">
+                          <p
+                            className="text-nature-50"
+                            style={{ fontSize: "0.8rem" }}
+                          >
+                            建立時間
+                          </p>
+                          <p className="fw-bold" style={{ fontSize: "0.8rem" }}>
+                            {store.store_create_at}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-12">
+                <div className="card">
+                  <div className="card-body text-center py-4">
+                    沒有符合的資料
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>
   );
 }
-
-export default AdminStore;
 
 const getStatusBadgeStyle = (status) => {
   switch (status) {
@@ -344,3 +435,63 @@ const getStatusBadgeStyle = (status) => {
       return "bg-tertiary-90";
   }
 };
+
+const getStoreStatusCard = (store) => {
+  switch (store.store_isAuth) {
+    case "processing":
+      return (
+        <div
+          className="d-inline-flex align-items-center bg-secondary-95 px-2 rounded-2 border border-secondary-80"
+          style={{ height: "26px" }}
+        >
+          <span
+            className="material-symbols-outlined me-1 text-secondary-50"
+            style={{ fontSize: "0.8rem" }}
+          >
+            progress_activity
+          </span>
+          <p className="text-secondary-60" style={{ fontSize: "0.8rem" }}>
+            處理中
+          </p>
+        </div>
+      );
+    case "pass":
+      return (
+        <div
+          className="d-inline-flex align-items-center bg-pass px-2 rounded-2 border border-success"
+          style={{ height: "26px" }}
+        >
+          <span
+            className="material-symbols-outlined me-1 text-success"
+            style={{ fontSize: "1rem" }}
+          >
+            priority
+          </span>
+          <p className="text-success" style={{ fontSize: "0.8rem" }}>
+            通過
+          </p>
+        </div>
+      );
+    case "rejected":
+      return (
+        <div
+          className="d-inline-flex align-items-center bg-tertiary-90 px-2 rounded-2 border border-primary-80"
+          style={{ height: "26px" }}
+        >
+          <span
+            className="material-symbols-outlined me-1 text-danger"
+            style={{ fontSize: "1rem" }}
+          >
+            close_small
+          </span>
+          <p className="text-primary-50" style={{ fontSize: "0.8rem" }}>
+            已退回
+          </p>
+        </div>
+      );
+    default:
+      return null;
+  }
+};
+
+export default AdminStore;
