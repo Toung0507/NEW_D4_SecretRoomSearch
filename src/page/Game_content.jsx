@@ -10,6 +10,10 @@ import "swiper/css/navigation";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+// 定義公共路徑常量
+const ICON_PATH = "/icon/";
+const COMMENT_PATH = "/comment/";
+
 function Game_content() {
   const { gameID } = useParams();
   const [game, setGame] = useState(null);
@@ -20,51 +24,47 @@ function Game_content() {
   const [preGame, setPreGame] = useState(null);
   const [nextGame, setNextGame] = useState(null);
 
+  // 整合 API 請求函數
+  const fetchGameData = async (id) => {
+    try {
+      const res = await axios.get(`${BASE_URL}/gamesData/${id}`);
+      return res.data;
+    } catch (error) {
+      console.error(`無法獲取遊戲 ID ${id} 的資料`, error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0); // 回到頁面頂部
-    const getGameData = async () => {
+
+    // 獲取主遊戲資料
+    const loadMainGameData = async () => {
+      const gameData = await fetchGameData(gameID);
+      if (gameData) setGame(gameData);
+
+      // 獲取價格資料
       try {
-        const res = await axios.get(`${BASE_URL}/gamesData/${gameID}`);
-        setGame(res.data);
-      } catch (error) {
-        console.error("無法獲取遊戲資料", error);
-      }
-    };
-    const getPriceData = async () => {
-      try {
-        const res = await axios.get(
+        const priceRes = await axios.get(
           `${BASE_URL}/gamesData/${gameID}/pricesData`
         );
-        setPrice(res.data);
+        setPrice(priceRes.data);
       } catch (error) {
         console.error("無法獲取價格資料", error);
       }
     };
-    getGameData();
-    getPriceData();
 
-    const getPreGameData = async () => {
-      try {
-        const res = await axios.get(
-          `${BASE_URL}/gamesData/${Number(gameID) - 1}`
-        );
-        setPreGame(res.data);
-      } catch (error) {
-        console.error("無法獲取前一個遊戲資料", error);
-      }
+    // 獲取推薦遊戲
+    const loadRecommendedGames = async () => {
+      const prevGame = await fetchGameData(Number(gameID) - 1);
+      if (prevGame) setPreGame(prevGame);
+
+      const nextGame = await fetchGameData(Number(gameID) + 1);
+      if (nextGame) setNextGame(nextGame);
     };
-    const getNextGameData = async () => {
-      try {
-        const res = await axios.get(
-          `${BASE_URL}/gamesData/${Number(gameID) + 1}`
-        );
-        setNextGame(res.data);
-      } catch (error) {
-        console.error("無法獲取下一個遊戲資料", error);
-      }
-    };
-    getPreGameData();
-    getNextGameData();
+
+    loadMainGameData();
+    loadRecommendedGames();
   }, [gameID]);
 
   if (!game) return <div>載入中...</div>; // TODO 換成 loading 畫面
@@ -124,7 +124,7 @@ function Game_content() {
               <ul>
                 <li className="mb-2 d-flex align-items-center">
                   <img
-                    src="./icon/person.png"
+                    src={`${ICON_PATH}person.png`}
                     alt="person"
                     className="me-3"
                     style={{ width: "16px" }}
@@ -134,14 +134,18 @@ function Game_content() {
                   </p>
                 </li>
                 <li className="mb-2 d-flex align-items-center">
-                  <img src="./icon/time.png" alt="time" className="me-3" />
+                  <img
+                    src={`${ICON_PATH}time.png`}
+                    alt="time"
+                    className="me-3"
+                  />
                   <p className="fs-Body-2 mb-0 text-break">
                     {game.game_time} 分鐘
                   </p>
                 </li>
                 <li className="mb-2 d-flex align-items-center">
                   <img
-                    src="./icon/address.png"
+                    src={`${ICON_PATH}address.png`}
                     alt="address"
                     className="me-3"
                   />
@@ -150,7 +154,11 @@ function Game_content() {
                   </p>
                 </li>
                 <li className="mb-2 d-flex align-items-center">
-                  <img src="./icon/link.png" alt="link" className="me-3" />
+                  <img
+                    src={`${ICON_PATH}link.png`}
+                    alt="link"
+                    className="me-3"
+                  />
                   <a
                     href={game.game_website}
                     target="_blank"
@@ -160,7 +168,11 @@ function Game_content() {
                   </a>
                 </li>
                 <li className="mb-2 d-flex align-items-center">
-                  <img src="./icon/phone.png" alt="phone" className="me-3" />
+                  <img
+                    src={`${ICON_PATH}phone.png`}
+                    alt="phone"
+                    className="me-3"
+                  />
                   <a
                     className="fs-Body-2 mb-0 text-break"
                     href={`tel:+886${game.game_tel}`}
@@ -213,7 +225,7 @@ function Game_content() {
                 <div className="user px-4 mb-2 d-flex align-items-center">
                   <img
                     className="image me-3 object-fit-cover rounded-circle"
-                    src="/comment/1.png"
+                    src={`${COMMENT_PATH}1.png`}
                     alt=""
                   />
                   <p className="name text-white fw-bold">王小美</p>
@@ -225,19 +237,19 @@ function Game_content() {
                       <p className="date">2024/03/17</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/half-star.png" alt="" />
+                          <img src={`${ICON_PATH}half-star.png`} alt="" />
                         </li>
                       </ul>
                     </div>
@@ -254,7 +266,7 @@ function Game_content() {
                 <div className="user px-4 mb-2 d-flex align-items-center">
                   <img
                     className="image me-3 object-fit-cover rounded-circle"
-                    src="/comment/2.png"
+                    src={`${COMMENT_PATH}2.png`}
                     alt=""
                   />
                   <p className="name text-white fw-bold">李錦</p>
@@ -266,19 +278,19 @@ function Game_content() {
                       <p className="date">2024/03/17</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/half-star.png" alt="" />
+                          <img src={`${ICON_PATH}half-star.png`} alt="" />
                         </li>
                       </ul>
                     </div>
@@ -299,7 +311,7 @@ function Game_content() {
                 <div className="user px-4 mb-2 d-flex align-items-center">
                   <img
                     className="image me-3 object-fit-cover rounded-circle"
-                    src="/comment/3.png"
+                    src={`${COMMENT_PATH}3.png`}
                     alt=""
                   />
                   <p className="name text-white fw-bold">陳欣妤</p>
@@ -311,19 +323,19 @@ function Game_content() {
                       <p className="date">2023/08/28</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/half-star.png" alt="" />
+                          <img src={`${ICON_PATH}half-star.png`} alt="" />
                         </li>
                       </ul>
                     </div>
@@ -340,7 +352,7 @@ function Game_content() {
                 <div className="user px-4 mb-2 d-flex align-items-center">
                   <img
                     className="image me-3 object-fit-cover rounded-circle"
-                    src="/comment/4.png"
+                    src={`${COMMENT_PATH}4.png`}
                     alt=""
                   />
                   <p className="name text-white fw-bold">潘橡義</p>
@@ -352,19 +364,19 @@ function Game_content() {
                       <p className="date">2023/12/16</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                       </ul>
                     </div>
@@ -392,7 +404,7 @@ function Game_content() {
                 <div className="user px-4 mb-2 d-flex align-items-center">
                   <img
                     className="image me-3 object-fit-cover rounded-circle"
-                    src="/comment/5.png"
+                    src={`${COMMENT_PATH}5.png`}
                     alt=""
                   />
                   <p className="name text-white fw-bold">方永烈</p>
@@ -404,19 +416,19 @@ function Game_content() {
                       <p className="date">2022/04/05</p>
                       <ul className="d-flex gap-2">
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                         <li>
-                          <img src="/icon/star.png" alt="" />
+                          <img src={`${ICON_PATH}star.png`} alt="" />
                         </li>
                       </ul>
                     </div>
