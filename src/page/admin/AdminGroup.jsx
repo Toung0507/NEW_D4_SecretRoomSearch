@@ -293,7 +293,7 @@ function AdminGroup() {
                     className="px-4 py-3"
                     onClick={() => handleSort("user_id")}
                   >
-                    主糾人 {getSortIcon("user_id")}
+                    主揪人 {getSortIcon("user_id")}
                   </th>
                   <th
                     className="px-4 py-3"
