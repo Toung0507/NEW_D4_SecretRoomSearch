@@ -3,9 +3,9 @@
 }
 
 .introduction {
-  background-image: url(./illustration/Vector1.svg);
+  background-image: url(../illustration/Vector1.svg);
   @include media-breakpoint-up(lg) {
-    background-image: url(./illustration/Background.svg);
+    background-image: url(../illustration/Background.svg);
     background-size: contain;
     background-repeat: no-repeat;
     position: relative;
@@ -31,7 +31,7 @@
 }
 .help {
   @include media-breakpoint-up(lg) {
-    background-image: url(./illustration/4e22d675a9dee38e5e86384f7a6fb988.jpg);
+    background-image: url(../illustration/4e22d675a9dee38e5e86384f7a6fb988.jpg);
     background-size: cover;
     background-repeat: no-repeat;
   }
