@@ -1,16 +1,7 @@
 .select {
   outline: 2px dashed $primary-70;
 }
-.banner {
-  @include media-breakpoint-up(lg) {
-    position: relative;
-    .bannerBottom {
-      position: absolute;
-      transform: translate(0%, -12%);
-      z-index: 0;
-    }
-  }
-}
+
 .introduction {
   background-image: url(./illustration/Vector1.svg);
   @include media-breakpoint-up(lg) {
