@@ -31,7 +31,7 @@ function Login() {
             const user_id = res.payload.user.user_id;
             const user_role = res.payload.user.user_role;
             if (user_role === '管理者') {
-                navigate(`/Admin`);
+                navigate(`/Admin/Store`);
             }
             else if (user_role === '會員') {
                 navigate(`/User_profile/${user_id}/basicInfo`);
