@@ -6,8 +6,8 @@
   }
 }
 
-.describe {
-  .title .text {
+.discribe {
+  .text {
     z-index: 2;
   }
 
@@ -38,6 +38,14 @@
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 20px solid $nature-95;
+  }
+}
+
+.join_group {
+  .rectangle {
+    width: 356px;
+    height: 24px;
+    top: 62%;
   }
 }
 
@@ -114,4 +122,8 @@
       font-size: 36px;
     }
   }
+}
+
+.add-comment:hover {
+  background-color: 908e8b;
 }
