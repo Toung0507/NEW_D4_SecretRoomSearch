@@ -204,13 +204,13 @@ function Game_content() {
       <div className="discribe bg-nature-20">
         <div className="container py-10 py-lg-16 d-flex flex-column align-items-center align-items-lg-start">
           <div className="title position-relative d-flex flex-column align-items-center align-items-lg-start">
-            <h2 className="text fs-h6 fs-lg-h3 text-primary-95 fw-bold mb-4">
+            <h2 className="text fs-h6 fs-lg-h3 text-primary-95 fw-bold mb-6">
               遊戲介紹
             </h2>
             <div className="rectangle bg-nature-30 rounded position-absolute"></div>
           </div>
           <p className="d-lg-none text-white text-center mb-11">
-            {/* 平板以下文字 */}
+            {/* TODO 平板以下文字 */}
           </p>
           <p
             className="d-none d-lg-block fs-h6 text-white text-start mb-20"
@@ -483,9 +483,11 @@ function Game_content() {
             </p>
             <div className="rectangle bg-secondary-80 rounded position-absolute z-1"></div>
           </div>
-          <Link>
-            {/* TODO 更換揪團表單連結 */}
-            <img src="../../public/illustration/CTA-lg.png" alt="CTA-lg" />
+          <Link
+            to="/TeamBuy"
+            state={{ gameId: game.game_id, gameName: game.game_name }}
+          >
+            <img src="/illustration/CTA-lg.png" alt="CTA-lg" />
           </Link>
         </div>
       </div>

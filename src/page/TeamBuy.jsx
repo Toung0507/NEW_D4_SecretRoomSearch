@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import GroupCard from "../layout/GroupCard";
 
@@ -33,6 +34,10 @@ const formData = {
 };
 
 function TeamBuy() {
+  // 取得從遊戲介紹傳遞的資料
+  const location = useLocation();
+  const gameData = location.state;
+
   // 原先的資料
   const [games, setGames] = useState([]);
   const [difficultys, setDifficultys] = useState([]);
@@ -246,7 +251,26 @@ function TeamBuy() {
     getPropertys();
     getDifficultys();
     fetchGroupGames();
+
+    // 檢查是否有從 Game_content 頁面傳遞的遊戲資料
+    if (gameData && gameData.gameName) {
+      // 自動填入遊戲名稱
+      setSearch((prev) => ({
+        ...prev,
+        game_name: gameData.gameName,
+      }));
+    }
   }, []);
+
+  // 處理自動搜尋
+  useEffect(() => {
+    if (gameData && gameData.gameName && group.length > 0) {
+      const simulatedEvent = {
+        preventDefault: () => {},
+      };
+      handleSerach(simulatedEvent);
+    }
+  }, [group]);
 
   return (
     <>
