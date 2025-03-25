@@ -316,72 +316,74 @@ function Index() {
                 </ul>
               </div>
             </div>
-            <div className="help d-flex flex-column align-items-center py-20">
+            <div className="help d-flex flex-column align-items-center row py-20">
               <div className="mb-16 mb-lg-20">
                 <h3 className="fw-bold fs-lg-h3 fs-h6 text-center">
                   密室搜搜能幫助你
                 </h3>
               </div>
-              <div className="d-grid gap-16">
-                <div className="d-flex justify-content-lg-between flex-column flex-lg-row d-grid gap-6">
-                  <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
-                    <h5 className="text-primary-20 fw-bold">
-                      快速找到喜歡的密室遊戲
-                    </h5>
-                    <p className="text-Body-1 lh-lg">
-                      搜尋全台各地的密室遊戲。不論是恐怖繁悚、科幻冒險還是古典懸疑，都能幫助你找到最符合你興趣的挑戰。詳細的遊戲介紹、圖片，讓你在參加前就能了解遊戲的風格和難度，為你打造前所未有的解謎體驗！
-                    </p>
+              <div className="row d-flex justify-content-center">
+                <div className="d-grid gap-16 col-lg-10">
+                  <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center d-grid gap-6">
+                    <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
+                      <h5 className="text-primary-20 fw-bold">
+                        快速找到喜歡的密室遊戲
+                      </h5>
+                      <p className="text-Body-1 lh-lg">
+                        搜尋全台各地的密室遊戲。不論是恐怖繁悚、科幻冒險還是古典懸疑，都能幫助你找到最符合你興趣的挑戰。詳細的遊戲介紹、圖片，讓你在參加前就能了解遊戲的風格和難度，為你打造前所未有的解謎體驗！
+                      </p>
+                    </div>
+                    <div className="ratio ratio-16x9 gameImg">
+                      <img
+                        src="./image/marek-szturc.png"
+                        alt="game"
+                        className="rounded-16 w-100 img-fluid"
+                      />
+                    </div>
                   </div>
-                  <div className="ratio ratio-16x9 gameImg">
-                    <img
-                      src="./image/marek-szturc.png"
-                      alt="game"
-                      className="rounded-16 w-100 img-fluid"
-                    />
+                  <div className="d-flex justify-content-lg-between flex-column-reverse flex-lg-row align-items-center d-grid gap-6">
+                    <div className="ratio ratio-16x9 gameImg">
+                      <img
+                        src="./image/vlad-hilitanu.png"
+                        alt="game"
+                        className="rounded-16 w-100 img-fluid"
+                      />
+                    </div>
+                    <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
+                      <h5 className="text-primary-20 fw-bold">
+                        與其他玩家組隊遊玩
+                      </h5>
+                      <p className="text-Body-1 lh-lg">
+                        結識來自全台密室愛好者，與他們組隊挑戰各種密室遊戲。無論是第一次體驗還是經驗豐富的老手，都能找到合適的隊友，一同享受團隊合作帶來的無限樂趣與成就感！
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="d-flex justify-content-lg-between flex-column-reverse flex-lg-row d-grid gap-6">
-                  <div className="ratio ratio-16x9 gameImg">
-                    <img
-                      src="./image/vlad-hilitanu.png"
-                      alt="game"
-                      className="rounded-16 w-100 img-fluid"
-                    />
-                  </div>
-                  <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
-                    <h5 className="text-primary-20 fw-bold">
-                      與其他玩家組隊遊玩
-                    </h5>
-                    <p className="text-Body-1 lh-lg">
-                      結識來自全台密室愛好者，與他們組隊挑戰各種密室遊戲。無論是第一次體驗還是經驗豐富的老手，都能找到合適的隊友，一同享受團隊合作帶來的無限樂趣與成就感！
-                    </p>
-                  </div>
-                </div>
-                <div className="d-flex justify-content-lg-between flex-column flex-lg-row d-grid gap-6">
-                  <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
-                    <h5 className="text-primary-20 fw-bold">觀看玩家評價</h5>
-                    <p className="text-Body-1 lh-lg">
-                      瀏覽玩家提供的詳細評價和建議，了解各個密室遊戲的特色、難度和可玩性。不僅能看到評分和評論，還能看到玩家們的遊戲過程分享，確保每一次都能帶來愉快的遊戲體驗！
-                    </p>
-                  </div>
-                  <div className="ratio ratio-16x9 gameImg">
-                    <img
-                      src="./image/andrew-neel.png"
-                      alt="game"
-                      className="rounded-16 w-100 img-fluid"
-                    />
+                  <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center d-grid gap-6">
+                    <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
+                      <h5 className="text-primary-20 fw-bold">觀看玩家評價</h5>
+                      <p className="text-Body-1 lh-lg">
+                        瀏覽玩家提供的詳細評價和建議，了解各個密室遊戲的特色、難度和可玩性。不僅能看到評分和評論，還能看到玩家們的遊戲過程分享，確保每一次都能帶來愉快的遊戲體驗！
+                      </p>
+                    </div>
+                    <div className="ratio ratio-16x9 gameImg">
+                      <img
+                        src="./image/andrew-neel.png"
+                        alt="game"
+                        className="rounded-16 w-100 img-fluid"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-nature-20 d-flex justify-content-center">
+            <div className="bg-nature-20 d-flex justify-content-center row">
               <div className="py-16 py-lg-23 px-3 px-lg-0 d-flex flex-column justify-content-between align-items-center">
                 <div className="d-none d-lg-block mb-20">
                   <h3 className="fw-bold fs-h6 fs-lg-h3 text-white">
                     從驚悚到奇幻，12 種冒險領域讓你選擇！
                   </h3>
                 </div>
-                <div className="text-center .d-block .d-lg-none mb-20">
+                <div className="text-center d-block d-lg-none mb-20">
                   <h3 className="fw-bold fs-h6 fs-lg-h3 text-white">
                     從驚悚到奇幻，
                   </h3>
@@ -389,14 +391,14 @@ function Index() {
                     12 種冒險領域讓你選擇！
                   </h3>
                 </div>
-                <div className="d-flex justify-content-center flex-column-reverse flex-lg-row">
+                <div className="d-flex justify-content-center flex-column-reverse flex-lg-row align-items-center">
                   <div className="mx-5 me-lg-25">
                     <img
                       src="./illustration/Friends-celebrating-the-New-Year-1.svg"
                       alt="Friends"
                     />
                   </div>
-                  <div className="col-lg-4 col-12">
+                  <div className="col-lg-6 col-12">
                     <div className="row ">
                       {gameDifficulty.map((diff) => (
                         <div
