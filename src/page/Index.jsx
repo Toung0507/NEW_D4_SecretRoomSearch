@@ -323,7 +323,7 @@ function Index() {
                 </h3>
               </div>
               <div className="row d-flex justify-content-center">
-                <div className="d-grid gap-16 col-lg-10">
+                <div className="d-grid gap-16 col-lg-6">
                   <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center d-grid gap-6">
                     <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
                       <h5 className="text-primary-20 fw-bold">
