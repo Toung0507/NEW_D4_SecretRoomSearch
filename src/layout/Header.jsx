@@ -111,7 +111,6 @@ function Header() {
                                         role="button"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false"
-                                        onClick={handleNavCollapse}
                                     >
                                         {user?.user_name}
                                     </NavLink>
