@@ -3,16 +3,16 @@
 }
 
 .introduction {
-  background-image: url(./illustration/Vector1.svg);
+  background-image: url(../illustration/Vector1.svg);
   @include media-breakpoint-up(lg) {
-    background-image: url(./illustration/Background.svg);
+    background-image: url(../illustration/Background.svg);
     background-size: contain;
     background-repeat: no-repeat;
     position: relative;
     width: 100%;
     padding-top: 56.25%; /* 例如 16:9，(9/16)*100% = 56.25% */
     z-index: -1;
-    margin-top: 15%;
+
     .title {
       position: absolute;
       top: 20%;
@@ -31,7 +31,7 @@
 }
 .help {
   @include media-breakpoint-up(lg) {
-    background-image: url(./illustration/4e22d675a9dee38e5e86384f7a6fb988.jpg);
+    background-image: url(../illustration/4e22d675a9dee38e5e86384f7a6fb988.jpg);
     background-size: cover;
     background-repeat: no-repeat;
   }
