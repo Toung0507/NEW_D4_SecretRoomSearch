@@ -11,8 +11,8 @@ import "swiper/css/navigation";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 // 定義公共路徑常量
-const ICON_PATH = "/icon/";
-const COMMENT_PATH = "/comment/";
+const ICON_PATH = "./icon/";
+const COMMENT_PATH = "./comment/";
 
 function Game_content() {
   const { gameID } = useParams();
@@ -211,6 +211,7 @@ function Game_content() {
           </div>
           <p className="d-lg-none text-white text-center mb-11">
             {/* TODO 平板以下文字 */}
+            {game.game_info}
           </p>
           <p
             className="d-none d-lg-block fs-h6 text-white text-start mb-20"
@@ -476,9 +477,11 @@ function Game_content() {
 
       <div className="join_group">
         <div className="container py-10 py-lg-12 d-flex align-items-center justify-content-center position-relative">
-          <div className="text me-21">
-            <p className="fs-h3 text-nature-30 fw-bold">點擊右側的「揪團去」</p>
-            <p className="fs-h3 text-nature-30 fw-bold position-absolute z-2">
+          <div className="text me-lg-21 me-4">
+            <p className="fs-lg-h3 fs-h6 text-nature-30 fw-bold">
+              點擊右側的「揪團去」
+            </p>
+            <p className="fs-lg-h3 fs-h6 text-nature-30 fw-bold position-absolute z-2">
               一起找人解謎吧！
             </p>
             <div className="rectangle bg-secondary-80 rounded position-absolute z-1"></div>
@@ -487,7 +490,13 @@ function Game_content() {
             to="/TeamBuy"
             state={{ gameId: game.game_id, gameName: game.game_name }}
           >
-            <img src="/illustration/CTA-lg.png" alt="CTA-lg" />
+            <picture>
+              <source
+                media="(min-width: 992px)"
+                srcset="./illustration/CTA-lg.png"
+              />
+              <img src="./illustration/CTA.png" alt="CTA-lg" />
+            </picture>
           </Link>
         </div>
       </div>
