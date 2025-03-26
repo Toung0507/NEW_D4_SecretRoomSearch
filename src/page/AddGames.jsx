@@ -432,14 +432,8 @@ function AddGames() {
 
             // 手動比對種類（假設種類儲存在 games.property）
             const currentProperty = games.property; // 例如一個陣列
-            console.log(currentProperty);
-
             const initialProperty = initialValuesRef.current.property;
-            console.log(initialProperty);
-
             const isPropertyDirty = JSON.stringify(currentProperty) !== JSON.stringify(initialProperty);
-            console.log(isPropertyDirty);
-
 
             if (Object.keys(dirtyFields).length > 0 || isDateDirty || isPropertyDirty) {
                 if ((dirtyFields.gameFormData && Object.keys(dirtyFields.gameFormData).length > 0) || isDateDirty || isPropertyDirty) {
@@ -474,7 +468,10 @@ function AddGames() {
                     setIsLoading(false);
                 }
             } else {
-                console.log("無變動");
+                dispatch(pushMessage({
+                    text: "沒有資料更動!",
+                    status: 'error'
+                }));
             }
             delete games.property;
         }
@@ -493,7 +490,10 @@ function AddGames() {
             const res = await axios.post(`${baseApi}/gamesData`, games);
             game_id = res.data.data.game_id;
         } catch (error) {
-            console.log(error);
+            dispatch(pushMessage({
+                text: "新增遊戲失敗!",
+                status: 'error'
+            }));
             return; // 若遊戲新增失敗，直接返回
         }
 
@@ -504,9 +504,11 @@ function AddGames() {
             };
             try {
                 const res = await axios.post(`${baseApi}/pricesData`, addGameID);
-                console.log(res);
             } catch (error) {
-                console.log('有錯誤', error);
+                dispatch(pushMessage({
+                    text: "新增價格失敗!",
+                    status: 'error'
+                }));
             }
         }
         dispatch(pushMessage({
@@ -522,23 +524,24 @@ function AddGames() {
 
     //編輯遊戲資料 - axios
     const updateGames = async (updateGame) => {
-        console.log(updateGame);
         try {
-            const res = await axios.patch(`${baseApi}/gamesData/${game_id}`, updateGame);
+            await axios.patch(`${baseApi}/gamesData/${game_id}`, updateGame);
             dispatch(pushMessage({
                 text: "編輯遊戲資訊成功",
                 status: 'success'
             }));
             setIsLoading(false);
         } catch (error) {
+            dispatch(pushMessage({
+                text: "編輯遊戲資訊失敗",
+                status: 'error'
+            }));
         }
-
     };
 
     // 刪除遊戲的價格表全資料
     const deldetePrice = async () => {
         let idArray = [];
-        console.log(game_id);
         try {
             const res = await axios.get(`${baseApi}/gamesData/${game_id}/pricesData`);
             idArray = res.data.map(item => item.price_id);
@@ -548,10 +551,11 @@ function AddGames() {
         for (const price_id of idArray) {
             try {
                 const res = await axios.delete(`${baseApi}/pricesData/${price_id}`);
-                console.log(res);
-
             } catch (error) {
-                console.log('有錯誤', error);
+                dispatch(pushMessage({
+                    text: "刪除原價格資料失敗!",
+                    status: 'error'
+                }));
             }
         }
 
@@ -561,17 +565,17 @@ function AddGames() {
     const updatePrices = async (updatePrice) => {
         try {
             const res = await axios.post(`${baseApi}/pricesData`, updatePrice);
-            console.log(res);
-
         } catch (error) {
-            console.log('有錯誤', error);
+            dispatch(pushMessage({
+                text: "編輯價格資料失敗!",
+                status: 'error'
+            }));
         }
     };
 
     // 取到遊戲相關資料
     const getStoreGameInfo = async () => {
         const store_id = store.store_id;
-        // if (store_id === undefined) return;
         try {
             const res = await axios.get(`${baseApi}/storesData/${store_id}/gamesData`);
             const allGamesInfo = res.data.find(item => Number(game_id) === Number(item.game_id));
@@ -654,96 +658,47 @@ function AddGames() {
                     else if (acc.price_is_difference === "1") {
                         acc.prices.weekday.pop();
                         acc.prices.weekend.pop();
-
                     }
                 }
             }
 
             // 處理 場次的 價格
             if (item.price_people === '/場' && item.price_is_difference === 1) {
-                if (item.price_day_type === "weekend") {
-                    acc.weekend_price = item.price_mix;
-                }
-                else if (item.price_day_type === "weekday") {
-                    acc.weekday_price = item.price_mix;
-                }
+                item.price_day_type === "weekday" && (acc.weekday_price = item.price_mix);
+                item.price_day_type === "weekend" && (acc.weekend_price = item.price_mix);
             }
             else if (item.price_people === '/場' && item.price_is_difference === 0) {
                 acc.single_price = item.price_mix;
             }
 
-            // 處理 人頭計價 
+            // 處理 人頭計價
             if (item.price_people === '/人' && item.price_is_difference === 1) {
-                if (item.price_day_type === "weekend") {
-                    acc.unit_weekend_price = item.price_mix;
-                }
-                else if (item.price_day_type === "weekday") {
-                    acc.unit_weekday_price = item.price_mix;
-                }
+                item.price_day_type === "weekday" && (acc.unit_weekday_price = item.price_mix);
+                item.price_day_type === "weekend" && (acc.unit_weekend_price = item.price_mix);
             }
             else if (item.price_people === '/人' && item.price_is_difference === 0) {
                 acc.unit_person_price = item.price_mix;
             }
 
+            const priceObj = {
+                min: item.price_people.includes('-') ? item.price_people.split("-")[0] || "" : item.price_people.replace(/\D/g, "") || "",
+                max: item.price_people.includes('-') ? (item.price_people.split("-")[1] || "").replace(/\D/g, "") : item.price_people.replace(/\D/g, "") || "",
+                price_mix: item.price_mix
+            };
+
             // 處理人數區間
             if ((item.price_people !== '/人' && item.price_people !== '/場') && item.price_is_difference === 1) {
-                if (item.price_day_type === "weekday") {
-                    if (item.price_people.includes('-')) {
-                        const priceObj = {
-                            min: item.price_people.split("-")[0] || "",
-                            max: (item.price_people.split("-")[1] || "").replace(/\D/g, ""),
-                            price_mix: item.price_mix
-                        };
-                        acc.prices.weekday.push(priceObj);
-                    }
-                    else {
-                        const priceObj = {
-                            min: item.price_people.replace(/\D/g, "") || "",
-                            max: item.price_people.replace(/\D/g, "") || "",
-                            price_mix: item.price_mix
-                        };
-                        acc.prices.weekday.push(priceObj);
-                    }
-                } else if (item.price_day_type === "weekend") {
-                    if (item.price_people.includes('-')) {
-                        const priceObj = {
-                            min: item.price_people.split("-")[0] || "",
-                            max: (item.price_people.split("-")[1] || "").replace(/\D/g, ""),
-                            price_mix: item.price_mix
-                        };
-                        acc.prices.weekend.push(priceObj);
-                    }
-                    else {
-                        const priceObj = {
-                            min: item.price_people.replace(/\D/g, "") || "",
-                            max: item.price_people.replace(/\D/g, "") || "",
-                            price_mix: item.price_mix
-                        };
-                        acc.prices.weekend.push(priceObj);
-                    }
-                }
+                item.price_day_type === "weekday"
+                    ? acc.prices.weekday.push(priceObj)
+                    : item.price_day_type === "weekend" && acc.prices.weekend.push(priceObj);
             }
             else if ((item.price_people !== '/人' && item.price_people !== '/場') && item.price_is_difference === 0) {
-                if (item.price_people.includes('-')) {
-                    const priceObj = {
-                        min: item.price_people.split("-")[0] || "",
-                        max: (item.price_people.split("-")[1] || "").replace(/\D/g, ""),
-                        price_mix: item.price_mix
-                    };
-                    acc.prices.unit.push(priceObj);
-                }
-                else {
-                    const priceObj = {
-                        min: item.price_people.replace(/\D/g, "") || "",
-                        max: item.price_people.replace(/\D/g, "") || "",
-                        price_mix: item.price_mix
-                    };
-                    acc.prices.unit.push(priceObj);
-                }
+                acc.prices.unit.push(priceObj);
             }
 
             return acc;
         }, { ...deepCopy });
+
         setNewGame((prev) => ({
             ...prev,
             prices: gamePrices,
@@ -760,7 +715,6 @@ function AddGames() {
             reset({
                 gameFormData: newGame.games,
                 priceFormData: newGame.prices
-
             });
             setGameFormData(newGame.games);
             setPriceFormData(newGame.prices);
@@ -786,46 +740,30 @@ function AddGames() {
         }
         else if (!isLoading) {
             setErrorMessage("");
-            // console.log('編輯初始');
             setAddOrEdit("edit");
             getStoreGameInfo();
         }
     }, [game_id, isLoading]);
 
-    // axios拿到全部難度資料
-    const getDifficultys = async () => {
+    const getBaseInfo = async () => {
         try {
-            const res = await axios.get(`${baseApi}/difficultys_fixed_Data`);
-            setDifficultys(res.data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    // axios拿到全部標籤資料
-    const getPropertys = async () => {
-        try {
-            const res = await axios.get(`${baseApi}/propertys_fixed_Data`);
-            setPropertys(res.data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    // 取到店家相關資料
-    const getStoreInfo = async () => {
-        try {
-            const res = await axios.get(`${baseApi}/usersData/${user_id}/storesData`);
-            setStore(res.data[0]);
+            // 同時發送三個 axios 請求
+            const [difficultysRes, propertysRes, storeRes] = await Promise.all([
+                axios.get(`${baseApi}/difficultys_fixed_Data`),
+                axios.get(`${baseApi}/propertys_fixed_Data`),
+                axios.get(`${baseApi}/usersData/${user_id}/storesData`),
+            ]);
+            setDifficultys(difficultysRes.data);
+            setPropertys(propertysRes.data);
+            setStore(storeRes.data[0]);
         } catch (error) {
             console.error(error);
         }
     }
 
     useEffect(() => {
-        getStoreInfo();
-        getDifficultys();
-        getPropertys();
+        window.scrollTo(0, 0); // 回到頁面頂部
+        getBaseInfo();
     }, []);
 
     // 確保基本資料載入完成
@@ -893,21 +831,6 @@ function AddGames() {
                                                                 />
                                                             </div>
                                                         </div>
-                                                        {/* 有密室本身的網站，所以刪除 */}
-                                                        {/* <div className="row">
-                                                <label htmlFor="store_website" className="col-sm-2 fs-Body-2 fw-bold fs-sm-Body-1 mb-2 mb-sm-0">店家網站</label>
-                                                <div className="col-sm-10">
-                                                    <input
-                                                        type="text"
-                                                        className={`form-control border-black `}
-                                                        id="store_website"
-                                                        name="store_website"
-                                                        placeholder="請輸入店家網站"
-                                                    />
-                                                    <div className="error-message text-danger mt-1 fs-caption lh-1">
-                                                    </div>
-                                                </div>
-                                            </div> */}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1040,7 +963,6 @@ function AddGames() {
                                                                             defaultValue={gameFormData?.game_minNum_Players}
                                                                             {...register("gameFormData.game_minNum_Players", {
                                                                                 required: "遊玩最低人數是必填的",
-                                                                                // 驗證最低人數必須大於0
                                                                                 validate: value => Number(value) > 0 || "最低人數必須大於0",
                                                                                 onChange: async () => {
                                                                                     await trigger("gameFormData.game_minNum_Players");
@@ -1058,7 +980,6 @@ function AddGames() {
                                                                             defaultValue={gameFormData?.game_maxNum_Players}
                                                                             {...register("gameFormData.game_maxNum_Players", {
                                                                                 required: "遊玩最高人數是必填的",
-                                                                                // 驗證最高人數必須大於0 並且不小於最低人數
                                                                                 validate: value => {
                                                                                     if (Number(value) <= 0) {
                                                                                         return "最高人數必須大於0";
@@ -1099,8 +1020,7 @@ function AddGames() {
                                                             </div>
 
                                                             {/*　密室介紹 */}
-                                                            <div className="row mb-3
-                                                ">
+                                                            <div className="row mb-3">
                                                                 <label htmlFor="game_info" className="col-sm-2 fs-Body-2 fw-bold fs-sm-Body-1 mb-2 mb-sm-0">密室介紹</label>
                                                                 <div className="col-sm-10">
                                                                     <div className="d-flex align-items-center">
@@ -1109,7 +1029,6 @@ function AddGames() {
                                                                             {...register("gameFormData.game_info", {
                                                                                 required: "密室介紹是必填的",
                                                                                 onChange: async (e) => {
-                                                                                    // 可直接利用 trigger 進行即時驗證
                                                                                     await trigger("gameFormData.game_info");
                                                                                 }
                                                                             })}
@@ -1119,7 +1038,6 @@ function AddGames() {
                                                                             name="gameFormData.game_info"
                                                                             placeholder="請填入密室的背景設定"
                                                                         />
-
                                                                     </div>
                                                                     <div className="error-message text-danger mt-1 fs-caption lh-1">
                                                                         {errors?.gameFormData?.game_info ? errors?.gameFormData?.game_info.message : "　"}
@@ -1140,7 +1058,6 @@ function AddGames() {
                                                                                     message: "請輸入正確的網址格式（例如：https://example.com）"
                                                                                 },
                                                                                 onChange: async (e) => {
-                                                                                    // 可直接利用 trigger 進行即時驗證
                                                                                     await trigger("gameFormData.game_website");
                                                                                 }
                                                                             })}
@@ -1165,7 +1082,6 @@ function AddGames() {
                                                                             defaultValue={gameFormData?.game_remark}
                                                                             {...register("gameFormData.game_remark", {
                                                                                 onChange: async (e) => {
-                                                                                    // 可直接利用 trigger 進行即時驗證
                                                                                     await trigger("gameFormData.game_remark");
                                                                                 }
                                                                             })}
@@ -1313,7 +1229,7 @@ function AddGames() {
                                                                                 {...register("gameFormData.game_isLimited", {
                                                                                     required: "開放模式必填的",
                                                                                     onChange: async (e) => {
-                                                                                        // 可直接利用 trigger 進行即時驗證
+
                                                                                         await trigger("gameFormData.game_isLimited");
                                                                                     }
                                                                                 })}
@@ -1338,7 +1254,7 @@ function AddGames() {
                                                                                 {...register("gameFormData.game_isLimited", {
                                                                                     required: "開放模式必填的",
                                                                                     onChange: async (e) => {
-                                                                                        // 可直接利用 trigger 進行即時驗證
+
                                                                                         await trigger("gameFormData.game_isLimited");
                                                                                     }
                                                                                 })}
@@ -1438,7 +1354,6 @@ function AddGames() {
                                                                                 name="priceFormData.price_is_difference"
                                                                                 id="price_is_difference_0"
                                                                                 value="0"
-
                                                                             />
                                                                             <label className="form-check-label text-nowrap" htmlFor="price_is_difference_0">相同</label>
                                                                         </div>
@@ -1459,7 +1374,6 @@ function AddGames() {
                                                                                 {...register("priceFormData.price_people", {
                                                                                     required: "收費方式必選",
                                                                                     onChange: async (e) => {
-                                                                                        // 可直接利用 trigger 進行即時驗證
                                                                                         await trigger("priceFormData.price_people");
                                                                                     }
                                                                                 })}
@@ -1468,7 +1382,6 @@ function AddGames() {
                                                                                 name="priceFormData.price_people"
                                                                                 value="/場"
                                                                                 id="price_people_場"
-
                                                                             />
                                                                             <label className="form-check-label text-nowrap" htmlFor="price_people_場">依場次為計價</label>
                                                                         </div>
@@ -1477,7 +1390,6 @@ function AddGames() {
                                                                                 {...register("priceFormData.price_people", {
                                                                                     required: "收費方式必選",
                                                                                     onChange: async (e) => {
-                                                                                        // 可直接利用 trigger 進行即時驗證
                                                                                         await trigger("priceFormData.price_people");
                                                                                     }
                                                                                 })}
@@ -1499,7 +1411,6 @@ function AddGames() {
                                                                                 {...register("priceFormData.price_people", {
                                                                                     required: "收費方式必選",
                                                                                     onChange: async (e) => {
-                                                                                        // 可直接利用 trigger 進行即時驗證
                                                                                         await trigger("priceFormData.price_people");
                                                                                     }
                                                                                 })}
@@ -1533,7 +1444,6 @@ function AddGames() {
                                                                                     {...register("priceFormData.single_price", {
                                                                                         required: "場次收費金額必填",
                                                                                         onChange: async (e) => {
-                                                                                            // 可直接利用 trigger 進行即時驗證
                                                                                             await trigger("priceFormData.single_price");
                                                                                         }
                                                                                     })}
@@ -1554,7 +1464,6 @@ function AddGames() {
                                                                     </div>
                                                                 )
                                                             }
-
                                                             {/* 已場次為計價 - 平假日不同 */}
                                                             {
                                                                 watch("priceFormData.price_is_difference") === '1' && watch("priceFormData.price_people") === '/場' && (
@@ -1572,7 +1481,6 @@ function AddGames() {
                                                                                         {...register("priceFormData.weekday_price", {
                                                                                             required: "平日收費金額必填",
                                                                                             onChange: async (e) => {
-                                                                                                // 可直接利用 trigger 進行即時驗證
                                                                                                 await trigger("priceFormData.weekday_price");
                                                                                             }
                                                                                         })}
@@ -1599,7 +1507,6 @@ function AddGames() {
                                                                                         {...register("priceFormData.weekend_price", {
                                                                                             required: "假日收費金額必填",
                                                                                             onChange: async (e) => {
-                                                                                                // 可直接利用 trigger 進行即時驗證
                                                                                                 await trigger("priceFormData.weekend_price");
                                                                                             }
                                                                                         })}
@@ -1622,7 +1529,6 @@ function AddGames() {
                                                                     </div>
                                                                 )
                                                             }
-
                                                             {/* 以單人 - 平假日相符 */}
                                                             {
                                                                 watch("priceFormData.price_is_difference") === '0' && watch("priceFormData.price_people") === '/人' && (
@@ -1636,7 +1542,6 @@ function AddGames() {
                                                                                     {...register("priceFormData.unit_person_price", {
                                                                                         required: "單人收費金額必填",
                                                                                         onChange: async (e) => {
-                                                                                            // 可直接利用 trigger 進行即時驗證
                                                                                             await trigger("priceFormData.unit_person_price");
                                                                                         }
                                                                                     })}
@@ -1676,7 +1581,6 @@ function AddGames() {
                                                                                         {...register("priceFormData.unit_weekday_price", {
                                                                                             required: "平日收費金額必填",
                                                                                             onChange: async (e) => {
-                                                                                                // 可直接利用 trigger 進行即時驗證
                                                                                                 await trigger("priceFormData.unit_weekday_price");
                                                                                             }
                                                                                         })}
@@ -1703,7 +1607,6 @@ function AddGames() {
                                                                                         {...register("priceFormData.unit_weekend_price", {
                                                                                             required: "假日收費金額必填",
                                                                                             onChange: async (e) => {
-                                                                                                // 可直接利用 trigger 進行即時驗證
                                                                                                 await trigger("priceFormData.unit_weekend_price");
                                                                                             }
                                                                                         })}
@@ -1721,12 +1624,10 @@ function AddGames() {
                                                                                     {errors?.priceFormData?.unit_weekend_price ? errors.priceFormData.unit_weekend_price.message : "　"}
                                                                                 </div>
                                                                             </div>
-
                                                                         </div>
                                                                     </div>
                                                                 )
                                                             }
-
                                                             {/* 以人數區間 -平假日相同 */}
                                                             {
                                                                 watch("priceFormData.price_is_difference") === '0' && watch("priceFormData.price_people") === 'x-x人' && (
@@ -1822,7 +1723,6 @@ function AddGames() {
                                                                                     </div>
                                                                                 </div>
                                                                             ))}
-
                                                                             {/* 新增項目 */}
                                                                             <div className="mt-1">
                                                                                 <button
@@ -1834,12 +1734,10 @@ function AddGames() {
                                                                                     新增項目
                                                                                 </button>
                                                                             </div>
-
                                                                         </div>
                                                                     </div>
                                                                 )
                                                             }
-
                                                             {/* 以人數區間 -平假日不同 */}
                                                             {
                                                                 watch("priceFormData.price_is_difference") === '1' && watch("priceFormData.price_people") === 'x-x人' && (
@@ -1946,10 +1844,7 @@ function AddGames() {
                                                                                         <RiPlayListAddLine size={16} className="me-2" />新增項目
                                                                                     </button>
                                                                                 </div>
-
                                                                             </div>
-
-
                                                                             {/* 假日 */}
                                                                             <div className="d-flex flex-column mt-3">
                                                                                 <label className="fs-Body-1 mb-2 fw-bold text-nowrap">
@@ -2036,7 +1931,7 @@ function AddGames() {
                                                                                         </div>
                                                                                     </div>
                                                                                 ))}
-                                                                                {/* 最後項目 */}
+                                                                                {/* 新增項目 */}
                                                                                 <div className=" ">
                                                                                     <button
                                                                                         type="button"
@@ -2045,7 +1940,6 @@ function AddGames() {
                                                                                         <RiPlayListAddLine size={16} className="me-2" />新增項目
                                                                                     </button>
                                                                                 </div>
-
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -2062,7 +1956,6 @@ function AddGames() {
                                                 </div>
                                             </div>
                                         </form>
-
                                     )
                                 }
                             </div>
