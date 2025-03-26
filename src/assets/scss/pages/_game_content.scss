@@ -43,9 +43,15 @@
 
 .join_group {
   .rectangle {
-    width: 356px;
-    height: 24px;
-    top: 62%;
+    width: 160px;
+    height: 16px;
+    top: 61%;
+
+    @include media-breakpoint-up(lg) {
+      width: 300px;
+      height: 24px;
+      top: 62%;
+    }
   }
 }
 
