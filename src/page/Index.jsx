@@ -37,7 +37,6 @@ function Index() {
     const [gameProperty, setGameProperty] = useState([]);
     const [gameDifficulty, setGameDifficulty] = useState([]);
 
-    const [games, setGames] = useState([]);
     const [maxPeople, setMaxPeople] = useState(0);
 
     // 是否要顯示全部資料
@@ -58,7 +57,6 @@ function Index() {
 
             // 過濾有效的遊戲
             const upGames = res.data.filter((game) => game.game_isStock === true);
-            setGames(upGames);
 
             // 根據分數排序
             const recommendedGames = [...upGames].sort(

@@ -82,7 +82,7 @@ function AddGames() {
     const [priceFormData, setPriceFormData] = useState(emptyPrices);
     const [isLoading, setIsLoading] = useState(true);
 
-    const { register, handleSubmit, formState: { errors, dirtyFields }, setError, setValue, reset, control, trigger, setFocus, clearErrors, watch, getValues, } = useForm({
+    const { register, handleSubmit, formState: { errors, dirtyFields }, setError, setValue, reset, control, trigger, clearErrors, watch, getValues, } = useForm({
         defaultValues: {
             gameFormData,
             priceFormData
@@ -109,7 +109,7 @@ function AddGames() {
 
     // 修改種類欄位的 onChange，除了更新 state，也呼叫 setValue 更新 react-hook-form 的值
     const handlEInputChange = (e) => {
-        const { value, name } = e.target;
+        const { value } = e.target;
         const valueAsNumber = Number(value); // 將 value 轉換為數字
 
         // 更新選擇的項目
@@ -491,7 +491,7 @@ function AddGames() {
             game_id = res.data.data.game_id;
         } catch (error) {
             dispatch(pushMessage({
-                text: "新增遊戲失敗!",
+                text: error,
                 status: 'error'
             }));
             return; // 若遊戲新增失敗，直接返回
@@ -503,10 +503,10 @@ function AddGames() {
                 game_id: game_id
             };
             try {
-                const res = await axios.post(`${baseApi}/pricesData`, addGameID);
+                await axios.post(`${baseApi}/pricesData`, addGameID);
             } catch (error) {
                 dispatch(pushMessage({
-                    text: "新增價格失敗!",
+                    text: error,
                     status: 'error'
                 }));
             }
@@ -533,7 +533,7 @@ function AddGames() {
             setIsLoading(false);
         } catch (error) {
             dispatch(pushMessage({
-                text: "編輯遊戲資訊失敗",
+                text: error,
                 status: 'error'
             }));
         }
@@ -550,10 +550,10 @@ function AddGames() {
         }
         for (const price_id of idArray) {
             try {
-                const res = await axios.delete(`${baseApi}/pricesData/${price_id}`);
+                await axios.delete(`${baseApi}/pricesData/${price_id}`);
             } catch (error) {
                 dispatch(pushMessage({
-                    text: "刪除原價格資料失敗!",
+                    text: error,
                     status: 'error'
                 }));
             }
@@ -564,10 +564,10 @@ function AddGames() {
     //編輯價格資料 - axios
     const updatePrices = async (updatePrice) => {
         try {
-            const res = await axios.post(`${baseApi}/pricesData`, updatePrice);
+            await axios.post(`${baseApi}/pricesData`, updatePrice);
         } catch (error) {
             dispatch(pushMessage({
-                text: "編輯價格資料失敗!",
+                text: error,
                 status: 'error'
             }));
         }
@@ -854,7 +854,7 @@ function AddGames() {
                                                                         defaultValue={gameFormData?.game_name}
                                                                         {...register("gameFormData.game_name", {
                                                                             required: "遊戲名稱是必填的",
-                                                                            onChange: async (e) => {
+                                                                            onChange: async () => {
                                                                                 await trigger("gameFormData.game_name");
                                                                             }
                                                                         })}
@@ -877,7 +877,7 @@ function AddGames() {
                                                                         defaultValue={gameFormData?.game_address}
                                                                         {...register("gameFormData.game_address", {
                                                                             required: "密室地址是必填的",
-                                                                            onChange: async (e) => {
+                                                                            onChange: async () => {
                                                                                 await trigger("gameFormData.game_address");
                                                                             }
                                                                         })}
@@ -904,7 +904,7 @@ function AddGames() {
                                                                             //     value: /^(0[2-8]-\d{7,8}|09\d{8})$/,
                                                                             //     message: "市話格式為02-12345678手機格式為0912456789"
                                                                             // },
-                                                                            onChange: async (e) => {
+                                                                            onChange: async () => {
                                                                                 await trigger("gameFormData.game_tel");
                                                                             }
                                                                         })}
@@ -935,7 +935,7 @@ function AddGames() {
                                                                             {...register("gameFormData.game_time", {
                                                                                 required: "解謎時間是必填的",
                                                                                 validate: value => Number(value) > 0 || "解謎時間必須大於0",
-                                                                                onChange: async (e) => {
+                                                                                onChange: async () => {
                                                                                     await trigger("gameFormData.game_time");
                                                                                 }
                                                                             })}
@@ -1018,7 +1018,6 @@ function AddGames() {
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                             {/*　密室介紹 */}
                                                             <div className="row mb-3">
                                                                 <label htmlFor="game_info" className="col-sm-2 fs-Body-2 fw-bold fs-sm-Body-1 mb-2 mb-sm-0">密室介紹</label>
@@ -1028,7 +1027,7 @@ function AddGames() {
                                                                             defaultValue={gameFormData?.game_info}
                                                                             {...register("gameFormData.game_info", {
                                                                                 required: "密室介紹是必填的",
-                                                                                onChange: async (e) => {
+                                                                                onChange: async () => {
                                                                                     await trigger("gameFormData.game_info");
                                                                                 }
                                                                             })}
@@ -1057,7 +1056,7 @@ function AddGames() {
                                                                                     value: /^(https?:\/\/)[^\s]+$/i,
                                                                                     message: "請輸入正確的網址格式（例如：https://example.com）"
                                                                                 },
-                                                                                onChange: async (e) => {
+                                                                                onChange: async () => {
                                                                                     await trigger("gameFormData.game_website");
                                                                                 }
                                                                             })}
@@ -1081,7 +1080,7 @@ function AddGames() {
                                                                         <input
                                                                             defaultValue={gameFormData?.game_remark}
                                                                             {...register("gameFormData.game_remark", {
-                                                                                onChange: async (e) => {
+                                                                                onChange: async () => {
                                                                                     await trigger("gameFormData.game_remark");
                                                                                 }
                                                                             })}
@@ -1109,7 +1108,7 @@ function AddGames() {
                                                                                 value: /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$/i,
                                                                                 message: "請輸入正確的圖片 URL（例如：https://example.com/image.jpg）"
                                                                             },
-                                                                            onChange: (e) => {
+                                                                            onChange: () => {
                                                                                 trigger("gameFormData.game_img");
                                                                             }
                                                                         })}
@@ -1145,7 +1144,7 @@ function AddGames() {
                                                                                 <input
                                                                                     {...register("gameFormData.game_dif_tag", {
                                                                                         required: "難度是必選的",
-                                                                                        onChange: async (e) => {
+                                                                                        onChange: async () => {
                                                                                             await trigger("gameFormData.game_dif_tag");
                                                                                         }
                                                                                     })}
@@ -1228,7 +1227,7 @@ function AddGames() {
                                                                             <input
                                                                                 {...register("gameFormData.game_isLimited", {
                                                                                     required: "開放模式必填的",
-                                                                                    onChange: async (e) => {
+                                                                                    onChange: async () => {
 
                                                                                         await trigger("gameFormData.game_isLimited");
                                                                                     }
@@ -1253,7 +1252,7 @@ function AddGames() {
                                                                             <input
                                                                                 {...register("gameFormData.game_isLimited", {
                                                                                     required: "開放模式必填的",
-                                                                                    onChange: async (e) => {
+                                                                                    onChange: async () => {
 
                                                                                         await trigger("gameFormData.game_isLimited");
                                                                                     }
@@ -1328,7 +1327,7 @@ function AddGames() {
                                                                             <input
                                                                                 {...register("priceFormData.price_is_difference", {
                                                                                     required: "平假日是否相符必填",
-                                                                                    onChange: async (e) => {
+                                                                                    onChange: async () => {
                                                                                         await trigger("priceFormData.price_is_difference");
                                                                                     }
                                                                                 })}
@@ -1345,7 +1344,7 @@ function AddGames() {
                                                                             <input
                                                                                 {...register("priceFormData.price_is_difference", {
                                                                                     required: "平假日是否相符必填",
-                                                                                    onChange: async (e) => {
+                                                                                    onChange: async () => {
                                                                                         await trigger("priceFormData.price_is_difference");
                                                                                     }
                                                                                 })}
@@ -1373,7 +1372,7 @@ function AddGames() {
                                                                             <input
                                                                                 {...register("priceFormData.price_people", {
                                                                                     required: "收費方式必選",
-                                                                                    onChange: async (e) => {
+                                                                                    onChange: async () => {
                                                                                         await trigger("priceFormData.price_people");
                                                                                     }
                                                                                 })}
@@ -1389,7 +1388,7 @@ function AddGames() {
                                                                             <input
                                                                                 {...register("priceFormData.price_people", {
                                                                                     required: "收費方式必選",
-                                                                                    onChange: async (e) => {
+                                                                                    onChange: async () => {
                                                                                         await trigger("priceFormData.price_people");
                                                                                     }
                                                                                 })}
@@ -1410,7 +1409,7 @@ function AddGames() {
                                                                             <input
                                                                                 {...register("priceFormData.price_people", {
                                                                                     required: "收費方式必選",
-                                                                                    onChange: async (e) => {
+                                                                                    onChange: async () => {
                                                                                         await trigger("priceFormData.price_people");
                                                                                     }
                                                                                 })}
@@ -1443,7 +1442,7 @@ function AddGames() {
                                                                                 <input
                                                                                     {...register("priceFormData.single_price", {
                                                                                         required: "場次收費金額必填",
-                                                                                        onChange: async (e) => {
+                                                                                        onChange: async () => {
                                                                                             await trigger("priceFormData.single_price");
                                                                                         }
                                                                                     })}
@@ -1480,7 +1479,7 @@ function AddGames() {
                                                                                     <input
                                                                                         {...register("priceFormData.weekday_price", {
                                                                                             required: "平日收費金額必填",
-                                                                                            onChange: async (e) => {
+                                                                                            onChange: async () => {
                                                                                                 await trigger("priceFormData.weekday_price");
                                                                                             }
                                                                                         })}
@@ -1506,7 +1505,7 @@ function AddGames() {
                                                                                     <input
                                                                                         {...register("priceFormData.weekend_price", {
                                                                                             required: "假日收費金額必填",
-                                                                                            onChange: async (e) => {
+                                                                                            onChange: async () => {
                                                                                                 await trigger("priceFormData.weekend_price");
                                                                                             }
                                                                                         })}
@@ -1541,7 +1540,7 @@ function AddGames() {
                                                                                 <input
                                                                                     {...register("priceFormData.unit_person_price", {
                                                                                         required: "單人收費金額必填",
-                                                                                        onChange: async (e) => {
+                                                                                        onChange: async () => {
                                                                                             await trigger("priceFormData.unit_person_price");
                                                                                         }
                                                                                     })}
@@ -1580,7 +1579,7 @@ function AddGames() {
                                                                                     <input
                                                                                         {...register("priceFormData.unit_weekday_price", {
                                                                                             required: "平日收費金額必填",
-                                                                                            onChange: async (e) => {
+                                                                                            onChange: async () => {
                                                                                                 await trigger("priceFormData.unit_weekday_price");
                                                                                             }
                                                                                         })}
@@ -1606,7 +1605,7 @@ function AddGames() {
                                                                                     <input
                                                                                         {...register("priceFormData.unit_weekend_price", {
                                                                                             required: "假日收費金額必填",
-                                                                                            onChange: async (e) => {
+                                                                                            onChange: async () => {
                                                                                                 await trigger("priceFormData.unit_weekend_price");
                                                                                             }
                                                                                         })}

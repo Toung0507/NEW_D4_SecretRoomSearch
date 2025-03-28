@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useCallback, useReducer } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import GroupCard from "../layout/GroupCard";
 import SearchForm from "../components/TeamBuy/SearchForm";
 import SearchResults from "../components/TeamBuy/SearchResults";
 import RecommendedGroups from "../components/TeamBuy/RecommendedGroups";
