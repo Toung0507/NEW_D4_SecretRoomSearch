@@ -13,6 +13,8 @@ import Toast from "../layout/Toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { pushMessage } from "../redux/slices/toastSlice";
+import PropTypes from "prop-types";
+
 
 const emptyGames = {
     "store_id": 0,
@@ -160,6 +162,13 @@ function AddGames() {
             />
         </div>
     ));
+
+    CustomDateInput.propTypes = {
+        value: PropTypes.string.isRequired, // 確保 value 是字串
+        onClick: PropTypes.func.isRequired, // 確保 onClick 是函式
+    };
+
+    CustomDateInput.displayName = "CustomDateInput"; // 修正 display name 錯誤
 
     // 格式化日期
     const formatDate = (date) => {
@@ -1005,8 +1014,7 @@ function AddGames() {
                                                                     <div className="error-message text-danger mt-1 fs-caption lh-1">
                                                                         {errors?.gameFormData?.game_minNum_Players && errors?.gameFormData?.game_maxNum_Players ? (
                                                                             <p className="m-0">
-                                                                                {errors.gameFormData.game_minNum_Players.message}、
-                                                                                {errors.gameFormData.game_maxNum_Players.message}
+                                                                                {errors.gameFormData.game_minNum_Players.message}、{errors.gameFormData.game_maxNum_Players.message}
                                                                             </p>
                                                                         ) : errors?.gameFormData?.game_minNum_Players ? (
                                                                             <p className="m-0">{errors.gameFormData.game_minNum_Players.message}</p>
@@ -1018,13 +1026,13 @@ function AddGames() {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            {/*　密室介紹 */}
+                                                            {/*密室介紹*/}
                                                             <div className="row mb-3">
                                                                 <label htmlFor="game_info" className="col-sm-2 fs-Body-2 fw-bold fs-sm-Body-1 mb-2 mb-sm-0">密室介紹</label>
                                                                 <div className="col-sm-10">
                                                                     <div className="d-flex align-items-center">
                                                                         <textarea
-                                                                            defaultValue={gameFormData?.game_info}
+                                                                            defaultValue={gameFormData?.game_info.trim()}
                                                                             {...register("gameFormData.game_info", {
                                                                                 required: "密室介紹是必填的",
                                                                                 onChange: async () => {

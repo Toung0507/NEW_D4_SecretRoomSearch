@@ -5,6 +5,7 @@ import { Form, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Toast from "../layout/Toast";
 import { pushMessage } from "../redux/slices/toastSlice";
+import PropTypes from "prop-types";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -18,6 +19,7 @@ function Game_comment() {
     const [commentData, setCommentData] = useState(null);
     // 從 URL 中取得 state 與 id
     const { user, user_token } = useSelector((state) => state.userInfo);
+    const user_id = user.user_id;
     const dispatch = useDispatch();
 
     const {
@@ -151,7 +153,6 @@ function Game_comment() {
     const onSubmit = async (data) => {
         try {
             if (currentMode === "new") {
-                const user_id = user.user_id;
                 await axios.post(`${BASE_URL}/commentsData`, data);
                 reset();
                 dispatch(
@@ -161,6 +162,7 @@ function Game_comment() {
                     })
                 );
                 setTimeout(() => {
+
                     navigate(`/User_profile/${user_id}/myComments`);
                 }, 3000);
             } else if (currentMode === "edit") {
@@ -210,6 +212,11 @@ function Game_comment() {
                 ])}
             </div>
         );
+    };
+
+    StarRating.propTypes = {
+        value: PropTypes.string.isRequired,
+        onChange: PropTypes.func.isRequired,
     };
 
     if (!user) {
