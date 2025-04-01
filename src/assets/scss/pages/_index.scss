@@ -37,7 +37,9 @@
   }
 }
 .gameText {
-  width: 306px;
+  @include media-breakpoint-up(lg) {
+    width: 306px;
+  }
 }
 .gameImg {
   @include media-breakpoint-up(lg) {

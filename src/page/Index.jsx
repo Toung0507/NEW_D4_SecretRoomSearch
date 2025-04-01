@@ -320,9 +320,9 @@ function Index() {
                             </h3>
                         </div>
                         <div className="row d-flex justify-content-center">
-                            <div className="d-grid gap-16 col-lg-6">
-                                <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center d-grid gap-6">
-                                    <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
+                            <div className="col-lg-6">
+                                <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center mb-16">
+                                    <div className="my-lg-12 gameText text-center text-lg-start d-grid gap-3 gap-lg-6">
                                         <h5 className="text-primary-20 fw-bold">
                                             快速找到喜歡的密室遊戲
                                         </h5>
@@ -338,7 +338,7 @@ function Index() {
                                         />
                                     </div>
                                 </div>
-                                <div className="d-flex justify-content-lg-between flex-column-reverse flex-lg-row align-items-center d-grid gap-6">
+                                <div className="d-flex justify-content-lg-between flex-column-reverse flex-lg-row align-items-center mb-16">
                                     <div className="ratio ratio-16x9 gameImg">
                                         <img
                                             src="./image/vlad-hilitanu.png"
@@ -346,7 +346,7 @@ function Index() {
                                             className="rounded-16 w-100 img-fluid"
                                         />
                                     </div>
-                                    <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
+                                    <div className="my-lg-12 gameText text-center text-lg-start d-grid gap-3 gap-lg-6">
                                         <h5 className="text-primary-20 fw-bold">
                                             與其他玩家組隊遊玩
                                         </h5>
@@ -355,8 +355,8 @@ function Index() {
                                         </p>
                                     </div>
                                 </div>
-                                <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center d-grid gap-6">
-                                    <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
+                                <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center">
+                                    <div className="my-lg-12 gameText text-center text-lg-start d-grid gap-3 gap-lg-6">
                                         <h5 className="text-primary-20 fw-bold">觀看玩家評價</h5>
                                         <p className="text-Body-1 lh-lg text-wrap">
                                             瀏覽玩家提供的詳細評價和建議，了解各個密室遊戲的特色、難度和可玩性。不僅能看到評分和評論，還能看到玩家們的遊戲過程分享，確保每一次都能帶來愉快的遊戲體驗！
@@ -398,7 +398,10 @@ function Index() {
                                 <div className="col-lg-6 col-12">
                                     <div className="row ">
                                         {gameDifficulty.map((diff) => (
-                                            <div className="col-lg-4 col-6" key={diff.difficulty_id}>
+                                            <div
+                                                className="col-lg-4 col-sm-6 col-12"
+                                                key={diff.difficulty_id}
+                                            >
                                                 <a
                                                     href={`./#/Game_search?difficulty=${diff.difficulty_id}`}
                                                     className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4"
@@ -412,7 +415,7 @@ function Index() {
                                         ))}
                                         {gameProperty.slice(0, 9).map((property) => (
                                             <div
-                                                className="col-lg-4 col-6"
+                                                className="col-lg-4 col-sm-6 col-12"
                                                 key={property.property_id}
                                             >
                                                 <a
@@ -458,13 +461,11 @@ function Index() {
                                     modules={[Navigation, Autoplay]}
                                     className="mySwiper"
                                 >
-                                    {
-                                        recommendedGames.slice(0, 10).map((game) => (
-                                            <SwiperSlide key={game.game_id}>
-                                                <IndexGamesCard game={game} />
-                                            </SwiperSlide>
-                                        ))
-                                    }
+                                    {recommendedGames.slice(0, 10).map((game) => (
+                                        <SwiperSlide key={game.game_id}>
+                                            <IndexGamesCard game={game} />
+                                        </SwiperSlide>
+                                    ))}
                                 </Swiper>
                             </div>
                         </div>
@@ -496,13 +497,11 @@ function Index() {
                                     modules={[Navigation, Autoplay]}
                                     className="mySwiper"
                                 >
-                                    {
-                                        newedGames.slice(0, 10).map((game) => (
-                                            <SwiperSlide key={game.game_id}>
-                                                <IndexGamesCard game={game} key={game.game_id} />
-                                            </SwiperSlide>
-                                        ))
-                                    }
+                                    {newedGames.slice(0, 10).map((game) => (
+                                        <SwiperSlide key={game.game_id}>
+                                            <IndexGamesCard game={game} key={game.game_id} />
+                                        </SwiperSlide>
+                                    ))}
                                 </Swiper>
                             </div>
                         </div>
