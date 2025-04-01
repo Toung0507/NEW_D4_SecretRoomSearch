@@ -326,7 +326,7 @@ function Index() {
                                         <h5 className="text-primary-20 fw-bold">
                                             快速找到喜歡的密室遊戲
                                         </h5>
-                                        <p className="text-Body-1 lh-lg">
+                                        <p className="text-Body-1 lh-lg text-wrap">
                                             搜尋全台各地的密室遊戲。不論是恐怖繁悚、科幻冒險還是古典懸疑，都能幫助你找到最符合你興趣的挑戰。詳細的遊戲介紹、圖片，讓你在參加前就能了解遊戲的風格和難度，為你打造前所未有的解謎體驗！
                                         </p>
                                     </div>
@@ -350,7 +350,7 @@ function Index() {
                                         <h5 className="text-primary-20 fw-bold">
                                             與其他玩家組隊遊玩
                                         </h5>
-                                        <p className="text-Body-1 lh-lg">
+                                        <p className="text-Body-1 lh-lg text-wrap">
                                             結識來自全台密室愛好者，與他們組隊挑戰各種密室遊戲。無論是第一次體驗還是經驗豐富的老手，都能找到合適的隊友，一同享受團隊合作帶來的無限樂趣與成就感！
                                         </p>
                                     </div>
@@ -358,7 +358,7 @@ function Index() {
                                 <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center d-grid gap-6">
                                     <div className="my-lg-12 d-grid gap-3 gap-lg-6 gameText text-center text-lg-start">
                                         <h5 className="text-primary-20 fw-bold">觀看玩家評價</h5>
-                                        <p className="text-Body-1 lh-lg">
+                                        <p className="text-Body-1 lh-lg text-wrap">
                                             瀏覽玩家提供的詳細評價和建議，了解各個密室遊戲的特色、難度和可玩性。不僅能看到評分和評論，還能看到玩家們的遊戲過程分享，確保每一次都能帶來愉快的遊戲體驗！
                                         </p>
                                     </div>

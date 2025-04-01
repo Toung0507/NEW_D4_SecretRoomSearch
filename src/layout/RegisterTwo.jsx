@@ -11,6 +11,7 @@ function RegisterTwo() {
 
     const origUserEmailRef = useRef(orig_user_email);
     const origVerificationCodeRef = useRef(orig_verification_code);
+    const verificationCodeRef = useRef(verification_code);
 
     // 檢查 Email 格式
     const validateEmail = (email) => {
@@ -47,10 +48,11 @@ function RegisterTwo() {
         setVerification_code(e.target.value);
     };
 
+
     useEffect(() => {
         // 確保信箱已被驗證
         const checkEmailAuth = () => {
-            if (!userRegister.user_email || !verification_code) {
+            if (!userRegister.user_email || !verificationCodeRef.current) {
                 return;
             }
 
@@ -66,8 +68,8 @@ function RegisterTwo() {
         };
 
         checkEmailAuth();
+    }, [userRegister.user_email, setIsEmailAuth, setIsSend, setVerification_code]); // ✅ 只在 userRegister.user_email 改變時觸發
 
-    }, [userRegister.user_email]);
 
     return (
         <>

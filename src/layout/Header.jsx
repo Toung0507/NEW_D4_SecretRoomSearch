@@ -54,6 +54,7 @@ function Header() {
     }, [user_token, user, adminBtn, storeBtn, userBtn]);
 
     const handleLogOut = () => {
+        handleNavCollapse();
         dispatch(logOut());
         navigate("/");
     };

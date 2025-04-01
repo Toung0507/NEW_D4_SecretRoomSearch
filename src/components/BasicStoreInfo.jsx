@@ -39,9 +39,9 @@ const BasicInfo = () => {
     });
 
     const [storeUserFormData, setStoreUserFormData] = useState({
-        user_name: user.user_name,
-        user_email: user.user_email,
-        user_tel: user.user_tel,
+        user_name: user?.user_name,
+        user_email: user?.user_email,
+        user_tel: user?.user_tel,
         store_self_address: store.store_self_address,
         store_contact: store.store_contact,
         store_method: store.store_method,
@@ -270,7 +270,7 @@ const BasicInfo = () => {
                         <div className="user_name d-flex px-6 py-sm-5 py-4 align-items-center border-nature-90 border-1 border-top border-bottom" >
                             <img
                                 src={store.store_isAuth === 'processing' ? './icon/processingStore.png' : store.store_isAuth === 'pass' ? './icon/passStore.png' : './icon/rejectedStore.png'}
-                                alt={user.user_name}
+                                alt={user?.user_name}
                                 className="rounded-circle"
                                 style={{
                                     width: "10%",
@@ -279,7 +279,7 @@ const BasicInfo = () => {
                                 }}
                             />
                             <p className="ps-5 fw-bold fs-h6">
-                                {user.user_name}
+                                {user?.user_name}
                                 <span className="fs-Body-2 fs-lg-h6">
                                     {store.store_isAuth === 'processing' ?
                                         (<span className="text-secondary-40"><IoInformationCircle className="ms-3 me-1" /> 發布遊戲資格審核中</span>) :
