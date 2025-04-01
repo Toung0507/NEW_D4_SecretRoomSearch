@@ -320,7 +320,7 @@ function Index() {
               </h3>
             </div>
             <div className="row d-flex justify-content-center">
-              <div className="col-lg-6 d-grid gap-16">
+              <div className="col-lg-6">
                 <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center">
                   <div className="my-lg-12 gameText text-center text-lg-start d-grid gap-3 gap-lg-6">
                     <h5 className="text-primary-20 fw-bold">
@@ -398,7 +398,10 @@ function Index() {
                 <div className="col-lg-6 col-12">
                   <div className="row ">
                     {gameDifficulty.map((diff) => (
-                      <div className="col-lg-4 col-6" key={diff.difficulty_id}>
+                      <div
+                        className="col-lg-4 col-sm-6 col-12"
+                        key={diff.difficulty_id}
+                      >
                         <a
                           href={`./#/Game_search?difficulty=${diff.difficulty_id}`}
                           className="btn btn-nature-30 text-nature-99 py-6 px-8 mb-7 d-flex align-items-center justify-content-center rounded-4"
@@ -412,7 +415,7 @@ function Index() {
                     ))}
                     {gameProperty.slice(0, 9).map((property) => (
                       <div
-                        className="col-lg-4 col-6"
+                        className="col-lg-4 col-sm-6 col-12"
                         key={property.property_id}
                       >
                         <a
