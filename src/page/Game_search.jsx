@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
 import CommendedGamesCard from "../layout/CommendedGamesCard";
 const baseApi = import.meta.env.VITE_BASE_URL;
@@ -161,7 +161,7 @@ function Game_search() {
     };
 
     // 處理篩選後的結果呈現
-    const handleSerach = async (e) => {
+    const handleSerach = useCallback(async (e) => {
         if (e !== undefined) {
             e.preventDefault(); // 可用此方式將預設行為取消掉，讓使用者可以直接按enter就可進入，不限制只透過按鈕點選
         }
@@ -237,7 +237,8 @@ function Game_search() {
                 behavior: "smooth",
             });
         }
-    };
+    }, [games, search.area, search.difficulty, search.game_name, search.game_people, search.order, search.property]);
+
 
     useEffect(() => {
         getGames();
@@ -256,13 +257,6 @@ function Game_search() {
             const defaultProperty = params.get("property");
             const defaultDifficulty = params.get("difficulty");
 
-            console.log("URL 參數：", {
-                defaultArea,
-                defaultNum,
-                defaultProperty,
-                defaultDifficulty,
-            });
-
             setSearch((prev) => ({
                 ...prev,
                 area: defaultArea ? [defaultArea] : [],
@@ -272,7 +266,7 @@ function Game_search() {
             }));
             setIsIndexSerach(true);
         }
-    }, [location]);
+    }, []);
 
     // 使用 useRef 來引用表單
     const userFormRef = useRef(null);
@@ -283,7 +277,7 @@ function Game_search() {
         if (isIndexSearch && games.length > 0) {
             handleSerach();
         }
-    }, [isIndexSearch, games]);
+    }, [isIndexSearch, games, handleSerach]);
 
     //網址後方參數消除
     useEffect(() => {

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { userContext } from "../page/UserProfile";
+import { userContext } from "../reducers/createContent";
 import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
@@ -18,33 +18,16 @@ const ParticipatingGroup = () => {
     const [isHavehistoryGroups, setIsHaveHistorysGroups] = useState(true);
     const [activeTab, setActiveTab] = useState("nowGroup");
 
-    const getAllGroups = async () => {
-        let nowG = [];
-        let historyG = [];
-        // 先判斷是否有主揪的資料
-        try {
-            const res = await axios.get(`${baseApi}/usersData/${user_id}/groupsData`);
-            res.data.map((data) => {
-                if (!data.group_cancel && data.group_isSuccessful === null) {
-                    nowG.push(data);
-                }
-                else if (data.group_cancel && data.group_isSuccessful) {
-                    data["status"] = '已遊玩結束';
-                    historyG.push(data);
-                }
-                else if (data.group_cancel && !data.group_isSuccessful) {
-                    data["status"] = '已棄團';
-                    historyG.push(data);
-                }
-            })
-        } catch (error) {
-            console.error(error);
-        }
-        // 再判斷是否有參與者的資料
-        try {
-            const res = await axios.get(`${baseApi}/groupsData`);
-            res.data.map((data) => {
-                if (data.group_participants.includes(user_id)) {
+
+
+    useEffect(() => {
+        const getAllGroups = async () => {
+            let nowG = [];
+            let historyG = [];
+            // 先判斷是否有主揪的資料
+            try {
+                const res = await axios.get(`${baseApi}/usersData/${user_id}/groupsData`);
+                res.data.map((data) => {
                     if (!data.group_cancel && data.group_isSuccessful === null) {
                         nowG.push(data);
                     }
@@ -56,31 +39,50 @@ const ParticipatingGroup = () => {
                         data["status"] = '已棄團';
                         historyG.push(data);
                     }
-                }
-            })
-        } catch (error) {
-            console.error(error);
-        }
+                })
+            } catch (error) {
+                console.error(error);
+            }
+            // 再判斷是否有參與者的資料
+            try {
+                const res = await axios.get(`${baseApi}/groupsData`);
+                res.data.map((data) => {
+                    if (data.group_participants.includes(user_id)) {
+                        if (!data.group_cancel && data.group_isSuccessful === null) {
+                            nowG.push(data);
+                        }
+                        else if (data.group_cancel && data.group_isSuccessful) {
+                            data["status"] = '已遊玩結束';
+                            historyG.push(data);
+                        }
+                        else if (data.group_cancel && !data.group_isSuccessful) {
+                            data["status"] = '已棄團';
+                            historyG.push(data);
+                        }
+                    }
+                })
+            } catch (error) {
+                console.error(error);
+            }
 
-        if (nowG.length === 0) {
-            setIsHaveNowGroups(false);
-        }
-        else {
-            setNowGroups(nowG);
-        }
+            if (nowG.length === 0) {
+                setIsHaveNowGroups(false);
+            }
+            else {
+                setNowGroups(nowG);
+            }
 
-        if (historyG.length === 0) {
-            setIsHaveHistorysGroups(false);
-        }
-        else {
-            setHistorysGroups(historyG);
-        }
+            if (historyG.length === 0) {
+                setIsHaveHistorysGroups(false);
+            }
+            else {
+                setHistorysGroups(historyG);
+            }
 
-    };
+        };
 
-    useEffect(() => {
         getAllGroups();
-    }, []);
+    }, [user_id]);
 
     return (
         <>

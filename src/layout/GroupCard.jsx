@@ -88,7 +88,7 @@ export default GroupCard;
 // 添加 PropTypes 驗證
 GroupCard.propTypes = {
     game: PropTypes.shape({
-        game_img: PropTypes.string.isRequired,
+        game_img: PropTypes.array.isRequired,
         game_name: PropTypes.string.isRequired,
         game_address: PropTypes.string.isRequired,
         game_dif_tagname: PropTypes.string.isRequired,
@@ -96,7 +96,7 @@ GroupCard.propTypes = {
         game_main_tag2name: PropTypes.string.isRequired,
     }).isRequired,
     group: PropTypes.shape({
-        group_id: PropTypes.string.isRequired,
+        group_id: PropTypes.number.isRequired,
         group_active_date: PropTypes.string.isRequired,
     }).isRequired,
     user: PropTypes.shape({

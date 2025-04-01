@@ -1,5 +1,5 @@
 import axios from "axios";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 const baseApi = import.meta.env.VITE_BASE_URL;
 import DatePicker from "react-datepicker";
@@ -189,7 +189,7 @@ function AddGames() {
     };
 
     // 驗證日期的函式
-    const isDateValid = () => {
+    const isDateValid = useCallback(() => {
         const isLimited = watch("gameFormData.game_isLimited");
         if (isLimited === null) {
             setError("gameFormData.game_end_date", {
@@ -254,7 +254,7 @@ function AddGames() {
             }
         }
         return true;
-    };
+    }, [watch, setError, clearErrors, gameFormData.game_end_date, gameFormData.game_start_date]);
 
     // 使用 useRef 儲存初始的日期與種類
     const initialValuesRef = useRef({
@@ -583,7 +583,7 @@ function AddGames() {
     };
 
     // 取到遊戲相關資料
-    const getStoreGameInfo = async () => {
+    const getStoreGameInfo = useCallback(async () => {
         const store_id = store.store_id;
         try {
             const res = await axios.get(`${baseApi}/storesData/${store_id}/gamesData`);
@@ -624,10 +624,10 @@ function AddGames() {
         } catch (error) {
             console.error(error);
         }
-    }
+    }, [game_id, getStoreGamePriceInfo, store.store_id]);
 
     // 取到遊戲價格表相關資料
-    const getStoreGamePriceInfo = async () => {
+    const getStoreGamePriceInfo = useCallback(async () => {
         try {
             const res = await axios.get(`${baseApi}/gamesData/${game_id}/pricesData`);
             const allPricesInfo = res.data;
@@ -636,7 +636,7 @@ function AddGames() {
         } catch (error) {
             console.error(error);
         }
-    }
+    }, [game_id]);
 
     // 取出的價格表轉換為表單格式
     const handleGetPrices = (data) => {
@@ -728,14 +728,15 @@ function AddGames() {
             setGameFormData(newGame.games);
             setPriceFormData(newGame.prices);
         }
-    }, [newGame]);
+    }, [newGame, reset]);
 
+    const is_Limited = watch("gameFormData?.game_isLimited");
     // 確保送出後的錯誤訊息可以跟著選擇的內容作判斷
     useEffect(() => {
         if (isSend) {
             isDateValid();
         }
-    }, [gameFormData?.game_end_date, gameFormData?.game_start_date, watch("gameFormData?.game_isLimited")])
+    }, [gameFormData?.game_end_date, gameFormData?.game_start_date, is_Limited, isSend, isDateValid]);
 
     // 確保換ID時，有重新載入
     useEffect(() => {
@@ -752,9 +753,9 @@ function AddGames() {
             setAddOrEdit("edit");
             getStoreGameInfo();
         }
-    }, [game_id, isLoading]);
+    }, [game_id, isLoading, getStoreGameInfo]);
 
-    const getBaseInfo = async () => {
+    const getBaseInfo = useCallback(async () => {
         try {
             // 同時發送三個 axios 請求
             const [difficultysRes, propertysRes, storeRes] = await Promise.all([
@@ -768,12 +769,12 @@ function AddGames() {
         } catch (error) {
             console.error(error);
         }
-    }
+    }, [user_id]);
 
     useEffect(() => {
         window.scrollTo(0, 0); // 回到頁面頂部
         getBaseInfo();
-    }, []);
+    }, [getBaseInfo]);
 
     // 確保基本資料載入完成
     useEffect(() => {

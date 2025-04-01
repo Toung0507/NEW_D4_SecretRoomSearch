@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { userStoreContext } from "../page/StoreProfile";
+import { userStoreContext } from "../reducers/createContent";
 
 const baseApi = import.meta.env.VITE_BASE_URL;
 
@@ -20,46 +20,46 @@ const MyGames = () => {
     const [activeTab, setActiveTab] = useState("upGames");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const getAllGames = async () => {
-        if (store.store_isAuth !== 'pass') {
-            setIsAuthStore(false);
-        }
-        else if (store.store_isAuth === 'pass') {
-            setIsAuthStore(true);
-        }
-        let upG = [];
-        let downG = [];
-        try {
-            const res = await axios.get(`${baseApi}/storesData/${store_id}/gamesData`);
-            res.data.map((data) => {
-                if (data.game_isStock) {
-                    upG.push(data);
-                }
-                else {
-                    downG.push(data);
-                }
-            })
-        } catch (error) {
-            setErrorMessage(error);
-        }
-        if (upG.length === 0) {
-            setIsHaveUpGames(false);
-        }
-        else {
-            setUpGames(upG);
-        }
-
-        if (downG.length === 0) {
-            setIsDownUpGames(false);
-        }
-        else {
-            setDownGames(downG);
-        }
-    };
-
     useEffect(() => {
-        getAllGames();
-    }, []);
+        const getAllGames = async () => {
+            if (store.store_isAuth !== 'pass') {
+                setIsAuthStore(false);
+            }
+            else if (store.store_isAuth === 'pass') {
+                setIsAuthStore(true);
+            }
+            let upG = [];
+            let downG = [];
+            try {
+                const res = await axios.get(`${baseApi}/storesData/${store_id}/gamesData`);
+                res.data.map((data) => {
+                    if (data.game_isStock) {
+                        upG.push(data);
+                    }
+                    else {
+                        downG.push(data);
+                    }
+                })
+            } catch (error) {
+                setErrorMessage(error);
+            }
+            if (upG.length === 0) {
+                setIsHaveUpGames(false);
+            }
+            else {
+                setUpGames(upG);
+            }
+
+            if (downG.length === 0) {
+                setIsDownUpGames(false);
+            }
+            else {
+                setDownGames(downG);
+            }
+        };
+
+        getAllGames(); //若只有一次那就放在useEffect內，若有多次就可以放外部用useCallback
+    }, [store.store_isAuth, store_id]);
 
     return (
 

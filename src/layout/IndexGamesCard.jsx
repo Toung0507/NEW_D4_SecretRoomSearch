@@ -92,8 +92,8 @@ export default IndexGamesCard;
 // 添加 PropTypes 驗證
 IndexGamesCard.propTypes = {
     game: PropTypes.shape({
-        game_id: PropTypes.string.isRequired,
-        game_img: PropTypes.string.isRequired,
+        game_id: PropTypes.number.isRequired,
+        game_img: PropTypes.array.isRequired,
         game_name: PropTypes.string.isRequired,
         game_address: PropTypes.string.isRequired,
         game_score: PropTypes.number.isRequired,

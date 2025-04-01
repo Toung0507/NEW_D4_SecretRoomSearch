@@ -1,6 +1,6 @@
 import axios from "axios";
 import dayjs from "dayjs";
-import { createContext, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { pushMessage } from "../redux/slices/toastSlice";
@@ -8,7 +8,7 @@ import RegisterOne from "../layout/RegisterOne";
 import RegisterTwo from "../layout/RegisterTwo";
 import RegisterThree from "../layout/RegisterThree";
 import Toast from "../layout/Toast";
-export const registerInfo = createContext({});
+import { registerInfo } from "../reducers/createContent";
 
 const steps = [
     {
@@ -102,7 +102,7 @@ function Register() {
     const progressWidth = ((currentStep - 1) / 2) * 100;
 
     // 最後註冊，有兩層post，先註冊register到user，再依據身分註冊post到store
-    const registeFinal = async () => {
+    const registeFinal = useCallback(async () => {
         let finalUser = userRegister;
         let finalStore = storeRegister;
         let user_id = 0;
@@ -167,7 +167,7 @@ function Register() {
                 }));
             }
         };
-    };
+    }, [dispatch, navigate, storeRegister, userRegister]);
 
     // 當收到子元件成功送出的訊號時，設定旗標
     const handleSubmitUserSuccess = () => {
@@ -195,7 +195,7 @@ function Register() {
         // 送出完成後可考慮重置 isResgitor 為 false
         setIsUserResgitor(false);
         setIsStoreResgitor(false)
-    }, [isUserResgitor, userRegister, isStoreResgitor, storeRegister]);
+    }, [isUserResgitor, userRegister, isStoreResgitor, storeRegister, registeFinal]);
 
     // 送出按鈕點擊時只負責觸發子元件的 submit，不直接設置旗標
     const handleFinalClick = () => {
