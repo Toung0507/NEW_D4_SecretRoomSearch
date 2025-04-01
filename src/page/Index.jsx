@@ -321,7 +321,7 @@ function Index() {
             </div>
             <div className="row d-flex justify-content-center">
               <div className="col-lg-6">
-                <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center">
+                <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center mb-16">
                   <div className="my-lg-12 gameText text-center text-lg-start d-grid gap-3 gap-lg-6">
                     <h5 className="text-primary-20 fw-bold">
                       快速找到喜歡的密室遊戲
@@ -338,7 +338,7 @@ function Index() {
                     />
                   </div>
                 </div>
-                <div className="d-flex justify-content-lg-between flex-column-reverse flex-lg-row align-items-center">
+                <div className="d-flex justify-content-lg-between flex-column-reverse flex-lg-row align-items-center mb-16">
                   <div className="ratio ratio-16x9 gameImg">
                     <img
                       src="./image/vlad-hilitanu.png"
