@@ -19,8 +19,11 @@ function Game_comment() {
     const [commentData, setCommentData] = useState(null);
     // 從 URL 中取得 state 與 id
     const { user, user_token } = useSelector((state) => state.userInfo);
-    const user_id = user.user_id;
+    let user_id = "";
     const dispatch = useDispatch();
+    if (user) {
+        user_id = user.user_id;
+    }
 
     const {
         register,
@@ -40,70 +43,8 @@ function Game_comment() {
         },
     });
 
-    useEffect(() => {
-        // 先從三個 API 同時取得相關資料
-        fetchRelatedData();
-        // 若是 edit 模式（URL 的 id 為評論識別碼），直接取得該筆評論資料
-        if (mode === "edit") {
-            fetchCommentData(Number(id));
-        } else if (mode === "new") {
-            // 當 new 模式時，以 id 當作遊戲編號取得遊戲資料
-            fetchGameData(Number(id));
-        }
-        window.scrollTo(0, 0);
-    }, [id, mode, user, fetchCommentData, fetchRelatedData]);
-
-    // 取得所有評論、使用者與遊戲資料，並整合成一個陣列
-    const fetchRelatedData = useCallback(async () => {
-        try {
-            const [commentRes, userRes, gameRes] = await Promise.all([
-                axios.get(`${BASE_URL}/commentsData`),
-                axios.get(`${BASE_URL}/usersData`),
-                axios.get(`${BASE_URL}/gamesData`),
-            ]);
-            const comments = commentRes.data; // 假設回傳為陣列
-            const users = userRes.data;
-            const games = gameRes.data;
-
-            // 建立遊戲與使用者映射表
-            const gameMap = games.reduce((acc, game) => {
-                acc[game.game_id] = game;
-                return acc;
-            }, {});
-
-            const userMap = users.reduce((acc, u) => {
-                acc[u.user_id] = u;
-                return acc;
-            }, {});
-
-            // 整合每筆評論，並將對應的遊戲與使用者資料放進去
-            const integrated = comments.map((comment) => ({
-                comment,
-                game: gameMap[comment.game_id],
-                user: userMap[comment.user_id],
-            }));
-
-            // 若是 new 模式，依據使用者與遊戲 id 過濾出符合的評論
-            if (mode === "new" && user && id) {
-                const matched = integrated.find(
-                    (item) =>
-                        item.comment.game_id === Number(id) &&
-                        item.comment.user_id === user.user_id
-                );
-                if (matched) {
-                    // 自動導向 edit 模式：URL 的 id 為該筆評論的 comment_id
-                    navigate(`/Game_comment/edit/${matched.comment.comment_id}`, {
-                        replace: true,
-                    });
-                }
-            }
-        } catch (error) {
-            console.error("取得相關資料錯誤：", error);
-        }
-    }, [id, mode, navigate, user]);
-
     // 單獨取得遊戲資料（若整合資料中尚未取得或需要補充）
-    const fetchGameData = async (gameId) => {
+    const fetchGameData = useCallback(async (gameId) => {
         try {
             const res = await axios.get(`${BASE_URL}/gamesData/${gameId}`);
             const data = res.data;
@@ -114,7 +55,7 @@ function Game_comment() {
         } catch (error) {
             console.error("取得遊戲資料錯誤：", error);
         }
-    };
+    }, []);
 
     // 根據傳入的評論識別碼取得評論資料，並更新表單初始值
     const fetchCommentData = useCallback(async (commentId) => {
@@ -147,7 +88,7 @@ function Game_comment() {
         } catch (error) {
             console.error("取得評論資料錯誤：", error);
         }
-    }, [gameData, reset, user.user_id]);
+    }, [gameData, reset, user?.user_id, fetchGameData]);
 
     // 表單送出處理：若是新增則用 POST，若是編輯則用 Patch 更新
     const onSubmit = async (data) => {
@@ -215,9 +156,78 @@ function Game_comment() {
     };
 
     StarRating.propTypes = {
-        value: PropTypes.string.isRequired,
+        value: PropTypes.number.isRequired,
         onChange: PropTypes.func.isRequired,
     };
+
+    useEffect(() => {
+        // 取得所有評論、使用者與遊戲資料，並整合成一個陣列
+        const fetchRelatedData = (async () => {
+            try {
+                const [commentRes, userRes, gameRes] = await Promise.all([
+                    axios.get(`${BASE_URL}/commentsData`),
+                    axios.get(`${BASE_URL}/usersData`),
+                    axios.get(`${BASE_URL}/gamesData`),
+                ]);
+                const comments = commentRes.data; // 假設回傳為陣列
+                const users = userRes.data;
+                const games = gameRes.data;
+
+                // 建立遊戲與使用者映射表
+                const gameMap = games.reduce((acc, game) => {
+                    acc[game.game_id] = game;
+                    return acc;
+                }, {});
+
+                const userMap = users.reduce((acc, u) => {
+                    acc[u.user_id] = u;
+                    return acc;
+                }, {});
+
+                // 整合每筆評論，並將對應的遊戲與使用者資料放進去
+                const integrated = comments.map((comment) => ({
+                    comment,
+                    game: gameMap[comment.game_id],
+                    user: userMap[comment.user_id],
+                }));
+
+                // 若是 new 模式，依據使用者與遊戲 id 過濾出符合的評論
+                if (mode === "new" && user && id) {
+                    const matched = integrated.find(
+                        (item) =>
+                            item.comment.game_id === Number(id) &&
+                            item.comment.user_id === user.user_id
+                    );
+                    if (matched) {
+                        // 自動導向 edit 模式：URL 的 id 為該筆評論的 comment_id
+                        navigate(`/Game_comment/edit/${matched.comment.comment_id}`, {
+                            replace: true,
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("取得相關資料錯誤：", error);
+            }
+        });
+
+        fetchRelatedData();
+    }, [id, mode, user, navigate]); // ✅ 這樣 Lint 也不會報錯，且避免無窮迴圈
+
+
+    useEffect(() => {
+        // 若是 edit 模式（URL 的 id 為評論識別碼），直接取得該筆評論資料
+        if (mode === "edit") {
+            fetchCommentData(Number(id));
+        } else if (mode === "new") {
+            // 當 new 模式時，以 id 當作遊戲編號取得遊戲資料
+            fetchGameData(Number(id));
+        }
+    }, [id, mode, user, fetchCommentData, fetchGameData]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+
+    }, []);
 
     if (!user) {
         return (

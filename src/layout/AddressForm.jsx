@@ -111,5 +111,5 @@ export default AddressForm;
 // PropTypes 驗證
 AddressForm.propTypes = {
     onChange: PropTypes.func.isRequired, // 表示必填，且必須為函數
-    initialAddress: PropTypes.string.isRequired, // 表示必填，且必須為字串
+    initialAddress: PropTypes.string, // 表示必填，且必須為字串
 };

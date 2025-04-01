@@ -29,7 +29,7 @@ function StoreProfile() {
         else {
             setIsAuthMySelf(false);
         }
-    }, [user_token, user.user_id, user_id]);
+    }, [user_token, user?.user_id, user_id]);
 
     const getStore = useCallback(async () => {
         try {

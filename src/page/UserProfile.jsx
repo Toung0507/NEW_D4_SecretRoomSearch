@@ -24,7 +24,7 @@ function UserProfile() {
         else {
             setIsAuthMySelf(false);
         }
-    }, [user.user_id, user_id, user_token]);
+    }, [user?.user_id, user_id, user_token]);
 
     useEffect(() => {
         checkMySelf();

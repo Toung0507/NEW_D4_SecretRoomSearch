@@ -100,7 +100,7 @@ GroupCard.propTypes = {
         group_active_date: PropTypes.string.isRequired,
     }).isRequired,
     user: PropTypes.shape({
-        user_name: PropTypes.string.isRequired,
-        user_sex: PropTypes.string.isRequired,
+        user_name: PropTypes.string,
+        user_sex: PropTypes.string,
     }).isRequired,
 };

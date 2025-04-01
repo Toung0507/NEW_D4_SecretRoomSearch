@@ -119,7 +119,11 @@ const BasicInfo = () => {
                 handleHideupdateInputPawwordtModal();
             }, 3000);
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            dispatch(pushMessage({
+                text: '修改密碼失敗',
+                status: 'error'
+            }));
         }
 
     };
@@ -169,8 +173,8 @@ const BasicInfo = () => {
                     <div className="user-info bg-white ">
                         <div className="user_name d-flex px-6 py-sm-5 py-4 align-items-center border-nature-90 border-1 border-top border-bottom" >
                             <img
-                                src={user.user_sex === '男' ? './icon/man.png' : user.user_sex === '女' ? './icon/woman.png' : './icon/user.png'}
-                                alt={user.user_name}
+                                src={user?.user_sex === '男' ? './icon/man.png' : user?.user_sex === '女' ? './icon/woman.png' : './icon/user.png'}
+                                alt={user?.user_name}
                                 className="rounded-circle"
                                 style={{
                                     width: "14%",
@@ -178,7 +182,7 @@ const BasicInfo = () => {
                                     aspectRatio: "1/1",
                                 }}
                             />
-                            <h5 className="ps-5 fw-bold">{user.user_name}</h5>
+                            <h5 className="ps-5 fw-bold">{user?.user_name}</h5>
                         </div>
                         <div className="user_information p-6 ">
                             <form className="text-start" onSubmit={onSubmitUser} id="userinfoform">

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { registerInfo } from "../reducers/createContent";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { RiCheckboxCircleLine } from "react-icons/ri";
@@ -9,26 +9,9 @@ function RegisterTwo() {
     const [orig_verification_code] = useState(verification_code);
     const [emailError, setEmailError] = useState("");
 
-    // 確保信箱已被驗證
-    const checkEmailAuth = useCallback(() => {
-        if (userRegister.user_email === '' || userRegister.user_email === undefined || verification_code === undefined || verification_code === '') {
-            return
-        }
-
-        else {
-            if (orig_user_email !== userRegister.user_email) {
-                setIsSend(false);
-                setIsEmailAuth(false);
-                setVerification_code('');
-            }
-            else if ((orig_user_email === userRegister.user_email) && orig_verification_code !== undefined) {
-                setIsSend(true);
-                setIsEmailAuth(true);
-                setVerification_code(orig_verification_code);
-            }
-        }
-
-    }, [userRegister.user_email, orig_user_email, orig_verification_code, setIsEmailAuth, setIsSend, setVerification_code, verification_code]);
+    const origUserEmailRef = useRef(orig_user_email);
+    const origVerificationCodeRef = useRef(orig_verification_code);
+    const verificationCodeRef = useRef(verification_code);
 
     // 檢查 Email 格式
     const validateEmail = (email) => {
@@ -65,9 +48,28 @@ function RegisterTwo() {
         setVerification_code(e.target.value);
     };
 
+
     useEffect(() => {
+        // 確保信箱已被驗證
+        const checkEmailAuth = () => {
+            if (!userRegister.user_email || !verificationCodeRef.current) {
+                return;
+            }
+
+            if (origUserEmailRef.current !== userRegister.user_email) {
+                setIsSend(false);
+                setIsEmailAuth(false);
+                setVerification_code('');
+            } else if (origUserEmailRef.current === userRegister.user_email && origVerificationCodeRef.current !== undefined) {
+                setIsSend(true);
+                setIsEmailAuth(true);
+                setVerification_code(origVerificationCodeRef.current);
+            }
+        };
+
         checkEmailAuth();
-    }, [checkEmailAuth]);
+    }, [userRegister.user_email, setIsEmailAuth, setIsSend, setVerification_code]); // ✅ 只在 userRegister.user_email 改變時觸發
+
 
     return (
         <>
