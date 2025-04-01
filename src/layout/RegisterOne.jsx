@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { registerInfo } from "../page/Register";
 import { FaUserCheck } from "react-icons/fa";
 import { LuLaptopMinimalCheck } from "react-icons/lu";
 import { FaInfoCircle } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
+import { registerInfo } from "../reducers/createContent";
 
 function RegisterOne() {
     const { handleUserChange, userRegister } = useContext(registerInfo);

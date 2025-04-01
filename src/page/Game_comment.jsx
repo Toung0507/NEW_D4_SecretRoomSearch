@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { Form, useParams, useNavigate } from "react-router-dom";
@@ -51,10 +51,10 @@ function Game_comment() {
             fetchGameData(Number(id));
         }
         window.scrollTo(0, 0);
-    }, [id, mode, user]);
+    }, [id, mode, user, fetchCommentData, fetchRelatedData]);
 
     // 取得所有評論、使用者與遊戲資料，並整合成一個陣列
-    const fetchRelatedData = async () => {
+    const fetchRelatedData = useCallback(async () => {
         try {
             const [commentRes, userRes, gameRes] = await Promise.all([
                 axios.get(`${BASE_URL}/commentsData`),
@@ -100,7 +100,7 @@ function Game_comment() {
         } catch (error) {
             console.error("取得相關資料錯誤：", error);
         }
-    };
+    }, [id, mode, navigate, user]);
 
     // 單獨取得遊戲資料（若整合資料中尚未取得或需要補充）
     const fetchGameData = async (gameId) => {
@@ -117,7 +117,7 @@ function Game_comment() {
     };
 
     // 根據傳入的評論識別碼取得評論資料，並更新表單初始值
-    const fetchCommentData = async (commentId) => {
+    const fetchCommentData = useCallback(async (commentId) => {
         try {
             const res = await axios.get(`${BASE_URL}/commentsData/${commentId}`);
             const data = res.data;
@@ -147,7 +147,7 @@ function Game_comment() {
         } catch (error) {
             console.error("取得評論資料錯誤：", error);
         }
-    };
+    }, [gameData, reset, user.user_id]);
 
     // 表單送出處理：若是新增則用 POST，若是編輯則用 Patch 更新
     const onSubmit = async (data) => {

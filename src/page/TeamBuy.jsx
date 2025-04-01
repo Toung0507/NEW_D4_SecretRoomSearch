@@ -256,14 +256,8 @@ function TeamBuy() {
         }
     };
 
-    // 重試資料載入
-    const handleRetry = useCallback(async () => {
-        setError(null);
-        fetchAllData();
-    }, []);
-
     // 所有資料載入函數
-    const fetchAllData = async () => {
+    const fetchAllData = useCallback(async () => {
         setIsLoading(true);
         setError(null);
         try {
@@ -280,7 +274,15 @@ function TeamBuy() {
             setError(error.message || "資料載入失敗，請重試");
             setIsLoading(false);
         }
-    };
+    }, []);
+
+    // 重試資料載入
+    const handleRetry = useCallback(async () => {
+        setError(null);
+        fetchAllData();
+    }, [fetchAllData]);
+
+
 
     useEffect(() => {
         fetchAllData();
@@ -293,7 +295,7 @@ function TeamBuy() {
                 value: gameData.gameName,
             });
         }
-    }, []);
+    }, [fetchAllData, gameData]);
 
     // 處理自動搜尋
     useEffect(() => {

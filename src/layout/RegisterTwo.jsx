@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { registerInfo } from "../page/Register";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { registerInfo } from "../reducers/createContent";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { RiCheckboxCircleLine } from "react-icons/ri";
 
@@ -10,11 +10,11 @@ function RegisterTwo() {
     const [emailError, setEmailError] = useState("");
 
     // 確保信箱已被驗證
-    const checkEmailAuth = () => {
-
+    const checkEmailAuth = useCallback(() => {
         if (userRegister.user_email === '' || userRegister.user_email === undefined || verification_code === undefined || verification_code === '') {
             return
         }
+
         else {
             if (orig_user_email !== userRegister.user_email) {
                 setIsSend(false);
@@ -28,7 +28,7 @@ function RegisterTwo() {
             }
         }
 
-    };
+    }, [userRegister.user_email, orig_user_email, orig_verification_code, setIsEmailAuth, setIsSend, setVerification_code, verification_code]);
 
     // 檢查 Email 格式
     const validateEmail = (email) => {
@@ -67,7 +67,7 @@ function RegisterTwo() {
 
     useEffect(() => {
         checkEmailAuth();
-    }, [userRegister.user_email]);
+    }, [checkEmailAuth]);
 
     return (
         <>

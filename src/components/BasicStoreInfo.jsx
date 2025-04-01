@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { userStoreContext } from "../page/StoreProfile";
+import { userStoreContext } from "../reducers/createContent";
 import { useForm } from "react-hook-form";
 import { FaCheckDouble } from "react-icons/fa";
 import { VscError } from "react-icons/vsc";
@@ -30,7 +30,7 @@ const BasicInfo = () => {
 
     useEffect(() => {
         setStoreUserValue("store_method", storeUserFormData.store_method);
-    }, [watchMethod])
+    }, [watchMethod, setStoreUserValue, storeUserFormData.store_method]);
 
     const [storeFormData, setStoreFormData] = useState({
         store_name: store.store_name,

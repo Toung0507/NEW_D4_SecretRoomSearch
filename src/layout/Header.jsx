@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { logOut } from "../redux/slices/userInfoSlice";
 
 const navbar = [
@@ -17,27 +17,25 @@ function Header() {
     const user_id = Number(user?.user_id);
 
     //這是管理者的頁面
-    const adminBtn = [
+    const adminBtn = useMemo(() => [
         { path: "/Admin/User", name: "會員管理" },
         { path: "/Admin/Store", name: "店家管理" },
         { path: "/Admin/Game", name: "密室管理" },
         { path: "/Admin/Group", name: "揪團資料" },
-    ];
+    ], []);
 
     //這是一般會員的下拉式選單
-    const userBtn = [
+    const userBtn = useMemo(() => [
         { path: `/User_profile/${user_id}/basicInfo`, name: "個人資料" },
         { path: `/User_profile/${user_id}/participatingGroup`, name: "我的揪團" },
         { path: `/User_profile/${user_id}/myComments`, name: "我的評論" },
-    ];
+    ], [user_id]); // 依賴 user_id，當 user_id 改變時才重新計算
 
     //這是店家會員的下拉式選單
-    const storeBtn = [
+    const storeBtn = useMemo(() => [
         { path: `/Store_profile/${user_id}/basicStoreInfo`, name: "個人資料" },
         { path: `/Store_profile/${user_id}/myGames`, name: "我的密室" },
-    ];
-
-    //const [show, setShow] = useState(false);
+    ], [user_id]);
 
     useEffect(() => {
         if (user_token) {
@@ -53,7 +51,7 @@ function Header() {
                 setFinalBtn(null);
             }
         }
-    }, [user_token, user]);
+    }, [user_token, user, adminBtn, storeBtn, userBtn]);
 
     const handleLogOut = () => {
         dispatch(logOut());

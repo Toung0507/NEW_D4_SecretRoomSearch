@@ -1,10 +1,11 @@
-import { createContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import BasicStoreInfo from "../components/BasicStoreInfo";
 import axios from "axios";
 import MyGames from "../components/MyGames";
-export const userStoreContext = createContext({});
+import { userStoreContext } from "../reducers/createContent";
+
 
 const baseApi = import.meta.env.VITE_BASE_URL;
 
@@ -16,7 +17,7 @@ function StoreProfile() {
     const [store, setStore] = useState({});
 
     // 判斷是否為本人
-    const checkMySelf = () => {
+    const checkMySelf = useCallback(() => {
         if (user_token) {
             if ((Number(user_id) === Number(user.user_id))) {
                 setIsAuthMySelf(true);
@@ -28,26 +29,26 @@ function StoreProfile() {
         else {
             setIsAuthMySelf(false);
         }
-    };
+    }, [user_token, user.user_id, user_id]);
 
-    const getStore = async () => {
+    const getStore = useCallback(async () => {
         try {
             const res = await axios.get(`${baseApi}/usersData/${user_id}/storesData`);
             setStore(res.data[0]);
         } catch (error) {
             console.error(error);
         }
-    };
+    }, [user_id]);
 
     useEffect(() => {
         getStore();
-    }, [])
+    }, [getStore])
 
     useEffect(() => {
         checkMySelf();
         setActiveTab(activedefaultTab)
 
-    }, [user_id, activedefaultTab]);
+    }, [user_id, activedefaultTab, checkMySelf]);
 
     return (
         <>

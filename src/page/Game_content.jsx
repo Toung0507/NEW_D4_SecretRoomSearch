@@ -309,7 +309,7 @@ function Game_content() {
                                                     style={{ cursor: comment_isSpoilered ? "pointer" : "default" }}
                                                     onClick={() => comment_isSpoilered && toggleSpoiler(comment_id)}
                                                 >
-                                                    {comment_isSpoilered && isSpoilered ? (<div className="d-flex align-items-center gap-1"><MdLock size={20} />顯示劇透內容</div>) : coment_content}
+                                                    {comment_isSpoilered && isSpoilered ? (<span className="d-flex align-items-center gap-1"><MdLock size={20} />顯示劇透內容</span>) : coment_content}
                                                 </p>
                                             </div>
                                         </li>
@@ -339,7 +339,6 @@ function Game_content() {
                                     </span>
                                     <p className="">
                                         {Object.keys(comments).length === 0 ? '成為第一位評論的人吧！' : '分享你的想法'}
-
                                     </p>
                                 </Link>
                             </li>

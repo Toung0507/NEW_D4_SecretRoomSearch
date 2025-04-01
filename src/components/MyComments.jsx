@@ -1,5 +1,5 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { userContext } from "../page/UserProfile";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { userContext } from "../reducers/createContent";
 import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { TiStarFullOutline, TiStarOutline } from 'react-icons/ti';
@@ -22,16 +22,14 @@ const MyComments = () => {
     const delCommentModalRef = useRef(null);
     const [commentModalData, setCommentModalData] = useState({});
 
-    const getAllComments = async () => {
+    const getAllComments = useCallback(async () => {
         let newComments = [];
         let new2Comments = [];
         try {
             const res = await axios.get(`${baseApi}/usersData/${user_id}/commentsData`);
-            // 使用 for...of 來處理每一個 comment
             if (typeof res.data[0] === 'string') {
                 setIsHaveComment(false);
-            }
-            else if (typeof res.data[0] === 'object') {
+            } else if (typeof res.data[0] === 'object') {
                 for (newComments of res.data) {
                     try {
                         const gameRes = await axios.get(`${baseApi}/gamesData/${newComments.game_id}`);
@@ -45,12 +43,11 @@ const MyComments = () => {
                     }
                 }
             }
-
         } catch (error) {
             console.error(error);
         }
         setAllCommentsGames(new2Comments);
-    };
+    }, [user_id]);
 
     // 處理星星數
     const renderStars = (starCount, totalStars = 5) => {
@@ -131,7 +128,7 @@ const MyComments = () => {
 
     useEffect(() => {
         getAllComments();
-    }, []);
+    }, [getAllComments]);
 
     return (
         <>

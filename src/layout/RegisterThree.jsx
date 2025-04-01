@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { registerInfo } from "../page/Register";
+import { registerInfo } from "../reducers/createContent";
 import { useForm } from "react-hook-form";
 import AddressForm from "./AddressForm";
 import PropTypes from 'prop-types';

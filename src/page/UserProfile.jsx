@@ -1,11 +1,10 @@
-import { createContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import BasicInfo from "../components/BasicInfo";
 import ParticipatingGroup from "../components/ParticipatingGroup";
 import MyComments from "../components/MyComments";
-export const userContext = createContext({});
-
+import { userContext } from "../reducers/createContent";
 
 function UserProfile() {
     const { user, user_token } = useSelector((state) => state.userInfo);
@@ -13,7 +12,7 @@ function UserProfile() {
     const [isAuthMySelf, setIsAuthMySelf] = useState(false);
     const [activeTab, setActiveTab] = useState(activedefaultTab);
 
-    const checkMySelf = () => {
+    const checkMySelf = useCallback(() => {
         if (user_token) {
             if ((Number(user_id) === Number(user.user_id))) {
                 setIsAuthMySelf(true);
@@ -25,13 +24,13 @@ function UserProfile() {
         else {
             setIsAuthMySelf(false);
         }
-    };
+    }, [user.user_id, user_id, user_token]);
 
     useEffect(() => {
         checkMySelf();
         setActiveTab(activedefaultTab)
 
-    }, [user_id, activedefaultTab]);
+    }, [user_id, activedefaultTab, checkMySelf]);
 
     return (
         <>
