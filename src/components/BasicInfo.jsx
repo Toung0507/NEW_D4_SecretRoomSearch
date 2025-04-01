@@ -119,7 +119,10 @@ const BasicInfo = () => {
                 handleHideupdateInputPawwordtModal();
             }, 3000);
         } catch (error) {
-            console.log(error);
+            dispatch(pushMessage({
+                text: '修改密碼失敗',
+                status: 'error'
+            }));
         }
 
     };

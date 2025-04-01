@@ -121,7 +121,7 @@ const ParticipatingGroup = () => {
                                     (
                                         <>
                                             <tr>
-                                                <td colSpan={6} className="text-center fs-h6">
+                                                <td colSpan={6} className="text-center fs-h6 bg-white py-2">
                                                     <p>
                                                         沒有正在進行中的揪團
                                                         <br />
@@ -168,7 +168,7 @@ const ParticipatingGroup = () => {
                                     (
                                         <>
                                             <tr>
-                                                <td colSpan={6} className="text-center fs-h6">
+                                                <td colSpan={6} className="text-center fs-h6 bg-white py-2">
                                                     <p>
                                                         未參加過任何揪團
                                                         <br />
@@ -229,7 +229,7 @@ const ParticipatingGroup = () => {
                                 (
                                     <>
                                         <dl>
-                                            <dt className="text-center fs-h6">
+                                            <dt className="text-center fs-h6 bg-white py-2">
                                                 <p>
                                                     沒有正在進行中的揪團
                                                     <br />
@@ -270,7 +270,7 @@ const ParticipatingGroup = () => {
                                 (
                                     <>
                                         <dl>
-                                            <dt className="text-center fs-h6 bg-white" >
+                                            <dt className="text-center fs-h6 bg-white py-2" >
                                                 <p>
                                                     未參加過任何揪團
                                                     <br />

@@ -97,7 +97,7 @@ const MyGames = () => {
                                 {
                                     isAuthStore === false && (
                                         <tr>
-                                            <td colSpan={6} className="text-center fs-h6">
+                                            <td colSpan={6} className="text-center fs-h6 bg-white py-2">
                                                 <p>
                                                     尚未驗證成功，請先驗證
                                                 </p>
@@ -171,7 +171,7 @@ const MyGames = () => {
                                 {
                                     isAuthStore === false && (
                                         <tr>
-                                            <td colSpan={6} className="text-center fs-h6">
+                                            <td colSpan={6} className="text-center fs-h6 bg-white py-2">
                                                 <p>
                                                     尚未驗證成功，請先驗證
                                                 </p>
@@ -255,7 +255,7 @@ const MyGames = () => {
                                 isAuthStore === false && (
                                     <>
                                         <dl>
-                                            <dt className="text-center fs-h6 bg-white">
+                                            <dt className="text-center fs-h6 bg-white py-2">
                                                 尚未驗證成功，請先驗證
                                             </dt>
                                         </dl>
@@ -324,7 +324,7 @@ const MyGames = () => {
                                 isAuthStore === false && (
                                     <>
                                         <dl>
-                                            <dt className="text-center fs-h6 bg-white">
+                                            <dt className="text-center fs-h6 bg-white py-2">
                                                 尚未驗證成功，請先驗證
                                             </dt>
                                         </dl>

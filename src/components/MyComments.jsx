@@ -171,7 +171,7 @@ const MyComments = () => {
                                         </tr>
                                     )) : (<>
                                         <tr>
-                                            <td colSpan={8} className="text-center fs-h6">未留下任何評論，<br />
+                                            <td colSpan={8} className="text-center fs-h6 bg-white py-2">未留下任何評論，<br />
                                                 歡迎到密室頁面分享你的心得讓更多人參考！</td>
                                         </tr>
                                     </>)
@@ -235,7 +235,7 @@ const MyComments = () => {
                                 (
                                     <>
                                         <dl>
-                                            <dt className="text-center fs-h6 bg-white" >
+                                            <dt className="text-center fs-h6 bg-white py-2" >
                                                 <p>
                                                     未留下任何評論，<br />
                                                     歡迎到密室頁面分享你的心得讓更多人參考！

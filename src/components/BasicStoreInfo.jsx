@@ -28,9 +28,7 @@ const BasicInfo = () => {
     const inputpasswordRef = useRef(null); //
     const [passwordError, setPasswordError] = useState("尚未驗證");
 
-    useEffect(() => {
-        setStoreUserValue("store_method", storeUserFormData.store_method);
-    }, [watchMethod, setStoreUserValue, storeUserFormData.store_method]);
+
 
     const [storeFormData, setStoreFormData] = useState({
         store_name: store.store_name,
@@ -256,6 +254,9 @@ const BasicInfo = () => {
             backdrop: false
         }); //從boostrap裡面來的
     }, []);
+    useEffect(() => {
+        setStoreUserValue("store_method", storeUserFormData.store_method);
+    }, [watchMethod, setStoreUserValue, storeUserFormData.store_method]);
 
     return (
         <>

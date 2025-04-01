@@ -40,18 +40,7 @@ function Game_comment() {
         },
     });
 
-    useEffect(() => {
-        // 先從三個 API 同時取得相關資料
-        fetchRelatedData();
-        // 若是 edit 模式（URL 的 id 為評論識別碼），直接取得該筆評論資料
-        if (mode === "edit") {
-            fetchCommentData(Number(id));
-        } else if (mode === "new") {
-            // 當 new 模式時，以 id 當作遊戲編號取得遊戲資料
-            fetchGameData(Number(id));
-        }
-        window.scrollTo(0, 0);
-    }, [id, mode, user, fetchCommentData, fetchRelatedData]);
+
 
     // 取得所有評論、使用者與遊戲資料，並整合成一個陣列
     const fetchRelatedData = useCallback(async () => {
@@ -218,6 +207,19 @@ function Game_comment() {
         value: PropTypes.string.isRequired,
         onChange: PropTypes.func.isRequired,
     };
+
+    useEffect(() => {
+        // 先從三個 API 同時取得相關資料
+        fetchRelatedData();
+        // 若是 edit 模式（URL 的 id 為評論識別碼），直接取得該筆評論資料
+        if (mode === "edit") {
+            fetchCommentData(Number(id));
+        } else if (mode === "new") {
+            // 當 new 模式時，以 id 當作遊戲編號取得遊戲資料
+            fetchGameData(Number(id));
+        }
+        window.scrollTo(0, 0);
+    }, [id, mode, user, fetchCommentData, fetchRelatedData]);
 
     if (!user) {
         return (
