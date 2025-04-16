@@ -3,14 +3,14 @@ import Footer from "../layout/Footer";
 import { Outlet } from "react-router-dom";
 
 function Index() {
-    return (
-        <>
-            <Header />
-            <main>
-                <Outlet />
-            </main>
-            <Footer />
-        </>
-    );
+  return (
+    <>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
+    </>
+  );
 }
 export default Index;
