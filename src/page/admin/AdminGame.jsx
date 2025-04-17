@@ -25,7 +25,7 @@ function AdminGame() {
         setGameData(res.data);
         setFilteredData(res.data);
       } catch (error) {
-        console.error(error);
+        console.log(error.response.data.errors[0]);
       }
     };
     getGameData();
@@ -286,38 +286,44 @@ function AdminGame() {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((row) => (
-                  <tr key={row.game_id}>
-                    <td className="py-2 px-4">{row.game_id}</td>
-                    <td className="py-2 px-4">{row.game_name}</td>
-                    <td className="py-2 px-4 text-center">{row.game_score}</td>
-                    <td className="py-2 px-4 text-center">
-                      {row.game_score_num}
-                    </td>
-                    <td className="py-2 px-4">
-                      <span className="px-2 py-1 rounded-2 text-black bg-nature-95">
-                        {row.game_dif_tagname}
-                      </span>
-                      <span className="px-2 py-1 mx-2 rounded-2 text-black bg-nature-95">
-                        {row.game_main_tag1name}
-                      </span>
-                      <span className="px-2 py-1 rounded-2 text-black bg-nature-95">
-                        {row.game_main_tag2name}
-                      </span>
-                    </td>
-                    <td className="py-2 px-4 text-center">
-                      {row.game_isStock == true ? (
-                        <span className="px-2 py-1 rounded-2 text-black bg-pass">
-                          上架
+                {filteredData.length > 0 ? (
+                  filteredData.map((row) => (
+                    <tr key={row.game_id}>
+                      <td className="py-2 px-4">{row.game_id}</td>
+                      <td className="py-2 px-4">{row.game_name}</td>
+                      <td className="py-2 px-4 text-center">{row.game_score}</td>
+                      <td className="py-2 px-4 text-center">
+                        {row.game_score_num}
+                      </td>
+                      <td className="py-2 px-4">
+                        <span className="px-2 py-1 rounded-2 text-black bg-nature-95">
+                          {row.game_dif_tagname}
                         </span>
-                      ) : (
-                        <span className="px-2 py-1 rounded-2 text-black bg-tertiary-90">
-                          下架
+                        <span className="px-2 py-1 mx-2 rounded-2 text-black bg-nature-95">
+                          {row.game_main_tag1name}
                         </span>
-                      )}
-                    </td>
+                        <span className="px-2 py-1 rounded-2 text-black bg-nature-95">
+                          {row.game_main_tag2name}
+                        </span>
+                      </td>
+                      <td className="py-2 px-4 text-center">
+                        {row.game_isStock == true ? (
+                          <span className="px-2 py-1 rounded-2 text-black bg-pass">
+                            上架
+                          </span>
+                        ) : (
+                          <span className="px-2 py-1 rounded-2 text-black bg-tertiary-90">
+                            下架
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td className="text-center py-2" colSpan={6}>沒有符合的資料</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>

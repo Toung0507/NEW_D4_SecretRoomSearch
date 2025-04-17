@@ -25,7 +25,7 @@ function AdminStore() {
         setStoreData(res.data);
         setFilteredData(res.data);
       } catch (error) {
-        console.error(error);
+        console.log(error.response.data.errors[0]);
       }
     };
     getStoreData();
@@ -391,7 +391,7 @@ function AdminStore() {
             ) : (
               <div className="col">
                 <div className="card">
-                  <div className="card-body text-center py-4">
+                  <div className="card-body text-center py-2">
                     沒有符合的資料
                   </div>
                 </div>

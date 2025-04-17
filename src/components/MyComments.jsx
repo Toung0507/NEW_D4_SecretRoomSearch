@@ -5,13 +5,16 @@ import { IoIosArrowForward } from "react-icons/io";
 import { TiStarFullOutline, TiStarOutline } from "react-icons/ti";
 import { Modal } from "bootstrap";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { pushMessage } from "../redux/slices/toastSlice";
+import Toast from "../layout/Toast";
 const baseApi = import.meta.env.VITE_BASE_URL;
 
 const MyComments = () => {
   // 共用的資料 - useContext
   const { user } = useContext(userContext); //共用的user資料
   const user_id = user.user_id;
-
+  const dispatch = useDispatch();
   // 此元件使用
   const [allCommentsGames, setAllCommentsGames] = useState([]);
   const [delOneCommentID, setDelOneCommentID] = useState([]);
@@ -43,12 +46,12 @@ const MyComments = () => {
             newComments["game_main_tag2name"] = gameRes.data.game_main_tag2name;
             new2Comments.push(newComments);
           } catch (error) {
-            console.error("Error fetching game data:", error);
+            console.log(error.response.data.errors[0]);
           }
         }
       }
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
     }
     setAllCommentsGames(new2Comments);
   }, [user_id]);
@@ -89,7 +92,13 @@ const MyComments = () => {
       handleDelComment();
       handledetailComment();
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
+      dispatch(
+        pushMessage({
+          text: "刪除評論失敗",
+          status: "error",
+        })
+      );
     }
   };
 
@@ -459,6 +468,7 @@ const MyComments = () => {
           </div>
         </div>
       </div>
+      <Toast />
     </>
   );
 };
