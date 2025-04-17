@@ -329,7 +329,7 @@ function AdminStore() {
                       <div className="status my-4">
                         {getStoreStatusCard(store)}
                       </div>
-                      <div className="content d-flex row row-cols-2">
+                      <div className="content row row-cols-2">
                         <div className="contact d-flex align-items-center">
                           <span className="material-symbols-outlined me-1 text-nature-50">
                             person

@@ -227,7 +227,7 @@ function Game_comment() {
   if (!user) {
     return (
       <div className="container-fluid container-lg">
-        <div className="row d-flex justify-content-center">
+        <div className="row justify-content-center">
           <div className="col-xl-10">
             <div className="pb-10">
               <h2 className="text-center">請先登入</h2>
@@ -247,7 +247,7 @@ function Game_comment() {
       {user_token ? (
         <div className="bg-secondary-99">
           <div className="container-fluid container-lg">
-            <div className="row d-flex justify-content-center">
+            <div className="row justify-content-center">
               <div className="col-xl-10">
                 <div className="pb-10">
                   <picture className="ratio ratio-16x9">
@@ -461,7 +461,7 @@ function Game_comment() {
       ) : (
         <div className="bg-secondary-99">
           <div className="container-fluid container-lg">
-            <div className="row d-flex justify-content-center">
+            <div className="row justify-content-center">
               <div className="col-xl-10">
                 <div className="pb-10">
                   <h2 className="text-center">請先登入</h2>

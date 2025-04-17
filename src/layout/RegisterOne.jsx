@@ -13,7 +13,7 @@ function RegisterOne() {
     <>
       <div className="my-md-10 my-sm-3 my-5">
         <div className="container-lg">
-          <div className="role row d-flex flex-column flex-md-row g-5 justify-content-center align-items-center">
+          <div className="role row flex-column flex-md-row g-5 justify-content-center align-items-center">
             <p className="h2 text-center">
               歡迎來到密室搜搜
               <br />

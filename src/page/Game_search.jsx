@@ -311,7 +311,7 @@ function Game_search() {
       </div>
       <div className="my-md-10 my-sm-0">
         <div className="container-lg">
-          <div className="row d-flex flex-column flex-md-row g-0">
+          <div className="row flex-column flex-md-row g-0">
             {/* <!-- 表單部分 --> */}
             <div className="col-md-3 pe-lg-6 pe-md-3 ">
               <form

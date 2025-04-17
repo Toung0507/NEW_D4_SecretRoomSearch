@@ -33,7 +33,7 @@ function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmi
     <>
       <div className="my-md-10 my-sm-3 my-5">
         <div className="container-lg">
-          <div className="role row d-flex flex-column flex-md-row g-5 justify-content-center align-items-center">
+          <div className="role row flex-column flex-md-row g-5 justify-content-center align-items-center">
             <p className="h2 text-center">
               請填寫基本資訊 - 您選擇的身分是{role}
             </p>

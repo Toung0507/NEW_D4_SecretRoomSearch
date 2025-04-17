@@ -268,7 +268,7 @@ function Game_content() {
             {game.game_info}
           </p>
           <div className="comment container px-0">
-            <ul className="row row-cols-1 row-cols-md-2 row-cols-lg-3 d-flex justify-content-center">
+            <ul className="row row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
               {Object.keys(comments).length > 0 &&
                 comments.map((comment) => {
                   const {

@@ -351,7 +351,7 @@ function TeamBuy() {
           {isLoading ? (
             <LoadingSpinner />
           ) : (
-            <div className="row d-flex flex-column flex-md-row g-0">
+            <div className="row flex-column flex-md-row g-0">
               {/* 表單部分 */}
               <SearchForm
                 search={search}

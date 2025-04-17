@@ -324,7 +324,7 @@ const BasicInfo = () => {
               </div>
             </div>
             <div className="modal-footer">
-              <div className="btn_2 d-flex  text-center ">
+              <div className="btn_2 d-flex text-center ">
                 <button type="button" className="btn bg-nature-60 text-white me-6" onClick={handleHideUpdatePasswordtModal}>
                   取消更改
                 </button>
