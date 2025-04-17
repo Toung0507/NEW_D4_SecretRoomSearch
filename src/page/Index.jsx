@@ -7,6 +7,7 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { CiSearch } from "react-icons/ci";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -220,17 +221,8 @@ function Index() {
                         id="button-addon2"
                         onClick={handleSearch}
                       >
-                        <img src="./icon/search.png" alt="search" />
-                      </button>
-                    </div>
-                    <div className="d-flex justify-content-center">
-                      <button
-                        className="btn"
-                        type="button"
-                        id="button-addon2"
-                        onClick={handleSearch}
-                      >
-                        <p>查詢</p>
+                        <span>搜尋</span>
+                        <CiSearch size={24} />
                       </button>
                     </div>
                   </div>
