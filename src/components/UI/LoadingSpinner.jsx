@@ -2,8 +2,6 @@ import ReactLoading from "react-loading";
 import PropTypes from "prop-types";
 
 const LoadingSpinner = ({ message }) => {
-  console.log(message);
-
   return (
     <div
       className="d-flex justify-content-center align-items-center flex-column"
@@ -24,7 +22,7 @@ const LoadingSpinner = ({ message }) => {
 };
 
 LoadingSpinner.propTypes = {
-  message: PropTypes.message
+  message: PropTypes.string
 };
 
 export default LoadingSpinner;
