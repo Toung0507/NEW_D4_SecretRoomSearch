@@ -4,7 +4,16 @@ import { RiCloseCircleLine } from "react-icons/ri";
 import { RiCheckboxCircleLine } from "react-icons/ri";
 
 function RegisterStepEmailVerify() {
-  const { handleUserChange, userRegister, isEmailAuth, setIsEmailAuth, isSend, setIsSend, verification_code, setVerification_code } = useContext(registerInfo);
+  const {
+    handleUserChange,
+    userRegister,
+    isEmailAuth,
+    setIsEmailAuth,
+    isSend,
+    setIsSend,
+    verification_code,
+    setVerification_code,
+  } = useContext(registerInfo);
   const [orig_user_email] = useState(userRegister.user_email);
   const [orig_verification_code] = useState(verification_code);
   const [emailError, setEmailError] = useState("");
@@ -35,19 +44,17 @@ function RegisterStepEmailVerify() {
   // 送出驗證信
   const sendEmail = () => {
     setIsSend(true);
-  }
+  };
 
   // 判斷驗證碼
   const auth_verification_code = (e) => {
-    if (e.target.value === '123789') {
+    if (e.target.value === "123789") {
       setIsEmailAuth(true);
-    }
-    else {
+    } else {
       setIsEmailAuth(false);
     }
     setVerification_code(e.target.value);
   };
-
 
   useEffect(() => {
     // 確保信箱已被驗證
@@ -59,8 +66,11 @@ function RegisterStepEmailVerify() {
       if (origUserEmailRef.current !== userRegister.user_email) {
         setIsSend(false);
         setIsEmailAuth(false);
-        setVerification_code('');
-      } else if (origUserEmailRef.current === userRegister.user_email && origVerificationCodeRef.current !== undefined) {
+        setVerification_code("");
+      } else if (
+        origUserEmailRef.current === userRegister.user_email &&
+        origVerificationCodeRef.current !== undefined
+      ) {
         setIsSend(true);
         setIsEmailAuth(true);
         setVerification_code(origVerificationCodeRef.current);
@@ -68,25 +78,32 @@ function RegisterStepEmailVerify() {
     };
 
     checkEmailAuth();
-  }, [userRegister.user_email, setIsEmailAuth, setIsSend, setVerification_code]); // ✅ 只在 userRegister.user_email 改變時觸發
-
+  }, [
+    userRegister.user_email,
+    setIsEmailAuth,
+    setIsSend,
+    setVerification_code,
+  ]); // ✅ 只在 userRegister.user_email 改變時觸發
 
   return (
     <>
       <div className="my-md-10 my-sm-3 my-5">
         <div className="container-lg">
           <div className="role row flex-column flex-md-row g-5 justify-content-center align-items-center">
-            <p className="h2 text-center">
-              請驗證信箱
-            </p>
-            <div className="col-lg-6 col-12">
+            <p className="h2 text-center">請驗證信箱</p>
+            <div className="col-lg-6">
               <form>
                 <div className="row mb-3">
-                  <label htmlFor="user_email" className="col-sm-2 col-form-label">信箱</label>
+                  <label
+                    htmlFor="user_email"
+                    className="col-sm-2 col-form-label"
+                  >
+                    信箱
+                  </label>
                   <div className="col-sm-6">
                     <input
                       type="email"
-                      className={`form-control ${emailError && 'is-invalid'}`}
+                      className={`form-control ${emailError && "is-invalid"}`}
                       id="user_email"
                       name="user_email"
                       value={userRegister.user_email}
@@ -100,32 +117,55 @@ function RegisterStepEmailVerify() {
                     <button
                       className="btn btn-primary"
                       onClick={sendEmail}
-                      disabled={isSend || userRegister.user_email === '' || emailError !== '' || userRegister.user_email === undefined}>
-                      {isSend ? '已寄送驗證信' : '發送驗證信件'}
+                      disabled={
+                        isSend ||
+                        userRegister.user_email === "" ||
+                        emailError !== "" ||
+                        userRegister.user_email === undefined
+                      }
+                    >
+                      {isSend ? "已寄送驗證信" : "發送驗證信件"}
                     </button>
                   </div>
                 </div>
                 <div className="row mb-3 mb-1">
-                  <label htmlFor="Verification_code" className="col-sm-2  col-form-label">驗證碼</label>
+                  <label
+                    htmlFor="Verification_code"
+                    className="col-sm-2  col-form-label"
+                  >
+                    驗證碼
+                  </label>
                   <div className="col-sm-6">
-                    <input type="text"
+                    <input
+                      type="text"
                       className="form-control"
                       id="Verification_code"
                       onChange={(e) => auth_verification_code(e)}
                       value={verification_code}
-                      disabled={isSend === false} />
+                      disabled={isSend === false}
+                    />
                   </div>
                   <div className="col-sm-4 d-flex align-items-center">
-                    {isEmailAuth === true ? (<div className="text-success d-flex align-items-center"><RiCheckboxCircleLine size={30} />驗證完成</div>) : (<div className="text-danger d-flex align-items-center"><RiCloseCircleLine size={30} />尚未驗證</div>)}
+                    {isEmailAuth === true ? (
+                      <div className="text-success d-flex align-items-center">
+                        <RiCheckboxCircleLine size={30} />
+                        驗證完成
+                      </div>
+                    ) : (
+                      <div className="text-danger d-flex align-items-center">
+                        <RiCloseCircleLine size={30} />
+                        尚未驗證
+                      </div>
+                    )}
                   </div>
                 </div>
               </form>
             </div>
           </div>
-        </div >
-      </div >
+        </div>
+      </div>
     </>
-  )
-};
+  );
+}
 
 export default RegisterStepEmailVerify;

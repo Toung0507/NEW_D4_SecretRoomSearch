@@ -7,10 +7,27 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { CiSearch } from "react-icons/ci";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const area = [
+  "台北市",
+  "基隆市",
+  "新竹市",
+  "彰化縣",
+  "嘉義市",
+  "高雄市",
+  "宜蘭縣",
+  "台東縣",
+  "新北市",
+  "桃園市",
+  "台中市",
+  "南投縣",
+  "台南市",
+  "屏東縣",
+  "花蓮縣",
+  "澎湖金門馬祖",
   "台北市",
   "基隆市",
   "新竹市",
@@ -143,7 +160,7 @@ function Index() {
     // TODO 檢查切版架構
     <>
       <div className="container-fluid p-0">
-        <div className="row justify-content-center mx-0">
+        <div className="row d-flex justify-content-center mx-0">
           <div className="banner mt-9">
             <div>
               <picture>
@@ -158,7 +175,7 @@ function Index() {
                 />
               </picture>
             </div>
-            <div className="row justify-content-center align-items-center">
+            <div className="row d-flex justify-content-center align-items-center">
               <div className="bg-primary-95 rounded-6 select col-10 col-lg-6 p-6 p-lg-12">
                 <div className="d-grid gap-6">
                   <div className="d-flex justify-content-between row">
@@ -215,12 +232,13 @@ function Index() {
                         onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                       />
                       <button
-                        className="btn bg-white"
+                        className="btn"
                         type="button"
                         id="button-addon2"
                         onClick={handleSearch}
                       >
-                        <i className="bi bi-search"></i>
+                        <span>搜尋</span>
+                        <CiSearch size={24} />
                       </button>
                     </div>
                   </div>
@@ -319,7 +337,7 @@ function Index() {
                 密室搜搜能幫助你
               </h3>
             </div>
-            <div className="row justify-content-center">
+            <div className="row d-flex justify-content-center">
               <div className="col-lg-6">
                 <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center mb-16">
                   <div className="my-lg-12 gameText text-center text-lg-start d-grid gap-3 gap-lg-6">
@@ -395,11 +413,11 @@ function Index() {
                     alt="Friends"
                   />
                 </div>
-                <div className="col-lg-6 col-12">
+                <div className="col-lg-6">
                   <div className="row ">
                     {gameDifficulty.map((diff) => (
                       <div
-                        className="col-lg-4 col-sm-6 col-12"
+                        className="col-lg-4 col-sm-6"
                         key={diff.difficulty_id}
                       >
                         <a
@@ -415,7 +433,7 @@ function Index() {
                     ))}
                     {gameProperty.slice(0, 9).map((property) => (
                       <div
-                        className="col-lg-4 col-sm-6 col-12"
+                        className="col-lg-4 col-sm-6"
                         key={property.property_id}
                       >
                         <a
@@ -434,8 +452,8 @@ function Index() {
               </div>
             </div>
           </div>
-          <div className="bg-nature-95 row justify-content-center w-100 mx-0">
-            <div className="col-12 col-lg-11">
+          <div className="bg-nature-95 row d-flex justify-content-center w-100 mx-0">
+            <div className="col-lg-11">
               <div className="pt-10 pt-lg-20 mb-12">
                 <h3 className="fw-bold fs-lg-h3 fs-h6 text-center">本月推薦</h3>
               </div>
@@ -470,8 +488,8 @@ function Index() {
               </div>
             </div>
           </div>
-          <div className="bg-nature-95 row justify-content-center w-100 mx-0">
-            <div className="col-12 col-lg-11">
+          <div className="bg-nature-95 row d-flex justify-content-center w-100 mx-0">
+            <div className="col-lg-11">
               <div className="pt-10 pt-lg-20 mb-12">
                 <h3 className="fw-bold fs-lg-h3 fs-h6 text-center">近期新作</h3>
               </div>

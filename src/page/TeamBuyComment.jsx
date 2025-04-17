@@ -168,7 +168,7 @@ function TeamBuyComment() {
     <>
       <div className="bg-nature-95">
         <div className="container-fluid container-lg">
-          <div className="row justify-content-center">
+          <div className="row d-flex justify-content-center">
             <div className="col-xl-10 mt-9 mb-20">
               <div className="mb-6">
                 <h2 className="fs-h5 fs-lg-h2 fw-bold">
@@ -220,19 +220,19 @@ function TeamBuyComment() {
                   </div>
                   <div className="container py-5">
                     <div className="row gy-4">
-                      <div className="col-12 col-lg-4">
+                      <div className="col-lg-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           密室名稱
                         </p>
                         <p>{group.game_name}</p>
                       </div>
-                      <div className="col-12 col-lg-4">
+                      <div className="col-lg-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           揪團截止日期
                         </p>
                         <p>{group.group_end_at}</p>
                       </div>
-                      <div className="col-12 col-lg-4">
+                      <div className="col-lg-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           活動日期
                         </p>
@@ -240,7 +240,7 @@ function TeamBuyComment() {
                       </div>
                     </div>
                     <div className="row gy-4">
-                      <div className="col-12">
+                      <div className="col">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           密室地址
                         </p>
@@ -312,7 +312,7 @@ function TeamBuyComment() {
                       </div>
                     </div>
                     <div className="row gy-4">
-                      <div className="col-12">
+                      <div className="col">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           揪團理念
                         </p>
@@ -320,7 +320,7 @@ function TeamBuyComment() {
                       </div>
                     </div>
                     <div className="row gy-4">
-                      <div className="col-12">
+                      <div className="col">
                         <p className="text-primary-50 fs-Body-2 mb-2">報名者</p>
                         <p>
                           {group.group_participants &&
@@ -370,7 +370,7 @@ function TeamBuyComment() {
                         data-bs-placement="right"
                         title="請先登入"
                       >
-                        <div className="d-grid gap-2 col-12 mx-auto d-lg-block">
+                        <div className="d-grid gap-2 col mx-auto d-lg-block">
                           <button
                             type="button"
                             className="btn btn-secondary-60 text-white"
@@ -382,7 +382,7 @@ function TeamBuyComment() {
                         </div>
                       </span>
                     ) : (
-                      <div className="d-grid gap-2 col-12 mx-auto d-lg-block">
+                      <div className="d-grid gap-2 col mx-auto d-lg-block">
                         <button
                           type="button"
                           className="btn btn-secondary-60 text-white"

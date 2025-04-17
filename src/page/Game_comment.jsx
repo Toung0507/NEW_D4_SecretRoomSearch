@@ -58,37 +58,40 @@ function Game_comment() {
   }, []);
 
   // 根據傳入的評論識別碼取得評論資料，並更新表單初始值
-  const fetchCommentData = useCallback(async (commentId) => {
-    try {
-      const res = await axios.get(`${BASE_URL}/commentsData/${commentId}`);
-      const data = res.data;
-      // 支援 comment_id 或 id
-      const cid = data.comment_id || data.id;
-      // 檢查該評論是否屬於當前使用者
-      if (cid && data.user_id === user.user_id) {
-        setCurrentMode("edit");
-        setCommentData(data);
-        // 若遊戲資料尚未取得，依據評論中的 game_id 取得遊戲資料
-        if (!gameData) {
-          fetchGameData(data.game_id);
+  const fetchCommentData = useCallback(
+    async (commentId) => {
+      try {
+        const res = await axios.get(`${BASE_URL}/commentsData/${commentId}`);
+        const data = res.data;
+        // 支援 comment_id 或 id
+        const cid = data.comment_id || data.id;
+        // 檢查該評論是否屬於當前使用者
+        if (cid && data.user_id === user.user_id) {
+          setCurrentMode("edit");
+          setCommentData(data);
+          // 若遊戲資料尚未取得，依據評論中的 game_id 取得遊戲資料
+          if (!gameData) {
+            fetchGameData(data.game_id);
+          }
+          reset({
+            coment_star: data.coment_star,
+            game_id: data.game_id,
+            user_id: data.user_id,
+            comment_isPass: data.comment_isPass,
+            comment_isSpoilered: data.comment_isSpoilered,
+            coment_content: data.coment_content,
+            // 假設後端傳回的日期為 ISO 格式字串
+            commet_played_time: data.commet_played_time.slice(0, 10),
+          });
+        } else {
+          console.warn("取得的評論資料不符合當前使用者：", data);
         }
-        reset({
-          coment_star: data.coment_star,
-          game_id: data.game_id,
-          user_id: data.user_id,
-          comment_isPass: data.comment_isPass,
-          comment_isSpoilered: data.comment_isSpoilered,
-          coment_content: data.coment_content,
-          // 假設後端傳回的日期為 ISO 格式字串
-          commet_played_time: data.commet_played_time.slice(0, 10),
-        });
-      } else {
-        console.warn("取得的評論資料不符合當前使用者：", data);
+      } catch (error) {
+        console.error("取得評論資料錯誤：", error);
       }
-    } catch (error) {
-      console.error("取得評論資料錯誤：", error);
-    }
-  }, [gameData, reset, user?.user_id, fetchGameData]);
+    },
+    [gameData, reset, user?.user_id, fetchGameData]
+  );
 
   // 表單送出處理：若是新增則用 POST，若是編輯則用 Patch 更新
   const onSubmit = async (data) => {
@@ -103,7 +106,6 @@ function Game_comment() {
           })
         );
         setTimeout(() => {
-
           navigate(`/User_profile/${user_id}/myComments`);
         }, 3000);
       } else if (currentMode === "edit") {
@@ -162,7 +164,7 @@ function Game_comment() {
 
   useEffect(() => {
     // 取得所有評論、使用者與遊戲資料，並整合成一個陣列
-    const fetchRelatedData = (async () => {
+    const fetchRelatedData = async () => {
       try {
         const [commentRes, userRes, gameRes] = await Promise.all([
           axios.get(`${BASE_URL}/commentsData`),
@@ -208,11 +210,10 @@ function Game_comment() {
       } catch (error) {
         console.error("取得相關資料錯誤：", error);
       }
-    });
+    };
 
     fetchRelatedData();
   }, [id, mode, user, navigate]); // ✅ 這樣 Lint 也不會報錯，且避免無窮迴圈
-
 
   useEffect(() => {
     // 若是 edit 模式（URL 的 id 為評論識別碼），直接取得該筆評論資料
@@ -224,10 +225,14 @@ function Game_comment() {
     }
   }, [id, mode, user, fetchCommentData, fetchGameData]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   if (!user) {
     return (
       <div className="container-fluid container-lg">
-        <div className="row justify-content-center">
+        <div className="row d-flex justify-content-center">
           <div className="col-xl-10">
             <div className="pb-10">
               <h2 className="text-center">請先登入</h2>
@@ -247,7 +252,7 @@ function Game_comment() {
       {user_token ? (
         <div className="bg-secondary-99">
           <div className="container-fluid container-lg">
-            <div className="row justify-content-center">
+            <div className="row d-flex justify-content-center">
               <div className="col-xl-10">
                 <div className="pb-10">
                   <picture className="ratio ratio-16x9">
@@ -302,7 +307,7 @@ function Game_comment() {
                             <h3 className="fs-lg-h3 fs-h6 fw-bold pb-2">
                               主題特色
                             </h3>
-                            <div className="col-lg-3 col-md-4 col-sm-6 col-12">
+                            <div className="col-lg-3 col-md-4 col-sm-6">
                               {`${gameData.game_main_tag1name} ${gameData.game_main_tag2name}`}
                             </div>
                           </div>
@@ -311,7 +316,7 @@ function Game_comment() {
                           <h3 className="fs-lg-h3 fs-h6 fw-bold pb-2">
                             遊玩日期
                           </h3>
-                          <div className="col-12">
+                          <div className="col">
                             <input
                               type="date"
                               className="form-control"
@@ -428,7 +433,7 @@ function Game_comment() {
                           <h3 className="fs-lg-h3 fs-h6 fw-bold pb-2">
                             體驗心得
                           </h3>
-                          <div className="col-12">
+                          <div className="col">
                             <textarea
                               className={`form-control ${errors.message && "is-invalid"
                                 }`}
@@ -442,7 +447,7 @@ function Game_comment() {
                             ></label>
                           </div>
                         </div>
-                        <div className="col-12 d-grid gap-2">
+                        <div className="col d-grid gap-2">
                           <button
                             type="submit"
                             className="btn btn-secondary-60 link-white rounded-1"
@@ -461,7 +466,7 @@ function Game_comment() {
       ) : (
         <div className="bg-secondary-99">
           <div className="container-fluid container-lg">
-            <div className="row justify-content-center">
+            <div className="row d-flex justify-content-center">
               <div className="col-xl-10">
                 <div className="pb-10">
                   <h2 className="text-center">請先登入</h2>
