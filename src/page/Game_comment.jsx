@@ -11,6 +11,7 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function Game_comment() {
+  const [isLoadingGame, setIsLoadingGame] = useState(true);
   // 注意：因為 state 為保留字，這邊用 mode 來接收
   const { state: mode, id } = useParams();
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ function Game_comment() {
 
   // 單獨取得遊戲資料（若整合資料中尚未取得或需要補充）
   const fetchGameData = useCallback(async (gameId) => {
+    setIsLoadingGame(true); // 開始 loading
     try {
       const res = await axios.get(`${BASE_URL}/gamesData/${gameId}`);
       const data = res.data;
@@ -55,12 +57,15 @@ function Game_comment() {
       setGameData(data);
     } catch (error) {
       console.error("取得遊戲資料錯誤：", error);
+    } finally {
+      setIsLoadingGame(false); // 結束 loading
     }
   }, []);
 
   // 根據傳入的評論識別碼取得評論資料，並更新表單初始值
   const fetchCommentData = useCallback(
     async (commentId) => {
+      setIsLoadingGame(true);
       try {
         const res = await axios.get(`${BASE_URL}/commentsData/${commentId}`);
         const data = res.data;
@@ -89,6 +94,8 @@ function Game_comment() {
         }
       } catch (error) {
         console.error("取得評論資料錯誤：", error);
+      } finally {
+        setIsLoadingGame(false);
       }
     },
     [gameData, reset, user?.user_id, fetchGameData]
@@ -240,7 +247,7 @@ function Game_comment() {
     );
   }
   // 若尚未取得遊戲資料則顯示 Loading
-  if (!gameData) {
+  if (isLoadingGame) {
     return <LoadingSpinner message="載入遊戲基本資料中" />;
   }
 
@@ -432,8 +439,9 @@ function Game_comment() {
                           </h3>
                           <div className="col">
                             <textarea
-                              className={`form-control ${errors.message && "is-invalid"
-                                }`}
+                              className={`form-control ${
+                                errors.message && "is-invalid"
+                              }`}
                               id="experience"
                               rows="5"
                               {...register("coment_content")}
