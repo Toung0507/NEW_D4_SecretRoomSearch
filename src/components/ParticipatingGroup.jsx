@@ -39,7 +39,7 @@ const ParticipatingGroup = () => {
           }
         });
       } catch (error) {
-        console.error(error);
+        console.log(error.response.data.errors[0]);
       }
       // 再判斷是否有參與者的資料
       try {
@@ -58,7 +58,7 @@ const ParticipatingGroup = () => {
           }
         });
       } catch (error) {
-        console.error(error);
+        console.log(error.response.data.errors[0]);
       }
 
       if (nowG.length === 0) {
@@ -231,21 +231,19 @@ const ParticipatingGroup = () => {
       <div className="m-0 d-block d-lg-none">
         <div className="d-flex m-0 pt-5 ps-3 pb-3">
           <button
-            className={`commentButton btn border-1 border-secondary-50 me-3  fw-bold rounded-16 ${
-              activeTab === "nowGroup"
+            className={`commentButton btn border-1 border-secondary-50 me-3  fw-bold rounded-16 ${activeTab === "nowGroup"
                 ? "bg-secondary-50 text-secondary-99"
                 : "text-secondary-50"
-            }`}
+              }`}
             onClick={() => setActiveTab("nowGroup")}
           >
             揪團中
           </button>
           <button
-            className={`commentButton btn border-1 border-secondary-50 rounded-16 fw-bold ${
-              activeTab === "historyGroup"
+            className={`commentButton btn border-1 border-secondary-50 rounded-16 fw-bold ${activeTab === "historyGroup"
                 ? "bg-secondary-50 text-secondary-99"
                 : "text-secondary-50"
-            }`}
+              }`}
             onClick={() => setActiveTab("historyGroup")}
           >
             歷史揪團

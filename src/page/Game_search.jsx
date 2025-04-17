@@ -73,7 +73,7 @@ function Game_search() {
       setNewedGames(newGames);
       setMaxPeople(Math.max(...upGames.map((p) => p.game_maxNum_Players)));
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
     }
   };
 
@@ -83,7 +83,7 @@ function Game_search() {
       const res = await axios.get(`${baseApi}/propertys_fixed_Data`);
       setPropertys(res.data);
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
     }
   };
 
@@ -93,7 +93,7 @@ function Game_search() {
       const res = await axios.get(`${baseApi}/difficultys_fixed_Data`);
       setDifficultys(res.data);
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
     }
   };
 

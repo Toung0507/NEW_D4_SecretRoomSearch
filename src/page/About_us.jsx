@@ -6,6 +6,7 @@ const baseApi = import.meta.env.VITE_BASE_URL;
 function About_us() {
   const [austore, setAustore] = useState([]);
   const [isHaveStore, setIsHaveStore] = useState(false);
+  const [errmessage, setErrmessage] = useState("");
 
   const getAuthorizedStore = async () => {
     try {
@@ -15,7 +16,8 @@ function About_us() {
         setIsHaveStore(true);
       }
     } catch (error) {
-      console.error(error);
+      const message = error.response.data.errors ? '獲取授權店家資料表失敗' : '';
+      setErrmessage(message);
     }
   };
 
@@ -40,7 +42,7 @@ function About_us() {
               <ul className="list-group list-group-numbered">
                 {isHaveStore ? austore.map((store) => (
                   <li key={store.austore_id} className="list-group-item border-0">{store.austore_name}</li>
-                )) : '尚無工作室授權'}
+                )) : errmessage ? <li className="my-2">{errmessage}</li> : '尚無工作室授權'}
               </ul>
             </div>
           </div>

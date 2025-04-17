@@ -121,29 +121,35 @@ const BasicInfo = () => {
       user_password,
     };
     const user_id = user.user_id;
-    data["user_update_at"] = dayjs().format("YYYY-MM-DD HH:mm:ss");
-    try {
-      await axios.patch(`${baseApi}/usersData/${user_id}`, data);
-      dispatch(
-        pushMessage({
-          text: "修改密碼成功\n下次登入請使用新密碼",
-          status: "success",
-        })
-      );
-      setPasswordError("尚未驗證");
-      inputpasswordRef.current.value = "";
-      // 延遲關閉 Modal，確保訊息顯示
-      setTimeout(() => {
-        handleHideupdateInputPawwordtModal();
-      }, 3000);
-    } catch (error) {
-      console.error(error);
-      dispatch(
-        pushMessage({
-          text: "修改密碼失敗",
-          status: "error",
-        })
-      );
+    if (user_password === '' || user_password.length < 4) {
+      setPasswordError("新密碼需超過4碼");
+    }
+    else {
+      data["user_update_at"] = dayjs().format("YYYY-MM-DD HH:mm:ss");
+      try {
+        await axios.patch(`${baseApi}/usersData/${user_id}`, data);
+        dispatch(
+          pushMessage({
+            text: "修改密碼成功\n下次登入請使用新密碼",
+            status: "success",
+          })
+        );
+        setPasswordError("尚未驗證");
+        inputpasswordRef.current.value = "";
+        // 延遲關閉 Modal，確保訊息顯示
+        setTimeout(() => {
+          handleHideupdateInputPawwordtModal();
+        }, 1000);
+      } catch (error) {
+        console.log(error.response.data.errors[0]);
+        setPasswordError("請連繫後台管理者做修改密碼");
+        dispatch(
+          pushMessage({
+            text: "修改密碼失敗",
+            status: "error",
+          })
+        );
+      }
     }
   };
 

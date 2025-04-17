@@ -44,6 +44,7 @@ function Index() {
 
   // 新增搜尋關鍵字 state
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [hasErrorMessage, setHasErrorMessage] = useState("");
 
   const getGamesData = async () => {
     try {
@@ -64,9 +65,11 @@ function Index() {
         (a, b) => new Date(b.game_start_date) - new Date(a.game_start_date)
       );
       setNewedGames(newGames);
+      setHasErrorMessage("");
     } catch (error) {
-      console.error("獲取遊戲資料失敗:", error);
-      // 統一錯誤處理
+      const message = error?.response?.data?.errors?.[0] || "未知錯誤";
+      console.log(message);
+      setHasErrorMessage(`獲取遊戲資料失敗: ${message}`);
     }
   };
 
@@ -74,8 +77,9 @@ function Index() {
     try {
       const res = await axios.get(`${BASE_URL}/propertys_fixed_Data`);
       setGameProperty(res.data);
+      setHasErrorMessage("");
     } catch (error) {
-      alert(error, "獲取遊戲屬性失敗");
+      console.log("獲取遊戲難度屬性失敗:", error.response.data.errors);
     }
   };
 
@@ -83,8 +87,9 @@ function Index() {
     try {
       const res = await axios.get(`${BASE_URL}/difficultys_fixed_Data`);
       setGameDifficulty(res.data);
+      setHasErrorMessage("");
     } catch (error) {
-      alert(error, "獲取遊戲屬性失敗");
+      console.log("獲取遊戲主題屬性失敗:", error.response.data.errors);
     }
   };
 
@@ -98,14 +103,15 @@ function Index() {
   }, []);
 
   useEffect(() => {
-    if (
+    const allFetched =
       product.length > 0 &&
       gameDifficulty.length > 0 &&
-      gameProperty.length > 0
-    ) {
+      gameProperty.length > 0;
+
+    if (allFetched || hasErrorMessage) {
       setIsAllscreenLoading(false);
     }
-  }, [product, gameProperty, gameDifficulty]);
+  }, [product, gameProperty, gameDifficulty, hasErrorMessage]);
 
   const [areaSelect, setAreaSelect] = useState(area[0]);
   const [numSelect, setNumSelect] = useState(1);
@@ -430,33 +436,40 @@ function Index() {
                 <h3 className="fw-bold fs-lg-h3 fs-h6 text-center">本月推薦</h3>
               </div>
               <div>
-                <Swiper
-                  slidesPerView={1}
-                  spaceBetween={24}
-                  navigation={true}
-                  breakpoints={{
-                    768: {
-                      slidesPerView: 2,
-                      spaceBetween: 24,
-                    },
-                    992: {
-                      slidesPerView: 4,
-                      spaceBetween: 24,
-                    },
-                  }}
-                  autoplay={{
-                    delay: 5000,
-                    disableOnInteraction: false,
-                  }}
-                  modules={[Navigation, Autoplay]}
-                  className="mySwiper"
-                >
-                  {recommendedGames.slice(0, 10).map((game) => (
-                    <SwiperSlide key={game.game_id}>
-                      <IndexGamesCard game={game} />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                {hasErrorMessage || recommendedGames.length === 0 ? (
+                  <div className="text-center text-danger ">
+                    {hasErrorMessage || "目前沒有推薦遊戲"}
+                  </div>
+                ) : (
+                  <Swiper
+                    slidesPerView={1}
+                    spaceBetween={24}
+                    navigation={true}
+                    breakpoints={{
+                      768: {
+                        slidesPerView: 2,
+                        spaceBetween: 24,
+                      },
+                      992: {
+                        slidesPerView: 4,
+                        spaceBetween: 24,
+                      },
+                    }}
+                    autoplay={{
+                      delay: 5000,
+                      disableOnInteraction: false,
+                    }}
+                    modules={[Navigation, Autoplay]}
+                    className="mySwiper"
+                  >
+                    {recommendedGames.slice(0, 10).map((game) => (
+                      <SwiperSlide key={game.game_id}>
+                        <IndexGamesCard game={game} />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                )}
+
               </div>
             </div>
           </div>
@@ -466,38 +479,44 @@ function Index() {
                 <h3 className="fw-bold fs-lg-h3 fs-h6 text-center">近期新作</h3>
               </div>
               <div>
-                <Swiper
-                  slidesPerView={1}
-                  spaceBetween={24}
-                  navigation={true}
-                  breakpoints={{
-                    768: {
-                      slidesPerView: 2,
-                      spaceBetween: 24,
-                    },
-                    992: {
-                      slidesPerView: 4,
-                      spaceBetween: 24,
-                    },
-                  }}
-                  autoplay={{
-                    delay: 5000,
-                    disableOnInteraction: false,
-                  }}
-                  modules={[Navigation, Autoplay]}
-                  className="mySwiper"
-                >
-                  {newedGames.slice(0, 10).map((game) => (
-                    <SwiperSlide key={game.game_id}>
-                      <IndexGamesCard game={game} key={game.game_id} />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                {hasErrorMessage || newedGames.length === 0 ? (
+                  <div className="text-center text-danger mb-5 ">
+                    {hasErrorMessage || "目前沒有新遊戲"}
+                  </div>
+                ) : (
+                  <Swiper
+                    slidesPerView={1}
+                    spaceBetween={24}
+                    navigation={true}
+                    breakpoints={{
+                      768: {
+                        slidesPerView: 2,
+                        spaceBetween: 24,
+                      },
+                      992: {
+                        slidesPerView: 4,
+                        spaceBetween: 24,
+                      },
+                    }}
+                    autoplay={{
+                      delay: 5000,
+                      disableOnInteraction: false,
+                    }}
+                    modules={[Navigation, Autoplay]}
+                    className="mySwiper"
+                  >
+                    {newedGames.slice(0, 10).map((game) => (
+                      <SwiperSlide key={game.game_id}>
+                        <IndexGamesCard game={game} key={game.game_id} />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                )}
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }

@@ -45,10 +45,10 @@ function AdminGroup() {
 
           setUserData(userMap);
         } catch (error) {
-          console.error("獲取用戶資料時出錯:", error);
+          console.log(error.response.data.errors[0]);
         }
       } catch (error) {
-        console.error(error);
+        console.log(error.response.data.errors[0]);
       }
     };
 
@@ -224,7 +224,7 @@ function AdminGroup() {
               htmlFor="leader"
               className="form-label fs-Caption text-black"
             >
-              主糾人
+              主揪人
             </label>
             <input
               type="text"
@@ -319,32 +319,37 @@ function AdminGroup() {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((row) => (
-                  <tr key={row.group_id}>
-                    <td className="py-2 px-4">{row.group_id}</td>
-                    <td className="py-2 px-4">{row.game_name}</td>
-                    <td className="py-2 px-4">
-                      {userData[row.user_id]?.user_name || "未知用戶"}
-                    </td>
-                    <td className="py-2 px-4">{row.group_member}</td>
-                    <td className="py-2 px-4">
-                      <span
-                        className={`px-2 py-1 rounded-2 text-black ${getGroupStatusStyle(
-                          row
-                        )}`}
-                      >
-                        {getGroupStatus(row)}
-                      </span>
-                    </td>
-                    <td className="py-2 px-4">{row.group_end_at}</td>
-                    <td className="py-2 px-4">{row.group_active_date}</td>
-                    <td className="py-2 px-4 text-end">
-                      <button className="edit-btn d-flex align-items-center justify-content-center">
-                        <span className="material-symbols-outlined">edit</span>
-                      </button>
-                    </td>
+                {filteredData.length > 0 ? (
+                  filteredData.map((row) => (
+                    <tr key={row.group_id}>
+                      <td className="py-2 px-4">{row.group_id}</td>
+                      <td className="py-2 px-4">{row.game_name}</td>
+                      <td className="py-2 px-4">
+                        {userData[row.user_id]?.user_name || "未知用戶"}
+                      </td>
+                      <td className="py-2 px-4">{row.group_member}</td>
+                      <td className="py-2 px-4">
+                        <span
+                          className={`px-2 py-1 rounded-2 text-black ${getGroupStatusStyle(
+                            row
+                          )}`}
+                        >
+                          {getGroupStatus(row)}
+                        </span>
+                      </td>
+                      <td className="py-2 px-4">{row.group_end_at}</td>
+                      <td className="py-2 px-4">{row.group_active_date}</td>
+                      <td className="py-2 px-4 text-end">
+                        <button className="edit-btn d-flex align-items-center justify-content-center">
+                          <span className="material-symbols-outlined">edit</span>
+                        </button>
+                      </td>
+                    </tr>
+                  ))) : (
+                  <tr>
+                    <td className="text-center py-2" colSpan={7}>沒有符合的資料</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>

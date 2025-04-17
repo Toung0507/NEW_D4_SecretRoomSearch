@@ -34,7 +34,7 @@ function Game_content() {
       const res = await axios.get(`${BASE_URL}/gamesData/${id}`);
       return res.data;
     } catch (error) {
-      console.error(`無法獲取遊戲 ID ${id} 的資料`, error);
+      console.log(error.response.data.errors[0]);
       return null;
     }
   };
@@ -73,7 +73,7 @@ function Game_content() {
         }
         setPrice(priceData);
       } catch (error) {
-        console.error(error);
+        console.log(error.response.data.errors[0]);
         throw error;
       }
     };

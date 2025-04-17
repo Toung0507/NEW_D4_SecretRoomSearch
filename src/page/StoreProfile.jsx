@@ -36,7 +36,7 @@ function StoreProfile() {
       const res = await axios.get(`${baseApi}/usersData/${user_id}/storesData`);
       setStore(res.data[0]);
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
     }
   }, [user_id]);
 

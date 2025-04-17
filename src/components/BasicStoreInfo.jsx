@@ -220,30 +220,37 @@ const BasicInfo = () => {
       user_password,
     };
     const user_id = user.user_id;
-    data["user_update_at"] = dayjs().format("YYYY-MM-DD HH:mm:ss");
-    try {
-      await axios.patch(`${baseApi}/usersData/${user_id}`, data);
-      dispatch(
-        pushMessage({
-          text: "修改密碼成功\n請下次登入使用新密碼",
-          status: "success",
-        })
-      );
+    if (user_password === '' || user_password.length < 4) {
+      setPasswordError("新密碼需超過4碼");
+    }
+    else {
+      data["user_update_at"] = dayjs().format("YYYY-MM-DD HH:mm:ss");
+      try {
+        await axios.patch(`${baseApi}/usersData/${user_id}`, data);
+        dispatch(
+          pushMessage({
+            text: "修改密碼成功\n請下次登入使用新密碼",
+            status: "success",
+          })
+        );
 
-      setPasswordError("尚未驗證");
-      inputpasswordRef.current.value = "";
+        setPasswordError("尚未驗證");
+        inputpasswordRef.current.value = "";
 
-      // 延遲關閉 Modal，確保訊息顯示
-      setTimeout(() => {
-        handleHideupdateInputPawwordtModal();
-      }, 1000); // 0.5 秒後關閉
-    } catch (error) {
-      dispatch(
-        pushMessage({
-          text: error,
-          status: "error",
-        })
-      );
+        // 延遲關閉 Modal，確保訊息顯示
+        setTimeout(() => {
+          handleHideupdateInputPawwordtModal();
+        }, 1000); // 0.5 秒後關閉
+      } catch (error) {
+        console.log(error.response.data.errors[0]);
+        setPasswordError("請連繫後台管理者做修改密碼");
+        dispatch(
+          pushMessage({
+            text: "修改密碼失敗",
+            status: "error",
+          })
+        );
+      }
     }
   };
 
@@ -299,8 +306,8 @@ const BasicInfo = () => {
                   store.store_isAuth === "processing"
                     ? "./icon/processingStore.png"
                     : store.store_isAuth === "pass"
-                    ? "./icon/passStore.png"
-                    : "./icon/rejectedStore.png"
+                      ? "./icon/passStore.png"
+                      : "./icon/rejectedStore.png"
                 }
                 alt={user?.user_name}
                 className="rounded-circle"
@@ -353,9 +360,8 @@ const BasicInfo = () => {
                         required: "店家名稱欄位必填",
                       })}
                       type="text"
-                      className={`form-control ${
-                        storeUserErrors.user_name && "is-invalid"
-                      }`}
+                      className={`form-control ${storeUserErrors.user_name && "is-invalid"
+                        }`}
                       id="user_name"
                       name="user_name"
                       placeholder="請輸入店家名稱"
@@ -389,9 +395,8 @@ const BasicInfo = () => {
                         },
                       })}
                       type="text"
-                      className={`form-control ${
-                        storeUserErrors.user_email && "is-invalid"
-                      }`}
+                      className={`form-control ${storeUserErrors.user_email && "is-invalid"
+                        }`}
                       id="user_email"
                       name="user_email"
                       placeholder="請輸入聯絡信箱"
@@ -429,9 +434,8 @@ const BasicInfo = () => {
                         },
                       })}
                       type="text"
-                      className={`form-control ${
-                        storeUserErrors.user_tel && "is-invalid"
-                      }`}
+                      className={`form-control ${storeUserErrors.user_tel && "is-invalid"
+                        }`}
                       id="user_tel"
                       name="user_tel"
                       placeholder="請輸入電話"
@@ -459,9 +463,8 @@ const BasicInfo = () => {
                         required: "聯絡人欄位必填",
                       })}
                       type="text"
-                      className={`form-control ${
-                        storeUserErrors.store_contact && "is-invalid"
-                      }`}
+                      className={`form-control ${storeUserErrors.store_contact && "is-invalid"
+                        }`}
                       id="store_contact"
                       name="store_contact"
                       placeholder="請輸入聯絡信箱"
@@ -504,9 +507,8 @@ const BasicInfo = () => {
                         required: "請填寫完整地址",
                       })}
                       type="text"
-                      className={`form-control mt-2 ${
-                        storeUserErrors.store_self_address ? "is-invalid" : ""
-                      }`}
+                      className={`form-control mt-2 ${storeUserErrors.store_self_address ? "is-invalid" : ""
+                        }`}
                       id="store_self_address"
                       name="store_self_address"
                       placeholder="完整地址將自動填入"
@@ -530,9 +532,8 @@ const BasicInfo = () => {
                   </label>
                   <div className="col-sm-5">
                     <select
-                      className={`form-select ${
-                        storeUserErrors.store_method && "is-invalid"
-                      }`}
+                      className={`form-select ${storeUserErrors.store_method && "is-invalid"
+                        }`}
                       aria-label="Default select example"
                       {...storeUserData("store_method", {
                         required: "驗證方式必選",
@@ -570,9 +571,8 @@ const BasicInfo = () => {
                           minLength: { value: 8, message: "統一編號格式錯誤" },
                         })}
                         type="text"
-                        className={`form-control ${
-                          storeUserErrors.store_tax_id && "is-invalid"
-                        }`}
+                        className={`form-control ${storeUserErrors.store_tax_id && "is-invalid"
+                          }`}
                         id="store_tax_id"
                         name="store_tax_id"
                         placeholder="請填入公司統一編號"
@@ -586,9 +586,8 @@ const BasicInfo = () => {
                           required: "其餘證明文件欄位必填",
                         })}
                         type="url"
-                        className={`form-control ${
-                          storeUserErrors.store_documentation && "is-invalid"
-                        }`}
+                        className={`form-control ${storeUserErrors.store_documentation && "is-invalid"
+                          }`}
                         id="store_documentation"
                         name="store_documentation"
                         placeholder="請將其他證明文件上傳到雲端硬碟，並放上共用連結"
@@ -664,9 +663,8 @@ const BasicInfo = () => {
                         required: "店家名稱欄位必填",
                       })}
                       type="text"
-                      className={`form-control ${
-                        storeErrors.store_name && "is-invalid"
-                      }`}
+                      className={`form-control ${storeErrors.store_name && "is-invalid"
+                        }`}
                       id="store_name"
                       name="store_name"
                       placeholder="請輸入店家名稱"
@@ -706,9 +704,8 @@ const BasicInfo = () => {
                         required: "請填寫完整地址",
                       })}
                       type="text"
-                      className={`form-control mt-2 ${
-                        storeErrors.store_address ? "is-invalid" : ""
-                      }`}
+                      className={`form-control mt-2 ${storeErrors.store_address ? "is-invalid" : ""
+                        }`}
                       id="store_address"
                       name="store_address"
                       placeholder="完整地址將自動填入"
@@ -742,9 +739,8 @@ const BasicInfo = () => {
                         },
                       })}
                       type="text"
-                      className={`form-control ${
-                        storeErrors.store_email && "is-invalid"
-                      }`}
+                      className={`form-control ${storeErrors.store_email && "is-invalid"
+                        }`}
                       id="store_email"
                       name="store_email"
                       placeholder="請輸入聯絡信箱"
@@ -773,9 +769,8 @@ const BasicInfo = () => {
                         },
                       })}
                       type="text"
-                      className={`form-control ${
-                        storeErrors.store_tel && "is-invalid"
-                      }`}
+                      className={`form-control ${storeErrors.store_tel && "is-invalid"
+                        }`}
                       id="store_tel"
                       name="store_tel"
                       placeholder="請輸入電話"
@@ -836,11 +831,10 @@ const BasicInfo = () => {
                 ref={authpasswordRef}
               />
               <div
-                className={`error-message ${
-                  passwordError === "尚未驗證"
-                    ? "text-secondary-40"
-                    : "text-danger"
-                }  mt-1 fs-caption lh-1`}
+                className={`error-message ${passwordError === "尚未驗證"
+                  ? "text-secondary-40"
+                  : "text-danger"
+                  }  mt-1 fs-caption lh-1`}
               >
                 {passwordError}
               </div>
@@ -886,11 +880,10 @@ const BasicInfo = () => {
                 ref={inputpasswordRef}
               />
               <div
-                className={`error-message ${
-                  passwordError === "尚未驗證"
-                    ? "text-secondary-40"
-                    : "text-danger"
-                }  mt-1 fs-caption lh-1`}
+                className={`error-message ${passwordError === "尚未驗證"
+                  ? "text-secondary-40"
+                  : "text-danger"
+                  }  mt-1 fs-caption lh-1`}
               >
                 {passwordError}
               </div>
