@@ -98,7 +98,12 @@ function TeamBuy() {
   // 查看更多推薦
   const handleSeeRecommendMore = useCallback(() => {
     setIsAllRecommendDisplay((prev) => !prev);
-    window.scrollTo(0, 0); // 滾動到頁面頂部
+    if (firstSectionRef.current) {
+      window.scrollTo({
+        top: firstSectionRef.current.offsetTop - 90,
+        behavior: "smooth",
+      });
+    }
   }, []);
 
   const handleReset = useCallback(() => {
@@ -106,7 +111,7 @@ function TeamBuy() {
     setIsSearch(false);
     if (firstSectionRef.current) {
       window.scrollTo({
-        top: firstSectionRef.current.offsetTop - 120,
+        top: firstSectionRef.current.offsetTop - 90,
         behavior: "smooth",
       });
     }

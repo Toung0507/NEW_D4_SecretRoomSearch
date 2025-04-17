@@ -225,10 +225,6 @@ function Game_comment() {
     }
   }, [id, mode, user, fetchCommentData, fetchGameData]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   if (!user) {
     return (
       <div className="container-fluid container-lg">
