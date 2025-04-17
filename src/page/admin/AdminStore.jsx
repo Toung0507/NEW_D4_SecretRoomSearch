@@ -199,7 +199,7 @@ function AdminStore() {
                 <option value="rejected">已退回</option>
               </select>
             </div>
-            <div className="col-lg-1 col-12 d-flex align-items-end my-3 my-lg-0">
+            <div className="col-lg-1 d-flex align-items-end my-3 my-lg-0">
               <button
                 className="btn btn-search btn-primary-50 text-white form-control"
                 onClick={handleSearch}
@@ -207,7 +207,7 @@ function AdminStore() {
                 搜尋
               </button>
             </div>
-            <div className="col-lg-1 col-12 d-flex align-items-end">
+            <div className="col-lg-1 d-flex align-items-end">
               <button
                 className="btn btn-reset btn-outline-secondary form-control"
                 onClick={handleReset}
@@ -281,9 +281,7 @@ function AdminStore() {
                         </td>
                         <td className="py-2 px-4">{row.store_create_at}</td>
                         <td className="py-2 px-4 text-end">
-                          <button
-                            className="edit-btn d-flex align-items-center justify-content-center"
-                          >
+                          <button className="edit-btn d-flex align-items-center justify-content-center">
                             <span className="material-symbols-outlined">
                               edit
                             </span>
@@ -318,9 +316,7 @@ function AdminStore() {
                           </span>
                           <p className="fw-bold fs-1">{store.store_name}</p>
                         </div>
-                        <button
-                          className="edit-btn d-flex align-items-center justify-content-center"
-                        >
+                        <button className="edit-btn d-flex align-items-center justify-content-center">
                           <span className="material-symbols-outlined">
                             edit
                           </span>
@@ -393,7 +389,7 @@ function AdminStore() {
                 </div>
               ))
             ) : (
-              <div className="col-12">
+              <div className="col">
                 <div className="card">
                   <div className="card-body text-center py-4">
                     沒有符合的資料

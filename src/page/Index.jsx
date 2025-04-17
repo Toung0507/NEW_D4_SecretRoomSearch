@@ -397,11 +397,11 @@ function Index() {
                     alt="Friends"
                   />
                 </div>
-                <div className="col-lg-6 col-12">
+                <div className="col-lg-6">
                   <div className="row ">
                     {gameDifficulty.map((diff) => (
                       <div
-                        className="col-lg-4 col-sm-6 col-12"
+                        className="col-lg-4 col-sm-6"
                         key={diff.difficulty_id}
                       >
                         <a
@@ -417,7 +417,7 @@ function Index() {
                     ))}
                     {gameProperty.slice(0, 9).map((property) => (
                       <div
-                        className="col-lg-4 col-sm-6 col-12"
+                        className="col-lg-4 col-sm-6"
                         key={property.property_id}
                       >
                         <a
@@ -437,7 +437,7 @@ function Index() {
             </div>
           </div>
           <div className="bg-nature-95 row d-flex justify-content-center w-100 mx-0">
-            <div className="col-12 col-lg-11">
+            <div className="col-lg-11">
               <div className="pt-10 pt-lg-20 mb-12">
                 <h3 className="fw-bold fs-lg-h3 fs-h6 text-center">本月推薦</h3>
               </div>
@@ -473,7 +473,7 @@ function Index() {
             </div>
           </div>
           <div className="bg-nature-95 row d-flex justify-content-center w-100 mx-0">
-            <div className="col-12 col-lg-11">
+            <div className="col-lg-11">
               <div className="pt-10 pt-lg-20 mb-12">
                 <h3 className="fw-bold fs-lg-h3 fs-h6 text-center">近期新作</h3>
               </div>

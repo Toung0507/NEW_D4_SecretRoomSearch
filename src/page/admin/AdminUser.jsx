@@ -190,7 +190,7 @@ function AdminUser() {
               <option value="管理者">管理者</option>
             </select>
           </div>
-          <div className="col-lg-1 col-12 d-flex align-items-end">
+          <div className="col-lg-1 d-flex align-items-end">
             <button
               className="btn btn-search btn-primary-50 text-white form-control my-3 my-lg-0"
               onClick={handleSearch}
@@ -198,7 +198,7 @@ function AdminUser() {
               搜尋
             </button>
           </div>
-          <div className="col-lg-1 col-12 d-flex align-items-end">
+          <div className="col-lg-1 d-flex align-items-end">
             <button
               className="btn btn-reset btn-outline-secondary form-control"
               onClick={handleReset}
@@ -376,7 +376,7 @@ function AdminUser() {
               </div>
             ))
           ) : (
-            <div className="col-12">
+            <div className="col">
               <div className="card">
                 <div className="card-body text-center py-4">沒有符合的資料</div>
               </div>
