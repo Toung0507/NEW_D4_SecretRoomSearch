@@ -5,7 +5,7 @@ import { FaInfoCircle } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 import { registerInfo } from "../reducers/createContent";
 
-function RegisterOne() {
+function RegisterStepIdentity() {
   const { handleUserChange, userRegister } = useContext(registerInfo);
   const role = userRegister.user_role;
 
@@ -97,4 +97,4 @@ function RegisterOne() {
   )
 };
 
-export default RegisterOne;
+export default RegisterStepIdentity;

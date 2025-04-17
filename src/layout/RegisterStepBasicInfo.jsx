@@ -5,7 +5,7 @@ import AddressForm from "./AddressForm";
 import PropTypes from 'prop-types';
 
 
-function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmitStoreSuccess }) {
+function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmitStoreSuccess }) {
   const { userRegister, handleUserChange, handleStoreChange } = useContext(registerInfo);
   const role = userRegister.user_role;
   const { register: user, handleSubmit: handleSubmitUser, formState: { errors: userErrors } } = useForm();  // 處理user
@@ -392,10 +392,10 @@ function RegisterThree({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmi
   )
 };
 
-export default RegisterThree;
+export default RegisterStepBasicInfo;
 
 // PropTypes 驗證
-RegisterThree.propTypes = {
+RegisterStepBasicInfo.propTypes = {
   userFormRef: PropTypes.object.isRequired, // 驗證為物件
   storeFormRef: PropTypes.object.isRequired, // 驗證為物件
   onSubmitUserSuccess: PropTypes.func.isRequired, // 驗證為函數

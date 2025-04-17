@@ -3,7 +3,7 @@ import { registerInfo } from "../reducers/createContent";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { RiCheckboxCircleLine } from "react-icons/ri";
 
-function RegisterTwo() {
+function RegisterStepEmailVerify() {
   const { handleUserChange, userRegister, isEmailAuth, setIsEmailAuth, isSend, setIsSend, verification_code, setVerification_code } = useContext(registerInfo);
   const [orig_user_email] = useState(userRegister.user_email);
   const [orig_verification_code] = useState(verification_code);
@@ -128,4 +128,4 @@ function RegisterTwo() {
   )
 };
 
-export default RegisterTwo;
+export default RegisterStepEmailVerify;
