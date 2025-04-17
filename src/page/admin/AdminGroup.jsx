@@ -372,7 +372,7 @@ function AdminGroup() {
                     <div className="status my-4">
                       {getGroupStautsCard(group)}
                     </div>
-                    <div className="content d-flex row row-cols-2">
+                    <div className="content row row-cols-2">
                       <div className="user d-flex align-items-center">
                         <span className="material-symbols-outlined me-1 text-nature-50">
                           person
@@ -409,7 +409,7 @@ function AdminGroup() {
                     <div className="text-nature-60">
                       <hr />
                     </div>
-                    <div className="date d-flex row row-cols-2">
+                    <div className="date row row-cols-2">
                       <div className="end_date d-flex align-items-center">
                         <span className="material-symbols-outlined me-1 text-nature-50">
                           calendar_month

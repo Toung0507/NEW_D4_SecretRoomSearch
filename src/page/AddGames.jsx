@@ -8,12 +8,12 @@ import { MdOutlineCalendarMonth } from "react-icons/md";
 import { RiPlayListAddLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { useFieldArray, useForm } from "react-hook-form";
-import ReactLoading from "react-loading";
 import Toast from "../layout/Toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { pushMessage } from "../redux/slices/toastSlice";
 import PropTypes from "prop-types";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const emptyGames = {
   store_id: 0,
@@ -776,7 +776,7 @@ function AddGames() {
           item.price_day_type === "weekday"
             ? acc.prices.weekday.push(priceObj)
             : item.price_day_type === "weekend" &&
-              acc.prices.weekend.push(priceObj);
+            acc.prices.weekend.push(priceObj);
         } else if (
           item.price_people !== "/人" &&
           item.price_people !== "/場" &&
@@ -828,7 +828,7 @@ function AddGames() {
 
   // 確保換ID時，有重新載入
   useEffect(() => {
-    if (game_id === "AddGames" && !isLoading) {
+    if (game_id === undefined && !isLoading) {
       setErrorMessage("");
       setAddOrEdit("add");
       setNewGame({
@@ -859,7 +859,6 @@ function AddGames() {
   }, [user_id]);
 
   useEffect(() => {
-    window.scrollTo(0, 0); // 回到頁面頂部
     getBaseInfo();
   }, [getBaseInfo]);
 
@@ -875,23 +874,7 @@ function AddGames() {
   }, [propertys, difficultys, store]);
 
   if (isLoading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center flex-column"
-        style={{
-          position: "fixed",
-          inset: 0,
-          backgroundColor: "rgba(255,255,255,0.3)",
-          zIndex: 999,
-        }}
-      >
-        <p>
-          載入/更新中...
-          <br />
-        </p>
-        <ReactLoading type="spin" color="black" width="4rem" height="4rem" />
-      </div>
-    );
+    return <LoadingSpinner message="載入店家/遊戲基本資料" />;
   }
 
   return (
@@ -1169,7 +1152,7 @@ function AddGames() {
                                 </div>
                                 <div className="error-message text-danger mt-1 fs-caption lh-1">
                                   {errors?.gameFormData?.game_minNum_Players &&
-                                  errors?.gameFormData?.game_maxNum_Players ? (
+                                    errors?.gameFormData?.game_maxNum_Players ? (
                                     <p className="m-0">
                                       {
                                         errors.gameFormData.game_minNum_Players
@@ -1182,7 +1165,7 @@ function AddGames() {
                                       }
                                     </p>
                                   ) : errors?.gameFormData
-                                      ?.game_minNum_Players ? (
+                                    ?.game_minNum_Players ? (
                                     <p className="m-0">
                                       {
                                         errors.gameFormData.game_minNum_Players
@@ -1190,7 +1173,7 @@ function AddGames() {
                                       }
                                     </p>
                                   ) : errors?.gameFormData
-                                      ?.game_maxNum_Players ? (
+                                    ?.game_maxNum_Players ? (
                                     <p className="m-0">
                                       {
                                         errors.gameFormData.game_maxNum_Players
@@ -1526,7 +1509,7 @@ function AddGames() {
                                 <div className="error-message text-danger mt-1 fs-caption lh-1">
                                   {errors?.gameFormData?.game_isLimited
                                     ? errors?.gameFormData?.game_isLimited
-                                        .message
+                                      .message
                                     : "　"}
                                 </div>
                               </div>
@@ -1650,7 +1633,7 @@ function AddGames() {
                                 <div className="error-message text-danger mt-1 fs-caption lh-1">
                                   {errors?.priceFormData?.price_is_difference
                                     ? errors.priceFormData.price_is_difference
-                                        .message
+                                      .message
                                     : "　"}
                                 </div>
                               </div>
@@ -1787,7 +1770,7 @@ function AddGames() {
                                     <div className="error-message text-danger mt-1 fs-caption lh-1">
                                       {errors?.priceFormData?.single_price
                                         ? errors.priceFormData.single_price
-                                            .message
+                                          .message
                                         : "　"}
                                     </div>
                                   </div>
@@ -1836,7 +1819,7 @@ function AddGames() {
                                       <div className="error-message text-danger mt-1 fs-caption lh-1">
                                         {errors?.priceFormData?.weekday_price
                                           ? errors.priceFormData.weekday_price
-                                              .message
+                                            .message
                                           : "　"}
                                       </div>
                                       <div className="d-flex align-items-center mt-3">
@@ -1869,7 +1852,7 @@ function AddGames() {
                                       <div className="error-message text-danger mt-1 fs-caption lh-1">
                                         {errors?.priceFormData?.weekend_price
                                           ? errors.priceFormData.weekend_price
-                                              .message
+                                            .message
                                           : "　"}
                                       </div>
                                     </div>
@@ -1914,7 +1897,7 @@ function AddGames() {
                                     <div className="error-message text-danger mt-1 fs-caption lh-1">
                                       {errors?.priceFormData?.unit_person_price
                                         ? errors.priceFormData.unit_person_price
-                                            .message
+                                          .message
                                         : "　"}
                                     </div>
                                   </div>
@@ -1964,7 +1947,7 @@ function AddGames() {
                                         {errors?.priceFormData
                                           ?.unit_weekday_price
                                           ? errors.priceFormData
-                                              .unit_weekday_price.message
+                                            .unit_weekday_price.message
                                           : "　"}
                                       </div>
                                       <div className="d-flex align-items-center mt-3">
@@ -1998,7 +1981,7 @@ function AddGames() {
                                         {errors?.priceFormData
                                           ?.unit_weekend_price
                                           ? errors.priceFormData
-                                              .unit_weekend_price.message
+                                            .unit_weekend_price.message
                                           : "　"}
                                       </div>
                                     </div>
@@ -2009,7 +1992,7 @@ function AddGames() {
                             {watch("priceFormData.price_is_difference") ===
                               "0" &&
                               watch("priceFormData.price_people") ===
-                                "x-x人" && (
+                              "x-x人" && (
                                 <div className="row mb-8">
                                   <label
                                     htmlFor=""
@@ -2146,8 +2129,7 @@ function AddGames() {
                                                 if (index > 0) {
                                                   const previousMax = Number(
                                                     getValues(
-                                                      `priceFormData.prices.unit.${
-                                                        index - 1
+                                                      `priceFormData.prices.unit.${index - 1
                                                       }.max`
                                                     )
                                                   );
@@ -2164,8 +2146,8 @@ function AddGames() {
                                           {errors?.priceFormData?.prices
                                             ?.unit?.[index]?.group
                                             ? errors.priceFormData.prices.unit[
-                                                index
-                                              ].group.message
+                                              index
+                                            ].group.message
                                             : "　"}
                                         </div>
                                       </div>
@@ -2197,7 +2179,7 @@ function AddGames() {
                             {watch("priceFormData.price_is_difference") ===
                               "1" &&
                               watch("priceFormData.price_people") ===
-                                "x-x人" && (
+                              "x-x人" && (
                                 <div className="row mb-8">
                                   <label
                                     htmlFor="difficulty"
@@ -2338,8 +2320,7 @@ function AddGames() {
                                                   if (index > 0) {
                                                     const previousMax = Number(
                                                       getValues(
-                                                        `priceFormData.prices.weekday.${
-                                                          index - 1
+                                                        `priceFormData.prices.weekday.${index - 1
                                                         }.max`
                                                       )
                                                     );
@@ -2356,7 +2337,7 @@ function AddGames() {
                                             {errors?.priceFormData?.prices
                                               ?.weekday?.[index]?.group
                                               ? errors.priceFormData.prices
-                                                  .weekday[index].group.message
+                                                .weekday[index].group.message
                                               : "　"}
                                           </div>
                                         </div>
@@ -2510,8 +2491,7 @@ function AddGames() {
                                                   if (index > 0) {
                                                     const previousMax = Number(
                                                       getValues(
-                                                        `priceFormData.prices.weekend.${
-                                                          index - 1
+                                                        `priceFormData.prices.weekend.${index - 1
                                                         }.max`
                                                       )
                                                     );
@@ -2528,8 +2508,8 @@ function AddGames() {
                                             {errors?.priceFormData?.prices
                                               ?.weekend?.[index]?.group
                                               ? errors.priceFormData.prices
-                                                  .weekend?.[index].group
-                                                  .message
+                                                .weekend?.[index].group
+                                                .message
                                               : "　"}
                                           </div>
                                         </div>

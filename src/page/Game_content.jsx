@@ -9,6 +9,7 @@ import { MdLock } from "react-icons/md";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -39,8 +40,6 @@ function Game_content() {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0); // 回到頁面頂部
-
     // 獲取主遊戲資料
     const loadMainGameData = async () => {
       const gameData = await fetchGameData(gameID);
@@ -117,7 +116,7 @@ function Game_content() {
     return stars;
   };
 
-  if (!game) return <div>載入中...</div>; // TODO 換成 loading 畫面
+  if (!game) return <LoadingSpinner message="載入遊戲基本資料中" />; // TODO 換成 loading 畫面
 
   return (
     <main className="game_content position-relative">
@@ -126,14 +125,14 @@ function Game_content() {
           {/* TODO 圖片 RWD 替代方案 */}
           <source
             media="(min-width: 992px)"
-            // srcSet="/assets/images/julia-kadel.png"
+          // srcSet="/assets/images/julia-kadel.png"
           />
           <img
             className="w-100 rounded"
             src={game.game_img[0]}
             alt="banner"
             style={{ maxHeight: "432px", objectFit: "cover" }}
-            // TODO 圖片裁切與對齊問題
+          // TODO 圖片裁切與對齊問題
           />
         </picture>
         <div className="my-6 my-lg-10">
@@ -270,7 +269,7 @@ function Game_content() {
             {game.game_info}
           </p>
           <div className="comment container px-0">
-            <ul className="row row-cols-1 row-cols-md-2 row-cols-lg-3 d-flex justify-content-center">
+            <ul className="row row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
               {Object.keys(comments).length > 0 &&
                 comments.map((comment) => {
                   const {
@@ -291,8 +290,8 @@ function Game_content() {
                             user_sex === "男"
                               ? "./icon/man.png"
                               : user_sex === "女"
-                              ? "./icon/woman.png"
-                              : "./icon/user.png"
+                                ? "./icon/woman.png"
+                                : "./icon/user.png"
                           }
                           alt=""
                         />

@@ -53,13 +53,13 @@
 }
 
 .dotted {
-  @media (min-width: 768px) {
+  @include media-breakpoint-up(md) {
     border-right: 1px dotted #ccc5c2;
   }
 }
 
 // 992px以上區塊
-@media (min-width: 992px) {
+@include media-breakpoint-up(lg) {
   .row {
     >.col2 {
       padding-left: 8px;
@@ -88,7 +88,7 @@
 }
 
 // 991以下的區塊
-@media (max-width: 991px) {
+@include media-breakpoint-down(lg) {
   .row {
     .col2 {
       padding-left: 8px;
@@ -117,7 +117,7 @@
 }
 
 // 767px以下的區塊，會跟991~768重複，所以需要將重複的padding拉回來
-@media (max-width: 767px) {
+@include media-breakpoint-down(md) {
   .row {
     .col2 {
       padding-left: 6px; // 左側的 padding

@@ -4,14 +4,8 @@ import { useForm } from "react-hook-form";
 import AddressForm from "./AddressForm";
 import PropTypes from "prop-types";
 
-function RegisterThree({
-  userFormRef,
-  storeFormRef,
-  onSubmitUserSuccess,
-  onSubmitStoreSuccess,
-}) {
-  const { userRegister, handleUserChange, handleStoreChange } =
-    useContext(registerInfo);
+function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmitStoreSuccess }) {
+  const { userRegister, handleUserChange, handleStoreChange } = useContext(registerInfo);
   const role = userRegister.user_role;
   const {
     register: user,
@@ -50,7 +44,7 @@ function RegisterThree({
     <>
       <div className="my-md-10 my-sm-3 my-5">
         <div className="container-lg">
-          <div className="role row d-flex flex-column flex-md-row g-5 justify-content-center align-items-center">
+          <div className="role row flex-column flex-md-row g-5 justify-content-center align-items-center">
             <p className="h2 text-center">
               請填寫基本資訊 - 您選擇的身分是{role}
             </p>
@@ -76,9 +70,8 @@ function RegisterThree({
                           required: "姓名欄位必填",
                         })}
                         type="text"
-                        className={`form-control ${
-                          userErrors.user_name && "is-invalid"
-                        }`}
+                        className={`form-control ${userErrors.user_name && "is-invalid"
+                          }`}
                         id="user_name"
                         name="user_name"
                         placeholder="請輸入姓名或暱稱"
@@ -135,9 +128,8 @@ function RegisterThree({
                           },
                         })}
                         type="password"
-                        className={`form-control ${
-                          userErrors.user_password && "is-invalid"
-                        }`}
+                        className={`form-control ${userErrors.user_password && "is-invalid"
+                          }`}
                         id="user_password"
                         name="user_password"
                         placeholder="請輸入密碼，最少4字元"
@@ -163,13 +155,12 @@ function RegisterThree({
                           required: "請確認密碼",
                           validate: (value) =>
                             value ===
-                              document.getElementById("user_password").value ||
+                            document.getElementById("user_password").value ||
                             "兩次密碼不相符",
                         })}
                         type="password"
-                        className={`form-control ${
-                          userErrors.confirmPassword && "is-invalid"
-                        }`}
+                        className={`form-control ${userErrors.confirmPassword && "is-invalid"
+                          }`}
                         id="confirmPassword"
                         name="confirmPassword"
                         placeholder="請輸入相同密碼"
@@ -191,9 +182,8 @@ function RegisterThree({
                     </label>
                     <div className="col-sm-9">
                       <select
-                        className={`form-select ${
-                          userErrors.user_sex && "is-invalid"
-                        }`}
+                        className={`form-select ${userErrors.user_sex && "is-invalid"
+                          }`}
                         aria-label="Default select example"
                         {...user("user_sex", {
                           required: "性別欄位必填",
@@ -233,9 +223,8 @@ function RegisterThree({
                           },
                         })}
                         type="tel"
-                        className={`form-control ${
-                          userErrors.user_tel && "is-invalid"
-                        }`}
+                        className={`form-control ${userErrors.user_tel && "is-invalid"
+                          }`}
                         id="user_tel"
                         name="user_tel"
                         placeholder="請輸入電話，選填"
@@ -278,9 +267,8 @@ function RegisterThree({
                           required: "店家名稱欄位必填",
                         })}
                         type="text"
-                        className={`form-control ${
-                          userErrors.user_name && "is-invalid"
-                        }`}
+                        className={`form-control ${userErrors.user_name && "is-invalid"
+                          }`}
                         id="user_name"
                         name="user_name"
                         placeholder="請輸入與營登相符的名稱"
@@ -337,9 +325,8 @@ function RegisterThree({
                           },
                         })}
                         type="password"
-                        className={`form-control ${
-                          userErrors.user_password && "is-invalid"
-                        }`}
+                        className={`form-control ${userErrors.user_password && "is-invalid"
+                          }`}
                         id="user_password"
                         name="user_password"
                         placeholder="請輸入密碼，最少4字元"
@@ -365,13 +352,12 @@ function RegisterThree({
                           required: "請確認密碼",
                           validate: (value) =>
                             value ===
-                              document.getElementById("user_password").value ||
+                            document.getElementById("user_password").value ||
                             "兩次密碼不相符",
                         })}
                         type="password"
-                        className={`form-control ${
-                          userErrors.confirmPassword && "is-invalid"
-                        }`}
+                        className={`form-control ${userErrors.confirmPassword && "is-invalid"
+                          }`}
                         id="confirmPassword"
                         name="confirmPassword"
                         placeholder="請輸入相同密碼"
@@ -402,9 +388,8 @@ function RegisterThree({
                           },
                         })}
                         type="text"
-                        className={`form-control ${
-                          userErrors.user_tel && "is-invalid"
-                        }`}
+                        className={`form-control ${userErrors.user_tel && "is-invalid"
+                          }`}
                         id="user_tel"
                         name="user_tel"
                         placeholder="請輸入聯絡人市話或手機電話"
@@ -448,9 +433,8 @@ function RegisterThree({
                           required: "請填寫完整地址",
                         })}
                         type="text"
-                        className={`form-control mt-2 ${
-                          storeErrors.store_self_address ? "is-invalid" : ""
-                        }`}
+                        className={`form-control mt-2 ${storeErrors.store_self_address ? "is-invalid" : ""
+                          }`}
                         id="store_self_address"
                         name="store_self_address"
                         placeholder="完整地址將自動填入"
@@ -477,9 +461,8 @@ function RegisterThree({
                           required: "聯絡人欄位必填",
                         })}
                         type="text"
-                        className={`form-control ${
-                          storeErrors.store_contact && "is-invalid"
-                        }`}
+                        className={`form-control ${storeErrors.store_contact && "is-invalid"
+                          }`}
                         id="store_contact"
                         name="store_contact"
                         placeholder="請填入聯絡人，已便驗證所需使用"
@@ -501,9 +484,8 @@ function RegisterThree({
                     </label>
                     <div className="col-sm-5">
                       <select
-                        className={`form-select ${
-                          storeErrors.store_method && "is-invalid"
-                        }`}
+                        className={`form-select ${storeErrors.store_method && "is-invalid"
+                          }`}
                         aria-label="Default select example"
                         {...store("store_method", {
                           required: "驗證方式必選",
@@ -531,8 +513,8 @@ function RegisterThree({
                       {(watchMethod === "請選擇驗證方式" ||
                         watchMethod === "" ||
                         watchMethod === undefined) && (
-                        <input type="text" className="form-control" disabled />
-                      )}
+                          <input type="text" className="form-control" disabled />
+                        )}
                       {watchMethod === "統一編號" && (
                         <input
                           {...store("store_tax_id", {
@@ -543,9 +525,8 @@ function RegisterThree({
                             },
                           })}
                           type="text"
-                          className={`form-control ${
-                            storeErrors.store_tax_id && "is-invalid"
-                          }`}
+                          className={`form-control ${storeErrors.store_tax_id && "is-invalid"
+                            }`}
                           id="store_tax_id"
                           name="store_tax_id"
                           placeholder="請填入公司統一編號"
@@ -557,9 +538,8 @@ function RegisterThree({
                             required: "其餘證明文件欄位必填",
                           })}
                           type="url"
-                          className={`form-control ${
-                            storeErrors.store_documentation && "is-invalid"
-                          }`}
+                          className={`form-control ${storeErrors.store_documentation && "is-invalid"
+                            }`}
                           id="store_documentation"
                           name="store_documentation"
                           placeholder="請將其他證明文件上傳到雲端硬碟，並放上共用連結"
@@ -590,9 +570,8 @@ function RegisterThree({
                           required: "官方網頁欄位必填",
                         })}
                         type="url"
-                        className={`form-control ${
-                          storeErrors.store_website && "is-invalid"
-                        }`}
+                        className={`form-control ${storeErrors.store_website && "is-invalid"
+                          }`}
                         id="store_website"
                         name="store_website"
                         placeholder="請填入官方聯絡網頁"
@@ -621,10 +600,10 @@ function RegisterThree({
   );
 }
 
-export default RegisterThree;
+export default RegisterStepBasicInfo;
 
 // PropTypes 驗證
-RegisterThree.propTypes = {
+RegisterStepBasicInfo.propTypes = {
   userFormRef: PropTypes.object.isRequired, // 驗證為物件
   storeFormRef: PropTypes.object.isRequired, // 驗證為物件
   onSubmitUserSuccess: PropTypes.func.isRequired, // 驗證為函數

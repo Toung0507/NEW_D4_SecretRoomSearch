@@ -173,11 +173,11 @@ const BasicInfo = () => {
 
   useEffect(() => {
     new Modal(updatePawwordModalRef.current, {
-      backdrop: false,
+      backdrop: false
     }); //從boostrap裡面來的
 
     new Modal(updateInputPawwordModalRef.current, {
-      backdrop: false,
+      backdrop: false
     }); //從boostrap裡面來的
   }, []);
 
@@ -196,8 +196,8 @@ const BasicInfo = () => {
                   user?.user_sex === "男"
                     ? "./icon/man.png"
                     : user?.user_sex === "女"
-                    ? "./icon/woman.png"
-                    : "./icon/user.png"
+                      ? "./icon/woman.png"
+                      : "./icon/user.png"
                 }
                 alt={user?.user_name}
                 className="rounded-circle"
@@ -227,9 +227,8 @@ const BasicInfo = () => {
                     <input
                       {...userInfo("user_name", { required: "姓名欄位必填" })}
                       type="text"
-                      className={`form-control ${
-                        userErrors.user_name && "is-invalid"
-                      }`}
+                      className={`form-control ${userErrors.user_name && "is-invalid"
+                        }`}
                       id="user_name"
                       name="user_name"
                       placeholder="請輸入姓名或暱稱"
@@ -284,9 +283,8 @@ const BasicInfo = () => {
                   </label>
                   <div className="col-sm-10">
                     <select
-                      className={`form-select ${
-                        userErrors.user_sex && "is-invalid"
-                      }`}
+                      className={`form-select ${userErrors.user_sex && "is-invalid"
+                        }`}
                       aria-label="Default select example"
                       {...userInfo("user_sex", {
                         required: "性別欄位必填",
@@ -325,9 +323,8 @@ const BasicInfo = () => {
                         },
                       })}
                       type="tel"
-                      className={`form-control ${
-                        userErrors.user_tel && "is-invalid"
-                      }`}
+                      className={`form-control ${userErrors.user_tel && "is-invalid"
+                        }`}
                       id="user_tel"
                       name="user_tel"
                       value={formData.user_tel}
@@ -399,17 +396,16 @@ const BasicInfo = () => {
                 ref={authpasswordRef}
               />
               <div
-                className={`error-message ${
-                  passwordError === "尚未驗證"
-                    ? "text-secondary-40"
-                    : "text-danger"
-                }  mt-1 fs-caption lh-1`}
+                className={`error-message ${passwordError === "尚未驗證"
+                  ? "text-secondary-40"
+                  : "text-danger"
+                  }  mt-1 fs-caption lh-1`}
               >
                 {passwordError}
               </div>
             </div>
             <div className="modal-footer">
-              <div className="btn_2 d-flex  text-center ">
+              <div className="btn_2 d-flex text-center ">
                 <button
                   type="button"
                   className="btn bg-nature-60 text-white me-6"
@@ -449,11 +445,10 @@ const BasicInfo = () => {
                 ref={inputpasswordRef}
               />
               <div
-                className={`error-message ${
-                  passwordError === "尚未驗證"
-                    ? "text-secondary-40"
-                    : "text-danger"
-                }  mt-1 fs-caption lh-1`}
+                className={`error-message ${passwordError === "尚未驗證"
+                  ? "text-secondary-40"
+                  : "text-danger"
+                  }  mt-1 fs-caption lh-1`}
               >
                 {passwordError}
               </div>

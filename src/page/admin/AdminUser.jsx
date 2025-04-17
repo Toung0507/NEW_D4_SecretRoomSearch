@@ -314,7 +314,7 @@ function AdminUser() {
                       </div>
                     </div>
 
-                    <div className="content d-flex row row-cols-1">
+                    <div className="content row row-cols-1">
                       <div className="user d-flex align-items-center">
                         <span className="material-symbols-outlined me-2 text-nature-50">
                           mail
@@ -337,7 +337,7 @@ function AdminUser() {
                       <hr />
                     </div>
 
-                    <div className="date d-flex row row-cols-2">
+                    <div className="date row row-cols-2">
                       <div className="login-source d-flex align-items-center">
                         <span className="material-symbols-outlined me-2 text-nature-50">
                           login

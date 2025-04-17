@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import GroupCard from "../layout/GroupCard";
 import Toast from "../layout/Toast";
 import { pushMessage } from "../redux/slices/toastSlice";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -156,9 +157,9 @@ function TeamBuyComment() {
   }, [group_id]);
 
   // 資料尚未載入時，顯示 Loading
-  if (!group) return <div>Loading...</div>;
-  if (!games?.length) return <div>Loading games data...</div>;
-  if (!price) return <div>Loading...</div>;
+  if (!group || !games?.length || !price) {
+    return <LoadingSpinner message="載入相關資料中" />;
+  }
 
   const gameInfo = games.find((game) => game.game_id === group.game_id);
   const userInfo = users.find((user) => user.user_id === group.user_id);
@@ -168,7 +169,7 @@ function TeamBuyComment() {
     <>
       <div className="bg-nature-95">
         <div className="container-fluid container-lg">
-          <div className="row d-flex justify-content-center">
+          <div className="row justify-content-center">
             <div className="col-xl-10 mt-9 mb-20">
               <div className="mb-6">
                 <h2 className="fs-h5 fs-lg-h2 fw-bold">
@@ -203,8 +204,8 @@ function TeamBuyComment() {
                         userInfo?.user_sex === "男"
                           ? "./icon/man.png"
                           : userInfo?.user_sex === "女"
-                          ? "./icon/woman.png"
-                          : "./icon/user.png"
+                            ? "./icon/woman.png"
+                            : "./icon/user.png"
                       }
                       alt={userInfo?.user_name}
                       className="rounded-circle me-3"
@@ -324,22 +325,22 @@ function TeamBuyComment() {
                         <p className="text-primary-50 fs-Body-2 mb-2">報名者</p>
                         <p>
                           {group.group_participants &&
-                          group.group_participants.length > 0
+                            group.group_participants.length > 0
                             ? group.group_participants.map((userId, index) => {
-                                const participant = users.find(
-                                  (u) => u.user_id === userId
-                                );
-                                return (
-                                  <span key={userId}>
-                                    {participant
-                                      ? participant.user_name
-                                      : userId}
-                                    {index !==
-                                      group.group_participants.length - 1 &&
-                                      ", "}
-                                  </span>
-                                );
-                              })
+                              const participant = users.find(
+                                (u) => u.user_id === userId
+                              );
+                              return (
+                                <span key={userId}>
+                                  {participant
+                                    ? participant.user_name
+                                    : userId}
+                                  {index !==
+                                    group.group_participants.length - 1 &&
+                                    ", "}
+                                </span>
+                              );
+                            })
                             : "尚無參與者"}
                         </p>
                         <p className="text-primary-50 fs-Body-2">
@@ -435,17 +436,17 @@ function TeamBuyComment() {
                         groupGame.game_dif_tagname &&
                         currentGameInfo.game_dif_tagname &&
                         groupGame.game_dif_tagname ===
-                          currentGameInfo.game_dif_tagname;
+                        currentGameInfo.game_dif_tagname;
                       const matchMain1 =
                         groupGame.game_main_tag1name &&
                         currentGameInfo.game_main_tag1name &&
                         groupGame.game_main_tag1name ===
-                          currentGameInfo.game_main_tag1name;
+                        currentGameInfo.game_main_tag1name;
                       const matchMain2 =
                         groupGame.game_main_tag2name &&
                         currentGameInfo.game_main_tag2name &&
                         groupGame.game_main_tag2name ===
-                          currentGameInfo.game_main_tag2name;
+                        currentGameInfo.game_main_tag2name;
 
                       return matchDiff || matchMain1 || matchMain2;
                     })
