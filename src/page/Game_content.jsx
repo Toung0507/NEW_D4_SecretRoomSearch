@@ -39,8 +39,6 @@ function Game_content() {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0); // 回到頁面頂部
-
     // 獲取主遊戲資料
     const loadMainGameData = async () => {
       const gameData = await fetchGameData(gameID);
@@ -126,14 +124,14 @@ function Game_content() {
           {/* TODO 圖片 RWD 替代方案 */}
           <source
             media="(min-width: 992px)"
-            // srcSet="/assets/images/julia-kadel.png"
+          // srcSet="/assets/images/julia-kadel.png"
           />
           <img
             className="w-100 rounded"
             src={game.game_img[0]}
             alt="banner"
             style={{ maxHeight: "432px", objectFit: "cover" }}
-            // TODO 圖片裁切與對齊問題
+          // TODO 圖片裁切與對齊問題
           />
         </picture>
         <div className="my-6 my-lg-10">
@@ -291,8 +289,8 @@ function Game_content() {
                             user_sex === "男"
                               ? "./icon/man.png"
                               : user_sex === "女"
-                              ? "./icon/woman.png"
-                              : "./icon/user.png"
+                                ? "./icon/woman.png"
+                                : "./icon/user.png"
                           }
                           alt=""
                         />

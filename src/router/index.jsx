@@ -17,6 +17,7 @@ import AdminGame from "../page/admin/AdminGame";
 import AdminGroup from "../page/admin/AdminGroup";
 import StoreProfile from "../page/StoreProfile";
 import AddGames from "../page/AddGames";
+import NotFound from "../page/NotFound";
 
 const Router = createHashRouter([
   {
@@ -68,7 +69,7 @@ const Router = createHashRouter([
         element: <TeamBuyComment />,
       },
       {
-        path: "/AddGames?/:game_id",
+        path: "/AddGames/:game_id?",
         element: <AddGames />
       },
       {
@@ -93,9 +94,17 @@ const Router = createHashRouter([
             element: <AdminGroup />,
           },
         ],
-      },
+      }
+
+
     ],
   },
+  // ⚠️ 加在最後，所有未命中路由都會被導向首頁
+  {
+    path: "*",
+    element: <NotFound />
+  },
+
 ]);
 
 export default Router;

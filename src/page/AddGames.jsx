@@ -743,7 +743,7 @@ function AddGames() {
 
   // 確保換ID時，有重新載入
   useEffect(() => {
-    if (game_id === "AddGames" && !isLoading) {
+    if (game_id === undefined && !isLoading) {
       setErrorMessage("");
       setAddOrEdit("add");
       setNewGame({
@@ -775,7 +775,6 @@ function AddGames() {
   }, [user_id]);
 
   useEffect(() => {
-    window.scrollTo(0, 0); // 回到頁面頂部
     getBaseInfo();
   }, [getBaseInfo]);
 
