@@ -68,8 +68,8 @@ function TeamBuy() {
       const res = await axios.get(`${BASE_URL}/gamesData`);
       setMaxPeople(Math.max(...res.data.map((p) => p.game_maxNum_Players)));
     } catch (error) {
-      console.error(error);
-      throw error;
+      const message = error.response.data.errors ? "取得遊戲資料失敗" : "";
+      setError(message);
     }
   };
 
@@ -79,8 +79,8 @@ function TeamBuy() {
       const res = await axios.get(`${BASE_URL}/propertys_fixed_Data`);
       setPropertys(res.data);
     } catch (error) {
-      console.error(error);
-      throw error;
+      const message = error.response.data.errors ? "取得標籤資料失敗" : "";
+      setError(message);
     }
   };
 
@@ -90,8 +90,8 @@ function TeamBuy() {
       const res = await axios.get(`${BASE_URL}/difficultys_fixed_Data`);
       setDifficultys(res.data);
     } catch (error) {
-      console.error(error);
-      throw error;
+      const message = error.response.data.errors ? "取得難度資料失敗" : "";
+      setError(message);
     }
   };
 
@@ -170,10 +170,10 @@ function TeamBuy() {
           search.property.length === 0
             ? true
             : search.property.some(
-              (property) =>
-                String(game.game_main_tag1).includes(property) ||
-                String(game.game_main_tag2).includes(property)
-            );
+                (property) =>
+                  String(game.game_main_tag1).includes(property) ||
+                  String(game.game_main_tag2).includes(property)
+              );
 
         // 綜合判斷，使用AND邏輯
         return (
@@ -255,8 +255,8 @@ function TeamBuy() {
 
       setGroup(groupGames);
     } catch (error) {
-      console.error(error);
-      throw error;
+      const message = error.response.data.errors ? "取得群組資料失敗" : "";
+      setError(message);
     }
   };
 
@@ -274,8 +274,8 @@ function TeamBuy() {
       ]);
       setIsLoading(false);
     } catch (error) {
-      console.error("資料載入失敗", error);
-      setError(error.message || "資料載入失敗，請重試");
+      const message = error.response.data.errors ? "資料載入失敗，請重試" : "";
+      setError(message);
       setIsLoading(false);
     }
   }, []);
@@ -285,8 +285,6 @@ function TeamBuy() {
     setError(null);
     fetchAllData();
   }, [fetchAllData]);
-
-
 
   useEffect(() => {
     fetchAllData();
@@ -305,7 +303,7 @@ function TeamBuy() {
   useEffect(() => {
     if (gameData && gameData.gameName && group.length > 0) {
       const simulatedEvent = {
-        preventDefault: () => { },
+        preventDefault: () => {},
       };
       handleSearch(simulatedEvent);
     }
