@@ -1,9 +1,7 @@
 import ReactLoading from "react-loading";
 import PropTypes from "prop-types";
 
-const LoadingSpinner = ({ message }) => {
-  console.log(message);
-
+const LoadingSpinner = ({ message = "載入中" }) => {
   return (
     <div
       className="d-flex justify-content-center align-items-center flex-column"
@@ -18,13 +16,14 @@ const LoadingSpinner = ({ message }) => {
         {message}...
         <br />
       </p>
-      <ReactLoading type="spin" color="black" width="4rem" height="4rem" />
+      <ReactLoading type="spin" color="black" width={64} height={64} />
     </div>
   );
 };
 
 LoadingSpinner.propTypes = {
-  message: PropTypes.message
+  // 或者同時接受字串與 JSX
+  message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 };
 
 export default LoadingSpinner;
