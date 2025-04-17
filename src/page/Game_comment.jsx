@@ -75,10 +75,7 @@ function Game_comment() {
         if (cid && data.user_id === user.user_id) {
           setCurrentMode("edit");
           setCommentData(data);
-          // 若遊戲資料尚未取得，依據評論中的 game_id 取得遊戲資料
-          if (!gameData) {
-            fetchGameData(data.game_id);
-          }
+          await fetchGameData(data.game_id); // 總之再抓一次，確保最新
           reset({
             coment_star: data.coment_star,
             game_id: data.game_id,
@@ -98,7 +95,7 @@ function Game_comment() {
         setIsLoadingGame(false);
       }
     },
-    [gameData, reset, user?.user_id, fetchGameData]
+    [reset, user?.user_id, fetchGameData]
   );
 
   // 表單送出處理：若是新增則用 POST，若是編輯則用 Patch 更新
@@ -231,7 +228,7 @@ function Game_comment() {
       // 當 new 模式時，以 id 當作遊戲編號取得遊戲資料
       fetchGameData(Number(id));
     }
-  }, [id, mode, user, fetchCommentData, fetchGameData]);
+  }, [id, mode, fetchCommentData, fetchGameData]);
 
   if (!user) {
     return (
@@ -250,6 +247,28 @@ function Game_comment() {
   if (isLoadingGame) {
     return <LoadingSpinner message="載入遊戲基本資料中" />;
   }
+
+  // 1. 建議把規則抽成常量，閱讀性高
+  const VALID_RULES = {
+    coment_star: {
+      required: "請給整體評價",
+      min: { value: 1, message: "評分最少 1 分" },
+      max: { value: 5, message: "評分最多 5 分" },
+    },
+    commet_played_time: {
+      required: "請填寫遊玩日期",
+      validate: (value) => {
+        const selected = new Date(value);
+        const today = new Date();
+        return selected <= today || "日期不可晚於今天";
+      },
+    },
+    coment_content: {
+      required: "請輸入心得內容",
+      minLength: { value: 10, message: "至少輸入 10 個字" },
+      maxLength: { value: 2000, message: "勿超過 2000 字" },
+    },
+  };
 
   return (
     <>
@@ -286,12 +305,20 @@ function Game_comment() {
                       </p>
                       <Controller
                         name="coment_star"
+                        rules={VALID_RULES.coment_star}
                         control={control}
                         render={({ field }) => (
-                          <StarRating
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
+                          <>
+                            <StarRating
+                              value={field.value}
+                              onChange={field.onChange}
+                            />
+                            {errors.coment_star && (
+                              <p className="text-danger mt-1">
+                                {errors.coment_star.message}
+                              </p>
+                            )}
+                          </>
                         )}
                       />
                     </div>
@@ -323,16 +350,26 @@ function Game_comment() {
                           <div className="col">
                             <input
                               type="date"
-                              className="form-control"
-                              {...register("commet_played_time", {
-                                required: "日期欄位必填",
-                                pattern: {
-                                  value:
-                                    /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
-                                  message: "日期格式錯誤",
-                                },
-                              })}
+                              className={`form-control ${
+                                errors.commet_played_time && "is-invalid"
+                              }`}
+                              {...register(
+                                "commet_played_time",
+                                VALID_RULES.commet_played_time,
+                                {
+                                  pattern: {
+                                    value:
+                                      /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
+                                    message: "日期格式錯誤",
+                                  },
+                                }
+                              )}
                             />
+                            {errors.commet_played_time && (
+                              <div className="invalid-feedback">
+                                {errors.commet_played_time.message}
+                              </div>
+                            )}
                           </div>
                         </div>
                         <div className="row mb-6">
@@ -343,7 +380,7 @@ function Game_comment() {
                             name="comment_isPass"
                             control={control}
                             rules={{
-                              validate: (value) => value !== null, // 只要值不是 null 就視為通過驗證
+                              validate: (v) => v !== null || "請選擇是否通關",
                             }}
                             render={({ field }) => (
                               <>
@@ -380,6 +417,11 @@ function Game_comment() {
                                     未通關
                                   </label>
                                 </div>
+                                {errors.comment_isPass && (
+                                  <p className="text-danger mt-1">
+                                    {errors.comment_isPass.message}
+                                  </p>
+                                )}
                               </>
                             )}
                           />
@@ -392,7 +434,7 @@ function Game_comment() {
                             name="comment_isSpoilered"
                             control={control}
                             rules={{
-                              validate: (value) => value !== null, // 只要值不是 null 就視為通過驗證
+                              validate: (v) => v !== null || "請選擇是否含劇透",
                             }}
                             render={({ field }) => (
                               <>
@@ -429,6 +471,11 @@ function Game_comment() {
                                     否
                                   </label>
                                 </div>
+                                {errors.comment_isSpoilered && (
+                                  <p className="text-danger mt-1">
+                                    {errors.comment_isSpoilered.message}
+                                  </p>
+                                )}
                               </>
                             )}
                           />
@@ -438,18 +485,33 @@ function Game_comment() {
                             體驗心得
                           </h3>
                           <div className="col">
-                            <textarea
+                            {/* <textarea
                               className={`form-control ${
                                 errors.message && "is-invalid"
                               }`}
                               id="experience"
                               rows="5"
                               {...register("coment_content")}
-                            ></textarea>
+                            ></textarea> */}
+                            <textarea
+                              className={`form-control ${
+                                errors.coment_content && "is-invalid"
+                              }`}
+                              rows="5"
+                              {...register(
+                                "coment_content",
+                                VALID_RULES.coment_content
+                              )}
+                            />
                             <label
                               htmlFor="experience"
                               className="form-label"
                             ></label>
+                            {errors.coment_content && (
+                              <div className="invalid-feedback">
+                                {errors.coment_content.message}
+                              </div>
+                            )}
                           </div>
                         </div>
                         <div className="col d-grid gap-2">
