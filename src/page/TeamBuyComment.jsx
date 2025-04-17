@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import GroupCard from "../layout/GroupCard";
 import Toast from "../layout/Toast";
 import { pushMessage } from "../redux/slices/toastSlice";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -156,9 +157,9 @@ function TeamBuyComment() {
   }, [group_id]);
 
   // 資料尚未載入時，顯示 Loading
-  if (!group) return <div>Loading...</div>;
-  if (!games?.length) return <div>Loading games data...</div>;
-  if (!price) return <div>Loading...</div>;
+  if (!group || !games?.length || !price) {
+    return <LoadingSpinner message="載入相關資料中" />;
+  }
 
   const gameInfo = games.find((game) => game.game_id === group.game_id);
   const userInfo = users.find((user) => user.user_id === group.user_id);
@@ -168,7 +169,7 @@ function TeamBuyComment() {
     <>
       <div className="bg-nature-95">
         <div className="container-fluid container-lg">
-          <div className="row d-flex justify-content-center">
+          <div className="row justify-content-center">
             <div className="col-xl-10 mt-9 mb-20">
               <div className="mb-6">
                 <h2 className="fs-h5 fs-lg-h2 fw-bold">

@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Toast from "../layout/Toast";
 import { pushMessage } from "../redux/slices/toastSlice";
 import PropTypes from "prop-types";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -228,7 +229,7 @@ function Game_comment() {
   if (!user) {
     return (
       <div className="container-fluid container-lg">
-        <div className="row d-flex justify-content-center">
+        <div className="row justify-content-center">
           <div className="col-xl-10">
             <div className="pb-10">
               <h2 className="text-center">請先登入</h2>
@@ -240,7 +241,7 @@ function Game_comment() {
   }
   // 若尚未取得遊戲資料則顯示 Loading
   if (!gameData) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner message="載入遊戲基本資料中" />;
   }
 
   return (
@@ -248,7 +249,7 @@ function Game_comment() {
       {user_token ? (
         <div className="bg-secondary-99">
           <div className="container-fluid container-lg">
-            <div className="row d-flex justify-content-center">
+            <div className="row justify-content-center">
               <div className="col-xl-10">
                 <div className="pb-10">
                   <picture className="ratio ratio-16x9">
@@ -462,7 +463,7 @@ function Game_comment() {
       ) : (
         <div className="bg-secondary-99">
           <div className="container-fluid container-lg">
-            <div className="row d-flex justify-content-center">
+            <div className="row justify-content-center">
               <div className="col-xl-10">
                 <div className="pb-10">
                   <h2 className="text-center">請先登入</h2>

@@ -354,7 +354,7 @@ function TeamBuy() {
           {error && <ErrorAlert message={error} onRetry={handleRetry} />}
 
           {isLoading ? (
-            <LoadingSpinner />
+            <LoadingSpinner message="載入揪團列表中" />
           ) : (
             <div className="row flex-column flex-md-row g-0">
               {/* 表單部分 */}

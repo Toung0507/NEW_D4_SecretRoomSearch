@@ -9,6 +9,7 @@ import { MdLock } from "react-icons/md";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -115,7 +116,7 @@ function Game_content() {
     return stars;
   };
 
-  if (!game) return <div>載入中...</div>; // TODO 換成 loading 畫面
+  if (!game) return <LoadingSpinner message="載入遊戲基本資料中" />; // TODO 換成 loading 畫面
 
   return (
     <main className="game_content position-relative">
