@@ -316,7 +316,7 @@ function Index() {
               </h3>
             </div>
             <div className="row justify-content-center">
-              <div className="col-lg-6">
+              <div className="col-10">
                 <div className="d-flex justify-content-lg-between flex-column flex-lg-row align-items-center mb-16">
                   <div className="my-lg-12 gameText text-center text-lg-start d-grid gap-3 gap-lg-6">
                     <h5 className="text-primary-20 fw-bold">
@@ -469,7 +469,6 @@ function Index() {
                     ))}
                   </Swiper>
                 )}
-
               </div>
             </div>
           </div>
@@ -516,7 +515,7 @@ function Index() {
             </div>
           </div>
         </div>
-      </div >
+      </div>
     </>
   );
 }
