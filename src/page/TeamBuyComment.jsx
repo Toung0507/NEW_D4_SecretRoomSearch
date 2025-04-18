@@ -15,6 +15,7 @@ function TeamBuyComment() {
   const [users, setUsers] = useState([]);
   const [price, setPrice] = useState(null);
   const [groupsList, setGroupsList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { group_id } = useParams();
 
@@ -25,11 +26,15 @@ function TeamBuyComment() {
   // 初始載入群組資料
   useEffect(() => {
     const fetchGroup = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${BASE_URL}/groupsData/${group_id}`);
         setGroup(res.data);
+        setIsLoading(false);
       } catch (error) {
-        console.error(error);
+        console.log(error.response.data.errors[0]);
+      } finally {
+        setIsLoading(false); // 結束 loading
       }
     };
     fetchGroup();
@@ -38,11 +43,14 @@ function TeamBuyComment() {
   // 取得所有群組資料，作為推薦來源
   useEffect(() => {
     const fetchGroupsList = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${BASE_URL}/groupsData`);
         setGroupsList(res.data);
       } catch (error) {
-        console.error(error);
+        console.log(error.response.data.errors[0]);
+      } finally {
+        setIsLoading(false); // 結束 loading
       }
     };
     fetchGroupsList();
@@ -104,7 +112,7 @@ function TeamBuyComment() {
         })
       );
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
       dispatch(
         pushMessage({
           text: "報名失敗，請稍後再試",
@@ -115,38 +123,50 @@ function TeamBuyComment() {
   };
 
   const getGroup = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(`${BASE_URL}/groupsData/${group_id}`);
       setGroup(res.data);
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
+    } finally {
+      setIsLoading(false); // 結束 loading
     }
   };
 
   const getGames = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(`${BASE_URL}/gamesData`);
       setGames(res.data);
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
+    } finally {
+      setIsLoading(false); // 結束 loading
     }
   };
 
   const getUsers = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(`${BASE_URL}/usersData`);
       setUsers(res.data);
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
+    } finally {
+      setIsLoading(false); // 結束 loading
     }
   };
 
   const getPriceData = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(`${BASE_URL}/pricesData`);
       setPrice(res.data);
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
+    } finally {
+      setIsLoading(false); // 結束 loading
     }
   };
 
@@ -157,13 +177,14 @@ function TeamBuyComment() {
   }, [group_id]);
 
   // 資料尚未載入時，顯示 Loading
-  if (!group || !games?.length || !price) {
+  //別把 !gameData 當作 Loading 依據
+  if (isLoading) {
     return <LoadingSpinner message="載入相關資料中" />;
   }
 
-  const gameInfo = games.find((game) => game.game_id === group.game_id);
-  const userInfo = users.find((user) => user.user_id === group.user_id);
-  const priceInfo = price.filter((price) => price.game_id === group.game_id);
+  const gameInfo = games?.find((game) => game.game_id === group?.game_id);
+  const userInfo = users?.find((user) => user.user_id === group?.user_id);
+  const priceInfo = price?.filter((price) => price.game_id === group?.game_id);
 
   return (
     <>
@@ -173,9 +194,9 @@ function TeamBuyComment() {
             <div className="col-xl-10 mt-9 mb-20">
               <div className="mb-6">
                 <h2 className="fs-h5 fs-lg-h2 fw-bold">
-                  {`${group.group_active_date}`}
-                  {group.game_address?.slice(0, 3)}
-                  {`${group.game_name}`}
+                  {`${group?.group_active_date}`}
+                  {group?.game_address?.slice(0, 3)}
+                  {`${group?.game_name}`}
                 </h2>
               </div>
               <div>
@@ -204,8 +225,8 @@ function TeamBuyComment() {
                         userInfo?.user_sex === "男"
                           ? "./icon/man.png"
                           : userInfo?.user_sex === "女"
-                            ? "./icon/woman.png"
-                            : "./icon/user.png"
+                          ? "./icon/woman.png"
+                          : "./icon/user.png"
                       }
                       alt={userInfo?.user_name}
                       className="rounded-circle me-3"
@@ -225,19 +246,19 @@ function TeamBuyComment() {
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           密室名稱
                         </p>
-                        <p>{group.game_name}</p>
+                        <p>{group?.game_name}</p>
                       </div>
                       <div className="col-lg-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           揪團截止日期
                         </p>
-                        <p>{group.group_end_at}</p>
+                        <p>{group?.group_end_at}</p>
                       </div>
                       <div className="col-lg-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           活動日期
                         </p>
-                        <p>{group.group_active_date}</p>
+                        <p>{group?.group_active_date}</p>
                       </div>
                     </div>
                     <div className="row gy-4">
@@ -245,7 +266,7 @@ function TeamBuyComment() {
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           密室地址
                         </p>
-                        <p>{group.game_address}</p>
+                        <p>{group?.game_address}</p>
                       </div>
                     </div>
                     <div className="row gy-4">
@@ -253,12 +274,12 @@ function TeamBuyComment() {
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           需求人數
                         </p>
-                        <p>{group.group_member}人</p>
+                        <p>{group?.group_member}人</p>
                       </div>
                       <div className="col-6 col-lg-10">
                         <p className="text-primary-50 fs-Body-2 mb-2">價格</p>
                         <ul>
-                          {priceInfo.length === 2 ? (
+                          {priceInfo?.length === 2 ? (
                             // 當有兩筆價格資料，顯示平日與假日
                             <li className="fs-Body-2">
                               {(() => {
@@ -289,7 +310,7 @@ function TeamBuyComment() {
                             </li>
                           ) : (
                             // 當只有一筆資料時，直接顯示價格，不顯示 price_day_type 文字
-                            priceInfo.map((item) => (
+                            priceInfo?.map((item) => (
                               <li key={item.price_id} className="fs-Body-2">
                                 {item.price_people}：${item.price_mix}
                               </li>
@@ -303,13 +324,13 @@ function TeamBuyComment() {
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           是否歡迎新手
                         </p>
-                        <p>{group.group_noob ? "是" : "否"}</p>
+                        <p>{group?.group_noob ? "是" : "否"}</p>
                       </div>
                       <div className="col-6 col-lg-10">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           聯絡方式
                         </p>
-                        <p>{group.group_channel}</p>
+                        <p>{group?.group_channel}</p>
                       </div>
                     </div>
                     <div className="row gy-4">
@@ -317,34 +338,34 @@ function TeamBuyComment() {
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           揪團理念
                         </p>
-                        <p>{group.group_philosophy}</p>
+                        <p>{group?.group_philosophy}</p>
                       </div>
                     </div>
                     <div className="row gy-4">
                       <div className="col">
                         <p className="text-primary-50 fs-Body-2 mb-2">報名者</p>
                         <p>
-                          {group.group_participants &&
-                            group.group_participants.length > 0
-                            ? group.group_participants.map((userId, index) => {
-                              const participant = users.find(
-                                (u) => u.user_id === userId
-                              );
-                              return (
-                                <span key={userId}>
-                                  {participant
-                                    ? participant.user_name
-                                    : userId}
-                                  {index !==
-                                    group.group_participants.length - 1 &&
-                                    ", "}
-                                </span>
-                              );
-                            })
+                          {group?.group_participants &&
+                          group?.group_participants.length > 0
+                            ? group?.group_participants.map((userId, index) => {
+                                const participant = users.find(
+                                  (u) => u.user_id === userId
+                                );
+                                return (
+                                  <span key={userId}>
+                                    {participant
+                                      ? participant.user_name
+                                      : userId}
+                                    {index !==
+                                      group.group_participants.length - 1 &&
+                                      ", "}
+                                  </span>
+                                );
+                              })
                             : "尚無參與者"}
                         </p>
                         <p className="text-primary-50 fs-Body-2">
-                          共{group.group_participants.length}人加入此揪團
+                          共{group?.group_participants.length}人加入此揪團
                         </p>
                       </div>
                     </div>
@@ -406,13 +427,13 @@ function TeamBuyComment() {
                 </div>
                 {(() => {
                   // 取得當前群組對應的遊戲資訊
-                  const currentGameInfo = games.find(
-                    (g) => g.game_id === group.game_id
+                  const currentGameInfo = games?.find(
+                    (g) => g.game_id === group?.game_id
                   );
                   if (!currentGameInfo) return null; // 如果當前群組遊戲資訊不存在，就不顯示推薦
 
                   // 檢查是否超過活動日期
-                  const activeDate = new Date(group.group_active_date);
+                  const activeDate = new Date(group?.group_active_date);
                   const now = new Date();
                   if (now > activeDate) return null; // 如果目前時間超過活動日期，就不顯示推薦
 
@@ -436,17 +457,17 @@ function TeamBuyComment() {
                         groupGame.game_dif_tagname &&
                         currentGameInfo.game_dif_tagname &&
                         groupGame.game_dif_tagname ===
-                        currentGameInfo.game_dif_tagname;
+                          currentGameInfo.game_dif_tagname;
                       const matchMain1 =
                         groupGame.game_main_tag1name &&
                         currentGameInfo.game_main_tag1name &&
                         groupGame.game_main_tag1name ===
-                        currentGameInfo.game_main_tag1name;
+                          currentGameInfo.game_main_tag1name;
                       const matchMain2 =
                         groupGame.game_main_tag2name &&
                         currentGameInfo.game_main_tag2name &&
                         groupGame.game_main_tag2name ===
-                        currentGameInfo.game_main_tag2name;
+                          currentGameInfo.game_main_tag2name;
 
                       return matchDiff || matchMain1 || matchMain2;
                     })

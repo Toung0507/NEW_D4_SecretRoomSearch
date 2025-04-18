@@ -56,7 +56,7 @@ function Game_comment() {
       }
       setGameData(data);
     } catch (error) {
-      console.error("取得遊戲資料錯誤：", error);
+      console.log(error.response.data.errors[0]);
     } finally {
       setIsLoadingGame(false); // 結束 loading
     }
@@ -90,7 +90,7 @@ function Game_comment() {
           console.warn("取得的評論資料不符合當前使用者：", data);
         }
       } catch (error) {
-        console.error("取得評論資料錯誤：", error);
+        console.log(error.response.data.errors[0]);
       } finally {
         setIsLoadingGame(false);
       }
@@ -130,13 +130,7 @@ function Game_comment() {
         }, 3000);
       }
     } catch (error) {
-      dispatch(
-        pushMessage({
-          text: "送出資料時發生錯誤",
-          status: "failed",
-        })
-      );
-      console.error(error);
+      console.log(error.response.data.errors[0]);
     }
   };
 
@@ -213,7 +207,7 @@ function Game_comment() {
           }
         }
       } catch (error) {
-        console.error("取得相關資料錯誤：", error);
+        console.log(error.response.data.errors[0]);
       }
     };
 
@@ -243,12 +237,8 @@ function Game_comment() {
       </div>
     );
   }
-  // 若尚未取得遊戲資料則顯示 Loading
-  if (isLoadingGame) {
-    return <LoadingSpinner message="載入遊戲基本資料中" />;
-  }
 
-  // 1. 建議把規則抽成常量，閱讀性高
+  // 把規則抽成常量，閱讀性高
   const VALID_RULES = {
     coment_star: {
       required: "請給整體評價",
@@ -269,6 +259,10 @@ function Game_comment() {
       maxLength: { value: 2000, message: "勿超過 2000 字" },
     },
   };
+  // 若尚未取得遊戲資料則顯示 Loading
+  if (isLoadingGame) {
+    return <LoadingSpinner message="載入遊戲基本資料中" />;
+  }
 
   return (
     <>
@@ -281,10 +275,10 @@ function Game_comment() {
                   <picture className="ratio ratio-16x9">
                     <source
                       media="(min-width: 992px)"
-                      src={`${gameData.game_img}`}
+                      src={`${gameData?.game_img}`}
                     />
                     <img
-                      src={`${gameData.game_img}`}
+                      src={`${gameData?.game_img}`}
                       alt="banner"
                       className="w-100 img-fluid rounded-3"
                       style={{
@@ -295,7 +289,7 @@ function Game_comment() {
                   <Form onSubmit={handleSubmit(onSubmit)}>
                     <div className="py-10">
                       <h1 className="fs-lg-Display2 fs-h5 fw-bold">
-                        遊戲名稱：{`${gameData.game_name}`}
+                        遊戲名稱：{`${gameData?.game_name}`}
                       </h1>
                     </div>
                     <div className="mb-6">
@@ -310,7 +304,7 @@ function Game_comment() {
                         render={({ field }) => (
                           <>
                             <StarRating
-                              value={field.value}
+                              value={field?.value}
                               onChange={field.onChange}
                             />
                             {errors.coment_star && (
@@ -331,7 +325,7 @@ function Game_comment() {
                               難度
                             </h3>
                             <div className="col-auto">
-                              {`${gameData.game_dif_tagname}`}
+                              {`${gameData?.game_dif_tagname}`}
                             </div>
                           </div>
                           <div className="row py-3" id="input_3_2">
@@ -339,7 +333,7 @@ function Game_comment() {
                               主題特色
                             </h3>
                             <div className="col-lg-3 col-md-4 col-sm-6">
-                              {`${gameData.game_main_tag1name} ${gameData.game_main_tag2name}`}
+                              {`${gameData?.game_main_tag1name} ${gameData?.game_main_tag2name}`}
                             </div>
                           </div>
                         </div>
@@ -391,7 +385,7 @@ function Game_comment() {
                                     name="inlineRadioOptions"
                                     id="inlineRadioSuccess"
                                     // 根據 field.value 判斷是否選取
-                                    checked={field.value === true}
+                                    checked={field?.value === true}
                                     onChange={() => field.onChange(true)}
                                   />
                                   <label
@@ -407,7 +401,7 @@ function Game_comment() {
                                     type="radio"
                                     name="inlineRadioOptions"
                                     id="inlineRadioFail"
-                                    checked={field.value === false}
+                                    checked={field?.value === false}
                                     onChange={() => field.onChange(false)}
                                   />
                                   <label
@@ -445,7 +439,7 @@ function Game_comment() {
                                     name="inlineRadioOptions2"
                                     id="inlineRadioSuccess2"
                                     // 根據 field.value 判斷是否選取
-                                    checked={field.value === true}
+                                    checked={field?.value === true}
                                     onChange={() => field.onChange(true)}
                                   />
                                   <label
@@ -461,7 +455,7 @@ function Game_comment() {
                                     type="radio"
                                     name="inlineRadioOptions2"
                                     id="inlineRadioFail2"
-                                    checked={field.value === false}
+                                    checked={field?.value === false}
                                     onChange={() => field.onChange(false)}
                                   />
                                   <label
@@ -485,14 +479,6 @@ function Game_comment() {
                             體驗心得
                           </h3>
                           <div className="col">
-                            {/* <textarea
-                              className={`form-control ${
-                                errors.message && "is-invalid"
-                              }`}
-                              id="experience"
-                              rows="5"
-                              {...register("coment_content")}
-                            ></textarea> */}
                             <textarea
                               className={`form-control ${
                                 errors.coment_content && "is-invalid"
