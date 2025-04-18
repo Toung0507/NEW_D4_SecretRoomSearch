@@ -56,7 +56,7 @@ function Game_comment() {
       }
       setGameData(data);
     } catch (error) {
-      console.log(error.response.data.errors[0]);
+      console.log("取得遊戲資料錯誤：", error.response.data?.errors[0]);
     } finally {
       setIsLoadingGame(false); // 結束 loading
     }
@@ -90,7 +90,7 @@ function Game_comment() {
           console.warn("取得的評論資料不符合當前使用者：", data);
         }
       } catch (error) {
-        console.log(error.response.data.errors[0]);
+        console.log("取得評論資料錯誤：", error.response.data?.errors[0]);
       } finally {
         setIsLoadingGame(false);
       }
@@ -130,7 +130,13 @@ function Game_comment() {
         }, 3000);
       }
     } catch (error) {
-      console.log(error.response.data.errors[0]);
+      const message = error.response.data?.errors[0] ? '送出資料時發生錯誤' : '';
+      dispatch(
+        pushMessage({
+          text: message,
+          status: "failed",
+        })
+      );
     }
   };
 
@@ -207,7 +213,7 @@ function Game_comment() {
           }
         }
       } catch (error) {
-        console.log(error.response.data.errors[0]);
+        console.log("取得相關資料錯誤：", error.response.data?.errors[0]);
       }
     };
 
@@ -344,9 +350,8 @@ function Game_comment() {
                           <div className="col">
                             <input
                               type="date"
-                              className={`form-control ${
-                                errors.commet_played_time && "is-invalid"
-                              }`}
+                              className={`form-control ${errors.commet_played_time && "is-invalid"
+                                }`}
                               {...register(
                                 "commet_played_time",
                                 VALID_RULES.commet_played_time,
@@ -480,9 +485,8 @@ function Game_comment() {
                           </h3>
                           <div className="col">
                             <textarea
-                              className={`form-control ${
-                                errors.coment_content && "is-invalid"
-                              }`}
+                              className={`form-control ${errors.coment_content && "is-invalid"
+                                }`}
                               rows="5"
                               {...register(
                                 "coment_content",

@@ -40,8 +40,10 @@ const MyGames = () => {
             downG.push(data);
           }
         });
+        setErrorMessage(null);
       } catch (error) {
-        setErrorMessage(error);
+        const message = error.response.data?.errors[0] ? '取得此店家的全部遊戲資料失敗，請聯繫管理者' : '';
+        setErrorMessage(message);
       }
       if (upG.length === 0) {
         setIsHaveUpGames(false);
@@ -258,21 +260,19 @@ const MyGames = () => {
       <div className="m-0 d-block d-lg-none">
         <div className="d-flex m-0 pt-5 ps-3 pb-3">
           <button
-            className={`commentButton btn border-1 border-secondary-50 me-3  fw-bold rounded-16 ${
-              activeTab === "upGames"
-                ? "bg-secondary-50 text-secondary-99"
-                : "text-secondary-50"
-            }`}
+            className={`commentButton btn border-1 border-secondary-50 me-3  fw-bold rounded-16 ${activeTab === "upGames"
+              ? "bg-secondary-50 text-secondary-99"
+              : "text-secondary-50"
+              }`}
             onClick={() => setActiveTab("upGames")}
           >
             已上架
           </button>
           <button
-            className={`commentButton btn border-1 border-secondary-50 rounded-16 fw-bold ${
-              activeTab === "downGames"
-                ? "bg-secondary-50 text-secondary-99"
-                : "text-secondary-50"
-            }`}
+            className={`commentButton btn border-1 border-secondary-50 rounded-16 fw-bold ${activeTab === "downGames"
+              ? "bg-secondary-50 text-secondary-99"
+              : "text-secondary-50"
+              }`}
             onClick={() => setActiveTab("downGames")}
           >
             等待上架
@@ -284,6 +284,13 @@ const MyGames = () => {
               已上架
             </div>
             <div className=" ">
+              {errorMessage && (
+                <dl>
+                  <dt className="text-center fs-h6 bg-white py-2">
+                    <p>{errorMessage}</p>
+                  </dt>
+                </dl>
+              )}
               {isAuthStore === false && (
                 <>
                   <dl>
