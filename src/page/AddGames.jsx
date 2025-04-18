@@ -542,9 +542,10 @@ function AddGames() {
       const res = await axios.post(`${baseApi}/gamesData`, games);
       game_id = res.data.data.game_id;
     } catch (error) {
+      const message = error.response.data?.errors[0] ? '取得遊戲ID失敗' : '';
       dispatch(
         pushMessage({
-          text: error,
+          text: message,
           status: "error",
         })
       );
@@ -559,9 +560,10 @@ function AddGames() {
       try {
         await axios.post(`${baseApi}/pricesData`, addGameID);
       } catch (error) {
+        const message = error.response.data?.errors[0] ? '新增遊戲價格失敗' : '';
         dispatch(
           pushMessage({
-            text: error,
+            text: message,
             status: "error",
           })
         );
@@ -591,9 +593,10 @@ function AddGames() {
       );
       setIsLoading(false);
     } catch (error) {
+      const message = error.response.data?.errors[0] ? '編輯遊戲資訊失敗' : '';
       dispatch(
         pushMessage({
-          text: error,
+          text: message,
           status: "error",
         })
       );
@@ -603,19 +606,22 @@ function AddGames() {
   // 刪除遊戲的價格表全資料
   const deldetePrice = async () => {
     let idArray = [];
+    // 先抓此遊戲的全部價格資料
     try {
       const res = await axios.get(`${baseApi}/gamesData/${game_id}/pricesData`);
       idArray = res.data.map((item) => item.price_id);
     } catch (error) {
-      console.error(error);
+      console.log(`編輯前此筆遊戲的價格資料獲取失敗 ${error.response.data.errors[0]}`);
     }
+    // 再刪除這些資料
     for (const price_id of idArray) {
       try {
         await axios.delete(`${baseApi}/pricesData/${price_id}`);
       } catch (error) {
+        const message = error.response.data?.errors[0] ? '編輯前置作業失敗，請重試' : '';
         dispatch(
           pushMessage({
-            text: error,
+            text: message,
             status: "error",
           })
         );
@@ -625,12 +631,14 @@ function AddGames() {
 
   //編輯價格資料 - axios
   const updatePrices = async (updatePrice) => {
+    // 重新傳入全部的的價格資料
     try {
       await axios.post(`${baseApi}/pricesData`, updatePrice);
     } catch (error) {
+      const message = error.response.data?.errors[0] ? '編輯價格資料失敗，請重試' : '';
       dispatch(
         pushMessage({
-          text: error,
+          text: message,
           status: "error",
         })
       );
@@ -644,7 +652,7 @@ function AddGames() {
       const allPricesInfo = res.data;
       handleGetPrices(allPricesInfo);
     } catch (error) {
-      console.error(error);
+      console.log(`此筆遊戲的價格資料獲取失敗 ${error.response.data.errors[0]}`);
     }
   }, [game_id]);
 
@@ -692,7 +700,7 @@ function AddGames() {
       }));
       getStoreGamePriceInfo();
     } catch (error) {
-      console.error(error);
+      console.log(`此筆遊戲資料獲取失敗 ${error.response.data.errors[0]}`);
     }
   }, [game_id, getStoreGamePriceInfo, store.store_id]);
 
@@ -854,7 +862,7 @@ function AddGames() {
       setPropertys(propertysRes.data);
       setStore(storeRes.data[0]);
     } catch (error) {
-      console.error(error);
+      console.log(`基本資料取得失敗 ${error.response.data.errors[0]}`);
     }
   }, [user_id]);
 
