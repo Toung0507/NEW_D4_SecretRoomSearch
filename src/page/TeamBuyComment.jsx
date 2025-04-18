@@ -29,7 +29,7 @@ function TeamBuyComment() {
         const res = await axios.get(`${BASE_URL}/groupsData/${group_id}`);
         setGroup(res.data);
       } catch (error) {
-        console.error(error);
+        console.log(error.response.data.errors[0]);
       }
     };
     fetchGroup();
@@ -42,7 +42,7 @@ function TeamBuyComment() {
         const res = await axios.get(`${BASE_URL}/groupsData`);
         setGroupsList(res.data);
       } catch (error) {
-        console.error(error);
+        console.log(error.response.data.errors[0]);
       }
     };
     fetchGroupsList();
@@ -104,7 +104,7 @@ function TeamBuyComment() {
         })
       );
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
       dispatch(
         pushMessage({
           text: "報名失敗，請稍後再試",
@@ -119,7 +119,7 @@ function TeamBuyComment() {
       const res = await axios.get(`${BASE_URL}/groupsData/${group_id}`);
       setGroup(res.data);
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
     }
   };
 
@@ -128,7 +128,7 @@ function TeamBuyComment() {
       const res = await axios.get(`${BASE_URL}/gamesData`);
       setGames(res.data);
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
     }
   };
 
@@ -137,7 +137,7 @@ function TeamBuyComment() {
       const res = await axios.get(`${BASE_URL}/usersData`);
       setUsers(res.data);
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
     }
   };
 
@@ -146,7 +146,7 @@ function TeamBuyComment() {
       const res = await axios.get(`${BASE_URL}/pricesData`);
       setPrice(res.data);
     } catch (error) {
-      console.error(error);
+      console.log(error.response.data.errors[0]);
     }
   };
 
@@ -204,8 +204,8 @@ function TeamBuyComment() {
                         userInfo?.user_sex === "男"
                           ? "./icon/man.png"
                           : userInfo?.user_sex === "女"
-                            ? "./icon/woman.png"
-                            : "./icon/user.png"
+                          ? "./icon/woman.png"
+                          : "./icon/user.png"
                       }
                       alt={userInfo?.user_name}
                       className="rounded-circle me-3"
@@ -325,22 +325,22 @@ function TeamBuyComment() {
                         <p className="text-primary-50 fs-Body-2 mb-2">報名者</p>
                         <p>
                           {group.group_participants &&
-                            group.group_participants.length > 0
+                          group.group_participants.length > 0
                             ? group.group_participants.map((userId, index) => {
-                              const participant = users.find(
-                                (u) => u.user_id === userId
-                              );
-                              return (
-                                <span key={userId}>
-                                  {participant
-                                    ? participant.user_name
-                                    : userId}
-                                  {index !==
-                                    group.group_participants.length - 1 &&
-                                    ", "}
-                                </span>
-                              );
-                            })
+                                const participant = users.find(
+                                  (u) => u.user_id === userId
+                                );
+                                return (
+                                  <span key={userId}>
+                                    {participant
+                                      ? participant.user_name
+                                      : userId}
+                                    {index !==
+                                      group.group_participants.length - 1 &&
+                                      ", "}
+                                  </span>
+                                );
+                              })
                             : "尚無參與者"}
                         </p>
                         <p className="text-primary-50 fs-Body-2">
@@ -436,17 +436,17 @@ function TeamBuyComment() {
                         groupGame.game_dif_tagname &&
                         currentGameInfo.game_dif_tagname &&
                         groupGame.game_dif_tagname ===
-                        currentGameInfo.game_dif_tagname;
+                          currentGameInfo.game_dif_tagname;
                       const matchMain1 =
                         groupGame.game_main_tag1name &&
                         currentGameInfo.game_main_tag1name &&
                         groupGame.game_main_tag1name ===
-                        currentGameInfo.game_main_tag1name;
+                          currentGameInfo.game_main_tag1name;
                       const matchMain2 =
                         groupGame.game_main_tag2name &&
                         currentGameInfo.game_main_tag2name &&
                         groupGame.game_main_tag2name ===
-                        currentGameInfo.game_main_tag2name;
+                          currentGameInfo.game_main_tag2name;
 
                       return matchDiff || matchMain1 || matchMain2;
                     })

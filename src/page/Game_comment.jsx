@@ -12,7 +12,6 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function Game_comment() {
   const [isLoadingGame, setIsLoadingGame] = useState(true);
-  const [errMessage, setErrMessage] = useState("");
   // 注意：因為 state 為保留字，這邊用 mode 來接收
   const { state: mode, id } = useParams();
   const navigate = useNavigate();
@@ -47,26 +46,21 @@ function Game_comment() {
   });
 
   // 單獨取得遊戲資料（若整合資料中尚未取得或需要補充）
-  const fetchGameData = useCallback(
-    async (gameId) => {
-      setIsLoadingGame(true); // 開始 loading
-      try {
-        const res = await axios.get(`${BASE_URL}/gamesData/${gameId}`);
-        const data = res.data;
-        if (Array.isArray(data.game_img)) {
-          data.game_img = data.game_img[0];
-        }
-        setGameData(data);
-      } catch (error) {
-        const message = error.response.data.errors ? "載入遊戲資料失敗" : "";
-        setErrMessage(message);
-        dispatch(pushMessage({ text: message, status: "failed" }));
-      } finally {
-        setIsLoadingGame(false); // 結束 loading
+  const fetchGameData = useCallback(async (gameId) => {
+    setIsLoadingGame(true); // 開始 loading
+    try {
+      const res = await axios.get(`${BASE_URL}/gamesData/${gameId}`);
+      const data = res.data;
+      if (Array.isArray(data.game_img)) {
+        data.game_img = data.game_img[0];
       }
-    },
-    [dispatch]
-  );
+      setGameData(data);
+    } catch (error) {
+      console.log(error.response.data.errors[0]);
+    } finally {
+      setIsLoadingGame(false); // 結束 loading
+    }
+  }, []);
 
   // 根據傳入的評論識別碼取得評論資料，並更新表單初始值
   const fetchCommentData = useCallback(
@@ -96,14 +90,12 @@ function Game_comment() {
           console.warn("取得的評論資料不符合當前使用者：", data);
         }
       } catch (error) {
-        const message = error.response.data.errors ? "載入評論資料失敗" : "";
-        setErrMessage(message);
-        dispatch(pushMessage({ text: message, status: "failed" }));
+        console.log(error.response.data.errors[0]);
       } finally {
         setIsLoadingGame(false);
       }
     },
-    [reset, user?.user_id, fetchGameData, dispatch]
+    [reset, user?.user_id, fetchGameData]
   );
 
   // 表單送出處理：若是新增則用 POST，若是編輯則用 Patch 更新
@@ -138,9 +130,7 @@ function Game_comment() {
         }, 3000);
       }
     } catch (error) {
-      const message = error.response.data.errors ? "送出資料時發生錯誤" : "";
-      setErrMessage(message);
-      dispatch(pushMessage({ text: message, status: "failed" }));
+      console.log(error.response.data.errors[0]);
     }
   };
 
@@ -217,16 +207,12 @@ function Game_comment() {
           }
         }
       } catch (error) {
-        const message = error.response.data.errors
-          ? "取得評論相關資料失敗"
-          : "";
-        setErrMessage(message);
-        dispatch(pushMessage({ text: message, status: "failed" }));
+        console.log(error.response.data.errors[0]);
       }
     };
 
     fetchRelatedData();
-  }, [id, mode, user, navigate, dispatch]); // ✅ 這樣 Lint 也不會報錯，且避免無窮迴圈
+  }, [id, mode, user, navigate]); // ✅ 這樣 Lint 也不會報錯，且避免無窮迴圈
 
   useEffect(() => {
     // 若是 edit 模式（URL 的 id 為評論識別碼），直接取得該筆評論資料
@@ -252,7 +238,7 @@ function Game_comment() {
     );
   }
 
-  // 1. 建議把規則抽成常量，閱讀性高
+  // 把規則抽成常量，閱讀性高
   const VALID_RULES = {
     coment_star: {
       required: "請給整體評價",
@@ -280,12 +266,6 @@ function Game_comment() {
 
   return (
     <>
-      {errMessage && (
-        <div className="alert alert-danger my-4 text-center" role="alert">
-          {errMessage}
-        </div>
-      )}
-
       {user_token ? (
         <div className="bg-secondary-99">
           <div className="container-fluid container-lg">
