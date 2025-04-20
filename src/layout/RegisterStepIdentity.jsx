@@ -28,24 +28,25 @@ function RegisterStepIdentity() {
                   <div className="card-body">
                     <h3 className="card-title " style={{ position: "relative" }}>
                       會員
-                      {role === '會員' && <FaUserCheck size={30} className="text-primary" style={{ top: 5, right: 10, position: "absolute" }} />}
+                      {role === '會員' && <FaUserCheck size={30} className="text-secondary-60" style={{ top: 5, right: 10, position: "absolute" }} />}
                     </h3>
                     <hr />
-
-                    <ul className="text-start ps-xl-15 ps-md-10 ps-5 h4">
-                      <li className="mb-5 ">
-                        <LuLaptopMinimalCheck size={30} className="text-black me-5" />
-                        可瀏覽密室
-                      </li>
-                      <li className="mb-5">
-                        <LuLaptopMinimalCheck size={30} className="text-black me-5" />
-                        可發起/參與揪團
-                      </li>
-                      <li>
-                        <LuLaptopMinimalCheck size={30} className="text-black me-5" />
-                        可留下評論
-                      </li>
-                    </ul>
+                    <div className="d-flex flex-column justify-content-center align-items-start">
+                      <ul className="text-start h4">
+                        <li className="mb-5 ">
+                          <LuLaptopMinimalCheck size={30} className="text-black me-5" />
+                          可瀏覽密室
+                        </li>
+                        <li className="mb-5">
+                          <LuLaptopMinimalCheck size={30} className="text-black me-5" />
+                          可發起/參與揪團
+                        </li>
+                        <li>
+                          <LuLaptopMinimalCheck size={30} className="text-black me-5" />
+                          可留上評論
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -60,27 +61,30 @@ function RegisterStepIdentity() {
                   <div className="card-body">
                     <h3 className="card-title " style={{ position: "relative" }}>
                       店家
-                      {role === '店家' && <FaUserCheck size={30} className="text-primary" style={{ top: 5, right: 10, position: "absolute" }} />}
+                      {role === '店家' && <FaUserCheck size={30} className="text-secondary-60" style={{ top: 5, right: 10, position: "absolute" }} />}
                     </h3>
                     <hr />
-                    <p className="h6 my-1 text-danger">
-                      < FaInfoCircle className="me-5" />
-                      若想發起/參與揪團，請申辦一般會員
-                    </p>
-                    <p className="h5 my-1 text-info">
-                      < FaStar className="me-5" />
-                      需通過審核後，方可使用下述功能
-                    </p>
-                    <ul className="text-start ps-xl-15 ps-md-10 ps-5 h4">
-                      <li className="mb-5 ">
-                        <LuLaptopMinimalCheck size={30} className="text-black me-5" />
-                        可編輯店內資訊
-                      </li>
-                      <li className="text-start">
-                        <LuLaptopMinimalCheck size={30} className="text-black me-5" />
-                        可新增及編輯店內密室
-                      </li>
-                    </ul>
+                    <div className="d-flex flex-column justify-content-center align-items-center">
+                      <ul className="text-start  h4">
+                        <li className="mb-5 text-start">
+                          <LuLaptopMinimalCheck size={30} className="text-black me-5" />
+                          可編輯店內資訊
+                        </li>
+                        <li className="text-start">
+                          <LuLaptopMinimalCheck size={30} className="text-black me-5" />
+                          可新增及編輯店內密室
+                        </li>
+                        <li className="h6 my-1 text-danger text-start">
+                          < FaStar className="me-3" />
+                          需通過審核後，方可使用上述功能
+                        </li>
+                        <li className="h6 my-1 text-danger text-start">
+                          < FaInfoCircle className="me-3" />
+                          若想發起/參與揪團，請申辦一般會員
+                        </li>
+                      </ul>
+                    </div>
+
                   </div>
                 </div>
               </div>

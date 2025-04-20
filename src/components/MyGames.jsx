@@ -3,6 +3,7 @@ import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { userStoreContext } from "../reducers/createContent";
+import SmallLoadingSpinner from "./UI/smallLoadingSpinner";
 
 const baseApi = import.meta.env.VITE_BASE_URL;
 
@@ -19,6 +20,7 @@ const MyGames = () => {
   const [isAuthStore, setIsAuthStore] = useState(false);
   const [activeTab, setActiveTab] = useState("upGames");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getAllGames = async () => {
@@ -44,6 +46,8 @@ const MyGames = () => {
       } catch (error) {
         const message = error.response.data?.errors[0] ? '取得此店家的全部遊戲資料失敗，請聯繫管理者' : '';
         setErrorMessage(message);
+      } finally {
+        setIsLoading(false);
       }
       if (upG.length === 0) {
         setIsHaveUpGames(false);
@@ -95,21 +99,28 @@ const MyGames = () => {
                 </tr>
               </thead>
               <tbody>
-                {errorMessage && (
+                {isLoading && (
+                  <tr>
+                    <td colSpan={6} className="text-center py-1" >
+                      <SmallLoadingSpinner message="載入遊戲中" />
+                    </td>
+                  </tr>
+                )}
+                {!isLoading && errorMessage && (
                   <tr>
                     <td colSpan={6} className="text-center fs-h6">
                       <p>{errorMessage}</p>
                     </td>
                   </tr>
                 )}
-                {isAuthStore === false && (
+                {!isLoading && isAuthStore === false && (
                   <tr>
                     <td colSpan={6} className="text-center fs-h6 bg-white py-2">
                       <p>尚未驗證成功，請先驗證</p>
                     </td>
                   </tr>
                 )}
-                {isAuthStore && isHaveUpgames && upGames.length > 0 && (
+                {!isLoading && isAuthStore && isHaveUpgames && upGames.length > 0 && (
                   <>
                     {upGames.map((game) => (
                       <tr
@@ -144,7 +155,7 @@ const MyGames = () => {
                     </tr>
                   </>
                 )}
-                {isAuthStore && upGames.length == 0 && (
+                {!isLoading && isAuthStore && upGames.length == 0 && (
                   <tr>
                     <td colSpan={6} className="text-center fs-h6">
                       <p>
@@ -193,14 +204,28 @@ const MyGames = () => {
                 </tr>
               </thead>
               <tbody>
-                {isAuthStore === false && (
+                {isLoading && (
+                  <tr>
+                    <td colSpan={6} className="text-center py-1" >
+                      <SmallLoadingSpinner message="載入遊戲中" />
+                    </td>
+                  </tr>
+                )}
+                {!isLoading && errorMessage && (
+                  <tr>
+                    <td colSpan={6} className="text-center fs-h6">
+                      <p>{errorMessage}</p>
+                    </td>
+                  </tr>
+                )}
+                {!isLoading && isAuthStore === false && (
                   <tr>
                     <td colSpan={6} className="text-center fs-h6 bg-white py-2">
                       <p>尚未驗證成功，請先驗證</p>
                     </td>
                   </tr>
                 )}
-                {isAuthStore && isDownUpgames && dowmGames.length > 0 && (
+                {!isLoading && isAuthStore && isDownUpgames && dowmGames.length > 0 && (
                   <>
                     {dowmGames.map((game) => (
                       <tr
@@ -235,8 +260,7 @@ const MyGames = () => {
                     </tr>
                   </>
                 )}
-
-                {isAuthStore && dowmGames.length == 0 && (
+                {!isLoading && isAuthStore && dowmGames.length == 0 && (
                   <tr>
                     <td colSpan={6} className="text-center fs-h6">
                       <p>
@@ -284,14 +308,22 @@ const MyGames = () => {
               已上架
             </div>
             <div className=" ">
-              {errorMessage && (
+              {isLoading && (
+                <dl>
+                  <dt className="text-center fs-h6 bg-white py-2">
+                    <SmallLoadingSpinner message="載入遊戲中" />
+                  </dt>
+                </dl>
+
+              )}
+              {!isLoading && errorMessage && (
                 <dl>
                   <dt className="text-center fs-h6 bg-white py-2">
                     <p>{errorMessage}</p>
                   </dt>
                 </dl>
               )}
-              {isAuthStore === false && (
+              {!isLoading && isAuthStore === false && (
                 <>
                   <dl>
                     <dt className="text-center fs-h6 bg-white py-2">
@@ -300,7 +332,7 @@ const MyGames = () => {
                   </dl>
                 </>
               )}
-              {isAuthStore && isHaveUpgames && upGames.length > 0 && (
+              {!isLoading && isAuthStore && isHaveUpgames && upGames.length > 0 && (
                 <>
                   <div className="text-center bg-white my-2">
                     <Link className="d-inline text-nowrap" to="/AddGames">
@@ -341,7 +373,7 @@ const MyGames = () => {
                   ))}
                 </>
               )}
-              {isAuthStore && upGames.length == 0 && (
+              {!isLoading && isAuthStore && upGames.length == 0 && (
                 <>
                   <dl>
                     <dt className="text-center fs-h6 bg-white">
@@ -367,7 +399,22 @@ const MyGames = () => {
               等待上架
             </div>
             <div className=" ">
-              {isAuthStore === false && (
+              {isLoading && (
+                <dl>
+                  <dt className="text-center fs-h6 bg-white py-2">
+                    <SmallLoadingSpinner message="載入遊戲中" />
+                  </dt>
+                </dl>
+
+              )}
+              {!isLoading && errorMessage && (
+                <dl>
+                  <dt className="text-center fs-h6 bg-white py-2">
+                    <p>{errorMessage}</p>
+                  </dt>
+                </dl>
+              )}
+              {!isLoading && isAuthStore === false && (
                 <>
                   <dl>
                     <dt className="text-center fs-h6 bg-white py-2">
@@ -376,7 +423,7 @@ const MyGames = () => {
                   </dl>
                 </>
               )}
-              {isAuthStore && isDownUpgames && dowmGames.length > 0 && (
+              {!isLoading && isAuthStore && isDownUpgames && dowmGames.length > 0 && (
                 <>
                   <div className="text-center bg-white my-2">
                     <Link className="d-inline text-nowrap" to="/AddGames">
@@ -417,7 +464,7 @@ const MyGames = () => {
                   ))}
                 </>
               )}
-              {isAuthStore && dowmGames.length == 0 && (
+              {!isLoading && isAuthStore && dowmGames.length == 0 && (
                 <>
                   <dl>
                     <dt className="text-center fs-h6 bg-white">

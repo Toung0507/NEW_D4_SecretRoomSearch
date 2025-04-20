@@ -62,9 +62,7 @@ const SearchForm = ({
                 id="game_name"
                 value={search.game_name}
               />
-              <span className="input-group-text search-input border-0">
-                <i className="bi bi-search"></i>
-              </span>
+
             </div>
           </div>
         </div>

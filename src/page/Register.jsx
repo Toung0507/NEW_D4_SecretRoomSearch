@@ -226,7 +226,7 @@ function Register() {
   };
 
   return (
-    <div className="container text-center pt-10">
+    <div className="container text-center flex-grow-1 d-flex flex-column justify-content-center align-items-center">
       <div className="progress-container ">
         {/* 進度條 */}
         <div className="progress-bar" style={{ width: `${progressWidth}%` }}></div>
@@ -260,7 +260,7 @@ function Register() {
       <div className="step my-3">
         {currentStep !== 1 ? (
           <button
-            className="btn btn-outline-primary mx-2"
+            className="btn btn-outline-secondary-60  mx-2"
             onClick={prevStep}
             disabled={currentStep === 1}
           >
@@ -271,14 +271,14 @@ function Register() {
 
         {currentStep === 3 ? (
           <button
-            className="btn btn-primary mx-2"
+            className="btn btn-secondary-60 text-white mx-2"
             onClick={handleFinalClick}
           >
             送出註冊
           </button>
         ) : (
           <button
-            className="btn btn-primary mx-2"
+            className="btn btn-secondary-60 text-white mx-2"
             onClick={nextStep}
             disabled={currentStep === 3 || (currentStep === 1 && userRegister.user_role === '') || (currentStep === 2 && !isEmailAuth)}
           >

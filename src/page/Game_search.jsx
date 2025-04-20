@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
 import CommendedGamesCard from "../layout/CommendedGamesCard";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 const baseApi = import.meta.env.VITE_BASE_URL;
 
 const area = [
@@ -51,6 +52,9 @@ function Game_search() {
   // 判斷是否為首頁搜尋
   const [isIndexSearch, setIsIndexSerach] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [isHaveData, setIsHaveData] = useState(true);
+
   // 建立一個 ref 指向搜尋區塊
   const firstSectionRef = useRef(null);
 
@@ -61,7 +65,9 @@ function Game_search() {
 
       // 過濾掉某個屬性為 false 的遊戲，例如 game_isActive 為 false
       const upGames = res.data.filter((game) => game.game_isStock === true);
-
+      if (upGames.length === 0) {
+        setIsHaveData(false);
+      }
       setGames(upGames);
       const recommendedGames = [...upGames].sort(
         (a, b) => b.game_score - a.game_score
@@ -73,6 +79,8 @@ function Game_search() {
       setNewedGames(newGames);
       setMaxPeople(Math.max(...upGames.map((p) => p.game_maxNum_Players)));
     } catch (error) {
+      setIsLoading(false);
+      setIsHaveData(false);
       console.log(error.response.data.errors[0]);
     }
   };
@@ -83,6 +91,7 @@ function Game_search() {
       const res = await axios.get(`${baseApi}/propertys_fixed_Data`);
       setPropertys(res.data);
     } catch (error) {
+      setIsLoading(false);
       console.log(error.response.data.errors[0]);
     }
   };
@@ -93,6 +102,7 @@ function Game_search() {
       const res = await axios.get(`${baseApi}/difficultys_fixed_Data`);
       setDifficultys(res.data);
     } catch (error) {
+      setIsLoading(false);
       console.log(error.response.data.errors[0]);
     }
   };
@@ -291,6 +301,16 @@ function Game_search() {
     }
   }, [search.area, search.num, search.property, search.difficulty]);
 
+  useEffect(() => {
+    if (games.length > 0 && difficultys.length > 0 && propertys.length > 0) {
+      setIsLoading(false);
+    }
+  }, [games.length, difficultys.length, propertys.length]);
+
+  if (isLoading) {
+    return <LoadingSpinner message='遊戲資料載入中' />
+  };
+
   return (
     <>
       <div className="banner">
@@ -370,11 +390,6 @@ function Game_search() {
                         name="game_name"
                         value={search.game_name}
                       />
-                      <span className="input-group-text search-input border-0">
-                        <a href="">
-                          <i className="bi bi-search"></i>
-                        </a>
-                      </span>
                     </div>
                   </div>
                 </div>
@@ -411,7 +426,7 @@ function Game_search() {
                                 >
                                   <input
                                     onChange={handlEInputChange}
-                                    className="form-check-input"
+                                    className="form-check-input "
                                     type="checkbox"
                                     value={item.area_name}
                                     id={item.area_value}
@@ -658,6 +673,7 @@ function Game_search() {
                     className="btn btn-secondary-60 link-white rounded-2 w-100"
                     id="userSumbit"
                     ref={hiddenSubmitBtnRef}
+                    disabled={!isHaveData}
                   >
                     搜尋
                   </button>
@@ -676,18 +692,21 @@ function Game_search() {
             <div className="col-md-9 p-0" ref={firstSectionRef}>
               {isSearch ? (
                 <div className="search my-5 my-md-10 ">
-                  <div className="title-container w-100  d-flex justify-content-center align-items-center">
-                    <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
-                      依據您的搜尋/排序結果如下
-                    </h3>
-                  </div>
+
 
                   <div className="row m-0">
                     <div className="row m-0">
                       {isHaveResultGames ? (
-                        searchGames.map((game) => (
-                          <CommendedGamesCard key={game.game_id} game={game} />
-                        ))
+                        <>
+                          <div className="title-container w-100  d-flex justify-content-center align-items-center">
+                            <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
+                              依據您的搜尋/排序結果如下
+                            </h3>
+                          </div>
+                          {searchGames.map((game) => (
+                            <CommendedGamesCard key={game.game_id} game={game} />
+                          ))}
+                        </>
                       ) : (
                         <div className="text-center">
                           <p className="h4">
@@ -702,88 +721,108 @@ function Game_search() {
                 </div>
               ) : (
                 <>
-                  {!isAllRecentlyDisplay && (
-                    <div className="recommend ">
-                      <div className="title-container w-100 d-flex justify-content-center align-items-center">
-                        <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
-                          本月推薦
-                        </h3>
+                  {!isHaveData ? (
+                    <>
+                      <div className="recently my-5 my-md-10 ">
+                        <div className="title-container w-100  d-flex justify-content-center align-items-center">
+                          <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
+                            尚無任何遊戲資料，無法搜尋
+                          </h3>
+                        </div>
                       </div>
-                      <div className="row m-0">
-                        {isAllRecommendDisplay
-                          ? recommendedGames.map((game) => (
-                            <CommendedGamesCard
-                              game={game}
-                              key={game.game_id}
-                            />
-                          ))
-                          : recommendedGames
-                            .slice(0, 8)
-                            .map((game) => (
-                              <CommendedGamesCard
-                                game={game}
-                                key={game.game_id}
-                              />
-                            ))}
-                        <button
-                          className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "d-none" : ""
-                            }`}
-                          onClick={() => handleSeeRecommendMore()}
-                        >
-                          查看更多推薦
-                        </button>
-                        <button
-                          className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "" : "d-none"
-                            }`}
-                          onClick={() => handleSeeRecommendMore()}
-                        >
-                          顯示較少，返回查看新作
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                  {!isAllRecommendDisplay && (
-                    <div className="recently my-5 my-md-10 ">
-                      <div className="title-container w-100  d-flex justify-content-center align-items-center">
-                        <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
-                          近期新作
-                        </h3>
-                      </div>
-                      <div className="row m-0">
-                        <div className="row m-0">
-                          {isAllRecentlyDisplay
-                            ? newedGames.map((game) => (
-                              <CommendedGamesCard
-                                game={game}
-                                key={game.game_id}
-                              />
-                            ))
-                            : newedGames
-                              .slice(0, 8)
-                              .map((game) => (
+                    </>
+                  ) : (
+                    <>
+                      {!isAllRecentlyDisplay && (
+                        <div className="recommend ">
+                          <div className="title-container w-100 d-flex justify-content-center align-items-center">
+                            <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
+                              本月推薦
+                            </h3>
+                          </div>
+                          <div className="row m-0">
+                            {isAllRecommendDisplay
+                              ? recommendedGames.map((game) => (
                                 <CommendedGamesCard
                                   game={game}
                                   key={game.game_id}
                                 />
-                              ))}
-                          <button
-                            className={`btn btn-secondary-60 text-white   ${isAllRecentlyDisplay ? "d-none" : ""
-                              }`}
-                            onClick={() => handleSeeRecentlyMore()}
-                          >
-                            查看更多新作
-                          </button>
-                          <button
-                            className={`btn btn-secondary-60 text-white   ${isAllRecentlyDisplay ? "" : "d-none"
-                              }`}
-                            onClick={() => handleSeeRecentlyMore()}
-                          >
-                            顯示較少，返回查看推薦
-                          </button>
+                              ))
+                              : recommendedGames
+                                .slice(0, 8)
+                                .map((game) => (
+                                  <CommendedGamesCard
+                                    game={game}
+                                    key={game.game_id}
+                                  />
+                                ))}
+                            <div className="d-flex justify-content-end mt-3 mt-md-0">
+                              <button
+                                className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "d-none" : ""
+                                  }`}
+                                onClick={() => handleSeeRecommendMore()}
+                              >
+                                查看更多推薦
+                              </button>
+                              <button
+                                className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "" : "d-none"
+                                  }`}
+                                onClick={() => handleSeeRecommendMore()}
+                              >
+                                顯示較少，返回查看新作
+                              </button>
+                            </div>
+
+                          </div>
                         </div>
-                      </div>
-                    </div>
+                      )}
+                      {!isAllRecommendDisplay && (
+                        <div className="recently my-5 my-md-10 ">
+                          <div className="title-container w-100  d-flex justify-content-center align-items-center">
+                            <h3 className="text-center mb-12 recommendation-title fw-bold fs-sm-h3 fs-h6">
+                              近期新作
+                            </h3>
+                          </div>
+                          <div className="row m-0">
+                            <div className="row m-0">
+                              {isAllRecentlyDisplay
+                                ? newedGames.map((game) => (
+                                  <CommendedGamesCard
+                                    game={game}
+                                    key={game.game_id}
+                                  />
+                                ))
+                                : newedGames
+                                  .slice(0, 8)
+                                  .map((game) => (
+                                    <CommendedGamesCard
+                                      game={game}
+                                      key={game.game_id}
+                                    />
+                                  ))}
+                              <div className="d-flex justify-content-end mt-3 mt-md-0">
+                                <button
+                                  className={`btn btn-secondary-60 text-white   ${isAllRecentlyDisplay ? "d-none" : ""
+                                    }`}
+                                  onClick={() => handleSeeRecentlyMore()}
+                                >
+                                  查看更多新作
+                                </button>
+                                <button
+                                  className={`btn btn-secondary-60 text-white   ${isAllRecentlyDisplay ? "" : "d-none"
+                                    }`}
+                                  onClick={() => handleSeeRecentlyMore()}
+                                >
+                                  顯示較少，返回查看推薦
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
+
                 </>
               )}
             </div>

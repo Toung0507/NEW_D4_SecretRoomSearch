@@ -34,18 +34,20 @@ const RecommendedGroups = ({
                 key={group.group_id}
               />
             ))}
-        <button
-          className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "d-none" : ""}`}
-          onClick={() => handleSeeRecommendMore()}
-        >
-          查看更多揪團
-        </button>
-        <button
-          className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "" : "d-none"}`}
-          onClick={() => handleSeeRecommendMore()}
-        >
-          顯示較少揪團
-        </button>
+        <div className="d-flex justify-content-end mt-3 mt-md-0">
+          <button
+            className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "d-none" : ""}`}
+            onClick={() => handleSeeRecommendMore()}
+          >
+            查看更多揪團
+          </button>
+          <button
+            className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "" : "d-none"}`}
+            onClick={() => handleSeeRecommendMore()}
+          >
+            顯示較少揪團
+          </button>
+        </div>
       </div>
     </div>
   );
