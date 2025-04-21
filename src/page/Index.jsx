@@ -441,33 +441,42 @@ function Index() {
                     {hasErrorMessage || "目前沒有推薦遊戲"}
                   </div>
                 ) : (
-                  <Swiper
-                    slidesPerView={1}
-                    spaceBetween={24}
-                    navigation={true}
-                    breakpoints={{
-                      768: {
-                        slidesPerView: 2,
-                        spaceBetween: 24,
-                      },
-                      992: {
-                        slidesPerView: 4,
-                        spaceBetween: 24,
-                      },
-                    }}
-                    autoplay={{
-                      delay: 5000,
-                      disableOnInteraction: false,
-                    }}
-                    modules={[Navigation, Autoplay]}
-                    className="mySwiper"
-                  >
-                    {recommendedGames.slice(0, 10).map((game) => (
-                      <SwiperSlide key={game.game_id}>
-                        <IndexGamesCard game={game} />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
+                  <div className="swiper-wrapper-container position-relative">
+                    <Swiper
+                      slidesPerView={1}
+                      spaceBetween={24}
+                      navigation={{
+                        nextEl: '.swiper-button-next-custom',
+                        prevEl: '.swiper-button-prev-custom',
+                      }}
+                      breakpoints={{
+                        768: {
+                          slidesPerView: 2,
+                          spaceBetween: 24,
+                        },
+                        992: {
+                          slidesPerView: 4,
+                          spaceBetween: 24,
+                        },
+                      }}
+                      autoplay={{
+                        delay: 5000,
+                        disableOnInteraction: false,
+                      }}
+                      modules={[Navigation, Autoplay]}
+                      className="mySwiper"
+                    >
+                      {recommendedGames.slice(0, 10).map((game) => (
+                        <SwiperSlide key={game.game_id}>
+                          <IndexGamesCard game={game} />
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+
+                    {/* 自訂按鈕 */}
+                    <div className="swiper-button-prev-custom"></div>
+                    <div className="swiper-button-next-custom"></div>
+                  </div>
                 )}
               </div>
             </div>
@@ -483,33 +492,42 @@ function Index() {
                     {hasErrorMessage || "目前沒有新遊戲"}
                   </div>
                 ) : (
-                  <Swiper
-                    slidesPerView={1}
-                    spaceBetween={24}
-                    navigation={true}
-                    breakpoints={{
-                      768: {
-                        slidesPerView: 2,
-                        spaceBetween: 24,
-                      },
-                      992: {
-                        slidesPerView: 4,
-                        spaceBetween: 24,
-                      },
-                    }}
-                    autoplay={{
-                      delay: 5000,
-                      disableOnInteraction: false,
-                    }}
-                    modules={[Navigation, Autoplay]}
-                    className="mySwiper"
-                  >
-                    {newedGames.slice(0, 10).map((game) => (
-                      <SwiperSlide key={game.game_id}>
-                        <IndexGamesCard game={game} key={game.game_id} />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
+                  <div className="swiper-wrapper-container position-relative">
+                    <Swiper
+                      slidesPerView={1}
+                      spaceBetween={24}
+                      navigation={{
+                        nextEl: '.swiper-button-next-custom',
+                        prevEl: '.swiper-button-prev-custom',
+                      }}
+                      breakpoints={{
+                        768: {
+                          slidesPerView: 2,
+                          spaceBetween: 24,
+                        },
+                        992: {
+                          slidesPerView: 4,
+                          spaceBetween: 24,
+                        },
+                      }}
+                      autoplay={{
+                        delay: 5000,
+                        disableOnInteraction: false,
+                      }}
+                      modules={[Navigation, Autoplay]}
+                      className="mySwiper"
+                    >
+                      {newedGames.slice(0, 10).map((game) => (
+                        <SwiperSlide key={game.game_id}>
+                          <IndexGamesCard game={game} key={game.game_id} />
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+
+                    {/* 自訂按鈕 */}
+                    <div className="swiper-button-prev-custom"></div>
+                    <div className="swiper-button-next-custom"></div>
+                  </div>
                 )}
               </div>
             </div>

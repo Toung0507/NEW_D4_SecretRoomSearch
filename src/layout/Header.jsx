@@ -191,15 +191,7 @@ function Header() {
                     登入
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link
-                    className="nav-link nav-link-bg px-0 py-4 fs-h6 fw-bold"
-                    to="/Register"
-                    onClick={handleNavCollapse}
-                  >
-                    註冊
-                  </Link>
-                </li>
+
               </ul>
             </div>
           </div>

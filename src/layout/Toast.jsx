@@ -32,7 +32,7 @@ function Toast() {
       {
         messages.map((message) => (
           <div ref={(el) => toastRefs.current[message.id] = el} key={message.id} className="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div className={`toast-header ${message.status === 'success' ? 'bg-success' : 'bg-danger'}  text-white`}>
+            <div className={`toast-header ${message.status === 'success' ? 'bg-success' : message.status === 'error' ? 'bg-danger' : 'bg-info'}  text-white`}>
               <strong className="me-auto">{message.status === 'success' ? '成功' : '失敗'}</strong>
               <button
                 type="button"
@@ -52,7 +52,6 @@ function Toast() {
                   </pre>
                 )
               }
-
             </div>
           </div>
         ))

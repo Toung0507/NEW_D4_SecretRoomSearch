@@ -226,7 +226,7 @@ function Register() {
   };
 
   return (
-    <div className="container text-center flex-grow-1 d-flex flex-column justify-content-center align-items-center">
+    <div className="container text-center flex-grow-1 d-flex flex-column justify-content-center align-items-center my-5">
       <div className="progress-container ">
         {/* 進度條 */}
         <div className="progress-bar" style={{ width: `${progressWidth}%` }}></div>
