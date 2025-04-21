@@ -491,8 +491,8 @@ function Index() {
                       slidesPerView={1}
                       spaceBetween={24}
                       navigation={{
-                        nextEl: '.swiper-button-next-custom',
-                        prevEl: '.swiper-button-prev-custom',
+                        nextEl: '.swiper-button-next-custom-new',
+                        prevEl: '.swiper-button-prev-custom-new',
                       }}
                       breakpoints={{
                         768: {
@@ -519,8 +519,8 @@ function Index() {
                     </Swiper>
 
                     {/* 自訂按鈕 */}
-                    <div className="swiper-button-prev-custom"></div>
-                    <div className="swiper-button-next-custom"></div>
+                    <div className="swiper-button-prev-custom-new"></div>
+                    <div className="swiper-button-next-custom-new"></div>
                   </div>
                 )}
               </div>
