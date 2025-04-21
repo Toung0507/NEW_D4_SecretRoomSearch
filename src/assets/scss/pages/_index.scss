@@ -41,19 +41,15 @@
   }
 }
 
-.gameText {
-  @include media-breakpoint-up(lg) {
-    width: 306px;
-  }
-}
 
 .gameImg {
   @include media-breakpoint-up(lg) {
-    width: 416px;
+    max-width: 410px;
   }
 
   img {
     border: 2px dashed $primary-80;
+    object-fit: cover;
   }
 }
 
@@ -115,4 +111,8 @@
 .swiper-button-disabled {
   opacity: 0.3;
   pointer-events: none;
+}
+
+.text-justify {
+  text-align: justify;
 }
