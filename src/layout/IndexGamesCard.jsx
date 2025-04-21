@@ -35,8 +35,8 @@ function IndexGamesCard({ game }) {
             </div>
 
             {/* <!-- 手機板文字內容在右邊 --> */}
-            <div className="col ms-3 ms-md-0">
-              <div className="card-body p-0">
+            <div className="col ms-3 ms-md-0 mt-3">
+              <div className="card-body p-0 ">
                 <h6 className="card-title mb-1 mb-md-2 text-primary-black fw-bold lh-base">
                   {game.game_name}
                 </h6>
