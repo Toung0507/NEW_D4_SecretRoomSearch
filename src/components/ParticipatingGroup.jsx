@@ -3,6 +3,7 @@ import { userContext } from "../reducers/createContent";
 import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
+import SmallLoadingSpinner from "./UI/smallLoadingSpinner";
 
 const baseApi = import.meta.env.VITE_BASE_URL;
 
@@ -17,6 +18,7 @@ const ParticipatingGroup = () => {
   const [historyGroups, setHistorysGroups] = useState([]);
   const [isHavehistoryGroups, setIsHaveHistorysGroups] = useState(true);
   const [activeTab, setActiveTab] = useState("nowGroup");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getAllGroups = async () => {
@@ -40,9 +42,13 @@ const ParticipatingGroup = () => {
         });
       } catch (error) {
         console.log(error.response.data.errors[0]);
+      } finally {
+        setIsLoading(false);
       }
+
       // 再判斷是否有參與者的資料
       try {
+        setIsLoading(true);
         const res = await axios.get(`${baseApi}/groupsData`);
         res.data.map((data) => {
           if (data.group_participants.includes(user_id)) {
@@ -59,6 +65,8 @@ const ParticipatingGroup = () => {
         });
       } catch (error) {
         console.log(error.response.data.errors[0]);
+      } finally {
+        setIsLoading(false);
       }
 
       if (nowG.length === 0) {
@@ -69,12 +77,14 @@ const ParticipatingGroup = () => {
 
       if (historyG.length === 0) {
         setIsHaveHistorysGroups(false);
+
       } else {
         setHistorysGroups(historyG);
       }
     };
 
     getAllGroups();
+
   }, [user_id]);
 
   return (
@@ -108,7 +118,17 @@ const ParticipatingGroup = () => {
                 </tr>
               </thead>
               <tbody>
-                {isHavenowGroups ? (
+                {isLoading && (
+                  <tr>
+                    <td
+                      colSpan={6}
+                      className="bg-white py-3"
+                    >
+                      <SmallLoadingSpinner message="載入揪團列表中" />
+                    </td>
+                  </tr>
+                )}
+                {!isLoading && isHavenowGroups && (
                   nowGroups.map((oneGroup) => (
                     <tr
                       key={oneGroup.group_id}
@@ -133,25 +153,24 @@ const ParticipatingGroup = () => {
                       </td>
                     </tr>
                   ))
-                ) : (
-                  <>
-                    <tr>
-                      <td
-                        colSpan={6}
-                        className="text-center fs-h6 bg-white py-2"
-                      >
-                        <p>
-                          沒有正在進行中的揪團
-                          <br />
-                          快到
-                          <Link className="d-inline text-nowrap" to="/TeamBuy">
-                            揪團中
-                          </Link>
-                          找尋你想玩的密室，一起加入吧！
-                        </p>
-                      </td>
-                    </tr>
-                  </>
+                )}
+                {!isLoading && !isHavenowGroups && (
+                  <tr>
+                    <td
+                      colSpan={6}
+                      className="text-center fs-h6 bg-white py-2"
+                    >
+                      <p>
+                        沒有正在進行中的揪團
+                        <br />
+                        快到
+                        <Link className="d-inline text-nowrap" to="/TeamBuy">
+                          揪團中
+                        </Link>
+                        找尋你想玩的密室，一起加入吧！
+                      </p>
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -184,7 +203,17 @@ const ParticipatingGroup = () => {
                 </tr>
               </thead>
               <tbody>
-                {isHavehistoryGroups ? (
+                {isLoading && (
+                  <tr>
+                    <td
+                      colSpan={6}
+                      className="bg-white py-3"
+                    >
+                      <SmallLoadingSpinner message="載入揪團列表中" />
+                    </td>
+                  </tr>
+                )}
+                {!isLoading && isHavehistoryGroups && (
                   historyGroups.map((oneGroup) => (
                     <tr
                       key={oneGroup.group_id}
@@ -202,25 +231,24 @@ const ParticipatingGroup = () => {
                       </td>
                     </tr>
                   ))
-                ) : (
-                  <>
-                    <tr>
-                      <td
-                        colSpan={6}
-                        className="text-center fs-h6 bg-white py-2"
-                      >
-                        <p>
-                          未參加過任何揪團
-                          <br />
-                          快到
-                          <Link className="d-inline text-nowrap" to="/TeamBuy">
-                            揪團中
-                          </Link>
-                          找尋你想玩的密室，一起加入吧！
-                        </p>
-                      </td>
-                    </tr>
-                  </>
+                )}
+                {!isLoading && !isHavehistoryGroups && (
+                  <tr>
+                    <td
+                      colSpan={6}
+                      className="text-center fs-h6 bg-white py-2"
+                    >
+                      <p>
+                        未參加過任何揪團
+                        <br />
+                        快到
+                        <Link className="d-inline text-nowrap" to="/TeamBuy">
+                          揪團中
+                        </Link>
+                        找尋你想玩的密室，一起加入吧！
+                      </p>
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -232,8 +260,8 @@ const ParticipatingGroup = () => {
         <div className="d-flex m-0 pt-5 ps-3 pb-3">
           <button
             className={`commentButton btn border-1 border-secondary-50 me-3  fw-bold rounded-16 ${activeTab === "nowGroup"
-                ? "bg-secondary-50 text-secondary-99"
-                : "text-secondary-50"
+              ? "bg-secondary-50 text-secondary-99"
+              : "text-secondary-50"
               }`}
             onClick={() => setActiveTab("nowGroup")}
           >
@@ -241,8 +269,8 @@ const ParticipatingGroup = () => {
           </button>
           <button
             className={`commentButton btn border-1 border-secondary-50 rounded-16 fw-bold ${activeTab === "historyGroup"
-                ? "bg-secondary-50 text-secondary-99"
-                : "text-secondary-50"
+              ? "bg-secondary-50 text-secondary-99"
+              : "text-secondary-50"
               }`}
             onClick={() => setActiveTab("historyGroup")}
           >
@@ -254,114 +282,126 @@ const ParticipatingGroup = () => {
             <div className="ParticipatingGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
               揪團中
             </div>
-            <div className=" ">
-              {isHavenowGroups ? (
-                nowGroups.map((oneGroup) => (
-                  <dl className="mb-4 bg-white p-4" key={oneGroup.group_id}>
-                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">
-                      密室名稱
-                    </dt>
-                    <dd>{oneGroup.game_name}</dd>
-                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">
-                      密室地點
-                    </dt>
-                    <dd>{oneGroup.game_address}</dd>
-                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">
-                      遊玩日期：
-                    </dt>
-                    <dd>{oneGroup.group_active_date}</dd>
-                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">
-                      目前人數/人數上限
-                    </dt>
-                    <dd className="mb-3">
-                      {oneGroup.group_participants.length}人/
-                      {oneGroup.group_member}人
-                    </dd>
-                    {/* <dt className="fs-Caption fw-bold text-nature-50 mb-1"></dt> */}
-                    <dd className="py-1 m-0">
-                      <Link
-                        to={`/TeamBuyComment/${oneGroup.group_id}`}
-                        className="text-black fw-bold fs-Caption"
-                      >
-                        查看詳情 <IoIosArrowForward color="black" />
-                      </Link>
-                    </dd>
-                  </dl>
-                ))
-              ) : (
-                <>
-                  <dl>
-                    <dt className="text-center fs-h6 bg-white py-2">
-                      <p>
-                        沒有正在進行中的揪團
-                        <br />
-                        快到
-                        <Link className="d-inline text-nowrap" to="/TeamBuy">
-                          揪團中
-                        </Link>
-                        找尋你想玩的密室，一起加入吧！
-                      </p>
-                    </dt>
-                  </dl>
-                </>
-              )}
-            </div>
+            {isLoading && (
+              <dl>
+                <dt
+                  className="bg-white py-3"
+                >
+                  <SmallLoadingSpinner message="載入揪團列表中" />
+                </dt>
+              </dl>
+            )}
+            {!isLoading && isHavenowGroups && (
+              nowGroups.map((oneGroup) => (
+                <dl className="mb-4 bg-white p-4" key={oneGroup.group_id}>
+                  <dt className="fs-Caption fw-bold text-nature-50 mb-1">
+                    密室名稱
+                  </dt>
+                  <dd>{oneGroup.game_name}</dd>
+                  <dt className="fs-Caption fw-bold text-nature-50 mb-1">
+                    密室地點
+                  </dt>
+                  <dd>{oneGroup.game_address}</dd>
+                  <dt className="fs-Caption fw-bold text-nature-50 mb-1">
+                    遊玩日期：
+                  </dt>
+                  <dd>{oneGroup.group_active_date}</dd>
+                  <dt className="fs-Caption fw-bold text-nature-50 mb-1">
+                    目前人數/人數上限
+                  </dt>
+                  <dd className="mb-3">
+                    {oneGroup.group_participants.length}人/
+                    {oneGroup.group_member}人
+                  </dd>
+                  {/* <dt className="fs-Caption fw-bold text-nature-50 mb-1"></dt> */}
+                  <dd className="py-1 m-0">
+                    <Link
+                      to={`/TeamBuyComment/${oneGroup.group_id}`}
+                      className="text-black fw-bold fs-Caption"
+                    >
+                      查看詳情 <IoIosArrowForward color="black" />
+                    </Link>
+                  </dd>
+                </dl>
+              ))
+            )}
+            {!isLoading && !isHavenowGroups && (
+              <dl>
+                <dt className="text-center fs-h6 bg-white py-2">
+                  <p>
+                    沒有正在進行中的揪團
+                    <br />
+                    快到
+                    <Link className="d-inline text-nowrap" to="/TeamBuy">
+                      揪團中
+                    </Link>
+                    找尋你想玩的密室，一起加入吧！
+                  </p>
+                </dt>
+              </dl>
+            )}
           </div>
         )}
 
         {activeTab === "historyGroup" && (
-          <div className="">
+          <>
             <div className="ParticipatingGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
               歷史揪團
             </div>
-            <div className=" ">
-              {isHavehistoryGroups ? (
-                historyGroups.map((oneGroup) => (
-                  <dl className="mb-4 bg-white p-4" key={oneGroup.group_id}>
-                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">
-                      狀態
-                    </dt>
-                    <dd>{oneGroup.status}</dd>
-                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">
-                      密室名稱
-                    </dt>
-                    <dd>{oneGroup.game_name}</dd>
-                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">
-                      密室地點
-                    </dt>
-                    <dd>{oneGroup.game_address}</dd>
-                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">
-                      遊玩日期：
-                    </dt>
-                    <dd>2025/01/30</dd>
-                    <dt className="fs-Caption fw-bold text-nature-50 mb-1">
-                      參與人數/人數上限
-                    </dt>
-                    <dd className="mb-3">
-                      {oneGroup.group_participants.length}人/
-                      {oneGroup.group_member}人
-                    </dd>
-                  </dl>
-                ))
-              ) : (
-                <>
-                  <dl>
-                    <dt className="text-center fs-h6 bg-white py-2">
-                      <p>
-                        未參加過任何揪團
-                        <br />
-                        快到
-                        <Link className="d-inline text-nowrap" to="/TeamBuy">
-                          揪團中
-                        </Link>
-                        找尋你想玩的密室，一起加入吧！
-                      </p>
-                    </dt>
-                  </dl>
-                </>
-              )}
-            </div>
-          </div>
+            {isLoading && (
+              <dl>
+                <dt
+                  className="bg-white py-3"
+                >
+                  <SmallLoadingSpinner message="載入揪團列表中" />
+                </dt>
+              </dl>
+            )}
+            {!isLoading && isHavehistoryGroups && (
+              historyGroups.map((oneGroup) => (
+                <dl className="mb-4 bg-white p-4" key={oneGroup.group_id}>
+                  <dt className="fs-Caption fw-bold text-nature-50 mb-1">
+                    狀態
+                  </dt>
+                  <dd>{oneGroup.status}</dd>
+                  <dt className="fs-Caption fw-bold text-nature-50 mb-1">
+                    密室名稱
+                  </dt>
+                  <dd>{oneGroup.game_name}</dd>
+                  <dt className="fs-Caption fw-bold text-nature-50 mb-1">
+                    密室地點
+                  </dt>
+                  <dd>{oneGroup.game_address}</dd>
+                  <dt className="fs-Caption fw-bold text-nature-50 mb-1">
+                    遊玩日期：
+                  </dt>
+                  <dd>2025/01/30</dd>
+                  <dt className="fs-Caption fw-bold text-nature-50 mb-1">
+                    參與人數/人數上限
+                  </dt>
+                  <dd className="mb-3">
+                    {oneGroup.group_participants.length}人/
+                    {oneGroup.group_member}人
+                  </dd>
+                </dl>
+              ))
+            )}
+            {!isLoading && !isHavehistoryGroups && (
+              <dl>
+                <dt className="text-center fs-h6 bg-white py-2">
+                  <p>
+                    未參加過任何揪團
+                    <br />
+                    快到
+                    <Link className="d-inline text-nowrap" to="/TeamBuy">
+                      揪團中
+                    </Link>
+                    找尋你想玩的密室，一起加入吧！
+                  </p>
+                </dt>
+              </dl>
+            )}
+          </>
         )}
       </div>
     </>

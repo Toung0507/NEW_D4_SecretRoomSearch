@@ -36,53 +36,55 @@ function UserProfile() {
     <>
       {isAuthMySelf ? (
         <>
-          <div className="container-fluid bg-primary-99">
-            <div className="container-lg ">
-              <div className="row pt-10 ">
-                <ul className="d-flex">
-                  <li className="">
-                    <Link
-                      className={` border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1 ${activeTab === "basicInfo" ? "member-nav-item-active" : ""} p-2 p-sm-3`}
-                      to={`/User_profile/${user_id}/basicInfo`}
-                    >
-                      基本資訊
-                    </Link>
-                  </li>
-                  <li className="">
-                    <Link
-                      className={` border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1  ${activeTab === "participatingGroup" ? "member-nav-item-active" : ""} p-2 p-sm-3`}
-                      to={`/User_profile/${user_id}/participatingGroup`}
-                    >
-                      參加的揪團
-                    </Link>
-                  </li>
-                  <li className="">
-                    <Link
-                      className={`border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1   ${activeTab === "myComments" ? "member-nav-item-active" : ""} p-2 p-sm-3`}
-                      to={`/User_profile/${user_id}/myComments`}
-                    >
-                      留下的評論
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-
-            </div>
-          </div>
-          <div className="container-fluid usermain">
-            <div className="">
-              <div className="container-lg">
-                <div className="row m-0 flex-column flex-md-row g-5 justify-content-center align-items-center">
-                  {/* 內容區塊 */}
-                  <userContext.Provider value={{ user }}>
-                    {activeTab === "basicInfo" && <BasicInfo />}
-                    {activeTab === "participatingGroup" && <ParticipatingGroup />}
-                    {activeTab === "myComments" && <MyComments />}
-                  </userContext.Provider>
+          <div className="usermain flex-grow-1">
+            <div className="container-fluid bg-primary-99">
+              <div className="container-lg ">
+                <div className="row pt-10 ">
+                  <ul className="d-flex">
+                    <li className="">
+                      <Link
+                        className={` border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1 ${activeTab === "basicInfo" ? "member-nav-item-active" : ""} p-2 p-sm-3`}
+                        to={`/User_profile/${user_id}/basicInfo`}
+                      >
+                        基本資訊
+                      </Link>
+                    </li>
+                    <li className="">
+                      <Link
+                        className={` border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1  ${activeTab === "participatingGroup" ? "member-nav-item-active" : ""} p-2 p-sm-3`}
+                        to={`/User_profile/${user_id}/participatingGroup`}
+                      >
+                        參加的揪團
+                      </Link>
+                    </li>
+                    <li className="">
+                      <Link
+                        className={`border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1   ${activeTab === "myComments" ? "member-nav-item-active" : ""} p-2 p-sm-3`}
+                        to={`/User_profile/${user_id}/myComments`}
+                      >
+                        留下的評論
+                      </Link>
+                    </li>
+                  </ul>
                 </div>
               </div>
-            </div >
+            </div>
+            <div className="container-fluid">
+              <div className="">
+                <div className="container-lg">
+                  <div className="row m-0 flex-column flex-md-row g-5 justify-content-center align-items-center">
+                    {/* 內容區塊 */}
+                    <userContext.Provider value={{ user }}>
+                      {activeTab === "basicInfo" && <BasicInfo />}
+                      {activeTab === "participatingGroup" && <ParticipatingGroup />}
+                      {activeTab === "myComments" && <MyComments />}
+                    </userContext.Provider>
+                  </div>
+                </div>
+              </div >
+            </div>
           </div>
+
 
         </>
       ) :

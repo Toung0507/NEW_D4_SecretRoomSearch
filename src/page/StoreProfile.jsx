@@ -6,7 +6,6 @@ import axios from "axios";
 import MyGames from "../components/MyGames";
 import { userStoreContext } from "../reducers/createContent";
 
-
 const baseApi = import.meta.env.VITE_BASE_URL;
 
 function StoreProfile() {
@@ -53,7 +52,7 @@ function StoreProfile() {
   return (
     <>
       {isAuthMySelf ? (
-        <>
+        <div className="usermain flex-grow-1">
           <div className="container-fluid bg-primary-99">
             <div className="container-lg ">
               <div className="row pt-10 ">
@@ -79,27 +78,23 @@ function StoreProfile() {
 
             </div>
           </div>
-          <div className="container-fluid usermain">
-            <div className="">
-              <div className="container-lg">
-                <div className="row m-0 flex-column flex-md-row g-5 justify-content-center align-items-center">
-                  {/* 內容區塊 */}
-                  <userStoreContext.Provider value={{ user, store }}>
-                    {Object.keys(store).length > 0 && activeTab === "basicStoreInfo" && <BasicStoreInfo />}
-                    {Object.keys(store).length > 0 && activeTab === "myGames" && <MyGames />}
-                  </userStoreContext.Provider>
-                </div>
+          <div className="container-fluid">
+            <div className="container-lg">
+              <div className="row m-0 flex-column flex-md-row g-5 justify-content-center align-items-center">
+                {/* 內容區塊 */}
+                <userStoreContext.Provider value={{ user, store }}>
+                  {Object.keys(store).length > 0 && activeTab === "basicStoreInfo" && <BasicStoreInfo />}
+                  {Object.keys(store).length > 0 && activeTab === "myGames" && <MyGames />}
+                </userStoreContext.Provider>
               </div>
-            </div >
+            </div>
           </div>
-
-        </>
+        </div>
       ) :
         (<div className="my-md-10 my-sm-0">
           <div className="container-lg">
             <div className="row flex-column flex-md-row g-0">
               <p className="h1 text-center" >尚未登入，或此頁面非您的會員ID</p>
-
             </div>
           </div>
         </div >
