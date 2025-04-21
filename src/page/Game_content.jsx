@@ -10,6 +10,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
+import { useSelector } from "react-redux";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -22,7 +23,7 @@ function Game_content() {
   const [price, setPrice] = useState(null);
   const [comments, setComments] = useState({});
   const [isSpoileredshow, setIsSpoileredShow] = useState({});
-
+  const { user } = useSelector((state) => state.userInfo);
   // 推薦遊戲 (目前先以 ID 前後的遊戲代替)
   // TODO 實作推薦遊戲
   const [preGame, setPreGame] = useState(null);
@@ -119,7 +120,7 @@ function Game_content() {
   if (!game) return <LoadingSpinner message="載入遊戲基本資料中" />; // TODO 換成 loading 畫面
 
   return (
-    <main className="game_content position-relative">
+    <div className="game_content position-relative">
       <div className="info container py-6 py-lg-10">
         <picture>
           {/* TODO 圖片 RWD 替代方案 */}
@@ -128,7 +129,7 @@ function Game_content() {
           // srcSet="/assets/images/julia-kadel.png"
           />
           <img
-            className="w-100 rounded"
+            className="w-100 rounded-4"
             src={game.game_img[0]}
             alt="banner"
             style={{ maxHeight: "432px", objectFit: "cover" }}
@@ -293,7 +294,7 @@ function Game_content() {
                                 ? "./icon/woman.png"
                                 : "./icon/user.png"
                           }
-                          alt=""
+                          alt="評論人圖片載入錯誤"
                         />
                         <p className="name text-white fw-bold">{user_name}</p>
                       </div>
@@ -334,30 +335,35 @@ function Game_content() {
                 })}
               {/* 新增評論按鈕 */}
               <li className="comment-item">
-                <Link
-                  to={`/Game_comment/new/${game.game_id}`}
-                  className="add-comment d-flex flex-column justify-content-center align-items-center rounded-4 border-primary-80 text-primary-80"
-                  style={{
-                    backgroundColor: "#676664",
-                    height: "200px",
-                    marginTop: "68px",
-                    borderStyle: "dashed",
-                  }}
-                >
-                  <span
-                    className="material-symbols-outlined mb-1"
-                    style={{
-                      fontSize: "2rem",
-                    }}
-                  >
-                    add_circle
-                  </span>
-                  <p className="">
-                    {Object.keys(comments).length === 0
-                      ? "成為第一位評論的人吧！"
-                      : "分享你的想法"}
-                  </p>
-                </Link>
+                {
+                  user?.user_role === '店家' ? '' : (
+                    <Link
+                      to={`/Game_comment/new/${game.game_id}`}
+                      className="add-comment d-flex flex-column justify-content-center align-items-center rounded-4 border-primary-80 text-primary-80"
+                      style={{
+                        backgroundColor: "#676664",
+                        height: "200px",
+                        marginTop: "68px",
+                        borderStyle: "dashed",
+                      }}
+
+                    >
+                      <span
+                        className="material-symbols-outlined mb-1"
+                        style={{
+                          fontSize: "2rem",
+                        }}
+                      >
+                        add_circle
+                      </span>
+                      <p className="">
+                        {Object.keys(comments).length === 0
+                          ? "成為第一位評論的人吧！"
+                          : "分享你的想法"}
+                      </p>
+                    </Link>
+                  )
+                }
               </li>
             </ul>
           </div>
@@ -436,7 +442,7 @@ function Game_content() {
           )}
         </div>
       </div>
-    </main>
+    </div>
   );
 }
 

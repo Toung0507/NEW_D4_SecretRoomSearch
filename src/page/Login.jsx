@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfoAsyncThunk } from "../redux/slices/userInfoSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
   const [account, setAccount] = useState({
@@ -44,42 +44,57 @@ function Login() {
   };
 
   return (
-    <div className="flex-grow-1 d-flex justify-content-center align-items-center">
-      <div className="p-8 card rounded-2 ">
-        <h3 className="text-center mb-3">密室搜搜 - 登入</h3>
-        <form onSubmit={handleSingIn} className="m-50 d-flex flex-column">
-          <div className="form-group my-5 ">
-            <label htmlFor="exampleInputEmail2">電子郵件</label>
-            <input
-              name="user_email"
-              value={account.user_email}
-              type="email"
-              className="form-control mt-3"
-              id="exampleInputEmail2"
-              placeholder="請輸入信箱"
-              onChange={handleSignInInputChange}
-            />
-          </div>
-          <div className="form-group my-5">
-            <label htmlFor="exampleInputPassword2">密碼</label>
-            <input
-              name="user_password"
-              value={account.user_password}
-              type="password"
-              className="form-control mt-3"
-              id="exampleInputPassword2"
-              placeholder="請輸入密碼"
-              onChange={handleSignInInputChange}
-            />
-          </div>
-          <div className="form-group m-5">
-            {resErrMessage && (<p className="text-danger" >{resErrMessage}</p>)}
-          </div>
-          <button className=" form-group btn btn-success  bg-secondary-60" >
-            {isLoading ? "登入中" : "登入"}
-          </button>
-        </form>
+    <div className="flex-grow-1 my-md-10 my-5" >
+      <div className=" d-flex justify-content-center align-items-center flex-column">
+        <div className="p-8 card rounded-2   ">
+          <h3 className="text-center mb-3">密室搜搜 - 登入</h3>
+          <form onSubmit={handleSingIn} className="m-50 d-flex flex-column">
+            <div className="form-group mb-5 ">
+              <label htmlFor="exampleInputEmail2">電子郵件</label>
+              <input
+                name="user_email"
+                value={account.user_email}
+                type="email"
+                className="form-control mt-3"
+                id="exampleInputEmail2"
+                placeholder="請輸入信箱"
+                onChange={handleSignInInputChange}
+              />
+            </div>
+            <div className="form-group mb-3">
+              <label htmlFor="exampleInputPassword2">密碼</label>
+              <input
+                name="user_password"
+                value={account.user_password}
+                type="password"
+                className="form-control mt-3"
+                id="exampleInputPassword2"
+                placeholder="請輸入密碼"
+                onChange={handleSignInInputChange}
+              />
+            </div>
+            <div className="form-group mb-3">
+              {resErrMessage ? (<p className="text-danger" >{resErrMessage}</p>) : "１２３　"}
+            </div>
+            <button className=" form-group btn btn-success  bg-secondary-60" >
+              {isLoading ? "登入中" : "登入"}
+            </button>
+          </form>
+
+        </div>
+        <p>
+          還沒有帳號嗎？點
+          <Link
+            to="/Register"
+            className="mt-1 d-inline"
+            style={{ cursor: 'pointer', color: '#169CC6' }}
+          >
+            這裡
+          </Link>
+          註冊
+        </p>
       </div>
+
     </div >
   )
 };

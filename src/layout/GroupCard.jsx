@@ -38,21 +38,22 @@ function GroupCard({ game, group, user }) {
             <div className="col ms-3 ms-md-0">
               <div className="card-body p-0">
                 <div className="row">
-                  <div className="col-6">
+                  <div className="d-flex">
                     <img
                       src={user.user_sex === '男' ? './icon/man.png' : user.user_sex === '女' ? './icon/woman.png' : './icon/user.png'}
                       alt={user.user_name}
-                      className="rounded-circle"
+                      className="rounded-circle w-25"
                       style={{
                         width: "40%",
                         objectFit: "cover",
                         aspectRatio: "1/1",
                       }}
                     />
+                    <div className="card-title fs-Body-1 col-10 mb-1 mb-md-2 text-primary-black fw-bold lh-base">
+                      {user.user_name}
+                    </div>
                   </div>
-                  <h6 className="card-title col-6 mb-1 mb-md-2 text-primary-black fw-bold lh-base">
-                    {user.user_name}
-                  </h6>
+
                 </div>
                 <h6 className="card-title mb-1 mb-md-2 text-primary-black fw-bold lh-base">
                   {game.game_name}

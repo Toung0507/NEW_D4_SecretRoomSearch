@@ -168,6 +168,15 @@ function Game_comment() {
   };
 
   useEffect(() => {
+    const toLogin = (() => {
+      if (!user) {
+        navigate(`/Login`);
+      }
+    });
+    toLogin();
+  }, [user, navigate]);
+
+  useEffect(() => {
     // 取得所有評論、使用者與遊戲資料，並整合成一個陣列
     const fetchRelatedData = async () => {
       try {
@@ -230,18 +239,18 @@ function Game_comment() {
     }
   }, [id, mode, fetchCommentData, fetchGameData]);
 
-  if (!user) {
+  if (user?.user_role === '店家') {
     return (
       <div className="container-fluid container-lg">
         <div className="row justify-content-center">
           <div className="col-xl-10">
             <div className="pb-10">
-              <h2 className="text-center">請先登入</h2>
+              <h2 className="text-center">你是店家</h2>
             </div>
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   // 把規則抽成常量，閱讀性高
@@ -265,14 +274,17 @@ function Game_comment() {
       maxLength: { value: 2000, message: "勿超過 2000 字" },
     },
   };
+
+
   // 若尚未取得遊戲資料則顯示 Loading
   if (isLoadingGame) {
     return <LoadingSpinner message="載入遊戲基本資料中" />;
   }
 
+
   return (
     <>
-      {user_token ? (
+      {user_token && (
         <div className="bg-secondary-99">
           <div className="container-fluid container-lg">
             <div className="row justify-content-center">
@@ -515,18 +527,6 @@ function Game_comment() {
                       </div>
                     </div>
                   </Form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="bg-secondary-99">
-          <div className="container-fluid container-lg">
-            <div className="row justify-content-center">
-              <div className="col-xl-10">
-                <div className="pb-10">
-                  <h2 className="text-center">請先登入</h2>
                 </div>
               </div>
             </div>
