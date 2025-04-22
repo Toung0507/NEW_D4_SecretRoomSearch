@@ -43,15 +43,20 @@
 
 
 .gameImg {
-  @include media-breakpoint-up(lg) {
-    max-width: 410px;
-  }
-
   img {
+    aspect-ratio: 416 / 294;
     border: 2px dashed $primary-80;
+    border-radius: 64px;
     object-fit: cover;
+
+    @include media-breakpoint-down(lg) {
+      aspect-ratio: 351 / 180;
+      border-radius: 45px;
+    }
   }
 }
+
+
 
 .swiper-wrapper-container {
   padding: 0 50px; // 預留左右按鈕空間
