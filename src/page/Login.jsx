@@ -74,7 +74,7 @@ function Login() {
               />
             </div>
             <div className="form-group mb-3">
-              {resErrMessage ? (<p className="text-danger" >{resErrMessage}</p>) : "１２３　"}
+              {resErrMessage ? (<p className="text-danger" >{resErrMessage}</p>) : "　"}
             </div>
             <button className=" form-group btn btn-success  bg-secondary-60" >
               {isLoading ? "登入中" : "登入"}
