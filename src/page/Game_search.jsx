@@ -682,7 +682,7 @@ function Game_search() {
               <div className=" px-4">
                 <button
                   onClick={handleReset}
-                  className="btn w-100 reset_button border-0 text-primary-black fw-bold text-sm-center text-end"
+                  className="btn w-100 reset_button border-0  text-sm-center text-end"
                 >
                   重置
                 </button>
@@ -692,8 +692,6 @@ function Game_search() {
             <div className="col-md-9 p-0" ref={firstSectionRef}>
               {isSearch ? (
                 <div className="search my-5 my-md-10 ">
-
-
                   <div className="row m-0">
                     <div className="row m-0">
                       {isHaveResultGames ? (
@@ -756,7 +754,7 @@ function Game_search() {
                                     key={game.game_id}
                                   />
                                 ))}
-                            <div className="d-flex justify-content-end mt-3 mt-md-0">
+                            <div className="d-flex justify-content-end mt-3 mt-md-0 p-0">
                               <button
                                 className={`btn btn-secondary-60 text-white  ${isAllRecommendDisplay ? "d-none" : ""
                                   }`}
@@ -800,7 +798,7 @@ function Game_search() {
                                       key={game.game_id}
                                     />
                                   ))}
-                              <div className="d-flex justify-content-end mt-3 mt-md-0">
+                              <div className="d-flex justify-content-end mt-3 mt-md-0 p-0">
                                 <button
                                   className={`btn btn-secondary-60 text-white   ${isAllRecentlyDisplay ? "d-none" : ""
                                     }`}

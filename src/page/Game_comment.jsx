@@ -519,7 +519,7 @@ function Game_comment() {
                         <div className="col d-grid gap-2">
                           <button
                             type="submit"
-                            className="btn btn-secondary-60 link-white rounded-1"
+                            className="btn commentBtn btn-secondary-60 link-white rounded-1"
                           >
                             {currentMode === "new" ? "送出評論" : "更新評論"}
                           </button>
