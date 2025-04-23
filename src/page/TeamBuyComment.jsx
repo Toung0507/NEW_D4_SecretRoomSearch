@@ -218,7 +218,7 @@ function TeamBuyComment() {
                     />
                   </picture>
                 </div>
-                <div className="border border-nature-90 rounded-2 rounded-lg-4 px-4 px-lg-6 bg-white">
+                <div className="border border-nature-90 rounded-2 rounded-lg-4 bg-white">
                   <div className="d-flex mt-4 mb-5 mx-lg-6 mx-4 align-items-center">
                     <img
                       src={
@@ -240,43 +240,43 @@ function TeamBuyComment() {
                       {userInfo?.user_name}
                     </p>
                   </div>
-                  <div className="mx-lg-6 mx-4 py-5">
-                    <div className="row gy-4">
-                      <div className="col-lg-4">
+                  <div className="px-lg-6 px-4 py-5 border-bottom border-nature-90">
+                    <div className="row gy-4 bdb">
+                      <div className="col-lg-4 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           密室名稱
                         </p>
                         <p>{group?.game_name}</p>
                       </div>
-                      <div className="col-lg-4">
+                      <div className="col-lg-4 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           揪團截止日期
                         </p>
                         <p>{group?.group_end_at}</p>
                       </div>
-                      <div className="col-lg-4">
+                      <div className="col-lg-4 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           活動日期
                         </p>
                         <p>{group?.group_active_date}</p>
                       </div>
                     </div>
-                    <div className="row gy-4">
-                      <div className="col">
+                    <div className="row gy-4 bdb">
+                      <div className="col py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           密室地址
                         </p>
                         <p>{group?.game_address}</p>
                       </div>
                     </div>
-                    <div className="row gy-4">
-                      <div className="col-6 col-lg-2">
+                    <div className="row gy-4 bdb">
+                      <div className="col-6 col-lg-2 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           需求人數
                         </p>
                         <p>{group?.group_member}人</p>
                       </div>
-                      <div className="col-6 col-lg-10">
+                      <div className="col-6 col-lg-10 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">價格</p>
                         <ul>
                           {priceInfo?.length === 2 ? (
@@ -319,30 +319,30 @@ function TeamBuyComment() {
                         </ul>
                       </div>
                     </div>
-                    <div className="row gy-4">
-                      <div className="col-6 col-lg-2">
+                    <div className="row gy-4 bdb">
+                      <div className="col-6 col-lg-2 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           是否歡迎新手
                         </p>
                         <p>{group?.group_noob ? "是" : "否"}</p>
                       </div>
-                      <div className="col-6 col-lg-10">
+                      <div className="col-6 col-lg-10 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           聯絡方式
                         </p>
                         <p>{group?.group_channel}</p>
                       </div>
                     </div>
-                    <div className="row gy-4">
-                      <div className="col">
+                    <div className="row gy-4 bdb">
+                      <div className="col py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           揪團理念
                         </p>
                         <p>{group?.group_philosophy}</p>
                       </div>
                     </div>
-                    <div className="row gy-4">
-                      <div className="col">
+                    <div className="row gy-4 bdb">
+                      <div className="col py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">報名者</p>
                         <p>
                           {group?.group_participants &&
@@ -369,18 +369,18 @@ function TeamBuyComment() {
                         </p>
                       </div>
                     </div>
-                  </div>
-                  <div className="pb-4">
-                    <div className="tags d-flex flex-wrap fs-Body-2 gap-2 mt-3 mx-lg-6 mx-4">
-                      <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
-                        {gameInfo?.game_dif_tagname}
-                      </span>
-                      <span className=" bg-nature-95 px-1 py-1 rounded-3 text-nowrap">
-                        {gameInfo?.game_main_tag1name}
-                      </span>
-                      <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
-                        {gameInfo?.game_main_tag2name}
-                      </span>
+                    <div className="pt-5">
+                      <div className="tags d-flex fs-Body-2 gap-2 mt-3">
+                        <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
+                          {gameInfo?.game_dif_tagname}
+                        </span>
+                        <span className=" bg-nature-95 px-1 py-1 rounded-3 text-nowrap">
+                          {gameInfo?.game_main_tag1name}
+                        </span>
+                        <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
+                          {gameInfo?.game_main_tag2name}
+                        </span>
+                      </div>
                     </div>
                   </div>
                   <div className="my-5 mx-lg-6 mx-4">
