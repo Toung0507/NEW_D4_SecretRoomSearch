@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 function GroupCard({ game, group, user }) {
   return (
@@ -38,13 +38,19 @@ function GroupCard({ game, group, user }) {
             <div className="col ms-3 ms-md-0">
               <div className="card-body p-0">
                 <div className="row">
-                  <div className="d-flex">
+                  <div className="d-flex align-items-center">
                     <img
-                      src={user.user_sex === '男' ? './icon/man.png' : user.user_sex === '女' ? './icon/woman.png' : './icon/user.png'}
+                      src={
+                        user.user_sex === "男"
+                          ? "./icon/man.png"
+                          : user.user_sex === "女"
+                          ? "./icon/woman.png"
+                          : "./icon/user.png"
+                      }
                       alt={user.user_name}
-                      className="rounded-circle w-25"
+                      className="rounded-circle me-2"
                       style={{
-                        width: "40%",
+                        width: "10%",
                         objectFit: "cover",
                         aspectRatio: "1/1",
                       }}
@@ -53,7 +59,6 @@ function GroupCard({ game, group, user }) {
                       {user.user_name}
                     </div>
                   </div>
-
                 </div>
                 <h6 className="card-title mb-1 mb-md-2 text-primary-black fw-bold lh-base">
                   {game.game_name}
