@@ -383,7 +383,7 @@ function TeamBuyComment() {
                       </span>
                     </div>
                   </div>
-                  <div className="my-5 mx-0">
+                  <div className="my-5">
                     {!user || !user_token ? (
                       <span
                         className="d-inline-block"
