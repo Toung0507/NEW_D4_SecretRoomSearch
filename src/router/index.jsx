@@ -1,108 +1,100 @@
 import { createHashRouter } from "react-router-dom";
-import Base from "../page/Base";
-import Game_comment from "../page/Game_comment";
-import Game_search from "../page/Game_search";
-import About_us from "../page/About_us";
-import Game_content from "../page/Game_content";
-import Index from "../page/Index";
-import TeamBuy from "../page/Teambuy";
-import Login from "../page/Login";
-import UserProfile from "../page/UserProfile";
-import TeamBuyComment from "../page/TeamBuyComment";
-import Register from "../page/Register";
-import AdminLayout from "../page/admin/AdminLayout";
-import AdminStore from "../page/admin/AdminStore";
-import AdminUser from "../page/admin/AdminUser";
-import AdminGame from "../page/admin/AdminGame";
-import AdminGroup from "../page/admin/AdminGroup";
-import StoreProfile from "../page/StoreProfile";
-import AddGames from "../page/AddGames";
-import NotFound from "../page/NotFound";
+
+// 設定讓每個頁面進入時再載入，而非剛開始就全部載入
+import { lazy, Suspense } from "react";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
+
+const lazyLoad = (importFunc, message = "頁面載入中") => {
+  const Component = lazy(importFunc);
+  return (
+    <Suspense fallback={<LoadingSpinner message={message} />}>
+      <Component />
+    </Suspense>
+  );
+};
+
 
 const Router = createHashRouter([
   {
     path: "/",
-    element: <Base />,
+    element: lazyLoad(() => import("../page/Base"), ""),
     children: [
       {
         path: "/",
-        element: <Index />
+        element: lazyLoad(() => import("../page/Index"), "搜尋頁面載入中")
       },
       {
         path: "/Register",
-        element: <Register />,
+        element: lazyLoad(() => import("../page/Register"), "註冊頁面載入中")
       },
       {
         path: "/Login",
-        element: <Login />,
+        element: lazyLoad(() => import("../page/Login"), "登入頁面載入中"),
       },
       {
         path: "/Game_comment/:state/:id",
-        element: <Game_comment />,
+        element: lazyLoad(() => import("../page/Game_comment"), "評論頁面載入中")
       },
       {
         path: "/Game_search",
-        element: <Game_search />,
+        element: lazyLoad(() => import("../page/Game_search"), "搜尋頁面載入中")
       },
       {
         path: "/Game_content/:gameID",
-        element: <Game_content />,
+        element: lazyLoad(() => import("../page/Game_content"), "遊戲介紹載入中")
       },
       {
         path: "/TeamBuy",
-        element: <TeamBuy />,
+        element: lazyLoad(() => import("../page/TeamBuy"), "揪團總覽載入中")
       },
       {
         path: "/About_us",
-        element: <About_us />,
+        element: lazyLoad(() => import("../page/About_us"), "關於我們載入中")
       },
       {
         path: "/User_profile/:user_id/:activedefaultTab",
-        element: <UserProfile />,
+        element: lazyLoad(() => import("../page/UserProfile"), "基本資料載入中")
       },
       {
         path: "/Store_profile/:user_id/:activedefaultTab",
-        element: <StoreProfile />,
+        element: lazyLoad(() => import("../page/StoreProfile"), "基本資料載入中")
       },
       {
         path: "/TeamBuyComment/:group_id",
-        element: <TeamBuyComment />,
+        element: lazyLoad(() => import("../page/TeamBuyComment"), "揪團詳細載入中")
       },
       {
         path: "/AddGames/:game_id?",
-        element: <AddGames />
+        element: lazyLoad(() => import("../page/AddGames"), "新增遊戲表單載入中")
       },
       {
         path: "/Admin",
-        element: <AdminLayout />,
+        element: lazyLoad(() => import("../page/admin/AdminLayout"), ""),
         children: [
           {
-            // index: true,
             path: "/Admin/Store",
-            element: <AdminStore />,
+            element: lazyLoad(() => import("../page/admin/AdminStore"), "店家列表載入中")
           },
           {
             path: "/Admin/User",
-            element: <AdminUser />,
+            element: lazyLoad(() => import("../page/admin/AdminUser"), "會員列表載入中")
           },
           {
             path: "/Admin/Game",
-            element: <AdminGame />,
+            element: lazyLoad(() => import("../page/admin/AdminGame"), "遊戲列表載入中")
           },
           {
             path: "/Admin/Group",
-            element: <AdminGroup />,
+            element: lazyLoad(() => import("../page/admin/AdminGroup"), "揪團列表載入中")
           },
         ],
       }
-
-
     ],
   },
   // ⚠️ 加在最後，所有未命中路由都會被導向首頁
   {
     path: "*",
-    element: <NotFound />
+    element: lazyLoad(() => import("../page/NotFound"), "")
   },
 
 ]);
