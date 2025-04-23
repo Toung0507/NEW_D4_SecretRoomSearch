@@ -218,20 +218,20 @@ function TeamBuyComment() {
                     />
                   </picture>
                 </div>
-                <div className="border border-nature-90 rounded-2 rounded-lg-4 px-4 px-lg-6 bg-white">
-                  <div className="d-flex mt-4 mb-5 mx-lg-6 mx-4">
+                <div className="border border-nature-90 rounded-2 rounded-lg-4 bg-white">
+                  <div className="d-flex mt-4 mb-5 mx-lg-6 mx-4 align-items-center">
                     <img
                       src={
                         userInfo?.user_sex === "男"
                           ? "./icon/man.png"
                           : userInfo?.user_sex === "女"
-                            ? "./icon/woman.png"
-                            : "./icon/user.png"
+                          ? "./icon/woman.png"
+                          : "./icon/user.png"
                       }
                       alt={userInfo?.user_name}
                       className="rounded-circle me-3"
                       style={{
-                        width: "10%",
+                        width: "5%",
                         objectFit: "cover",
                         aspectRatio: "1/1",
                       }}
@@ -240,43 +240,43 @@ function TeamBuyComment() {
                       {userInfo?.user_name}
                     </p>
                   </div>
-                  <div className="container py-5">
-                    <div className="row gy-4">
-                      <div className="col-lg-4">
+                  <div className="px-lg-6 px-4 py-5 border-bottom border-nature-90">
+                    <div className="row gy-4 bdb">
+                      <div className="col-lg-4 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           密室名稱
                         </p>
                         <p>{group?.game_name}</p>
                       </div>
-                      <div className="col-lg-4">
+                      <div className="col-lg-4 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           揪團截止日期
                         </p>
                         <p>{group?.group_end_at}</p>
                       </div>
-                      <div className="col-lg-4">
+                      <div className="col-lg-4 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           活動日期
                         </p>
                         <p>{group?.group_active_date}</p>
                       </div>
                     </div>
-                    <div className="row gy-4">
-                      <div className="col">
+                    <div className="row gy-4 bdb">
+                      <div className="col py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           密室地址
                         </p>
                         <p>{group?.game_address}</p>
                       </div>
                     </div>
-                    <div className="row gy-4">
-                      <div className="col-6 col-lg-2">
+                    <div className="row gy-4 bdb">
+                      <div className="col-6 col-lg-2 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           需求人數
                         </p>
                         <p>{group?.group_member}人</p>
                       </div>
-                      <div className="col-6 col-lg-10">
+                      <div className="col-6 col-lg-10 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">價格</p>
                         <ul>
                           {priceInfo?.length === 2 ? (
@@ -319,49 +319,49 @@ function TeamBuyComment() {
                         </ul>
                       </div>
                     </div>
-                    <div className="row gy-4">
-                      <div className="col-6 col-lg-2">
+                    <div className="row gy-4 bdb">
+                      <div className="col-6 col-lg-2 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           是否歡迎新手
                         </p>
                         <p>{group?.group_noob ? "是" : "否"}</p>
                       </div>
-                      <div className="col-6 col-lg-10">
+                      <div className="col-6 col-lg-10 py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           聯絡方式
                         </p>
                         <p>{group?.group_channel}</p>
                       </div>
                     </div>
-                    <div className="row gy-4">
-                      <div className="col">
+                    <div className="row gy-4 bdb">
+                      <div className="col py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
                           揪團理念
                         </p>
                         <p>{group?.group_philosophy}</p>
                       </div>
                     </div>
-                    <div className="row gy-4">
-                      <div className="col">
+                    <div className="row gy-4 bdb">
+                      <div className="col py-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">報名者</p>
                         <p>
                           {group?.group_participants &&
-                            group?.group_participants.length > 0
+                          group?.group_participants.length > 0
                             ? group?.group_participants.map((userId, index) => {
-                              const participant = users.find(
-                                (u) => u.user_id === userId
-                              );
-                              return (
-                                <span key={userId}>
-                                  {participant
-                                    ? participant.user_name
-                                    : userId}
-                                  {index !==
-                                    group.group_participants.length - 1 &&
-                                    ", "}
-                                </span>
-                              );
-                            })
+                                const participant = users.find(
+                                  (u) => u.user_id === userId
+                                );
+                                return (
+                                  <span key={userId}>
+                                    {participant
+                                      ? participant.user_name
+                                      : userId}
+                                    {index !==
+                                      group.group_participants.length - 1 &&
+                                      ", "}
+                                  </span>
+                                );
+                              })
                             : "尚無參與者"}
                         </p>
                         <p className="text-primary-50 fs-Body-2">
@@ -369,21 +369,21 @@ function TeamBuyComment() {
                         </p>
                       </div>
                     </div>
-                  </div>
-                  <div className="pb-4">
-                    <div className="tags d-flex flex-wrap fs-Body-2 gap-2 mt-3 ">
-                      <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
-                        {gameInfo?.game_dif_tagname}
-                      </span>
-                      <span className=" bg-nature-95 px-1 py-1 rounded-3 text-nowrap">
-                        {gameInfo?.game_main_tag1name}
-                      </span>
-                      <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
-                        {gameInfo?.game_main_tag2name}
-                      </span>
+                    <div className="pt-5">
+                      <div className="tags d-flex fs-Body-2 gap-2 mt-3">
+                        <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
+                          {gameInfo?.game_dif_tagname}
+                        </span>
+                        <span className=" bg-nature-95 px-1 py-1 rounded-3 text-nowrap">
+                          {gameInfo?.game_main_tag1name}
+                        </span>
+                        <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
+                          {gameInfo?.game_main_tag2name}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="m-4 my-lg-5">
+                  <div className="my-5 mx-lg-6 mx-4">
                     {!user || !user_token ? (
                       <span
                         className="d-inline-block"
@@ -397,7 +397,9 @@ function TeamBuyComment() {
                             type="button"
                             className="btn btn-secondary-60 text-white"
                             onClick={changeGroup}
-                            disabled={!user || !user_token || user?.user_role === '店家'}
+                            disabled={
+                              !user || !user_token || user?.user_role === "店家"
+                            }
                           >
                             我要參加
                           </button>
@@ -409,7 +411,9 @@ function TeamBuyComment() {
                           type="button"
                           className="btn btn-secondary-60 text-white"
                           onClick={changeGroup}
-                          disabled={!user || !user_token || user?.user_role === '店家'}
+                          disabled={
+                            !user || !user_token || user?.user_role === "店家"
+                          }
                         >
                           我要參加
                         </button>
@@ -457,17 +461,17 @@ function TeamBuyComment() {
                         groupGame.game_dif_tagname &&
                         currentGameInfo.game_dif_tagname &&
                         groupGame.game_dif_tagname ===
-                        currentGameInfo.game_dif_tagname;
+                          currentGameInfo.game_dif_tagname;
                       const matchMain1 =
                         groupGame.game_main_tag1name &&
                         currentGameInfo.game_main_tag1name &&
                         groupGame.game_main_tag1name ===
-                        currentGameInfo.game_main_tag1name;
+                          currentGameInfo.game_main_tag1name;
                       const matchMain2 =
                         groupGame.game_main_tag2name &&
                         currentGameInfo.game_main_tag2name &&
                         groupGame.game_main_tag2name ===
-                        currentGameInfo.game_main_tag2name;
+                          currentGameInfo.game_main_tag2name;
 
                       return matchDiff || matchMain1 || matchMain2;
                     })
@@ -478,7 +482,9 @@ function TeamBuyComment() {
                     const groupGame = games.find(
                       (g) => g.game_id === item.game_id
                     );
-                    item.user = users?.find((user) => user.user_id === item?.user_id)
+                    item.user = users?.find(
+                      (user) => user.user_id === item?.user_id
+                    );
                     return (
                       <GroupCard
                         key={item.group_id}
