@@ -240,7 +240,7 @@ function TeamBuyComment() {
                       {userInfo?.user_name}
                     </p>
                   </div>
-                  <div className="container py-5">
+                  <div className="mx-lg-6 mx-4 py-5">
                     <div className="row gy-4">
                       <div className="col-lg-4">
                         <p className="text-primary-50 fs-Body-2 mb-2">
@@ -371,7 +371,7 @@ function TeamBuyComment() {
                     </div>
                   </div>
                   <div className="pb-4">
-                    <div className="tags d-flex flex-wrap fs-Body-2 gap-2 mt-3 ">
+                    <div className="tags d-flex flex-wrap fs-Body-2 gap-2 mt-3 mx-lg-6 mx-4">
                       <span className=" bg-nature-95 px-1 py-1 rounded-3  text-nowrap">
                         {gameInfo?.game_dif_tagname}
                       </span>
@@ -383,7 +383,7 @@ function TeamBuyComment() {
                       </span>
                     </div>
                   </div>
-                  <div className="my-5">
+                  <div className="my-5 mx-lg-6 mx-4">
                     {!user || !user_token ? (
                       <span
                         className="d-inline-block"
