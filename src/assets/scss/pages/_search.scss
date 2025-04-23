@@ -8,8 +8,9 @@
 }
 
 .reset_button {
-  background-color: transparent;
-  /* 移除底色 */
+  &:hover {
+    color: darken(#202618, 15%); // hover 時加深15%
+  }
 }
 
 // 遊戲區塊自定義

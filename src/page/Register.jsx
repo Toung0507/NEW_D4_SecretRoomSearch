@@ -2,7 +2,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { pushMessage } from "../redux/slices/toastSlice";
 import RegisterStepIdentity from "../layout/RegisterStepIdentity";
 import RegisterStepEmailVerify from "../layout/RegisterStepEmailVerify";
@@ -227,67 +227,78 @@ function Register() {
 
   return (
     <div className="container text-center flex-grow-1 d-flex flex-column justify-content-center align-items-center my-5">
-      <div className="progress-container ">
-        {/* 進度條 */}
-        <div className="progress-bar" style={{ width: `${progressWidth}%` }}></div>
+      <div className=" d-flex justify-content-center align-items-center flex-column">
+        <div className="progress-container ">
+          {/* 進度條 */}
+          <div className="progress-bar" style={{ width: `${progressWidth}%` }}></div>
 
-        {/* 圓圈 */}
-        {steps.map((step) => (
-          // <div className='d-flex flex-column justify-content-center align-items-center'>
-          <div
-            key={step.step_id}
-            className={`circle ${step.step_id <= currentStep ? 'active' : ''}`}
-          >
-            <p className='step_name'>{step.step_name}</p>
-            <span className="circle-number">{step.step_id}</span>
-          </div>
-          // </div>
-        ))}
+          {/* 圓圈 */}
+          {steps.map((step) => (
+            // <div className='d-flex flex-column justify-content-center align-items-center'>
+            <div
+              key={step.step_id}
+              className={`circle ${step.step_id <= currentStep ? 'active' : ''}`}
+            >
+              <p className='step_name'>{step.step_name}</p>
+              <span className="circle-number">{step.step_id}</span>
+            </div>
+            // </div>
+          ))}
+        </div>
+        <registerInfo.Provider value={{ handleUserChange, handleStoreChange, userRegister, isEmailAuth, setIsEmailAuth, isSend, setIsSend, verification_code, setVerification_code }}>
+          {currentStep === 1 && <RegisterStepIdentity />}
+          {currentStep === 2 && <RegisterStepEmailVerify />}
+          {currentStep === 3 &&
+            <RegisterStepBasicInfo
+              userFormRef={userFormRef}
+              storeFormRef={storeFormRef}
+              onSubmitUserSuccess={handleSubmitUserSuccess}
+              onSubmitStoreSuccess={handleSubmitStoreSuccess}
+            />
+          }
+        </registerInfo.Provider>
+
+        <div className="step my-3">
+          {currentStep !== 1 ? (
+            <button
+              className="btn btn-outline-secondary-60  mx-2"
+              onClick={prevStep}
+              disabled={currentStep === 1}
+            >
+              上一步
+            </button>
+          ) : ""}
+          {/* 按鈕 */}
+
+          {currentStep === 3 ? (
+            <button
+              className="btn btn-secondary-60 text-white mx-2"
+              onClick={handleFinalClick}
+            >
+              送出註冊
+            </button>
+          ) : (
+            <button
+              className="btn btn-secondary-60 text-white mx-2"
+              onClick={nextStep}
+              disabled={currentStep === 3 || (currentStep === 1 && userRegister.user_role === '') || (currentStep === 2 && !isEmailAuth)}
+            >
+              下一步
+            </button>
+          )}
+        </div>
+        <Toast />
       </div>
-      <registerInfo.Provider value={{ handleUserChange, handleStoreChange, userRegister, isEmailAuth, setIsEmailAuth, isSend, setIsSend, verification_code, setVerification_code }}>
-        {currentStep === 1 && <RegisterStepIdentity />}
-        {currentStep === 2 && <RegisterStepEmailVerify />}
-        {currentStep === 3 &&
-          <RegisterStepBasicInfo
-            userFormRef={userFormRef}
-            storeFormRef={storeFormRef}
-            onSubmitUserSuccess={handleSubmitUserSuccess}
-            onSubmitStoreSuccess={handleSubmitStoreSuccess}
-          />
-        }
-      </registerInfo.Provider>
-
-      <div className="step my-3">
-        {currentStep !== 1 ? (
-          <button
-            className="btn btn-outline-secondary-60  mx-2"
-            onClick={prevStep}
-            disabled={currentStep === 1}
-          >
-            上一步
-          </button>
-        ) : ""}
-        {/* 按鈕 */}
-
-        {currentStep === 3 ? (
-          <button
-            className="btn btn-secondary-60 text-white mx-2"
-            onClick={handleFinalClick}
-          >
-            送出註冊
-          </button>
-        ) : (
-          <button
-            className="btn btn-secondary-60 text-white mx-2"
-            onClick={nextStep}
-            disabled={currentStep === 3 || (currentStep === 1 && userRegister.user_role === '') || (currentStep === 2 && !isEmailAuth)}
-          >
-            下一步
-          </button>
-        )}
-      </div>
-      <Toast />
-
+      <p className="mt-3">
+        已有帳號？
+        <Link
+          to="/Login"
+          className="d-inline"
+          style={{ cursor: 'pointer', color: '#169CC6' }}
+        >
+          立即登入
+        </Link>
+      </p>
     </div>
   );
 };

@@ -210,7 +210,7 @@ function Index() {
                         onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                       />
                       <button
-                        className="btn"
+                        className="btn indexBtn "
                         type="button"
                         id="button-addon2"
                         onClick={handleSearch}
