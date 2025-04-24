@@ -1,8 +1,8 @@
-.select {
+.custom-select {
   outline: 2px dashed $primary-70;
 }
 
-.introduction {
+.custom-introduction {
   background-image: url(../illustration/Vector1.svg);
 
   @include media-breakpoint-up(lg) {
@@ -15,7 +15,7 @@
     /* 例如 16:9，(9/16)*100% = 56.25% */
     z-index: -1;
 
-    .title {
+    .custom-title {
       position: absolute;
       top: 20%;
       left: 50%;
@@ -23,7 +23,7 @@
       width: 689px;
     }
 
-    .information {
+    .custom-information {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -33,7 +33,7 @@
   }
 }
 
-.help {
+.custom-help {
   @include media-breakpoint-up(lg) {
     background-image: url(../illustration/4e22d675a9dee38e5e86384f7a6fb988.jpg);
     background-size: cover;
@@ -41,8 +41,7 @@
   }
 }
 
-
-.gameImg {
+.custom-gameImg {
   img {
     aspect-ratio: 416 / 294;
     border: 2px dashed $primary-80;
@@ -55,8 +54,6 @@
     }
   }
 }
-
-
 
 .swiper-wrapper-container {
   padding: 0 50px; // 預留左右按鈕空間
@@ -103,7 +100,7 @@
 
 .swiper-button-next-custom::after,
 .swiper-button-next-custom-new::after {
-  content: 'next';
+  content: "next";
 }
 
 .swiper-button-prev-custom,
@@ -113,7 +110,7 @@
 
 .swiper-button-prev-custom::after,
 .swiper-button-prev-custom-new::after {
-  content: 'prev';
+  content: "prev";
 }
 
 .swiper-button-prev-custom,
@@ -128,11 +125,11 @@
   pointer-events: none;
 }
 
-.text-justify {
+.custom-textJustify {
   text-align: justify;
 }
 
-.indexBtn:hover {
+.custom-indexBtn:hover {
   background: $secondary-60;
   color: white;
 }
