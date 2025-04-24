@@ -130,7 +130,9 @@ function Game_comment() {
         }, 3000);
       }
     } catch (error) {
-      const message = error.response.data?.errors[0] ? '送出資料時發生錯誤' : '';
+      const message = error.response.data?.errors[0]
+        ? "送出資料時發生錯誤"
+        : "";
       dispatch(
         pushMessage({
           text: message,
@@ -142,7 +144,7 @@ function Game_comment() {
 
   const StarRating = ({ value, onChange }) => {
     return (
-      <div className="box">
+      <div className="custom-box">
         {[5, 4, 3, 2, 1].map((ratingValue) => [
           <input
             key={`input-${ratingValue}`}
@@ -168,11 +170,11 @@ function Game_comment() {
   };
 
   useEffect(() => {
-    const toLogin = (() => {
+    const toLogin = () => {
       if (!user) {
         navigate(`/Login`);
       }
-    });
+    };
     toLogin();
   }, [user, navigate]);
 
@@ -239,7 +241,7 @@ function Game_comment() {
     }
   }, [id, mode, fetchCommentData, fetchGameData]);
 
-  if (user?.user_role === '店家') {
+  if (user?.user_role === "店家") {
     return (
       <div className="container-fluid container-lg">
         <div className="row justify-content-center">
@@ -250,7 +252,7 @@ function Game_comment() {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   // 把規則抽成常量，閱讀性高
@@ -275,12 +277,10 @@ function Game_comment() {
     },
   };
 
-
   // 若尚未取得遊戲資料則顯示 Loading
   if (isLoadingGame) {
     return <LoadingSpinner message="載入遊戲基本資料中" />;
   }
-
 
   return (
     <>
@@ -362,8 +362,9 @@ function Game_comment() {
                           <div className="col">
                             <input
                               type="date"
-                              className={`form-control ${errors.commet_played_time && "is-invalid"
-                                }`}
+                              className={`form-control ${
+                                errors.commet_played_time && "is-invalid"
+                              }`}
                               {...register(
                                 "commet_played_time",
                                 VALID_RULES.commet_played_time,
@@ -497,8 +498,9 @@ function Game_comment() {
                           </h3>
                           <div className="col">
                             <textarea
-                              className={`form-control ${errors.coment_content && "is-invalid"
-                                }`}
+                              className={`form-control ${
+                                errors.coment_content && "is-invalid"
+                              }`}
                               rows="5"
                               {...register(
                                 "coment_content",
@@ -519,7 +521,7 @@ function Game_comment() {
                         <div className="col d-grid gap-2">
                           <button
                             type="submit"
-                            className="btn commentBtn btn-secondary-60 link-white rounded-1"
+                            className="btn custom-commentBtn btn-secondary-60 link-white rounded-1"
                           >
                             {currentMode === "new" ? "送出評論" : "更新評論"}
                           </button>

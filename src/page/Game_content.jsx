@@ -120,20 +120,20 @@ function Game_content() {
   if (!game) return <LoadingSpinner message="載入遊戲基本資料中" />; // TODO 換成 loading 畫面
 
   return (
-    <div className="game_content position-relative">
+    <div className="custom-gameContent position-relative">
       <div className="info container py-6 py-lg-10">
         <picture>
           {/* TODO 圖片 RWD 替代方案 */}
           <source
             media="(min-width: 992px)"
-          // srcSet="/assets/images/julia-kadel.png"
+            // srcSet="/assets/images/julia-kadel.png"
           />
           <img
             className="w-100 rounded-4"
             src={game.game_img[0]}
             alt="banner"
             style={{ maxHeight: "432px", objectFit: "cover" }}
-          // TODO 圖片裁切與對齊問題
+            // TODO 圖片裁切與對齊問題
           />
         </picture>
         <div className="my-6 my-lg-10">
@@ -251,13 +251,13 @@ function Game_content() {
         </div>
       </div>
 
-      <div className="discribe bg-nature-20">
+      <div className="custom-describe bg-nature-20">
         <div className="container py-10 py-lg-16 d-flex flex-column align-items-center align-items-lg-start">
           <div className="title position-relative d-flex flex-column align-items-center align-items-lg-start">
-            <h2 className="text fs-h6 fs-lg-h3 text-primary-95 fw-bold mb-6">
+            <h2 className="custom-text fs-h6 fs-lg-h3 text-primary-95 fw-bold mb-6">
               遊戲介紹
             </h2>
-            <div className="rectangle bg-nature-30 rounded position-absolute"></div>
+            <div className="custom-rectangle bg-nature-30 rounded position-absolute"></div>
           </div>
           <p className="d-lg-none text-white text-center mb-11">
             {/* TODO 平板以下文字 */}
@@ -283,22 +283,22 @@ function Game_content() {
                   const { user_sex, user_name } = comment.user;
                   const isSpoilered = isSpoileredshow[comment_id] ?? true; // 預設隱藏
                   return (
-                    <li className="comment-item mb-6" key={comment_id}>
+                    <li className="custom-commentItem mb-6" key={comment_id}>
                       <div className="user px-4 mb-2 d-flex align-items-center">
                         <img
-                          className="image me-3 object-fit-cover rounded-circle"
+                          className="custom-image me-3 object-fit-cover rounded-circle"
                           src={
                             user_sex === "男"
                               ? "./icon/man.png"
                               : user_sex === "女"
-                                ? "./icon/woman.png"
-                                : "./icon/user.png"
+                              ? "./icon/woman.png"
+                              : "./icon/user.png"
                           }
                           alt="評論人圖片載入錯誤"
                         />
                         <p className="name text-white fw-bold">{user_name}</p>
                       </div>
-                      <div className="triangle mx-6"></div>
+                      <div className="custom-triangle mx-6"></div>
                       <div className="content bg-nature-95 rounded-4 p-3 p-lg-5">
                         <div className="mb-3 d-flex justify-content-between align-items-start">
                           <div className="d-flex flex-column align-items-start">
@@ -334,43 +334,42 @@ function Game_content() {
                   );
                 })}
               {/* 新增評論按鈕 */}
-              <li className="comment-item">
-                {
-                  user?.user_role === '店家' ? '' : (
-                    <Link
-                      to={`/Game_comment/new/${game.game_id}`}
-                      className="add-comment d-flex flex-column justify-content-center align-items-center rounded-4 border-primary-80 text-primary-80"
+              <li className="custom-commentItem">
+                {user?.user_role === "店家" ? (
+                  ""
+                ) : (
+                  <Link
+                    to={`/Game_comment/new/${game.game_id}`}
+                    className="custom-addComment d-flex flex-column justify-content-center align-items-center rounded-4 border-primary-80 text-primary-80"
+                    style={{
+                      backgroundColor: "#676664",
+                      height: "200px",
+                      marginTop: "68px",
+                      borderStyle: "dashed",
+                    }}
+                  >
+                    <span
+                      className="material-symbols-outlined mb-1"
                       style={{
-                        backgroundColor: "#676664",
-                        height: "200px",
-                        marginTop: "68px",
-                        borderStyle: "dashed",
+                        fontSize: "2rem",
                       }}
-
                     >
-                      <span
-                        className="material-symbols-outlined mb-1"
-                        style={{
-                          fontSize: "2rem",
-                        }}
-                      >
-                        add_circle
-                      </span>
-                      <p className="">
-                        {Object.keys(comments).length === 0
-                          ? "成為第一位評論的人吧！"
-                          : "分享你的想法"}
-                      </p>
-                    </Link>
-                  )
-                }
+                      add_circle
+                    </span>
+                    <p className="">
+                      {Object.keys(comments).length === 0
+                        ? "成為第一位評論的人吧！"
+                        : "分享你的想法"}
+                    </p>
+                  </Link>
+                )}
               </li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div className="join_group">
+      <div className="custom-joinGroup">
         <div className="container py-10 py-lg-12 d-flex align-items-center justify-content-center position-relative">
           <div className="text me-lg-21 me-4">
             <p className="fs-lg-h3 fs-sm-h6 fs-Caption text-nature-30 fw-bold">
@@ -379,7 +378,7 @@ function Game_content() {
             <p className="fs-lg-h3 fs-sm-h6 fs-Caption text-nature-30 fw-bold position-absolute z-2">
               一起找人解謎吧！
             </p>
-            <div className="rectangle d-none d-sm-block bg-secondary-80 rounded position-absolute z-1"></div>
+            <div className="custom-rectangle d-none d-sm-block bg-secondary-80 rounded position-absolute z-1"></div>
           </div>
           <Link
             to="/TeamBuy"
@@ -396,12 +395,12 @@ function Game_content() {
         </div>
       </div>
 
-      <div className="others py-10">
-        <div className="title position-relative d-flex flex-column align-items-center">
-          <h2 className="text fs-h6 fs-lg-h3 fw-bold mb-7 mb-lg-12">
+      <div className="custom-others py-10">
+        <div className="custom-title position-relative d-flex flex-column align-items-center">
+          <h2 className="custom-text fs-h6 fs-lg-h3 fw-bold mb-7 mb-lg-12">
             您可能喜歡的遊戲
           </h2>
-          <div className="rectangle bg-primary-80 rounded position-absolute"></div>
+          <div className="custom-rectangle bg-primary-80 rounded position-absolute"></div>
         </div>
         <div className="container">
           {preGame && nextGame && (
@@ -423,7 +422,7 @@ function Game_content() {
               <SwiperSlide>
                 <Link to={`/Game_content/${preGame.game_id}`}>
                   <img
-                    className="image w-100 rounded-3 rounded-lg-8"
+                    className="custom-image w-100 rounded-3 rounded-lg-8"
                     src={preGame.game_img[0]}
                     alt={preGame.game_name}
                   />
@@ -432,7 +431,7 @@ function Game_content() {
               <SwiperSlide>
                 <Link to={`/Game_content/${nextGame.game_id}`}>
                   <img
-                    className="image w-100 rounded-3 rounded-lg-8"
+                    className="custom-image w-100 rounded-3 rounded-lg-8"
                     src={nextGame.game_img[0]}
                     alt={nextGame.game_name}
                   />

@@ -1,12 +1,12 @@
-.box {
+.custom-box {
   display: inline-flex;
   flex-direction: row-reverse;
 
-  >label {
+  > label {
     user-select: none;
 
     &::after {
-      content: '☆';
+      content: "☆";
       font-size: 32px;
     }
 
@@ -14,33 +14,33 @@
       cursor: pointer;
 
       &::after {
-        content: '★';
+        content: "★";
         color: #ffd700;
       }
 
-      ~label {
+      ~ label {
         &::after {
-          content: '★';
+          content: "★";
           color: #ffd700;
         }
       }
     }
   }
 
-  >input {
+  > input {
     display: none;
 
     &:checked {
-      +label {
+      + label {
         &::after {
-          content: '★';
+          content: "★";
           color: #ffd700;
         }
       }
 
-      ~label {
+      ~ label {
         &::after {
-          content: '★';
+          content: "★";
           color: #ffd700;
         }
       }
@@ -48,6 +48,6 @@
   }
 }
 
-.commentBtn:hover {
+.custom-commentBtn:hover {
   background: $secondary-50;
 }
