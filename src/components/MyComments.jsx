@@ -151,13 +151,13 @@ const MyComments = () => {
       {/* 主畫面 - 電腦版 */}
       <div className="m-0  px-0 d-none d-lg-block ">
         <div className="border-nature-90 border rounded-2 my-10">
-          <div className="ParticipatingGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
+          <div className="custom-userGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
             我的評論
           </div>
           <div className="p-6 bg-white">
             <table className="table">
               <thead className="table-light px-3">
-                <tr className="ParticipatingGroupThead ">
+                <tr className="custom-userGroupThead ">
                   <th scope="col" className="text-secondary-40 ps-6 py-3 pe-0">
                     遊玩日期
                   </th>
@@ -200,7 +200,7 @@ const MyComments = () => {
                   allCommentsGames.map((omeomment) => (
                     <tr
                       key={omeomment.comment_id}
-                      className="ParticipatingGroupThead"
+                      className="custom-userGroupThead"
                     >
                       <td className="ps-5 py-2 pe-0">
                         {omeomment.commet_played_time}
@@ -225,7 +225,7 @@ const MyComments = () => {
                       <td className="pe-5 py-2 ps-0">
                         <button
                           onClick={() => opendetailComment(omeomment)}
-                          className="text-black border-0 fs-Body-1 btn btn-white p-0 commentButton m-0 "
+                          className="text-black border-0 fs-Body-1 btn btn-white p-0   m-0 "
                         >
                           查看詳情 <IoIosArrowForward color="black" />
                         </button>
@@ -252,7 +252,7 @@ const MyComments = () => {
       </div>
 
       <div className="d-block d-lg-none m-0">
-        <div className="ParticipatingGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
+        <div className="custom-userGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
           我的評論
         </div>
         {isLoading && (

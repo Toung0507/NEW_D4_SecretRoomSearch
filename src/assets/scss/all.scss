@@ -49,8 +49,8 @@
 @import "/node_modules/bootstrap/scss/card";
 // ❓ 手風琴元件
 @import "/node_modules/bootstrap/scss/accordion";
-// ❓ 麵包屑導航（未使用可略）
-// @import "/node_modules/bootstrap/scss/breadcrumb";
+// ❓ 麵包屑導航 最高管理者有使用
+@import "/node_modules/bootstrap/scss/breadcrumb";
 // ❓ 分頁按鈕（未使用可略）
 // @import "/node_modules/bootstrap/scss/pagination";
 // ❓ 標籤徽章（未使用可略）
@@ -109,6 +109,6 @@
 @import "./pages/search";
 @import "./pages/about_us";
 @import "./pages/game_comment";
-@import "./pages/userProfile";
+@import "./pages/profile";
 @import "./pages/admin/admin";
 @import "./pages/TeamBuyComment";

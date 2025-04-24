@@ -52,14 +52,14 @@ function StoreProfile() {
   return (
     <>
       {isAuthMySelf ? (
-        <div className="usermain flex-grow-1">
+        <div className="custom-profileMain flex-grow-1">
           <div className="container-fluid bg-primary-99">
             <div className="container-lg ">
               <div className="row pt-10 ">
                 <ul className="d-flex">
                   <li className="">
                     <Link
-                      className={` border-0 text-nature-70 bg-primary-99 fs-h6 ${activeTab === "basicStoreInfo" ? "member-nav-item-active" : ""} p-4`}
+                      className={` border-0 text-nature-70 bg-primary-99 fs-h6 ${activeTab === "basicStoreInfo" ? "custom-ProfileNavItemActive" : ""} p-4`}
                       to={`/Store_profile/${user_id}/basicStoreInfo`}
                     >
                       基本資訊
@@ -67,7 +67,7 @@ function StoreProfile() {
                   </li>
                   <li className="">
                     <Link
-                      className={` border-0 text-nature-70 bg-primary-99 fs-h6 ${activeTab === "myGames" ? "member-nav-item-active" : ""} p-4`}
+                      className={` border-0 text-nature-70 bg-primary-99 fs-h6 ${activeTab === "myGames" ? "custom-ProfileNavItemActive" : ""} p-4`}
                       to={`/Store_profile/${user_id}/myGames`}
                     >
                       密室總覽

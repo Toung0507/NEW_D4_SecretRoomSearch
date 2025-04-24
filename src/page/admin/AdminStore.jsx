@@ -130,7 +130,7 @@ function AdminStore() {
 
   return (
     <>
-      <div className="admin-bg">
+      <div className="custom-adminBg">
         <div className="adminUser container pt-11 pb-6">
           <nav
             style={{ "--bs-breadcrumb-divider": "'>'" }}

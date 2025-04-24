@@ -340,7 +340,7 @@ function Index() {
                       結識來自全台密室愛好者，與他們組隊挑戰各種密室遊戲。無論是第一次體驗還是經驗豐富的老手，都能找到合適的隊友，一同享受團隊合作帶來的無限樂趣與成就感！
                     </p>
                   </div>
-                  <div className="col-lg-6 gameImg ">
+                  <div className="col-lg-6 custom-gameImg ">
                     <img
                       src="./image/vlad-hilitanu.png"
                       alt="與其他玩家組隊遊玩"
@@ -356,7 +356,7 @@ function Index() {
                       瀏覽玩家提供的詳細評價和建議，了解各個密室遊戲的特色、難度和可玩性。不僅能看到評分和評論，還能看到玩家們的遊戲過程分享，確保每一次都能帶來愉快的遊戲體驗！
                     </p>
                   </div>
-                  <div className="col-lg-6 gameImg">
+                  <div className="col-lg-6 custom-gameImg">
                     <img src="./image/andrew-neel.png" alt="觀看玩家評價" />
                   </div>
                 </div>

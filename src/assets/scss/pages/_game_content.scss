@@ -1,6 +1,4 @@
 .custom-gameContent .container {
-  margin: 0 auto;
-
   @include media-breakpoint-up(xl) {
     max-width: 1076px;
   }

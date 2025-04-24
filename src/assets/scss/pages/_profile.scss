@@ -1,38 +1,28 @@
-.member-nav-item-active {
+.custom-ProfileNavItemActive {
   color: $secondary-40 !important;
   padding-bottom: 8px !important;
   border-bottom: 4px solid $secondary-40 !important;
   font-weight: bold !important;
 }
 
-.usermain {
+.custom-profileMain {
   background-color: #f3f4f6 !important;
 }
 
-.basicInfo {
-  border: 1px solid #FFFFFF;
-  background-color: #FFFFFF;
-}
-
-.ParticipatingGroupTitle {
+.custom-userGroupTitle {
   border-radius: 8px 8px 0px 0px;
   line-height: 120%;
 }
 
-.ParticipatingGroupThead {
+.custom-userGroupThead {
   border-top: 0px solid #FFFFFF00 !important;
   border-left: 0px solid #FFFFFF00 !important;
   border-right: 0px solid #FFFFFF00 !important;
   border-bottom: 1px solid $nature-95 !important;
 }
 
-.commentButton:hover {
-  background: none;
-}
-
-
 @include media-breakpoint-down(md) {
-  .member-nav-item-active {
+  .custom-ProfileNavItemActive {
     padding-bottom: 6px !important;
     border-bottom: 2px solid $secondary-40 !important;
     justify-content: flex-end;

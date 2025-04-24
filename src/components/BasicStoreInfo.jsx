@@ -17,7 +17,7 @@ import { pushMessage } from "../redux/slices/toastSlice";
 import Toast from "../layout/Toast";
 const baseApi = import.meta.env.VITE_BASE_URL;
 
-const BasicInfo = () => {
+const BasicStoreInfo = () => {
   const dispatch = useDispatch();
   const { user, store } = useContext(userStoreContext);
   const {
@@ -913,4 +913,4 @@ const BasicInfo = () => {
   );
 };
 
-export default BasicInfo;
+export default BasicStoreInfo;
