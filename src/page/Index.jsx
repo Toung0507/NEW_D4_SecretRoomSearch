@@ -154,7 +154,7 @@ function Index() {
               </picture>
             </div>
             <div className="row justify-content-center align-items-center">
-              <div className="bg-primary-95 rounded-6 select col-10 col-lg-6 p-6 p-lg-12">
+              <div className="bg-primary-95 rounded-6 custom-select col-10 col-lg-6 p-6 p-lg-12">
                 <div className="d-grid gap-6">
                   <div className="d-flex justify-content-between row">
                     <div className="col-6">
@@ -210,7 +210,7 @@ function Index() {
                         onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                       />
                       <button
-                        className="btn indexBtn "
+                        className="btn custom-indexBtn"
                         type="button"
                         id="button-addon2"
                         onClick={handleSearch}
@@ -237,17 +237,17 @@ function Index() {
               </picture>
             </div>
           </div>
-          <div className="introduction">
-            <div className="title mb-8 mb-lg-17 d-none d-lg-block">
+          <div className="custom-introduction">
+            <div className="custom-title mb-8 mb-lg-17 d-none d-lg-block">
               <h3 className="fw-bold fs-lg-h3 fs-h6">
                 想找好玩的密室遊戲，但卻發現資訊分散難找
               </h3>
             </div>
-            <div className="title mb-8 mb-lg-17 d-block d-lg-none text-center">
+            <div className="custom-title mb-8 mb-lg-17 d-block d-lg-none text-center">
               <h3 className="fw-bold fs-lg-h3 fs-h6">想找好玩的密室遊戲，</h3>
               <h3 className="fw-bold fs-lg-h3 fs-h6">但卻發現資訊分散難找</h3>
             </div>
-            <div className="information">
+            <div className="custom-information">
               <ul className="d-flex flex-column flex-lg-row gap-8 gap-lg-6">
                 <li className="d-flex flex-column justify-content-center align-items-center">
                   <div className="p-3 p-lg-6">
@@ -309,7 +309,7 @@ function Index() {
               </ul>
             </div>
           </div>
-          <div className="help d-flex flex-column justify-content-center align-items-center">
+          <div className="custom-help d-flex flex-column justify-content-center align-items-center">
             <h3 className="my-20 text-center fs-h3 fw-bold">
               密室搜搜能幫助你
             </h3>
@@ -320,11 +320,11 @@ function Index() {
                     <h5 className="mb-lg-6 mb-3  text-primary-20 fw-bold fs-lg-h5 fs-h6 text-nowrap">
                       快速找到喜歡的密室遊戲
                     </h5>
-                    <p className=" text-justify">
+                    <p className="custom-textJustify">
                       搜尋全台各地的密室遊戲。不論是恐怖繁悚、科幻冒險還是古典懸疑，都能幫助你找到最符合你興趣的挑戰。詳細的遊戲介紹、圖片，讓你在參加前就能了解遊戲的風格和難度，為你打造前所未有的解謎體驗！
                     </p>
                   </div>
-                  <div className="col-lg-6 gameImg">
+                  <div className="col-lg-6 custom-gameImg">
                     <img
                       src="./image/marek-szturc.png"
                       alt="快速找到喜歡的密室遊戲"
@@ -336,7 +336,7 @@ function Index() {
                     <h5 className="mb-lg-6 mb-3  text-primary-20 fw-bold fs-lg-h5 fs-h6 text-nowrap">
                       與其他玩家組隊遊玩
                     </h5>
-                    <p className=" text-justify">
+                    <p className="custom-textJustify">
                       結識來自全台密室愛好者，與他們組隊挑戰各種密室遊戲。無論是第一次體驗還是經驗豐富的老手，都能找到合適的隊友，一同享受團隊合作帶來的無限樂趣與成就感！
                     </p>
                   </div>
@@ -352,7 +352,7 @@ function Index() {
                     <h5 className="mb-lg-6 mb-3 text-primary-20 fw-bold fs-lg-h5 fs-h6 text-nowrap">
                       觀看玩家評價
                     </h5>
-                    <p className=" text-justify">
+                    <p className="custom-textJustify">
                       瀏覽玩家提供的詳細評價和建議，了解各個密室遊戲的特色、難度和可玩性。不僅能看到評分和評論，還能看到玩家們的遊戲過程分享，確保每一次都能帶來愉快的遊戲體驗！
                     </p>
                   </div>

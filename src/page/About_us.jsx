@@ -16,7 +16,9 @@ function About_us() {
         setIsHaveStore(true);
       }
     } catch (error) {
-      const message = error.response.data.errors ? '獲取授權店家資料表失敗' : '';
+      const message = error.response.data.errors
+        ? "獲取授權店家資料表失敗"
+        : "";
       setErrmessage(message);
     }
   };
@@ -28,7 +30,7 @@ function About_us() {
   return (
     <>
       <div className="container">
-        <div className="col mb-1" id="about-us">
+        <div className="col mb-1" id="custom-aboutUs">
           <div className="card border-0">
             <h5 className="card-header">關於密室搜搜</h5>
             <div className="card-body">
@@ -40,14 +42,25 @@ function About_us() {
                 本網站內容與圖片均已獲得以下工作室的授權，僅供學術與作品集展示，無任何商業用途。
               </p>
               <ul className="list-group list-group-numbered">
-                {isHaveStore ? austore.map((store) => (
-                  <li key={store.austore_id} className="list-group-item border-0">{store.austore_name}</li>
-                )) : errmessage ? <li className="my-2">{errmessage}</li> : '尚無工作室授權'}
+                {isHaveStore ? (
+                  austore.map((store) => (
+                    <li
+                      key={store.austore_id}
+                      className="list-group-item border-0"
+                    >
+                      {store.austore_name}
+                    </li>
+                  ))
+                ) : errmessage ? (
+                  <li className="my-2">{errmessage}</li>
+                ) : (
+                  "尚無工作室授權"
+                )}
               </ul>
             </div>
           </div>
         </div>
-        <div className="col mb-1" id="terms-of-service">
+        <div className="col mb-1" id="custom-termsOfService">
           <div className="card border-0">
             <h5 className="card-header">服務條款</h5>
             <div className="card-body">
@@ -96,7 +109,7 @@ function About_us() {
           </div>
         </div>
 
-        <div className="col mb-1" id="privacy-policy">
+        <div className="col mb-1" id="custom-privacyPolicy">
           <div className="card border-0">
             <h5 className="card-header">隱私權政策</h5>
             <div className="card-body">
@@ -113,7 +126,7 @@ function About_us() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 export default About_us;
