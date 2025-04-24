@@ -682,7 +682,7 @@ const BasicStoreInfo = () => {
                 <div className="row mb-1">
                   <label
                     htmlFor="store_address"
-                    className="col-sm-2 formrequired fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0"
+                    className="col-sm-2 custom-labelRequired fs-Body-2 fs-sm-Body-1 mb-2 mb-sm-0"
                   >
                     店家地址
                   </label>
