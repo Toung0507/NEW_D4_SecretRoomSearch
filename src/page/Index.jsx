@@ -317,7 +317,9 @@ function Index() {
               <div className="col-lg-8 ">
                 <div className="row justify-content-between align-items-center flex-lg-row flex-column">
                   <div className="col-lg-5 mb-6 mg-lg-0">
-                    <h5 className="mb-lg-6 mb-3  text-primary-20 fw-bold fs-lg-h5 fs-h6 text-nowrap">快速找到喜歡的密室遊戲</h5>
+                    <h5 className="mb-lg-6 mb-3  text-primary-20 fw-bold fs-lg-h5 fs-h6 text-nowrap">
+                      快速找到喜歡的密室遊戲
+                    </h5>
                     <p className=" text-justify">
                       搜尋全台各地的密室遊戲。不論是恐怖繁悚、科幻冒險還是古典懸疑，都能幫助你找到最符合你興趣的挑戰。詳細的遊戲介紹、圖片，讓你在參加前就能了解遊戲的風格和難度，為你打造前所未有的解謎體驗！
                     </p>
@@ -331,7 +333,9 @@ function Index() {
                 </div>
                 <div className="row justify-content-between flex-lg-row-reverse align-items-center flex-column my-16 ">
                   <div className="col-lg-5 mb-6 mg-lg-0">
-                    <h5 className="mb-lg-6 mb-3  text-primary-20 fw-bold fs-lg-h5 fs-h6 text-nowrap">與其他玩家組隊遊玩</h5>
+                    <h5 className="mb-lg-6 mb-3  text-primary-20 fw-bold fs-lg-h5 fs-h6 text-nowrap">
+                      與其他玩家組隊遊玩
+                    </h5>
                     <p className=" text-justify">
                       結識來自全台密室愛好者，與他們組隊挑戰各種密室遊戲。無論是第一次體驗還是經驗豐富的老手，都能找到合適的隊友，一同享受團隊合作帶來的無限樂趣與成就感！
                     </p>
@@ -345,16 +349,15 @@ function Index() {
                 </div>
                 <div className="row justify-content-between flex-lg-row align-items-center flex-column ">
                   <div className="col-lg-5 mb-6 mg-lg-0">
-                    <h5 className="mb-lg-6 mb-3 text-primary-20 fw-bold fs-lg-h5 fs-h6 text-nowrap">觀看玩家評價</h5>
+                    <h5 className="mb-lg-6 mb-3 text-primary-20 fw-bold fs-lg-h5 fs-h6 text-nowrap">
+                      觀看玩家評價
+                    </h5>
                     <p className=" text-justify">
                       瀏覽玩家提供的詳細評價和建議，了解各個密室遊戲的特色、難度和可玩性。不僅能看到評分和評論，還能看到玩家們的遊戲過程分享，確保每一次都能帶來愉快的遊戲體驗！
                     </p>
                   </div>
                   <div className="col-lg-6 gameImg">
-                    <img
-                      src="./image/andrew-neel.png"
-                      alt="觀看玩家評價"
-                    />
+                    <img src="./image/andrew-neel.png" alt="觀看玩家評價" />
                   </div>
                 </div>
               </div>
@@ -437,8 +440,8 @@ function Index() {
                       slidesPerView={1}
                       spaceBetween={24}
                       navigation={{
-                        nextEl: '.swiper-button-next-custom',
-                        prevEl: '.swiper-button-prev-custom',
+                        nextEl: ".swiper-button-next-custom",
+                        prevEl: ".swiper-button-prev-custom",
                       }}
                       breakpoints={{
                         768: {
@@ -473,7 +476,7 @@ function Index() {
             </div>
           </div>
           <div className="bg-nature-95 row justify-content-center w-100 mx-0">
-            <div className="col-lg-11">
+            <div className="col-lg-11 mb-20">
               <div className="pt-10 pt-lg-20 mb-12">
                 <h3 className="fw-bold fs-lg-h3 fs-h6 text-center">近期新作</h3>
               </div>
@@ -488,8 +491,8 @@ function Index() {
                       slidesPerView={1}
                       spaceBetween={24}
                       navigation={{
-                        nextEl: '.swiper-button-next-custom-new',
-                        prevEl: '.swiper-button-prev-custom-new',
+                        nextEl: ".swiper-button-next-custom-new",
+                        prevEl: ".swiper-button-prev-custom-new",
                       }}
                       breakpoints={{
                         768: {
