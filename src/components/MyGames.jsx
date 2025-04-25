@@ -70,13 +70,13 @@ const MyGames = () => {
       {/* 電腦版 */}
       <div className="m-0 pt-10 px-0 d-none d-lg-block ">
         <div className="border-nature-90 border rounded-2">
-          <div className="custom-userGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
+          <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
             已上架
           </div>
           <div className="p-6 bg-white">
             <table className="table">
               <thead className="table-light px-3">
-                <tr className="custom-userGroupThead ">
+                <tr className="border-bottom border-nature-95 ">
                   <th scope="col" className="text-secondary-40 ps-6 py-3 pe-0">
                     密室名稱
                   </th>
@@ -125,7 +125,7 @@ const MyGames = () => {
                     {upGames.map((game) => (
                       <tr
                         key={game.game_id}
-                        className="custom-userGroupThead"
+                        className="border-bottom border-nature-95"
                       >
                         <td className="ps-5 py-2 pe-0">{game.game_name}</td>
                         <td className="py-2 px-0">{game.game_address}</td>
@@ -175,13 +175,13 @@ const MyGames = () => {
         </div>
 
         <div className="border-nature-90 border rounded-2 my-10">
-          <div className="custom-userGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
+          <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
             等待上架
           </div>
           <div className="p-6 bg-white">
             <table className="table">
               <thead className="table-light px-3">
-                <tr className="custom-userGroupThead ">
+                <tr className="border-bottom border-nature-95 ">
                   <th scope="col" className="text-secondary-40 ps-6 py-3 pe-0">
                     密室名稱
                   </th>
@@ -230,7 +230,7 @@ const MyGames = () => {
                     {dowmGames.map((game) => (
                       <tr
                         key={game.game_id}
-                        className="custom-userGroupThead"
+                        className="border-bottom border-nature-95"
                       >
                         <td className="ps-5 py-2 pe-0">{game.game_name}</td>
                         <td className="py-2 px-0">{game.game_address}</td>
@@ -304,7 +304,7 @@ const MyGames = () => {
         </div>
         {activeTab === "upGames" && (
           <div className="">
-            <div className="custom-userGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
+            <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
               已上架
             </div>
             <div className=" ">
@@ -395,7 +395,7 @@ const MyGames = () => {
 
         {activeTab === "downGames" && (
           <div className="">
-            <div className="custom-userGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
+            <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
               等待上架
             </div>
             <div className=" ">

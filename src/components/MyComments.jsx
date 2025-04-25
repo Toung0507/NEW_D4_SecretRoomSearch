@@ -151,13 +151,13 @@ const MyComments = () => {
       {/* 主畫面 - 電腦版 */}
       <div className="m-0  px-0 d-none d-lg-block ">
         <div className="border-nature-90 border rounded-2 my-10">
-          <div className="custom-userGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
+          <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
             我的評論
           </div>
           <div className="p-6 bg-white">
             <table className="table">
               <thead className="table-light px-3">
-                <tr className="custom-userGroupThead ">
+                <tr className="border-bottom border-nature-95  ">
                   <th scope="col" className="text-secondary-40 ps-6 py-3 pe-0">
                     遊玩日期
                   </th>
@@ -200,7 +200,7 @@ const MyComments = () => {
                   allCommentsGames.map((omeomment) => (
                     <tr
                       key={omeomment.comment_id}
-                      className="custom-userGroupThead"
+                      className="border-bottom border-nature-95"
                     >
                       <td className="ps-5 py-2 pe-0">
                         {omeomment.commet_played_time}
@@ -252,7 +252,7 @@ const MyComments = () => {
       </div>
 
       <div className="d-block d-lg-none m-0">
-        <div className="custom-userGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
+        <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
           我的評論
         </div>
         {isLoading && (

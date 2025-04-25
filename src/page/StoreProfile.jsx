@@ -59,7 +59,7 @@ function StoreProfile() {
                 <ul className="d-flex">
                   <li className="">
                     <Link
-                      className={` border-0 text-nature-70 bg-primary-99 fs-h6 ${activeTab === "basicStoreInfo" ? "custom-ProfileNavItemActive" : ""} p-4`}
+                      className={`custom-profileTab fs-lg-h6 fs-Body-1 lh-base lh-lg-normal fw-bold ${activeTab === "basicStoreInfo" ? "active" : ""} `}
                       to={`/Store_profile/${user_id}/basicStoreInfo`}
                     >
                       基本資訊
@@ -67,7 +67,7 @@ function StoreProfile() {
                   </li>
                   <li className="">
                     <Link
-                      className={` border-0 text-nature-70 bg-primary-99 fs-h6 ${activeTab === "myGames" ? "custom-ProfileNavItemActive" : ""} p-4`}
+                      className={`custom-profileTab fs-lg-h6 fs-Body-1 lh-base lh-lg-normal fw-bold ${activeTab === "myGames" ? "active" : ""} `}
                       to={`/Store_profile/${user_id}/myGames`}
                     >
                       密室總覽

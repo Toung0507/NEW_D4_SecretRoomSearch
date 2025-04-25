@@ -41,25 +41,25 @@ function UserProfile() {
               <div className="container-lg ">
                 <div className="row pt-10 ">
                   <ul className="d-flex">
-                    <li className="">
+                    <li >
                       <Link
-                        className={` border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1 ${activeTab === "basicInfo" ? "custom-ProfileNavItemActive" : ""} p-2 p-sm-3`}
+                        className={`custom-profileTab fs-lg-h6 fs-Body-1 lh-base lh-lg-normal fw-bold ${activeTab === "basicInfo" ? "active" : ""} `}
                         to={`/User_profile/${user_id}/basicInfo`}
                       >
                         基本資訊
                       </Link>
                     </li>
-                    <li className="">
+                    <li>
                       <Link
-                        className={` border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1  ${activeTab === "participatingGroup" ? "custom-ProfileNavItemActive" : ""} p-2 p-sm-3`}
+                        className={`custom-profileTab fs-lg-h6 fs-Body-1 lh-base lh-lg-normal fw-bold ${activeTab === "participatingGroup" ? "active" : ""} `}
                         to={`/User_profile/${user_id}/participatingGroup`}
                       >
                         參加的揪團
                       </Link>
                     </li>
-                    <li className="">
+                    <li >
                       <Link
-                        className={`border-0 text-nature-70 bg-primary-99 fs-sm-h6 fs-Body-1   ${activeTab === "myComments" ? "custom-ProfileNavItemActive" : ""} p-2 p-sm-3`}
+                        className={`custom-profileTab fs-lg-h6 fs-Body-1 lh-base lh-lg-normal fw-bold ${activeTab === "myComments" ? "active" : ""} `}
                         to={`/User_profile/${user_id}/myComments`}
                       >
                         留下的評論
