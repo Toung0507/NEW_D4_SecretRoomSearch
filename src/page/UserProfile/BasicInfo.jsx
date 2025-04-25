@@ -7,12 +7,12 @@ import { useDispatch } from "react-redux";
 import {
   getUserInfoAsyncThunk,
   updateUser,
-} from "../redux/slices/userInfoSlice";
+} from "../../redux/slices/userInfoSlice";
 import { FaFacebook } from "react-icons/fa6";
 import { FaGoogle } from "react-icons/fa";
-import { pushMessage } from "../redux/slices/toastSlice";
-import Toast from "../layout/Toast";
-import { userContext } from "../reducers/createContent";
+import { pushMessage } from "../../redux/slices/toastSlice";
+import Toast from "../../layout/Toast";
+import { userContext } from "../../reducers/createContent";
 
 const baseApi = import.meta.env.VITE_BASE_URL;
 

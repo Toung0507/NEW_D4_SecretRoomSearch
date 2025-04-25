@@ -3,7 +3,7 @@ import axios from "axios";
 
 const baseApi = import.meta.env.VITE_BASE_URL;
 
-function About_us() {
+function AboutUs() {
   const [austore, setAustore] = useState([]);
   const [isHaveStore, setIsHaveStore] = useState(false);
   const [errmessage, setErrmessage] = useState("");
@@ -129,4 +129,4 @@ function About_us() {
   );
 }
 
-export default About_us;
+export default AboutUs;

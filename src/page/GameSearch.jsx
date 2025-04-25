@@ -32,12 +32,13 @@ const formData = {
   property: [],
 };
 
-function Game_search() {
+function GameSearch() {
   // 原先的資料
   const [games, setGames] = useState([]);
   const [difficultys, setDifficultys] = useState([]);
   const [propertys, setPropertys] = useState([]);
   const [maxPeople, setMaxPeople] = useState(0);
+  const [minPeople, setminPeople] = useState(0);
   const [search, setSearch] = useState(formData);
   // 是否要顯示全部資料
   const [isAllRecommendDisplay, setIsAllRecommendDisplay] = useState(false);
@@ -78,6 +79,7 @@ function Game_search() {
       );
       setNewedGames(newGames);
       setMaxPeople(Math.max(...upGames.map((p) => p.game_maxNum_Players)));
+      setminPeople(Math.min(...upGames.map((p) => p.game_minNum_Players)));
     } catch (error) {
       setIsLoading(false);
       setIsHaveData(false);
@@ -303,6 +305,8 @@ function Game_search() {
 
   useEffect(() => {
     if (games.length > 0 && difficultys.length > 0 && propertys.length > 0) {
+      console.log(minPeople);
+      console.log(maxPeople);
       setIsLoading(false);
     }
   }, [games.length, difficultys.length, propertys.length]);
@@ -831,4 +835,4 @@ function Game_search() {
   );
 }
 
-export default Game_search;
+export default GameSearch;

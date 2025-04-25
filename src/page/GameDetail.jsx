@@ -17,7 +17,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 // 定義公共路徑常量
 const ICON_PATH = "./icon/";
 
-function Game_content() {
+function GameDetail() {
   const { gameID } = useParams();
   const [game, setGame] = useState(null);
   const [price, setPrice] = useState(null);
@@ -126,14 +126,14 @@ function Game_content() {
           {/* TODO 圖片 RWD 替代方案 */}
           <source
             media="(min-width: 992px)"
-            // srcSet="/assets/images/julia-kadel.png"
+          // srcSet="/assets/images/julia-kadel.png"
           />
           <img
             className="w-100 rounded-4"
             src={game.game_img[0]}
             alt="banner"
             style={{ maxHeight: "432px", objectFit: "cover" }}
-            // TODO 圖片裁切與對齊問題
+          // TODO 圖片裁切與對齊問題
           />
         </picture>
         <div className="my-6 my-lg-10">
@@ -291,8 +291,8 @@ function Game_content() {
                             user_sex === "男"
                               ? "./icon/man.png"
                               : user_sex === "女"
-                              ? "./icon/woman.png"
-                              : "./icon/user.png"
+                                ? "./icon/woman.png"
+                                : "./icon/user.png"
                           }
                           alt="評論人圖片載入錯誤"
                         />
@@ -445,4 +445,4 @@ function Game_content() {
   );
 }
 
-export default Game_content;
+export default GameDetail;

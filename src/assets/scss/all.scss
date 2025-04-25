@@ -94,20 +94,20 @@
 @import "/node_modules/bootstrap/scss/utilities/api";
 
 // ===== 頁首/頁尾 Layout 區塊 =====
-@import "./layout/header.scss";
-@import "./layout/footer.scss";
+@import "./layout/header";
+@import "./layout/footer";
 
 // ===== 共用 Components =====
-@import "./layout/sidebar.scss";
-@import "./layout/ProgressBar";
-@import "./layout/login";
+@import "./layout/sidebar";
+@import "./layout/progress-bar";
 
 // ===== 各頁樣式 =====
-@import "./pages/index.scss";
-@import "./pages/game_content.scss";
+@import "./pages/index";
+@import "./pages/login";
 @import "./pages/search";
-@import "./pages/about_us";
-@import "./pages/game_comment";
+@import "./pages/game-detail";
+@import "./pages/group-detail";
 @import "./pages/profile";
+@import "./pages/addGame-comment";
+@import "./pages/about-us";
 @import "./pages/admin/admin";
-@import "./pages/TeamBuyComment";

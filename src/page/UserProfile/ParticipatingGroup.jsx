@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { userContext } from "../reducers/createContent";
+import { userContext } from "../../reducers/createContent";
 import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
-import SmallLoadingSpinner from "./UI/smallLoadingSpinner";
+import SmallLoadingSpinner from "../../components/UI/smallLoadingSpinner";
 
 const baseApi = import.meta.env.VITE_BASE_URL;
 

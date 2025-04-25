@@ -9,7 +9,7 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-function TeamBuyComment() {
+function GroupDetail() {
   const [group, setGroup] = useState(null);
   const [games, setGames] = useState(null);
   const [users, setUsers] = useState([]);
@@ -504,4 +504,4 @@ function TeamBuyComment() {
     </>
   );
 }
-export default TeamBuyComment;
+export default GroupDetail;

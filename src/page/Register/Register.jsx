@@ -3,12 +3,12 @@ import dayjs from "dayjs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { pushMessage } from "../redux/slices/toastSlice";
-import RegisterStepIdentity from "../layout/RegisterStepIdentity";
-import RegisterStepEmailVerify from "../layout/RegisterStepEmailVerify";
-import RegisterStepBasicInfo from "../layout/RegisterStepBasicInfo";
-import Toast from "../layout/Toast";
-import { registerInfo } from "../reducers/createContent";
+import { pushMessage } from "../../redux/slices/toastSlice";
+import RegisterStepIdentity from "../../layout/RegisterStepIdentity";
+import RegisterStepEmailVerify from "../../layout/RegisterStepEmailVerify";
+import RegisterStepBasicInfo from "../../layout/RegisterStepBasicInfo";
+import Toast from "../../layout/Toast";
+import { registerInfo } from "../../reducers/createContent";
 
 const steps = [
   {

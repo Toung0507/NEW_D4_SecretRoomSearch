@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import BasicInfo from "../components/BasicInfo";
-import ParticipatingGroup from "../components/ParticipatingGroup";
-import MyComments from "../components/MyComments";
-import { userContext } from "../reducers/createContent";
+import BasicInfo from "./BasicInfo";
+import ParticipatingGroup from "./ParticipatingGroup";
+import MyComments from "../../components/MyComments";
+import { userContext } from "../../reducers/createContent";
 
 function UserProfile() {
   const { user, user_token } = useSelector((state) => state.userInfo);

@@ -10,7 +10,7 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-function Game_comment() {
+function AddGameComment() {
   const [isLoadingGame, setIsLoadingGame] = useState(true);
   // 注意：因為 state 為保留字，這邊用 mode 來接收
   const { state: mode, id } = useParams();
@@ -362,9 +362,8 @@ function Game_comment() {
                           <div className="col">
                             <input
                               type="date"
-                              className={`form-control ${
-                                errors.commet_played_time && "is-invalid"
-                              }`}
+                              className={`form-control ${errors.commet_played_time && "is-invalid"
+                                }`}
                               {...register(
                                 "commet_played_time",
                                 VALID_RULES.commet_played_time,
@@ -498,9 +497,8 @@ function Game_comment() {
                           </h3>
                           <div className="col">
                             <textarea
-                              className={`form-control ${
-                                errors.coment_content && "is-invalid"
-                              }`}
+                              className={`form-control ${errors.coment_content && "is-invalid"
+                                }`}
                               rows="5"
                               {...register(
                                 "coment_content",
@@ -539,4 +537,4 @@ function Game_comment() {
     </>
   );
 }
-export default Game_comment;
+export default AddGameComment;

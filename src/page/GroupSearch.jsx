@@ -33,7 +33,7 @@ const area = [
   { area_name: "澎湖金門馬祖", area_value: "PenghuKinmenMatsu" },
 ];
 
-function TeamBuy() {
+function GroupSearch() {
   // 取得從遊戲介紹傳遞的資料
   const location = useLocation();
   const gameData = location.state;
@@ -170,10 +170,10 @@ function TeamBuy() {
           search.property.length === 0
             ? true
             : search.property.some(
-                (property) =>
-                  String(game.game_main_tag1).includes(property) ||
-                  String(game.game_main_tag2).includes(property)
-              );
+              (property) =>
+                String(game.game_main_tag1).includes(property) ||
+                String(game.game_main_tag2).includes(property)
+            );
 
         // 綜合判斷，使用AND邏輯
         return (
@@ -303,7 +303,7 @@ function TeamBuy() {
   useEffect(() => {
     if (gameData && gameData.gameName && group.length > 0) {
       const simulatedEvent = {
-        preventDefault: () => {},
+        preventDefault: () => { },
       };
       handleSearch(simulatedEvent);
     }
@@ -394,4 +394,4 @@ function TeamBuy() {
     </>
   );
 }
-export default TeamBuy;
+export default GroupSearch;
