@@ -3,12 +3,12 @@ import dayjs from "dayjs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { pushMessage } from "../redux/slices/toastSlice";
-import RegisterStepIdentity from "../layout/RegisterStepIdentity";
-import RegisterStepEmailVerify from "../layout/RegisterStepEmailVerify";
-import RegisterStepBasicInfo from "../layout/RegisterStepBasicInfo";
-import Toast from "../layout/Toast";
-import { registerInfo } from "../reducers/createContent";
+import { pushMessage } from "../../redux/slices/toastSlice";
+import RegisterStepIdentity from "./RegisterStepIdentity";
+import RegisterStepEmailVerify from "./RegisterStepEmailVerify";
+import RegisterStepBasicInfo from "./RegisterStepBasicInfo";
+import Toast from "../../layout/Toast";
+import { registerInfo } from "../../reducers/createContent";
 
 const steps = [
   {
@@ -228,19 +228,19 @@ function Register() {
   return (
     <div className="container text-center flex-grow-1 d-flex flex-column justify-content-center align-items-center my-5">
       <div className=" d-flex justify-content-center align-items-center flex-column">
-        <div className="progress-container ">
+        <div className="custom-progressBarContainer ">
           {/* 進度條 */}
-          <div className="progress-bar" style={{ width: `${progressWidth}%` }}></div>
+          <div className="custom-progressBarLIne" style={{ width: `${progressWidth}%` }}></div>
 
           {/* 圓圈 */}
           {steps.map((step) => (
             // <div className='d-flex flex-column justify-content-center align-items-center'>
             <div
               key={step.step_id}
-              className={`circle ${step.step_id <= currentStep ? 'active' : ''}`}
+              className={`custom-progressCircle ${step.step_id <= currentStep ? 'active' : ''}`}
             >
-              <p className='step_name'>{step.step_name}</p>
-              <span className="circle-number">{step.step_id}</span>
+              <p className='custom-progressStepName'>{step.step_name}</p>
+              <span className="custom-progressCircleNumber">{step.step_id}</span>
             </div>
             // </div>
           ))}
@@ -272,14 +272,14 @@ function Register() {
 
           {currentStep === 3 ? (
             <button
-              className="btn btn-secondary-60 text-white mx-2"
+              className="btn custom-progressStepBtn btn-secondary-60 text-white mx-2"
               onClick={handleFinalClick}
             >
               送出註冊
             </button>
           ) : (
             <button
-              className="btn btn-secondary-60 text-white mx-2"
+              className="btn custom-progressStepBtn btn-secondary-60 text-white mx-2"
               onClick={nextStep}
               disabled={currentStep === 3 || (currentStep === 1 && userRegister.user_role === '') || (currentStep === 2 && !isEmailAuth)}
             >

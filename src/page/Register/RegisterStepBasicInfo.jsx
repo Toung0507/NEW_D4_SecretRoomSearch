@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { registerInfo } from "../reducers/createContent";
+import { registerInfo } from "../../reducers/createContent";
 import { useForm } from "react-hook-form";
-import AddressForm from "./AddressForm";
+import AddressForm from "../../layout/AddressForm";
 import PropTypes from "prop-types";
 
 function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmitStoreSuccess }) {
@@ -60,7 +60,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="user_name"
-                      className="col-sm-3 col-form-label formrequired"
+                      className="col-sm-3 col-form-label custom-labelRequired"
                     >
                       姓名
                     </label>
@@ -87,7 +87,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="user_email"
-                      className="col-sm-3 col-form-label formrequired"
+                      className="col-sm-3 col-form-label custom-labelRequired"
                     >
                       信箱
                     </label>
@@ -114,7 +114,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="user_password"
-                      className="col-sm-3 col-form-label formrequired"
+                      className="col-sm-3 col-form-label custom-labelRequired"
                     >
                       密碼
                     </label>
@@ -145,7 +145,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="confirmPassword"
-                      className="col-sm-3 col-form-label formrequired"
+                      className="col-sm-3 col-form-label custom-labelRequired"
                     >
                       再次輸入密碼
                     </label>
@@ -176,7 +176,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="user_sex"
-                      className="col-sm-3 col-form-label formrequired"
+                      className="col-sm-3 col-form-label custom-labelRequired"
                     >
                       性別
                     </label>
@@ -257,7 +257,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="user_name"
-                      className="col-sm-2 col-form-label formrequired"
+                      className="col-sm-2 col-form-label custom-labelRequired"
                     >
                       店家名稱
                     </label>
@@ -284,7 +284,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="user_email"
-                      className="col-sm-2 col-form-label formrequired"
+                      className="col-sm-2 col-form-label custom-labelRequired"
                     >
                       信箱
                     </label>
@@ -311,7 +311,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="user_password"
-                      className="col-sm-2 col-form-label formrequired"
+                      className="col-sm-2 col-form-label custom-labelRequired"
                     >
                       密碼
                     </label>
@@ -342,7 +342,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="confirmPassword"
-                      className="col-sm-2 col-form-label formrequired"
+                      className="col-sm-2 col-form-label custom-labelRequired"
                     >
                       再次輸入密碼
                     </label>
@@ -373,7 +373,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="user_tel"
-                      className="col-sm-2 col-form-label formrequired"
+                      className="col-sm-2 col-form-label custom-labelRequired"
                     >
                       電話
                     </label>
@@ -418,7 +418,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="store_self_address"
-                      className="col-sm-2 col-form-label formrequired"
+                      className="col-sm-2 col-form-label custom-labelRequired"
                     >
                       店家地址
                     </label>
@@ -451,7 +451,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="store_contact"
-                      className="col-sm-2 col-form-label formrequired"
+                      className="col-sm-2 col-form-label custom-labelRequired"
                     >
                       聯絡人
                     </label>
@@ -478,7 +478,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="store_method"
-                      className="col-sm-2 col-form-label formrequired"
+                      className="col-sm-2 col-form-label custom-labelRequired"
                     >
                       驗證方式
                     </label>
@@ -560,7 +560,7 @@ function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess,
                   <div className="row mb-3">
                     <label
                       htmlFor="store_website"
-                      className="col-sm-2 col-form-label formrequired"
+                      className="col-sm-2 col-form-label custom-labelRequired"
                     >
                       官方網頁
                     </label>

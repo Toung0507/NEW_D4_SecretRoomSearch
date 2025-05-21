@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import BasicStoreInfo from "../components/BasicStoreInfo";
+import BasicStoreInfo from "./BasicStoreInfo";
 import axios from "axios";
-import MyGames from "../components/MyGames";
-import { userStoreContext } from "../reducers/createContent";
+import MyGames from "./MyGames";
+import { userStoreContext } from "../../reducers/createContent";
 
 const baseApi = import.meta.env.VITE_BASE_URL;
 
@@ -52,14 +52,14 @@ function StoreProfile() {
   return (
     <>
       {isAuthMySelf ? (
-        <div className="usermain flex-grow-1">
+        <div className="custom-profileMain flex-grow-1">
           <div className="container-fluid bg-primary-99">
             <div className="container-lg ">
               <div className="row pt-10 ">
                 <ul className="d-flex">
                   <li className="">
                     <Link
-                      className={` border-0 text-nature-70 bg-primary-99 fs-h6 ${activeTab === "basicStoreInfo" ? "member-nav-item-active" : ""} p-4`}
+                      className={`custom-profileTab fs-lg-h6 fs-Body-1 lh-base lh-lg-normal fw-bold ${activeTab === "basicStoreInfo" ? "active" : ""} `}
                       to={`/Store_profile/${user_id}/basicStoreInfo`}
                     >
                       基本資訊
@@ -67,7 +67,7 @@ function StoreProfile() {
                   </li>
                   <li className="">
                     <Link
-                      className={` border-0 text-nature-70 bg-primary-99 fs-h6 ${activeTab === "myGames" ? "member-nav-item-active" : ""} p-4`}
+                      className={`custom-profileTab fs-lg-h6 fs-Body-1 lh-base lh-lg-normal fw-bold ${activeTab === "myGames" ? "active" : ""} `}
                       to={`/Store_profile/${user_id}/myGames`}
                     >
                       密室總覽

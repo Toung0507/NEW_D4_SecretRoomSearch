@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { userContext } from "../reducers/createContent";
+import { userContext } from "../../reducers/createContent";
 import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
-import SmallLoadingSpinner from "./UI/smallLoadingSpinner";
+import SmallLoadingSpinner from "../../components/UI/smallLoadingSpinner";
 
 const baseApi = import.meta.env.VITE_BASE_URL;
 
@@ -92,13 +92,13 @@ const ParticipatingGroup = () => {
       {/* 電腦版 */}
       <div className="m-0 pt-10 px-0 d-none d-lg-block">
         <div className="border-nature-90 border rounded-2">
-          <div className="ParticipatingGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
+          <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
             揪團中
           </div>
           <div className="p-6 bg-white">
             <table className="table">
               <thead className="table-light px-3">
-                <tr className="ParticipatingGroupThead ">
+                <tr className="border-bottom border-nature-95 ">
                   <th scope="col" className="text-secondary-40 ps-6 py-3 pe-0">
                     密室名稱
                   </th>
@@ -132,7 +132,7 @@ const ParticipatingGroup = () => {
                   nowGroups.map((oneGroup) => (
                     <tr
                       key={oneGroup.group_id}
-                      className="ParticipatingGroupThead"
+                      className="border-bottom border-nature-95"
                     >
                       <td className="ps-5 py-2 pe-0">{oneGroup.game_name}</td>
                       <td className="py-2 px-0">{oneGroup.game_address}</td>
@@ -178,13 +178,13 @@ const ParticipatingGroup = () => {
         </div>
 
         <div className="border-nature-90 border rounded-2 my-10">
-          <div className="ParticipatingGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
+          <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
             歷史揪團
           </div>
           <div className="p-6 bg-white">
             <table className="table">
               <thead className="table-light px-3">
-                <tr className="ParticipatingGroupThead ">
+                <tr className="border-bottom border-nature-95 ">
                   <th scope="col" className="text-secondary-40 ps-6 py-3 pe-0">
                     狀態
                   </th>
@@ -217,7 +217,7 @@ const ParticipatingGroup = () => {
                   historyGroups.map((oneGroup) => (
                     <tr
                       key={oneGroup.group_id}
-                      className="ParticipatingGroupThead"
+                      className="border-bottom border-nature-95"
                     >
                       <td className="py-2 py-2 pe-0">{oneGroup.status}</td>
                       <td className="py-2 px-0">{oneGroup.game_name}</td>
@@ -259,7 +259,7 @@ const ParticipatingGroup = () => {
       <div className="m-0 d-block d-lg-none">
         <div className="d-flex m-0 pt-5 ps-3 pb-3">
           <button
-            className={`commentButton btn border-1 border-secondary-50 me-3  fw-bold rounded-16 ${activeTab === "nowGroup"
+            className={`  btn border-1 border-secondary-50 me-3  fw-bold rounded-16 ${activeTab === "nowGroup"
               ? "bg-secondary-50 text-secondary-99"
               : "text-secondary-50"
               }`}
@@ -268,7 +268,7 @@ const ParticipatingGroup = () => {
             揪團中
           </button>
           <button
-            className={`commentButton btn border-1 border-secondary-50 rounded-16 fw-bold ${activeTab === "historyGroup"
+            className={`  btn border-1 border-secondary-50 rounded-16 fw-bold ${activeTab === "historyGroup"
               ? "bg-secondary-50 text-secondary-99"
               : "text-secondary-50"
               }`}
@@ -279,7 +279,7 @@ const ParticipatingGroup = () => {
         </div>
         {activeTab === "nowGroup" && (
           <div className="">
-            <div className="ParticipatingGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
+            <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
               揪團中
             </div>
             {isLoading && (
@@ -345,7 +345,7 @@ const ParticipatingGroup = () => {
 
         {activeTab === "historyGroup" && (
           <>
-            <div className="ParticipatingGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
+            <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
               歷史揪團
             </div>
             {isLoading && (

@@ -7,12 +7,12 @@ import { useDispatch } from "react-redux";
 import {
   getUserInfoAsyncThunk,
   updateUser,
-} from "../redux/slices/userInfoSlice";
+} from "../../redux/slices/userInfoSlice";
 import { FaFacebook } from "react-icons/fa6";
 import { FaGoogle } from "react-icons/fa";
-import { pushMessage } from "../redux/slices/toastSlice";
-import Toast from "../layout/Toast";
-import { userContext } from "../reducers/createContent";
+import { pushMessage } from "../../redux/slices/toastSlice";
+import Toast from "../../layout/Toast";
+import { userContext } from "../../reducers/createContent";
 
 const baseApi = import.meta.env.VITE_BASE_URL;
 
@@ -192,7 +192,7 @@ const BasicInfo = () => {
       {/* 主畫面 */}
       <div className="col-lg-8 m-0 py-sm-10 px-0 ">
         <div className=" border-nature-90 border-1 border">
-          <div className="basicInfoTitle fs-h6 lh-sm bg-secondary-95 fw-bold px-5 py-6 text-secondary-50">
+          <div className="fs-h6 lh-sm bg-secondary-95 fw-bold px-5 py-6 text-secondary-50">
             會員資料
           </div>
           <div className="user-info bg-white ">

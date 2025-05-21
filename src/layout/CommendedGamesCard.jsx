@@ -7,34 +7,13 @@ function CommendedGamesCard({ game }) {
       <Link to={`/Game_content/${game.game_id}`}>
         <div className="card card-recommend p-3 rounded-6 ">
           <div className="row g-0 align-items-start h-100">
-            <div className=" col-auto col-sm-12 ratio ratio-16x9">
-              <picture
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <source media="(min-width: 576px)" srcSet={game.game_img[0]} />
-                <img
-                  src={game.game_img[0]}
-                  alt={game.game_name}
-                  className="card-photo rounded-3 w-100 img-fluid"
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
-              </picture>
+            <div className="col-auto col-sm-12 ratio ratio-16x9">
+              <img
+                src={game.game_img[0]}
+                alt={game.game_name}
+                className="card-photo rounded-3 w-100 img-fluid"
+              />
             </div>
-
-            {/* <!-- 手機板文字內容在右邊 --> */}
             <div className="col ms-3 ms-md-0">
               <div className="card-body p-0 mt-3">
                 <h6 className="card-title mb-1 mb-md-2 text-primary-black fw-bold lh-base">

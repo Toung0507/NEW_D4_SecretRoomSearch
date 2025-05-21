@@ -1,14 +1,14 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { userContext } from "../reducers/createContent";
+import { userContext } from "../../reducers/createContent";
 import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
 import { TiStarFullOutline, TiStarOutline } from "react-icons/ti";
 import { Modal } from "bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { pushMessage } from "../redux/slices/toastSlice";
-import Toast from "../layout/Toast";
-import SmallLoadingSpinner from "./UI/smallLoadingSpinner";
+import { pushMessage } from "../../redux/slices/toastSlice";
+import Toast from "../../layout/Toast";
+import SmallLoadingSpinner from "../../components/UI/SmallLoadingSpinner";
 const baseApi = import.meta.env.VITE_BASE_URL;
 
 const MyComments = () => {
@@ -151,13 +151,13 @@ const MyComments = () => {
       {/* 主畫面 - 電腦版 */}
       <div className="m-0  px-0 d-none d-lg-block ">
         <div className="border-nature-90 border rounded-2 my-10">
-          <div className="ParticipatingGroupTitle bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
+          <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-6 py-5 text-secondary-50 fw-bold fs-h6">
             我的評論
           </div>
           <div className="p-6 bg-white">
             <table className="table">
               <thead className="table-light px-3">
-                <tr className="ParticipatingGroupThead ">
+                <tr className="border-bottom border-nature-95  ">
                   <th scope="col" className="text-secondary-40 ps-6 py-3 pe-0">
                     遊玩日期
                   </th>
@@ -200,7 +200,7 @@ const MyComments = () => {
                   allCommentsGames.map((omeomment) => (
                     <tr
                       key={omeomment.comment_id}
-                      className="ParticipatingGroupThead"
+                      className="border-bottom border-nature-95"
                     >
                       <td className="ps-5 py-2 pe-0">
                         {omeomment.commet_played_time}
@@ -225,7 +225,7 @@ const MyComments = () => {
                       <td className="pe-5 py-2 ps-0">
                         <button
                           onClick={() => opendetailComment(omeomment)}
-                          className="text-black border-0 fs-Body-1 btn btn-white p-0 commentButton m-0 "
+                          className="text-black border-0 fs-Body-1 btn btn-white p-0   m-0 "
                         >
                           查看詳情 <IoIosArrowForward color="black" />
                         </button>
@@ -252,7 +252,7 @@ const MyComments = () => {
       </div>
 
       <div className="d-block d-lg-none m-0">
-        <div className="ParticipatingGroupTitle bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
+        <div className="custom-userGroupTitle lh-normal bg-secondary-95 px-4 py-5 text-secondary-50 fw-bold fs-h6">
           我的評論
         </div>
         {isLoading && (

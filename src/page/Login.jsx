@@ -46,7 +46,7 @@ function Login() {
   return (
     <div className="flex-grow-1 my-md-10 my-5" >
       <div className=" d-flex justify-content-center align-items-center flex-column">
-        <div className="p-8 LoginCard  rounded-2   ">
+        <div className="p-8 custom-loginCard  rounded-2   ">
           <h3 className="text-center mb-3">立即登入</h3>
           <form onSubmit={handleSingIn} className="m-50 d-flex flex-column">
             <div className="form-group mb-5 ">

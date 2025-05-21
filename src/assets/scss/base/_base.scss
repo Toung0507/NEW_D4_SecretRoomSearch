@@ -36,3 +36,8 @@ img {
   height: auto;
   vertical-align: middle;
 }
+
+.custom-labelRequired::before {
+  content: "* ";
+  color: red;
+}
