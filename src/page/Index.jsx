@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import IndexGamesCard from "../layout/IndexGamesCard";
+import DisplayCard from "../components/DisplayCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -462,7 +462,7 @@ function Index() {
                     >
                       {recommendedGames.slice(0, 10).map((game) => (
                         <SwiperSlide key={game.game_id}>
-                          <IndexGamesCard game={game} />
+                          <DisplayCard source="index" game={game} />
                         </SwiperSlide>
                       ))}
                     </Swiper>
@@ -513,7 +513,7 @@ function Index() {
                     >
                       {newedGames.slice(0, 10).map((game) => (
                         <SwiperSlide key={game.game_id}>
-                          <IndexGamesCard game={game} key={game.game_id} />
+                          <DisplayCard source="index" game={game} key={game.game_id} />
                         </SwiperSlide>
                       ))}
                     </Swiper>

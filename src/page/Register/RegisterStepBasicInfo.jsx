@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { registerInfo } from "../reducers/createContent";
+import { registerInfo } from "../../reducers/createContent";
 import { useForm } from "react-hook-form";
-import AddressForm from "./AddressForm";
+import AddressForm from "../../layout/AddressForm";
 import PropTypes from "prop-types";
 
 function RegisterStepBasicInfo({ userFormRef, storeFormRef, onSubmitUserSuccess, onSubmitStoreSuccess }) {

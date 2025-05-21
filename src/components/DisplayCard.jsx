@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 
-function IndexGamesCard({ game }) {
+function DisplayCard({ source, game }) {
+  console.log(source);
   return (
+
+
     <div className={`col2 ${source == "commend" ? "col-lg-3 col-md-4 col-sm-6" : ""}`}>
       <Link to={`/Game_content/${game.game_id}`}>
         <div className="card card-recommend p-3 rounded-6 ">
@@ -63,13 +66,14 @@ function IndexGamesCard({ game }) {
         </div>
       </Link>
     </div>
-  );
-}
+  )
+};
 
-export default IndexGamesCard;
+export default DisplayCard;
 
 // 添加 PropTypes 驗證
-IndexGamesCard.propTypes = {
+DisplayCard.propTypes = {
+  source: PropTypes.string.isRequired,
   game: PropTypes.shape({
     game_id: PropTypes.number.isRequired,
     game_img: PropTypes.array.isRequired,
